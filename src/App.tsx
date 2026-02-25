@@ -12,6 +12,7 @@ import BuyerMandate from "./pages/BuyerMandate";
 import PropertyDetail from "./pages/PropertyDetail";
 import AdminSubmissions from "./pages/AdminSubmissions";
 import AdminLogin from "./pages/AdminLogin";
+import MentionsLegales from "./pages/MentionsLegales";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/mandat-recherche" element={<BuyerMandate />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/demandes" element={<AdminSubmissions />} />
+          <Route path="/mentions-legales" element={<MentionsLegales />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

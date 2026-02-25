@@ -7,7 +7,7 @@ const Footer = () => (
     <div className="container mx-auto px-6 py-16">
       <div className="grid md:grid-cols-4 gap-10">
         <div className="md:col-span-1">
-          <img src={logo} alt="Émilio" className="h-14 brightness-0 invert mb-4" />
+          <img src={logo} alt="Emilio" className="h-14 brightness-0 invert mb-4" />
           <p className="text-primary-foreground/70 text-sm font-body leading-relaxed">
             Votre partenaire de confiance pour tous vos projets immobiliers en Île-de-France.
           </p>
@@ -19,9 +19,10 @@ const Footer = () => (
             {[
               { label: "Accueil", path: "/" },
               { label: "Nos Biens", path: "/biens" },
-              { label: "Notre Histoire", path: "/notre-histoire" },
               { label: "Vendre", path: "/vendre" },
               { label: "Acheter", path: "/mandat-recherche" },
+              { label: "Notre Histoire", path: "/notre-histoire" },
+              { label: "Mentions légales", path: "/mentions-legales" },
             ].map((item) => (
               <Link
                 key={item.path}
@@ -61,8 +62,9 @@ const Footer = () => (
         </div>
       </div>
 
-      <div className="border-t border-primary-foreground/20 mt-12 pt-6 text-center text-xs text-primary-foreground/50 font-body">
-        © {new Date().getFullYear()} Émilio Immobilier. Tous droits réservés.
+      <div className="border-t border-primary-foreground/20 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-primary-foreground/50 font-body">
+        <span>© {new Date().getFullYear()} Emilio Immobilier. Tous droits réservés.</span>
+        <Link to="/mentions-legales" className="hover:text-accent transition-colors">Mentions légales</Link>
       </div>
     </div>
   </footer>

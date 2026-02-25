@@ -71,7 +71,7 @@ const BuyerMandate = () => {
         <div className="relative container mx-auto px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <HeartHandshake className="w-12 h-12 text-accent mx-auto mb-6" />
-            <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Acheter avec Émilio</h1>
+            <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Acheter avec Emilio</h1>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
             <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-lg">
               Confiez-nous votre recherche immobilière. Nous trouvons le bien idéal pour vous, en toute sérénité.

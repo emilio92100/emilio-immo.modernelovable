@@ -132,11 +132,11 @@ const SellPage = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="font-display text-3xl md:text-4xl text-foreground mb-6">
-              Pourquoi vendre avec <span className="text-gold italic">Émilio</span> ?
+              Pourquoi vendre avec <span className="text-gold italic">Emilio</span> ?
             </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
             <p className="font-body text-muted-foreground leading-relaxed text-base">
-              Vendre un bien immobilier est une étape importante. C'est pourquoi nous mettons tout en œuvre 
+              Vendre un bien immobilier est une étape importante. C'est pourquoi nous mettons tout en œuvre
               pour que cette expérience soit fluide, sereine et aboutisse au meilleur résultat possible. 
               Notre connaissance approfondie du marché francilien, combinée à une approche humaine et personnalisée, 
               fait toute la différence.
@@ -182,7 +182,7 @@ const SellPage = () => {
                     </div>
                     <h3 className="font-display text-lg md:text-xl">{step.title}</h3>
                   </div>
-                  <p className="font-body text-muted-foreground text-sm leading-relaxed mb-4">{step.description}</p>
+                  <p className="font-body text-muted-foreground text-base leading-relaxed mb-4">{step.description}</p>
                   <div className="grid grid-cols-2 gap-2">
                     {step.details.map((d) => (
                       <div key={d} className="flex items-center gap-2 font-body text-xs text-muted-foreground">
@@ -223,7 +223,7 @@ const SellPage = () => {
                   <a.icon className="w-5 h-5 text-accent" />
                 </div>
                 <h3 className="font-display text-lg mb-2">{a.title}</h3>
-                <p className="font-body text-muted-foreground text-sm leading-relaxed">{a.desc}</p>
+                <p className="font-body text-muted-foreground text-base leading-relaxed">{a.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -267,9 +267,6 @@ const SellPage = () => {
         </div>
       </section>
 
-      <div id="contact">
-        <ContactForm />
-      </div>
       <Footer />
     </div>
   );

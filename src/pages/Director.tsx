@@ -38,7 +38,7 @@ const philosophy = [
 const emilioTimeline = [
   {
     period: "Septembre 2020",
-    title: "Lancement d'Émilio Immobilier",
+    title: "Lancement d'Emilio Immobilier",
     text: "Création de l'agence avec un premier secteur sur Boulogne-Billancourt. Un démarrage ambitieux, porté par l'envie de faire les choses différemment.",
   },
   {
@@ -65,6 +65,40 @@ const Director = () => {
         </div>
       </section>
 
+      {/* Why the name Emilio? */}
+      <section className="py-16 bg-secondary">
+        <div className="container mx-auto px-6">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-8">
+              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">L'origine du nom</span>
+              <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
+                Pourquoi Emilio Immobilier ?
+              </h2>
+              <div className="w-16 h-0.5 bg-accent mx-auto" />
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-card p-8 md:p-10 rounded-lg border border-border shadow-sm"
+            >
+              <p className="font-body text-muted-foreground text-base leading-relaxed mb-4">
+                Pour moi, le métier d'agent immobilier est avant tout un métier d'humain, de contact et de relation. 
+                Je voulais que le nom de l'agence reflète cette dimension personnelle — quelque chose de chaleureux, 
+                d'accessible, qui sonne comme un prénom plutôt qu'un nom d'entreprise.
+              </p>
+              <p className="font-body text-muted-foreground text-base leading-relaxed">
+                Le nom <span className="text-accent font-semibold">Emilio</span> vient de l'Italie. J'ai de très bons amis italiens, 
+                et c'est lors d'un moment partagé avec eux que l'idée m'est venue. Emilio, c'est simple, 
+                c'est joli, ça se retient facilement — et ça incarne exactement l'esprit que je voulais donner à l'agence : 
+                humain, sincère et mémorable.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Portrait & Bio */}
       <section className="py-20">
         <div className="container mx-auto px-6">
@@ -82,7 +116,7 @@ const Director = () => {
                 <div className="relative overflow-hidden rounded-lg shadow-xl">
                   <img
                     src={alexandreImg}
-                    alt="Alexandre - Fondateur Émilio Immobilier"
+                    alt="Alexandre - Fondateur Emilio Immobilier"
                     className="w-full"
                     style={{
                       maskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
@@ -106,11 +140,11 @@ const Director = () => {
               <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Fondateur & Directeur</span>
               <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-6">Alexandre</h2>
               <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
-                Passionné par l'immobilier depuis plus de 10 ans, j'ai fondé Émilio Immobilier
+                Passionné par l'immobilier depuis plus de 10 ans, j'ai fondé Emilio Immobilier
                 avec une idée simple : offrir à mes clients le service que j'aurais aimé recevoir moi-même.
               </p>
               <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
-                Avant de créer Émilio, j'ai travaillé chez Laforêt, Foncia puis Barnes.
+                Avant de créer Emilio, j'ai travaillé chez Laforêt, Foncia puis Barnes.
                 Ces expériences m'ont permis de toucher aussi bien aux biens classiques qu'à l'immobilier de prestige,
                 et de développer une vision complète du marché.
               </p>
@@ -141,7 +175,7 @@ const Director = () => {
               Ce qui guide mon approche
             </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-base">
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-base leading-relaxed">
               L'immobilier est bien plus qu'une transaction. C'est un moment de vie, un projet porteur d'émotions.
               Je m'engage à vous accompagner avec exigence, bienveillance et professionnalisme.
             </p>
@@ -161,6 +195,7 @@ const Director = () => {
                 </div>
                 <h3 className="font-display text-xl mb-3">{item.title}</h3>
                 <p className="font-body text-muted-foreground text-base leading-relaxed">{item.description}</p>
+
               </motion.div>
             ))}
           </div>
