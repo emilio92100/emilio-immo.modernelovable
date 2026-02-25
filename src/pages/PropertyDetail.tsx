@@ -109,7 +109,7 @@ const PropertyDetail = () => {
       </div>
 
       {/* Gallery */}
-      <section className="bg-primary">
+      <section className="bg-secondary">
         <div className="container mx-auto px-6 py-6">
           <div className="relative max-w-4xl mx-auto">
             <motion.img
