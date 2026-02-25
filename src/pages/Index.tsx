@@ -86,9 +86,9 @@ const Index = () => {
       {/* HERO */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-primary/75" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
         <div className="relative z-10 container mx-auto px-6">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mx-auto text-center">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -101,17 +101,17 @@ const Index = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.1 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-tight mb-6"
+              className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground font-semibold leading-tight mb-6"
             >
               Votre projet immobilier,
               <br />
-              <span className="text-gold italic">notre expertise</span>
+              <span className="text-accent italic">notre expertise</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.3 }}
-              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mb-10"
+              className="font-body text-muted-foreground text-lg md:text-xl max-w-xl mx-auto mb-10"
             >
               Achat, vente et conseil sur-mesure en Île-de-France. 
               Accédez à des biens d'exception, y compris en off-market.
@@ -120,7 +120,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Link
                 to="/biens"
@@ -130,7 +130,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/mandat-recherche"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/40 text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary-foreground/10 transition-all"
+                className="inline-flex items-center justify-center gap-2 border border-foreground/30 text-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-foreground/5 transition-all"
               >
                 Mandat de recherche
               </Link>
@@ -138,7 +138,7 @@ const Index = () => {
           </div>
         </div>
         {/* Stats bar */}
-        <div className="absolute bottom-0 left-0 right-0 bg-primary/50 backdrop-blur-sm border-t border-primary-foreground/10">
+        <div className="absolute bottom-0 left-0 right-0 bg-secondary/80 backdrop-blur-sm border-t border-border">
           <div className="container mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { value: "200+", label: "Transactions réussies" },
@@ -148,7 +148,7 @@ const Index = () => {
             ].map((s) => (
               <div key={s.label} className="text-center">
                 <div className="font-display text-2xl md:text-3xl text-accent font-semibold">{s.value}</div>
-                <div className="font-body text-primary-foreground/60 text-xs mt-1">{s.label}</div>
+                <div className="font-body text-muted-foreground text-xs mt-1">{s.label}</div>
               </div>
             ))}
           </div>
