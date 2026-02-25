@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowRight, Star, Lock, Search, Home, Quote,
-  Shield, Heart, Handshake, Eye, Zap, Clock, Award, MapPin
-} from "lucide-react";
+  Shield, Heart, Handshake, Eye, Zap, Clock, Award, MapPin } from
+"lucide-react";
 import PropertyCard from "@/components/PropertyCard";
 import ContactForm from "@/components/ContactForm";
 import Navbar from "@/components/Navbar";
@@ -13,61 +13,61 @@ import { Property, mockProperties, fetchPropertiesFromFeed } from "@/lib/propert
 import heroBg from "@/assets/hero-bg.jpg";
 
 const testimonials = [
-  {
-    name: "Marie & Thomas D.",
-    text: "Un accompagnement exceptionnel du début à la fin. Alexandre a su comprendre nos besoins et nous trouver le bien idéal en un temps record.",
-    rating: 5,
-  },
-  {
-    name: "Sophie L.",
-    text: "Professionnalisme et écoute remarquables. La vente de notre appartement s'est déroulée sans accroc grâce à l'expertise d'Emilio.",
-    rating: 5,
-  },
-  {
-    name: "Jean-Pierre M.",
-    text: "Grâce à leur réseau off-market, nous avons eu accès à des biens que nous n'aurions jamais trouvés seuls. Résultat parfait.",
-    rating: 5,
-  },
-];
+{
+  name: "Marie & Thomas D.",
+  text: "Un accompagnement exceptionnel du début à la fin. Alexandre a su comprendre nos besoins et nous trouver le bien idéal en un temps record.",
+  rating: 5
+},
+{
+  name: "Sophie L.",
+  text: "Professionnalisme et écoute remarquables. La vente de notre appartement s'est déroulée sans accroc grâce à l'expertise d'Emilio.",
+  rating: 5
+},
+{
+  name: "Jean-Pierre M.",
+  text: "Grâce à leur réseau off-market, nous avons eu accès à des biens que nous n'aurions jamais trouvés seuls. Résultat parfait.",
+  rating: 5
+}];
+
 
 const engagements = [
-  {
-    icon: Shield,
-    title: "Transparence totale",
-    description: "Aucun frais caché, des honoraires clairs dès le départ. Vous savez exactement où vous en êtes à chaque étape.",
-  },
-  {
-    icon: Heart,
-    title: "Écoute & bienveillance",
-    description: "Votre projet est unique. Nous prenons le temps de comprendre vos besoins et de vous conseiller avec sincérité.",
-  },
-  {
-    icon: Handshake,
-    title: "Négociation experte",
-    description: "Nous défendons vos intérêts avec rigueur pour vous obtenir les meilleures conditions du marché.",
-  },
-  {
-    icon: Clock,
-    title: "Réactivité 7j/7",
-    description: "Une question, un doute ? Nous sommes disponibles et réactifs tout au long de votre projet.",
-  },
-  {
-    icon: Eye,
-    title: "Accès off-market",
-    description: "Profitez de biens exclusifs jamais publiés en ligne, accessibles uniquement via notre réseau.",
-  },
-  {
-    icon: Award,
-    title: "Expertise locale",
-    description: "Plus de 10 ans d'expérience sur Paris et les Hauts-de-Seine pour une connaissance fine du marché.",
-  },
-];
+{
+  icon: Shield,
+  title: "Transparence totale",
+  description: "Aucun frais caché, des honoraires clairs dès le départ. Vous savez exactement où vous en êtes à chaque étape."
+},
+{
+  icon: Heart,
+  title: "Écoute & bienveillance",
+  description: "Votre projet est unique. Nous prenons le temps de comprendre vos besoins et de vous conseiller avec sincérité."
+},
+{
+  icon: Handshake,
+  title: "Négociation experte",
+  description: "Nous défendons vos intérêts avec rigueur pour vous obtenir les meilleures conditions du marché."
+},
+{
+  icon: Clock,
+  title: "Réactivité 7j/7",
+  description: "Une question, un doute ? Nous sommes disponibles et réactifs tout au long de votre projet."
+},
+{
+  icon: Eye,
+  title: "Accès off-market",
+  description: "Profitez de biens exclusifs jamais publiés en ligne, accessibles uniquement via notre réseau."
+},
+{
+  icon: Award,
+  title: "Expertise locale",
+  description: "Plus de 10 ans d'expérience sur Paris et les Hauts-de-Seine pour une connaissance fine du marché."
+}];
+
 
 const offMarketStats = [
-  { value: "50+", label: "Biens off-market", description: "Biens exclusifs non diffusés sur les portails classiques" },
-  { value: "200+", label: "Transactions", description: "Transactions réussies grâce à notre réseau privilégié" },
-  { value: "72h", label: "Réactivité", description: "Délai moyen pour vous proposer un bien ciblé" },
-];
+{ value: "50+", label: "Biens off-market", description: "Biens exclusifs non diffusés sur les portails classiques" },
+{ value: "200+", label: "Transactions", description: "Transactions réussies grâce à notre réseau privilégié" },
+{ value: "72h", label: "Réactivité", description: "Délai moyen pour vous proposer un bien ciblé" }];
+
 
 const Index = () => {
   const [properties, setProperties] = useState<Property[]>(mockProperties);
@@ -76,9 +76,9 @@ const Index = () => {
     fetchPropertiesFromFeed().then(setProperties);
   }, []);
 
-  const latestProperties = [...properties]
-    .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
-    .slice(0, 6);
+  const latestProperties = [...properties].
+  sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime()).
+  slice(0, 6);
 
   return (
     <div className="min-h-screen">
@@ -94,16 +94,16 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="inline-block font-body text-accent font-semibold text-sm tracking-widest uppercase mb-6"
-            >
+              className="inline-block font-body text-accent font-semibold text-sm tracking-widest uppercase mb-6">
+
               Emilio Immobilier
             </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.1 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-tight mb-6"
-            >
+              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-tight mb-6">
+
               Votre projet immobilier,
               <br />
               <span className="text-accent italic">notre expertise</span>
@@ -112,8 +112,8 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.3 }}
-              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mx-auto mb-10"
-            >
+              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mx-auto mb-10">
+
               Achat, vente et conseil sur-mesure en Île-de-France.
               Accédez à des biens d'exception, y compris en off-market.
             </motion.p>
@@ -121,18 +121,18 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
+              className="flex flex-col sm:flex-row gap-4 justify-center">
+
               <Link
                 to="/biens"
-                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
-              >
+                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all">
+
                 Découvrir nos biens <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/vendre"
-                className="inline-flex items-center justify-center gap-2 bg-primary-foreground/20 border border-accent/50 text-accent px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-accent hover:text-accent-foreground transition-all"
-              >
+                className="inline-flex items-center justify-center gap-2 border text-accent px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:text-accent-foreground transition-all bg-primary text-center border-accent">
+
                 <Home className="w-4 h-4" /> Je souhaite vendre
               </Link>
             </motion.div>
@@ -142,15 +142,15 @@ const Index = () => {
         <div className="absolute bottom-0 left-0 right-0 bg-secondary/80 backdrop-blur-sm border-t border-border">
           <div className="container mx-auto px-6 py-5 grid grid-cols-3 gap-4">
             {[
-              { value: "200+", label: "Transactions réussies" },
-              { value: "10+", label: "Années d'expérience" },
-              { value: "50+", label: "Biens off-market" },
-            ].map((s) => (
-              <div key={s.label} className="text-center">
+            { value: "200+", label: "Transactions réussies" },
+            { value: "10+", label: "Années d'expérience" },
+            { value: "50+", label: "Biens off-market" }].
+            map((s) =>
+            <div key={s.label} className="text-center">
                 <div className="font-display text-2xl md:text-3xl text-accent font-semibold">{s.value}</div>
                 <div className="font-body text-muted-foreground text-xs mt-1">{s.label}</div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -166,22 +166,22 @@ const Index = () => {
             <div className="w-16 h-0.5 bg-accent mx-auto" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {engagements.map((e, i) => (
-              <motion.div
-                key={e.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                viewport={{ once: true }}
-                className="group bg-card p-8 rounded-lg border border-border shadow-sm hover:shadow-lg hover:border-accent/30 hover:-translate-y-1 transition-all duration-300"
-              >
+            {engagements.map((e, i) =>
+            <motion.div
+              key={e.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              viewport={{ once: true }}
+              className="group bg-card p-8 rounded-lg border border-border shadow-sm hover:shadow-lg hover:border-accent/30 hover:-translate-y-1 transition-all duration-300">
+
                 <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mb-5 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
                   <e.icon className="w-6 h-6 text-accent" />
                 </div>
                 <h3 className="font-display text-lg mb-3">{e.title}</h3>
                 <p className="font-body text-muted-foreground text-base leading-relaxed">{e.description}</p>
               </motion.div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -199,23 +199,23 @@ const Index = () => {
             </div>
             <Link
               to="/biens"
-              className="hidden md:flex items-center gap-2 text-accent font-body font-semibold text-sm hover:underline"
-            >
+              className="hidden md:flex items-center gap-2 text-accent font-body font-semibold text-sm hover:underline">
+
               Voir tout <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {latestProperties.map((p, i) => (
-              <PropertyCard key={p.id} property={p} index={i} />
-            ))}
+            {latestProperties.map((p, i) =>
+            <PropertyCard key={p.id} property={p} index={i} />
+            )}
           </div>
 
           <div className="mt-8 text-center md:hidden">
             <Link
               to="/biens"
-              className="inline-flex items-center gap-2 text-accent font-body font-semibold text-sm hover:underline"
-            >
+              className="inline-flex items-center gap-2 text-accent font-body font-semibold text-sm hover:underline">
+
               Voir tous nos biens <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -241,15 +241,15 @@ const Index = () => {
           </div>
 
           <div className="grid sm:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
-            {offMarketStats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="group relative bg-primary-foreground/5 border border-primary-foreground/10 rounded-lg p-8 text-center cursor-default overflow-hidden transition-all duration-500 hover:bg-primary-foreground/10 hover:border-accent/30"
-              >
+            {offMarketStats.map((stat, i) =>
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="group relative bg-primary-foreground/5 border border-primary-foreground/10 rounded-lg p-8 text-center cursor-default overflow-hidden transition-all duration-500 hover:bg-primary-foreground/10 hover:border-accent/30">
+
                 <div className="transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-4">
                   <div className="font-display text-4xl text-accent mb-2 font-semibold">{stat.value}</div>
                   <div className="font-body text-primary-foreground/70 text-sm tracking-wide">{stat.label}</div>
@@ -261,14 +261,14 @@ const Index = () => {
                   </div>
                 </div>
               </motion.div>
-            ))}
+            )}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/mandat-recherche"
-              className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold text-sm rounded hover:brightness-110 transition-all"
-            >
+              className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold text-sm rounded hover:brightness-110 transition-all">
+
               Accéder au off-market <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -283,27 +283,27 @@ const Index = () => {
             <div className="w-16 h-0.5 bg-accent mx-auto" />
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((t, i) => (
-              <motion.div
-                key={t.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-card p-8 rounded shadow-sm border border-border relative"
-              >
+            {testimonials.map((t, i) =>
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="bg-card p-8 rounded shadow-sm border border-border relative">
+
                 <Quote className="w-8 h-8 text-accent/20 absolute top-4 right-4" />
                 <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.rating }).map((_, j) => (
-                    <Star key={j} className="w-4 h-4 fill-accent text-accent" />
-                  ))}
+                  {Array.from({ length: t.rating }).map((_, j) =>
+                <Star key={j} className="w-4 h-4 fill-accent text-accent" />
+                )}
                 </div>
                 <p className="font-body text-muted-foreground text-base leading-relaxed mb-6 italic">
                   "{t.text}"
                 </p>
                 <p className="font-body font-semibold text-foreground text-base">{t.name}</p>
               </motion.div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -319,14 +319,14 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/vendre"
-              className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-navy-light transition-all"
-            >
+              className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-navy-light transition-all">
+
               <Home className="w-4 h-4" /> Je souhaite vendre
             </Link>
             <Link
               to="/mandat-recherche"
-              className="inline-flex items-center justify-center gap-2 border border-primary text-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary hover:text-primary-foreground transition-all"
-            >
+              className="inline-flex items-center justify-center gap-2 border border-primary text-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary hover:text-primary-foreground transition-all">
+
               <Search className="w-4 h-4" /> Je cherche un bien
             </Link>
           </div>
@@ -335,8 +335,8 @@ const Index = () => {
 
       <ContactForm />
       <Footer />
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
