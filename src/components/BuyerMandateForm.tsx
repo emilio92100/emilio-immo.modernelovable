@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Send, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import SuccessPopup from "@/components/SuccessPopup";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,7 @@ const BuyerMandateForm = ({ trigger }: BuyerMandateFormProps) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -60,12 +62,9 @@ const BuyerMandateForm = ({ trigger }: BuyerMandateFormProps) => {
         // Email is best-effort, don't block the submission
       }
 
-      toast({
-        title: "Demande envoyée !",
-        description: "Nous vous recontacterons dans les plus brefs délais pour votre projet de recherche.",
-      });
       setForm({ name: "", email: "", phone: "", budget: "", property_type: "", desired_location: "", desired_surface: "", timeline: "", message: "" });
       setOpen(false);
+      setShowSuccess(true);
     } catch {
       toast({
         title: "Erreur",
@@ -81,6 +80,7 @@ const BuyerMandateForm = ({ trigger }: BuyerMandateFormProps) => {
     "w-full px-4 py-3 bg-background border border-border text-foreground placeholder:text-muted-foreground rounded font-body text-sm focus:outline-none focus:border-accent transition-colors";
 
   return (
+    <>
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
@@ -190,6 +190,13 @@ const BuyerMandateForm = ({ trigger }: BuyerMandateFormProps) => {
         </form>
       </DialogContent>
     </Dialog>
+    <SuccessPopup
+      open={showSuccess}
+      onClose={() => setShowSuccess(false)}
+      title="Demande envoyée !"
+      description="Nous vous recontacterons dans les plus brefs délais pour votre projet de recherche."
+    />
+    </>
   );
 };
 
