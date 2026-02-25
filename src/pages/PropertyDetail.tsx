@@ -219,18 +219,18 @@ const PropertyDetail = () => {
 
               {/* Les + du bien — EN HAUT */}
               {highlights.length > 0 && (
-                <div className="bg-accent/5 border border-accent/20 rounded p-6">
+                <div className="bg-primary rounded-lg p-6 shadow-lg">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center">
-                      <Star className="w-5 h-5 text-accent" />
+                    <div className="w-9 h-9 bg-accent rounded-full flex items-center justify-center">
+                      <Star className="w-5 h-5 text-accent-foreground" />
                     </div>
-                    <h2 className="font-display text-lg">Les + de ce bien</h2>
+                    <h2 className="font-display text-lg text-primary-foreground">Les + de ce bien</h2>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     {highlights.map((h) => (
-                      <div key={h.label} className="flex items-center gap-3 bg-card rounded p-3 border border-border">
+                      <div key={h.label} className="flex items-center gap-3 bg-primary-foreground/10 backdrop-blur-sm rounded-lg p-3 border border-primary-foreground/15">
                         <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
-                        <span className="font-body text-sm text-foreground">{h.label}</span>
+                        <span className="font-body text-sm text-primary-foreground">{h.label}</span>
                       </div>
                     ))}
                   </div>
