@@ -1,14 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Home } from "lucide-react";
+import { motion } from "framer-motion";
 import logo from "@/assets/logo.png";
+import EstimationForm from "@/components/EstimationForm";
 
 const navItems = [
   { label: "Accueil", path: "/" },
   { label: "Nos Biens", path: "/biens" },
   { label: "Notre Histoire", path: "/notre-histoire" },
   { label: "Vendre", path: "/vendre" },
-  { label: "Mandat de Recherche", path: "/mandat-recherche" },
+  { label: "Acheter", path: "/mandat-recherche" },
 ];
 
 const Navbar = () => {
@@ -19,7 +21,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-6 py-3 flex items-center justify-between">
         <Link to="/" className="flex-shrink-0">
-          <img src={logo} alt="Émilio Conseil Immobilier" className="h-12" />
+          <img src={logo} alt="Émilio Immobilier" className="h-12" />
         </Link>
 
         {/* Desktop nav */}
@@ -37,14 +39,27 @@ const Navbar = () => {
           ))}
         </div>
 
-        <a
-          href="tel:+33184801400"
-          className="hidden lg:flex items-center gap-2 text-foreground hover:text-accent px-4 py-2 text-sm font-body tracking-wide transition-colors"
-        >
-          <Phone className="w-4 h-4" />
-          <span className="text-muted-foreground text-xs mr-1">Appelez-nous</span>
-          01 84 80 14 00
-        </a>
+        {/* CTA Estimer mon bien - animated */}
+        <div className="hidden lg:block">
+          <EstimationForm
+            trigger={
+              <motion.button
+                animate={{
+                  boxShadow: [
+                    "0 0 0 0 hsla(38, 55%, 55%, 0.4)",
+                    "0 0 0 8px hsla(38, 55%, 55%, 0)",
+                    "0 0 0 0 hsla(38, 55%, 55%, 0)",
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded font-body font-semibold text-sm tracking-wide hover:brightness-110 transition-all"
+              >
+                <Home className="w-4 h-4" />
+                Estimer mon bien
+              </motion.button>
+            }
+          />
+        </div>
 
         {/* Mobile toggle */}
         <button
@@ -72,14 +87,13 @@ const Navbar = () => {
                 {item.label}
               </Link>
             ))}
-            <a
-              href="tel:+33184801400"
-              className="flex items-center gap-2 text-foreground px-2 py-2 text-sm font-body tracking-wide w-fit"
-            >
-              <Phone className="w-4 h-4" />
-              <span className="text-muted-foreground text-xs mr-1">Appelez-nous</span>
-              01 84 80 14 00
-            </a>
+            <EstimationForm
+              trigger={
+                <button className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded font-body font-semibold text-sm w-fit">
+                  <Home className="w-4 h-4" /> Estimer mon bien
+                </button>
+              }
+            />
           </div>
         </div>
       )}

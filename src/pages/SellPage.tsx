@@ -4,61 +4,60 @@ import {
   ArrowRight, Shield, TrendingUp, Users, Clock, Handshake, Award,
   CheckCircle, Phone, Star
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
+import EstimationForm from "@/components/EstimationForm";
 
 const steps = [
   {
     icon: ClipboardCheck,
     title: "Estimation gratuite & personnalisée",
-    description: "Nous réalisons une estimation précise de votre bien basée sur notre connaissance approfondie du marché local, les dernières transactions comparables et une analyse des atouts spécifiques de votre propriété. Nous vous fournissons un rapport détaillé avec une fourchette de prix réaliste.",
+    description: "Nous réalisons une estimation précise de votre bien basée sur notre connaissance approfondie du marché local, les dernières transactions comparables et une analyse des atouts spécifiques de votre propriété.",
     details: ["Analyse comparative de marché", "Visite approfondie du bien", "Rapport d'estimation détaillé", "Conseil sur les travaux à envisager"],
   },
   {
     icon: Camera,
     title: "Mise en valeur premium",
-    description: "Nous investissons dans la présentation de votre bien pour maximiser son attractivité : photographies professionnelles HDR, vidéo drone si pertinent, home staging virtuel, plans 2D/3D et rédaction d'une annonce immobilière percutante et optimisée.",
+    description: "Nous investissons dans la présentation de votre bien pour maximiser son attractivité : photographies professionnelles HDR, vidéo drone si pertinent, home staging virtuel et rédaction d'une annonce percutante.",
     details: ["Photos HDR professionnelles", "Visite virtuelle 360°", "Home staging conseil", "Annonce rédactionnelle soignée"],
   },
   {
     icon: BarChart3,
     title: "Stratégie de commercialisation",
-    description: "Ensemble, nous définissons une stratégie de prix et de commercialisation parfaitement adaptée à votre bien et aux conditions actuelles du marché. Nous identifions les cibles d'acheteurs les plus pertinentes et adaptons notre communication.",
+    description: "Ensemble, nous définissons une stratégie de prix et de commercialisation parfaitement adaptée à votre bien et aux conditions actuelles du marché.",
     details: ["Analyse du marché actuel", "Positionnement prix optimisé", "Ciblage acheteurs qualifiés", "Calendrier de commercialisation"],
   },
   {
     icon: Megaphone,
     title: "Diffusion multi-canal",
-    description: "Votre bien est diffusé sur les meilleurs portails immobiliers nationaux et internationaux, nos réseaux sociaux, notre base d'acheteurs qualifiés et notre réseau off-market confidentiel. Nous maximisons la visibilité pour attirer les meilleurs acquéreurs.",
+    description: "Votre bien est diffusé sur les meilleurs portails, nos réseaux sociaux, notre base d'acheteurs qualifiés et notre réseau off-market confidentiel.",
     details: ["Portails immobiliers premium", "Réseaux sociaux ciblés", "Base acheteurs privée", "Réseau off-market exclusif"],
   },
   {
     icon: FileSignature,
     title: "Sélection & négociation",
-    description: "Nous organisons et gérons toutes les visites, sélectionnons les acquéreurs sérieux et financièrement qualifiés, négocions dans votre intérêt pour obtenir le meilleur prix, et rédigeons le compromis de vente dans les meilleures conditions.",
+    description: "Nous organisons et gérons toutes les visites, sélectionnons les acquéreurs sérieux et négocions dans votre intérêt pour obtenir le meilleur prix.",
     details: ["Visites qualifiées uniquement", "Vérification financement", "Négociation experte", "Rédaction compromis"],
   },
   {
     icon: Key,
     title: "Accompagnement jusqu'aux clés",
-    description: "Nous assurons le suivi complet du dossier auprès du notaire, coordonnons les différentes parties prenantes et restons à vos côtés jusqu'à la signature de l'acte authentique et la remise des clés. Votre tranquillité est notre priorité.",
+    description: "Nous assurons le suivi complet du dossier auprès du notaire et restons à vos côtés jusqu'à la signature de l'acte authentique et la remise des clés.",
     details: ["Suivi notaire complet", "Coordination des parties", "Gestion administrative", "Remise des clés"],
   },
 ];
 
 const advantages = [
-  { icon: Shield, title: "0% de frais cachés", desc: "Nos honoraires sont transparents, définis et acceptés dès le départ. Aucune surprise, aucun coût dissimulé." },
-  { icon: TrendingUp, title: "Prix de vente optimisé", desc: "Notre expertise locale nous permet d'obtenir les meilleurs prix du marché pour nos clients vendeurs." },
-  { icon: Users, title: "Réseau d'acheteurs qualifiés", desc: "Accès immédiat à notre base de +500 acheteurs actifs et qualifiés en recherche en Île-de-France." },
-  { icon: Clock, title: "Délai de vente réduit", desc: "Notre délai moyen de vente est de 45 jours, bien en dessous de la moyenne du marché francilien." },
+  { icon: Shield, title: "0% de frais cachés", desc: "Nos honoraires sont transparents, définis et acceptés dès le départ. Aucune surprise." },
+  { icon: TrendingUp, title: "Prix de vente optimisé", desc: "Notre expertise locale nous permet d'obtenir les meilleurs prix du marché pour nos vendeurs." },
+  { icon: Users, title: "Réseau d'acheteurs qualifiés", desc: "Accès immédiat à notre base de +500 acheteurs actifs et qualifiés en Île-de-France." },
+  { icon: Clock, title: "Délai de vente réduit", desc: "Notre délai moyen de vente est de 45 jours, bien en dessous de la moyenne du marché." },
   { icon: Handshake, title: "Accompagnement humain", desc: "Un interlocuteur unique et dédié vous accompagne à chaque étape, disponible 7j/7." },
-  { icon: Award, title: "Engagement de résultat", desc: "Nous nous engageons sur un plan d'action précis et des objectifs clairs dès le début de notre collaboration." },
+  { icon: Award, title: "Engagement de résultat", desc: "Nous nous engageons sur un plan d'action précis et des objectifs clairs dès le début." },
 ];
 
 const stats = [
-  { value: "98%", label: "Clients satisfaits" },
   { value: "45j", label: "Délai moyen de vente" },
   { value: "200+", label: "Ventes réalisées" },
   { value: "10+", label: "Années d'expérience" },
@@ -89,14 +88,15 @@ const SellPage = () => {
               transparence et engagement. Chaque vente est unique, notre approche aussi.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <EstimationForm
+                trigger={
+                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all">
+                    Estimation gratuite <ArrowRight className="w-4 h-4" />
+                  </button>
+                }
+              />
               <a
-                href="#contact"
-                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
-              >
-                Estimation gratuite <ArrowRight className="w-4 h-4" />
-              </a>
-              <a
-                href="tel:+33100000000"
+                href="tel:+33184801400"
                 className="inline-flex items-center justify-center gap-2 border border-primary-foreground/30 text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary-foreground/10 transition-all"
               >
                 <Phone className="w-4 h-4" /> Nous appeler
@@ -109,7 +109,7 @@ const SellPage = () => {
       {/* STATS */}
       <section className="py-0 -mt-1">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 bg-card rounded-lg shadow-lg border border-border -mt-8 relative z-10">
+          <div className="grid grid-cols-3 bg-card rounded-lg shadow-lg border border-border -mt-8 relative z-10">
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
@@ -117,7 +117,7 @@ const SellPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-6 md:p-8 text-center border-b md:border-b-0 md:border-r last:border-r-0 border-border"
+                className="p-6 md:p-8 text-center border-r last:border-r-0 border-border"
               >
                 <div className="font-display text-2xl md:text-3xl text-accent mb-1">{s.value}</div>
                 <div className="font-body text-muted-foreground text-xs tracking-wide">{s.label}</div>
@@ -132,7 +132,7 @@ const SellPage = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="font-display text-3xl md:text-4xl text-foreground mb-6">
-              Pourquoi vendre avec <span className="text-gold italic">Émilio Conseil</span> ?
+              Pourquoi vendre avec <span className="text-gold italic">Émilio</span> ?
             </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
             <p className="font-body text-muted-foreground leading-relaxed text-base">
@@ -166,7 +166,6 @@ const SellPage = () => {
                 viewport={{ once: true }}
                 className="relative flex gap-6 md:gap-8 pb-12 last:pb-0"
               >
-                {/* Timeline line */}
                 <div className="flex flex-col items-center">
                   <div className="w-12 h-12 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-display font-bold text-sm shrink-0 shadow-md">
                     {i + 1}
@@ -176,7 +175,6 @@ const SellPage = () => {
                   )}
                 </div>
                 
-                {/* Content */}
                 <div className="bg-card p-6 md:p-8 rounded-lg shadow-sm border border-border flex-1 mb-2">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
@@ -257,15 +255,15 @@ const SellPage = () => {
           </h2>
           <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
           <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8">
-            Commencez par une estimation gratuite et sans engagement. Nous serons ravis 
-            de vous accompagner dans votre projet de vente.
+            Commencez par une estimation gratuite et sans engagement.
           </p>
-          <Link
-            to="/#contact"
-            className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-10 py-4 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
-          >
-            Demander une estimation gratuite <ArrowRight className="w-4 h-4" />
-          </Link>
+          <EstimationForm
+            trigger={
+              <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-10 py-4 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all">
+                Demander une estimation gratuite <ArrowRight className="w-4 h-4" />
+              </button>
+            }
+          />
         </div>
       </section>
 
