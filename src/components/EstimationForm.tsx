@@ -179,7 +179,7 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
         open={showSuccess}
         onClose={() => setShowSuccess(false)}
         title="Demande envoyée !"
-        description="Nous vous recontacterons rapidement avec votre estimation personnalisée."
+        description="Merci d'avoir envoyé votre demande d'estimation. Un conseiller vous recontactera rapidement."
       />
     </>
   );

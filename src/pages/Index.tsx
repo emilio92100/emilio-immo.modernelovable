@@ -20,7 +20,7 @@ const testimonials = [
   },
   {
     name: "Sophie L.",
-    text: "Professionnalisme et écoute remarquables. La vente de notre appartement s'est déroulée sans accroc grâce à l'expertise d'Émilio.",
+    text: "Professionnalisme et écoute remarquables. La vente de notre appartement s'est déroulée sans accroc grâce à l'expertise d'Emilio.",
     rating: 5,
   },
   {
@@ -96,7 +96,7 @@ const Index = () => {
               transition={{ duration: 0.7 }}
               className="inline-block font-body text-accent font-semibold text-sm tracking-widest uppercase mb-6"
             >
-              Émilio Immobilier
+              Emilio Immobilier
             </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
@@ -131,7 +131,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/vendre"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/40 text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary-foreground/10 transition-all"
+                className="inline-flex items-center justify-center gap-2 bg-primary-foreground/20 border border-accent/50 text-accent px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-accent hover:text-accent-foreground transition-all"
               >
                 <Home className="w-4 h-4" /> Je souhaite vendre
               </Link>
@@ -179,7 +179,7 @@ const Index = () => {
                   <e.icon className="w-6 h-6 text-accent" />
                 </div>
                 <h3 className="font-display text-lg mb-3">{e.title}</h3>
-                <p className="font-body text-muted-foreground text-sm leading-relaxed">{e.description}</p>
+                <p className="font-body text-muted-foreground text-base leading-relaxed">{e.description}</p>
               </motion.div>
             ))}
           </div>
@@ -234,7 +234,7 @@ const Index = () => {
               Notre base <span className="text-gold italic">Off-Market</span>
             </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">
+            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed text-base">
               Accédez à des biens d'exception qui ne sont jamais diffusés sur les portails classiques.
               Notre réseau privilégié vous ouvre les portes d'opportunités uniques.
             </p>
@@ -298,10 +298,10 @@ const Index = () => {
                     <Star key={j} className="w-4 h-4 fill-accent text-accent" />
                   ))}
                 </div>
-                <p className="font-body text-muted-foreground text-sm leading-relaxed mb-6 italic">
+                <p className="font-body text-muted-foreground text-base leading-relaxed mb-6 italic">
                   "{t.text}"
                 </p>
-                <p className="font-body font-semibold text-foreground text-sm">{t.name}</p>
+                <p className="font-body font-semibold text-foreground text-base">{t.name}</p>
               </motion.div>
             ))}
           </div>
@@ -313,7 +313,7 @@ const Index = () => {
         <div className="container mx-auto px-6 text-center">
           <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">Un projet immobilier ?</h2>
           <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8">
+          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8 text-base">
             Que vous souhaitiez acheter, vendre ou simplement obtenir un avis d'expert, notre équipe est à votre écoute.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

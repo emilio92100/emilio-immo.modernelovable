@@ -6,7 +6,7 @@ import {
   Phone, Mail, Home, Search, MessageSquare, Clock, User, MapPin,
   Banknote, Maximize, CalendarClock, X, LogOut, CheckCircle, Circle,
   StickyNote, Settings, ChevronRight, Building, Eye, EyeOff, Save,
-  ExternalLink, Sparkles, Archive,
+  ExternalLink, Sparkles, Archive, BarChart3,
 } from "lucide-react";
 
 interface Submission {
@@ -32,6 +32,7 @@ const getTypeLabel = (form_type: string) => {
   switch (form_type) {
     case "rappel_bien": return "Demande info sur bien";
     case "mandat_recherche": return "Accompagnement acheteur";
+    case "estimation": return "Estimation";
     default: return "Demande générale";
   }
 };
@@ -40,6 +41,7 @@ const getTypeStyle = (form_type: string) => {
   switch (form_type) {
     case "rappel_bien": return { bg: "bg-amber-50", text: "text-amber-700", icon: Home };
     case "mandat_recherche": return { bg: "bg-violet-50", text: "text-violet-700", icon: Search };
+    case "estimation": return { bg: "bg-emerald-50", text: "text-emerald-700", icon: BarChart3 };
     default: return { bg: "bg-sky-50", text: "text-sky-700", icon: MessageSquare };
   }
 };
@@ -111,6 +113,7 @@ const AdminSubmissions = () => {
     contact: submissions.filter((s) => s.form_type === "contact").length,
     mandat_recherche: submissions.filter((s) => s.form_type === "mandat_recherche").length,
     rappel_bien: submissions.filter((s) => s.form_type === "rappel_bien").length,
+    estimation: submissions.filter((s) => s.form_type === "estimation").length,
   };
 
   const toggleCalled = useCallback(async (id: string, current: boolean) => {
@@ -202,12 +205,13 @@ const AdminSubmissions = () => {
         </div>
 
         {/* Type filters */}
-        <div className="flex gap-1 mb-5 bg-card border border-border rounded-lg p-1">
+        <div className="flex gap-1 mb-5 bg-card border border-border rounded-lg p-1 overflow-x-auto">
           {[
             { key: "all", label: "Toutes" },
             { key: "contact", label: "Demande générale" },
             { key: "mandat_recherche", label: "Accompagnement" },
             { key: "rappel_bien", label: "Info bien" },
+            { key: "estimation", label: "Estimation" },
           ].map((f) => (
             <button
               key={f.key}
