@@ -92,7 +92,7 @@ const PropertyDetail = () => {
           to="/biens"
           className="flex items-center gap-2 bg-card/95 backdrop-blur-md text-foreground border border-border px-6 py-2.5 rounded-full font-body text-sm font-semibold shadow-lg hover:shadow-xl hover:border-accent transition-all"
         >
-          <ArrowLeft className="w-4 h-4" /> Nos Biens
+          <ArrowLeft className="w-4 h-4" /> Revenir au listing
         </Link>
       </div>
 
