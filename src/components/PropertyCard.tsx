@@ -9,22 +9,12 @@ interface PropertyCardProps {
 }
 
 const getDisplayTitle = (property: Property) => {
-  // Remove city/location suffix from title
-  // Handles "Appartement 3 pièces - Paris 6ème", "Maison 5 pièces - Boulogne-Billancourt", etc.
-  // Also handles titles like "Appartement Paris 15ème" without dash
-  let title = property.title;
-  // Remove everything after " - " (dash separator)
-  title = title.replace(/\s*[-–]\s+.*$/, '');
-  // Also remove city name if it appears at the end without dash
-  if (property.city) {
-    const cityEscaped = property.city.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    title = title.replace(new RegExp(`\\s+${cityEscaped}.*$`, 'i'), '');
-    // Also handle just "Paris" for "Paris Xème" cities
-    if (property.city.toLowerCase().startsWith('paris')) {
-      title = title.replace(/\s+Paris\s*\d*\s*(er|ème|e)?.*$/i, '');
-    }
+  // Build clean title from type + rooms, never include city
+  const type = property.type || "Bien";
+  if (property.rooms > 0) {
+    return `${type} ${property.rooms} pièce${property.rooms > 1 ? "s" : ""}`;
   }
-  return title.trim();
+  return type;
 };
 
 const getDisplayCity = (property: Property) => {
