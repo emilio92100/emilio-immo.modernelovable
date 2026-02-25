@@ -252,19 +252,15 @@ const PropertyDetail = () => {
                     label="Consommation énergétique (DPE)"
                     value={property.energyClass}
                     type="energy"
+                    consoValue={property.consoEnergie}
                   />
                   <DPEBadge
                     label="Émissions de gaz à effet de serre (GES)"
                     value={property.gesClass}
                     type="ges"
+                    consoValue={property.valeurGes}
                   />
                 </div>
-                {(property.consoEnergie || property.valeurGes) && (
-                  <div className="mt-4 pt-4 border-t border-border flex gap-6 font-body text-xs text-muted-foreground">
-                    {property.consoEnergie && <span>Conso. : {property.consoEnergie} kWh/m²/an</span>}
-                    {property.valeurGes && <span>GES : {property.valeurGes} kg CO₂/m²/an</span>}
-                  </div>
-                )}
               </div>
             </div>
 
