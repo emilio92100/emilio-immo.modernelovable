@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import EstimationForm from "@/components/EstimationForm";
+import PricingSection from "@/components/PricingSection";
 
 const steps = [
   {
@@ -246,6 +247,49 @@ const SellPage = () => {
           </div>
         </div>
       </section>
+
+      {/* PRICING */}
+      <PricingSection
+        heading="Nos honoraires"
+        subheading="Des tarifs transparents, adaptés à votre projet de vente."
+        plans={[
+          {
+            title: "Mandat Simple",
+            rate: "5% TTC",
+            subtitle: "du prix de vente du bien",
+            features: [
+              { text: "Estimation gratuite du bien", included: true },
+              { text: "Photos professionnelles", included: true },
+              { text: "Diffusion portails immobiliers", included: true },
+              { text: "Visites et compte-rendus", included: true },
+              { text: "Accompagnement notaire", included: true },
+              { text: "Stratégie de vente exclusive", included: false },
+              { text: "Priorité de diffusion maximale", included: false },
+              { text: "Reporting hebdomadaire détaillé", included: false },
+              { text: "Vente en moyenne 2x plus rapide", included: false },
+            ],
+            cta: "Choisir le mandat simple",
+          },
+          {
+            title: "Mandat Exclusif",
+            rate: "4% TTC",
+            subtitle: "du prix de vente du bien",
+            recommended: true,
+            features: [
+              { text: "Estimation gratuite du bien", included: true },
+              { text: "Photos & vidéo drone professionnelles", included: true },
+              { text: "Diffusion premium multi-canal", included: true },
+              { text: "Visites qualifiées et compte-rendus", included: true },
+              { text: "Accompagnement notaire complet", included: true },
+              { text: "Stratégie de vente sur-mesure dédiée", included: true },
+              { text: "Priorité de diffusion maximale", included: true },
+              { text: "Reporting hebdomadaire détaillé", included: true },
+              { text: "Vente en moyenne 2x plus rapide", included: true },
+            ],
+            cta: "Choisir le mandat exclusif",
+          },
+        ]}
+      />
 
       {/* CTA FINAL */}
       <section className="py-20 bg-secondary">
