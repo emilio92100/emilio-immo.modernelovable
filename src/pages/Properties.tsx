@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from "react";
-import { Search, SlidersHorizontal, ChevronDown, ChevronUp, Lock, ArrowRight, Phone, Mail } from "lucide-react";
+import { useState, useMemo, useEffect, lazy, Suspense } from "react";
+import { Search, SlidersHorizontal, ChevronDown, ChevronUp, Lock, ArrowRight, Phone, Mail, Map, LayoutGrid } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PropertyCard from "@/components/PropertyCard";
@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed } from "@/lib/properties";
 
+const PropertiesMap = lazy(() => import("@/components/PropertiesMap"));
 const Properties = () => {
   const [properties, setProperties] = useState<Property[]>(mockProperties);
   const [loading, setLoading] = useState(true);
@@ -19,7 +20,7 @@ const Properties = () => {
   const [groundFloor, setGroundFloor] = useState<"any" | "yes" | "no">("any");
   const [balconyFilter, setBalconyFilter] = useState(false);
   const [terraceFilter, setTerraceFilter] = useState(false);
-
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
   useEffect(() => {
     fetchPropertiesFromFeed().then((data) => {
       setProperties(data);
@@ -183,13 +184,33 @@ const Properties = () => {
       {/* LISTING */}
       <section className="py-12 pb-24">
         <div className="container mx-auto px-6">
-          <p className="font-body text-muted-foreground text-sm mb-6 text-center">{filtered.length} bien(s) trouvé(s)</p>
+          <div className="flex items-center justify-between mb-6">
+            <p className="font-body text-muted-foreground text-sm">{filtered.length} bien(s) trouvé(s)</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setViewMode("list")}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded font-body text-sm transition-colors ${viewMode === "list" ? "bg-accent text-accent-foreground" : "bg-card border border-border hover:bg-muted"}`}
+              >
+                <LayoutGrid className="w-4 h-4" /> Liste
+              </button>
+              <button
+                onClick={() => setViewMode("map")}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded font-body text-sm transition-colors ${viewMode === "map" ? "bg-accent text-accent-foreground" : "bg-card border border-border hover:bg-muted"}`}
+              >
+                <Map className="w-4 h-4" /> Carte
+              </button>
+            </div>
+          </div>
           
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-block w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mb-4" />
               <p className="font-body text-muted-foreground">Chargement des biens...</p>
             </div>
+          ) : viewMode === "map" ? (
+            <Suspense fallback={<div className="text-center py-20"><div className="inline-block w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" /></div>}>
+              <PropertiesMap properties={filtered} />
+            </Suspense>
           ) : filtered.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {filtered.map((p, i) => (
