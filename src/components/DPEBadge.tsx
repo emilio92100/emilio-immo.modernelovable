@@ -2,6 +2,7 @@ interface DPEBadgeProps {
   label: string;
   value?: string;
   type: "energy" | "ges";
+  consoValue?: number;
 }
 
 const energyColors: Record<string, string> = {
@@ -26,14 +27,17 @@ const gesColors: Record<string, string> = {
 
 const allLetters = ["A", "B", "C", "D", "E", "F", "G"];
 
-const DPEBadge = ({ label, value, type }: DPEBadgeProps) => {
+const DPEBadge = ({ label, value, type, consoValue }: DPEBadgeProps) => {
   const colors = type === "energy" ? energyColors : gesColors;
+  const unit = type === "energy" ? "kWh/m²/an" : "kg CO₂/m²/an";
 
   if (!value) {
     return (
       <div>
         <h4 className="font-display text-sm font-semibold text-foreground mb-3">{label}</h4>
-        <p className="font-body text-muted-foreground text-xs italic">Non communiqué</p>
+        <div className="bg-muted/50 border border-border rounded p-4 text-center">
+          <p className="font-body text-muted-foreground text-sm font-semibold">DPE NON DISPONIBLE</p>
+        </div>
       </div>
     );
   }
@@ -48,12 +52,17 @@ const DPEBadge = ({ label, value, type }: DPEBadgeProps) => {
           return (
             <div
               key={letter}
-              className={`flex items-center gap-2 rounded-r-full px-3 py-0.5 text-xs font-bold transition-all ${
+              className={`flex items-center justify-between rounded-r-full px-3 py-0.5 text-xs font-bold transition-all ${
                 colors[letter]
               } ${isActive ? "ring-2 ring-foreground/30 scale-105 shadow-md" : "opacity-40"}`}
               style={{ width: `${widthPercent}%`, minWidth: "40px" }}
             >
               <span className="text-white">{letter}</span>
+              {isActive && consoValue ? (
+                <span className="text-white text-[10px] font-semibold ml-1 whitespace-nowrap">
+                  {consoValue} {unit}
+                </span>
+              ) : null}
             </div>
           );
         })}

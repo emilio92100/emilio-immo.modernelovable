@@ -58,13 +58,20 @@ const Director = () => {
               viewport={{ once: true }}
               className="flex justify-center"
             >
-              <div className="relative">
-                <img
-                  src={alexandreImg}
-                  alt="Alexandre - Directeur Émilio Conseil Immobilier"
-                  className="w-full max-w-md rounded shadow-2xl"
-                />
-                <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-accent rounded -z-10" />
+              <div className="relative max-w-md">
+                <div className="relative overflow-hidden rounded-lg">
+                  <img
+                    src={alexandreImg}
+                    alt="Alexandre - Directeur Émilio Conseil Immobilier"
+                    className="w-full"
+                    style={{
+                      maskImage: "linear-gradient(to bottom, black 70%, transparent 100%), linear-gradient(to right, black 80%, transparent 100%)",
+                      WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%), linear-gradient(to right, black 80%, transparent 100%)",
+                      maskComposite: "intersect",
+                      WebkitMaskComposite: "destination-in",
+                    }}
+                  />
+                </div>
               </div>
             </motion.div>
 
