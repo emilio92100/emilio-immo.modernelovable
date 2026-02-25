@@ -8,6 +8,23 @@ interface PropertyCardProps {
   index?: number;
 }
 
+const getDisplayTitle = (property: Property) => {
+  // Remove city name from title (format: "Type Xp - Ville")
+  return property.title.replace(/\s*[-–]\s*[^-–]+$/, '');
+};
+
+const getDisplayCity = (property: Property) => {
+  const city = property.city;
+  // If Paris, ensure arrondissement is shown
+  if (city.toLowerCase().startsWith("paris") && property.postalCode.startsWith("75")) {
+    const arrNum = parseInt(property.postalCode.slice(3), 10);
+    if (arrNum > 0 && !city.includes("ème") && !city.includes("er")) {
+      return `Paris ${arrNum}${arrNum === 1 ? "er" : "ème"}`;
+    }
+  }
+  return city;
+};
+
 const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
@@ -49,11 +66,11 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => (
 
       <div className="p-5">
         <h3 className="font-display text-lg font-semibold text-foreground mb-2 line-clamp-1">
-          {property.title}
+          {getDisplayTitle(property)}
         </h3>
         <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-3 font-body">
           <MapPin className="w-3.5 h-3.5" />
-          {property.city}
+          {getDisplayCity(property)}
         </div>
 
         <div className="flex items-center gap-4 text-sm text-muted-foreground font-body border-t border-border pt-3">
