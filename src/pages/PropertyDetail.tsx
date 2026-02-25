@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, MapPin, Maximize, BedDouble, Home, Calendar, Building, Thermometer,
@@ -9,12 +9,36 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import DPEBadge from "@/components/DPEBadge";
-import { mockProperties, formatPrice } from "@/lib/properties";
+import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed } from "@/lib/properties";
 
 const PropertyDetail = () => {
   const { id } = useParams();
-  const property = mockProperties.find((p) => p.id === id);
+  const [property, setProperty] = useState<Property | undefined>(
+    mockProperties.find((p) => p.id === id)
+  );
+  const [loading, setLoading] = useState(true);
   const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    fetchPropertiesFromFeed().then((data) => {
+      const found = data.find((p) => p.id === id);
+      if (found) setProperty(found);
+      setLoading(false);
+    });
+  }, [id]);
+
+  if (loading && !property) {
+    return (
+      <div className="min-h-screen">
+        <Navbar />
+        <div className="pt-28 pb-20 text-center container mx-auto px-6">
+          <div className="inline-block w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="font-body text-muted-foreground">Chargement...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!property) {
     return (
@@ -142,7 +166,7 @@ const PropertyDetail = () => {
                   {property.address ? `${property.address}, ` : ""}{property.city} ({property.postalCode})
                 </div>
                 <p className="font-display text-3xl text-accent font-semibold mt-4">
-                  {formatPrice(property.price)}
+                  {formatPrice(property.price)} <span className="text-lg font-body font-normal text-muted-foreground">FAI</span>
                 </p>
                 {property.charges && (
                   <p className="font-body text-muted-foreground text-sm mt-1">

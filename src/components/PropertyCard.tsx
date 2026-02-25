@@ -31,7 +31,7 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => (
         )}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/80 to-transparent p-4 pt-10">
           <span className="text-primary-foreground font-display text-xl font-semibold">
-            {formatPrice(property.price)}
+            {formatPrice(property.price)} <span className="text-sm font-body font-normal opacity-80">FAI</span>
           </span>
         </div>
 

@@ -13,16 +13,16 @@ serve(async (req) => {
   try {
     const xmlUrl = "https://clients.immo-facile.com/office12/emilie_immob/cache/export.xml";
     const response = await fetch(xmlUrl);
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch XML: ${response.status}`);
     }
 
-    const xmlText = await response.text();
-    
-    // Parse XML to extract properties
+    const rawBuffer = await response.arrayBuffer();
+    const decoder = new TextDecoder("iso-8859-1");
+    const xmlText = decoder.decode(rawBuffer);
     const properties = parseXML(xmlText);
-    
+
     return new Response(JSON.stringify({ properties, lastFetched: new Date().toISOString() }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -35,90 +35,167 @@ serve(async (req) => {
   }
 });
 
+function extractCDATA(text: string): string {
+  // Match <![CDATA[...]]> or plain text
+  const cdataMatch = text.match(/<!\[CDATA\[([\s\S]*?)\]\]>/);
+  if (cdataMatch) return cdataMatch[1].trim();
+  // Strip any remaining tags
+  return text.replace(/<[^>]*>/g, "").trim();
+}
+
+function getTagContent(xml: string, tag: string): string {
+  const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i");
+  const match = xml.match(regex);
+  if (!match) {
+    // Try self-closing or content without closing tag
+    const regex2 = new RegExp(`<${tag}[^>]*>([^<]*)`, "i");
+    const match2 = xml.match(regex2);
+    return match2 ? match2[1].trim() : "";
+  }
+  return extractCDATA(match[1]);
+}
+
+function getSection(xml: string, tag: string): string {
+  const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i");
+  const match = xml.match(regex);
+  return match ? match[1] : "";
+}
+
+function getNum(xml: string, tag: string): number {
+  const v = getTagContent(xml, tag);
+  return v ? parseFloat(v.replace(",", ".")) || 0 : 0;
+}
+
+function getBool(xml: string, tag: string): boolean {
+  const v = getTagContent(xml, tag).toLowerCase();
+  return v === "oui" || v === "1" || v === "true" || v === "o";
+}
+
 function parseXML(xml: string) {
   const properties: any[] = [];
-  
-  // Extract each <BIEN> element
-  const bienRegex = /<BIEN>([\s\S]*?)<\/BIEN>/g;
+
+  // Extract each <BIEN> element (case-insensitive)
+  const bienRegex = /<bien>([\s\S]*?)<\/bien>/gi;
   let match;
-  
+
   while ((match = bienRegex.exec(xml)) !== null) {
     const bien = match[1];
-    
-    const getValue = (tag: string): string => {
-      const r = new RegExp(`<${tag}><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>|<${tag}>([^<]*)<\\/${tag}>`);
-      const m = bien.match(r);
-      return m ? (m[1] || m[2] || "").trim() : "";
-    };
-    
-    const getNum = (tag: string): number => {
-      const v = getValue(tag);
-      return v ? parseFloat(v.replace(",", ".")) : 0;
-    };
 
-    const getBool = (tag: string): boolean => {
-      const v = getValue(tag).toLowerCase();
-      return v === "oui" || v === "1" || v === "true" || v === "o";
-    };
+    // Sections
+    const infoGen = getSection(bien, "info_generales");
+    const localisation = getSection(bien, "localisation");
+    const vente = getSection(bien, "vente");
+    const intitule = getSection(bien, "intitule");
+    const commentaires = getSection(bien, "commentaires");
+    const alur = getSection(bien, "alur");
 
-    // Extract images
+    // Property type section: <maison> or <appartement>
+    const maisonSection = getSection(bien, "maison");
+    const appartSection = getSection(bien, "appartement");
+    const propSection = maisonSection || appartSection;
+    const propertyType = maisonSection ? "Maison" : "Appartement";
+
+    // ID & dates
+    const id = getTagContent(infoGen, "aff_id") || getTagContent(infoGen, "aff_num") || Math.random().toString(36).substr(2);
+    const dateAdded = getTagContent(infoGen, "date_creation") || new Date().toISOString().split("T")[0];
+
+    // Price
+    const price = getNum(vente, "prix") || getNum(vente, "prix_net");
+
+    // Location
+    const city = getTagContent(localisation, "ville") || "";
+    const postalCode = getTagContent(localisation, "code_postal") || "";
+    const address = getTagContent(localisation, "adresse") || "";
+    const latitude = getNum(localisation, "latitude");
+    const longitude = getNum(localisation, "longitude");
+
+    // Title & description
+    const title = getTagContent(intitule, "fr") || "";
+    const description = getTagContent(commentaires, "fr") || "";
+
+    // Property details from maison/appartement section
+    const surface = getNum(propSection, "surface_habitable") || getNum(propSection, "surface");
+    const rooms = getNum(propSection, "nbre_pieces");
+    const bedrooms = getNum(propSection, "nbre_chambres");
+    const floor = getNum(propSection, "num_etage");
+    const totalFloors = getNum(propSection, "num_dernier_etage") || getNum(propSection, "nbre_etage");
+    const yearBuilt = getNum(propSection, "annee_construction");
+    const heating = getTagContent(propSection, "chauffage") || "";
+    const parking = getNum(propSection, "nbre_parking");
+    const orientation = getTagContent(propSection, "exposition_sejour") || "";
+    const energyClass = getTagContent(propSection, "consommationenergetique") || "";
+    const gesClass = getTagContent(propSection, "gazeffetdeserre") || "";
+    const consoEnergie = getNum(propSection, "conso_annuel_energie");
+    const valeurGes = getNum(propSection, "valeur_ges");
+
+    // Booleans
+    const cave = getBool(propSection, "cave") || getNum(propSection, "nbre_cave") > 0;
+    const balcony = getBool(propSection, "balcon") || getNum(propSection, "nbre_balcon") > 0;
+    const terrace = getBool(propSection, "terrasse") || getNum(propSection, "nbre_terrasse") > 0;
+    const elevator = getBool(propSection, "ascenseur");
+    const guardian = getBool(propSection, "gardien");
+    const exclusive = getTagContent(vente, "type_mandat").toUpperCase() === "E";
+
+    // Charges
+    const charges = getNum(alur, "charges_annuelles") || getNum(propSection, "charges_copropriete");
+    const taxeFonciere = getNum(propSection, "taxe_fonciere");
+
+    // Images: <img>URL format (may not have closing tags)
+    const imagesSection = getSection(bien, "images");
     const images: string[] = [];
-    const imgRegex = /<PHOTO[^>]*>(?:<!\[CDATA\[)?(https?:\/\/[^\]<]+)(?:\]\]>)?<\/PHOTO[^>]*>/gi;
+    // Match URLs after <img> tags
+    const imgRegex = /<img[^>]*>(https?:\/\/[^\s<]+)/gi;
     let imgMatch;
-    while ((imgMatch = imgRegex.exec(bien)) !== null) {
-      images.push(imgMatch[1].trim());
-    }
-    
-    // Also try IMAGE tags
-    const imgRegex2 = /<IMAGE[^>]*>(?:<!\[CDATA\[)?(https?:\/\/[^\]<]+)(?:\]\]>)?<\/IMAGE[^>]*>/gi;
-    while ((imgMatch = imgRegex2.exec(bien)) !== null) {
+    while ((imgMatch = imgRegex.exec(imagesSection)) !== null) {
       images.push(imgMatch[1].trim());
     }
 
-    const id = getValue("INFO_GENERALES>AFF_NUM") || getValue("AFF_NUM") || getValue("ID") || getValue("REFERENCE") || Math.random().toString(36).substr(2);
-    const title = getValue("TITRE") || getValue("INTITULE") || "";
-    const price = getNum("PRIX") || getNum("PRIX_VENTE");
-    const city = getValue("VILLE") || getValue("COMMUNE") || "";
-    const postalCode = getValue("CODE_POSTAL") || getValue("CP") || "";
-    const surface = getNum("SURFACE_HABITABLE") || getNum("SURFACE") || getNum("SURF_HAB");
-    const rooms = getNum("NB_PIECES") || getNum("PIECES") || getNum("NB_PIECE");
-    const bedrooms = getNum("NB_CHAMBRES") || getNum("CHAMBRES") || getNum("NB_CHAMBRE");
-    const type = getValue("TYPE_BIEN") || getValue("NATURE") || getValue("CATEGORIE") || "Appartement";
-    const description = getValue("DESCRIPTIF") || getValue("TEXTE") || getValue("COMMENTAIRES") || "";
-    const energyClass = getValue("CLASSE_ENERGIE") || getValue("DPE_ETIQUETTE") || "";
-    const gesClass = getValue("CLASSE_GES") || getValue("GES_ETIQUETTE") || "";
-    const floor = getNum("ETAGE") || getNum("NUM_ETAGE");
-    const totalFloors = getNum("NB_ETAGES") || getNum("NBRE_ETAGES");
-    const orientation = getValue("ORIENTATION") || "";
-    const yearBuilt = getNum("ANNEE_CONSTRUCTION") || 0;
-    const heating = getValue("CHAUFFAGE") || getValue("TYPE_CHAUFFAGE") || "";
-    const parking = getNum("NB_PARKING") || getNum("PARKING");
-    const cave = getBool("CAVE");
-    const balcony = getBool("BALCON");
-    const terrace = getBool("TERRASSE");
-    const elevator = getBool("ASCENSEUR");
-    const guardian = getBool("GARDIEN");
-    const charges = getNum("CHARGES") || getNum("CHARGES_MENSUELLES");
-    const taxeFonciere = getNum("TAXE_FONCIERE");
-    const consoEnergie = getNum("CONSO_ENERGIE") || getNum("DPE_VALEUR");
-    const valeurGes = getNum("VALEUR_GES") || getNum("GES_VALEUR");
-    const exclusive = getBool("EXCLUSIVITE") || getBool("MANDAT_EXCLUSIF");
-    const dateAdded = getValue("DATE_CREATION") || getValue("DATE_MANDAT") || new Date().toISOString().split("T")[0];
-    const address = getValue("ADRESSE") || "";
-    const latitude = getNum("LATITUDE");
-    const longitude = getNum("LONGITUDE");
+    // Format city name nicely (BOULOGNE BILLANCOURT -> Boulogne-Billancourt)
+    const formatCity = (c: string): string => {
+      if (!c) return "";
+      return c.split(/\s+/).map(w =>
+        w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+      ).join("-").replace(/-De-/g, "-de-").replace(/-Les-/g, "-les-").replace(/-La-/g, "-la-").replace(/-Le-/g, "-le-").replace(/-Sur-/g, "-sur-");
+    };
 
     if (price > 0) {
       properties.push({
-        id, title: title || `${type} ${rooms} pièces - ${city}`, price, city, postalCode,
-        surface, rooms, bedrooms, type, description, images,
-        dateAdded, exclusive, energyClass, gesClass, orientation,
-        floor, totalFloors, yearBuilt, heating, parking,
-        cave, balcony, terrace, elevator, guardian, charges,
-        taxeFonciere, consoEnergie, valeurGes, address, latitude, longitude,
+        id,
+        title: title || `${propertyType} ${rooms} pièces - ${formatCity(city)}`,
+        price,
+        city: formatCity(city),
+        postalCode,
+        surface,
+        rooms,
+        bedrooms,
+        type: propertyType,
+        description,
+        images,
+        dateAdded,
+        exclusive,
+        energyClass,
+        gesClass,
+        orientation,
+        floor,
+        totalFloors,
+        yearBuilt,
+        heating,
+        parking,
+        cave,
+        balcony,
+        terrace,
+        elevator,
+        guardian,
+        charges,
+        taxeFonciere,
+        consoEnergie,
+        valeurGes,
+        address,
+        latitude,
+        longitude,
       });
     }
   }
-  
+
   return properties;
 }
