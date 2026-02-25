@@ -27,7 +27,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/biens" element={<Properties />} />
           <Route path="/biens/:id" element={<PropertyDetail />} />
-          <Route path="/directeur" element={<Director />} />
+          <Route path="/notre-histoire" element={<Director />} />
           <Route path="/vendre" element={<SellPage />} />
           <Route path="/mandat-recherche" element={<BuyerMandate />} />
           <Route path="/admin" element={<AdminLogin />} />
