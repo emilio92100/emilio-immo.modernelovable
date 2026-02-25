@@ -6,7 +6,7 @@ import logo from "@/assets/logo.png";
 const navItems = [
   { label: "Accueil", path: "/" },
   { label: "Nos Biens", path: "/biens" },
-  { label: "Le Directeur", path: "/directeur" },
+  { label: "Notre Histoire", path: "/notre-histoire" },
   { label: "Vendre", path: "/vendre" },
   { label: "Mandat de Recherche", path: "/mandat-recherche" },
 ];

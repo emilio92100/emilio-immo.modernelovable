@@ -35,6 +35,30 @@ const philosophy = [
   },
 ];
 
+const emilioTimeline = [
+  {
+    period: "Septembre 2020",
+    title: "Lancement d'Émilio Immobilier",
+    text: "Création de l'agence avec un premier secteur sur Boulogne-Billancourt. Un démarrage ambitieux, porté par une vision claire du service immobilier.",
+  },
+  {
+    period: "2021",
+    title: "Expansion villes limitrophes",
+    text: "Fort d'un succès rapide à Boulogne, développement sur les communes voisines : Issy-les-Moulineaux, Meudon, Sèvres et Chaville.",
+  },
+  {
+    period: "2023",
+    title: "Ouverture sur Paris Ouest",
+    text: "Trois ans après sa création, Émilio s'implante sur les arrondissements prisés de l'ouest parisien : 15e, 16e et 17e arrondissements.",
+  },
+];
+
+const beforeTimeline = [
+  { period: "2 ans", agency: "BARNES", type: "Immobilier de prestige" },
+  { period: "1 an", agency: "FONCIA", type: "Gestion & transaction" },
+  { period: "4 ans", agency: "LAFORÊT", type: "Transaction résidentielle" },
+];
+
 const Director = () => {
   return (
     <div className="min-h-screen">
@@ -42,7 +66,7 @@ const Director = () => {
 
       <section className="pt-28 pb-12 bg-primary">
         <div className="container mx-auto px-6 text-center">
-          <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Le Directeur</h1>
+          <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Notre Histoire</h1>
           <div className="w-16 h-0.5 bg-accent mx-auto" />
         </div>
       </section>
@@ -59,19 +83,25 @@ const Director = () => {
               className="flex justify-center"
             >
               <div className="relative max-w-md">
-                <div className="relative overflow-hidden rounded-lg">
+                {/* Decorative frame */}
+                <div className="absolute -inset-3 border-2 border-accent/30 rounded-lg" />
+                <div className="absolute -inset-1 border border-accent/60 rounded-lg" />
+                <div className="relative overflow-hidden rounded-lg shadow-xl">
                   <img
                     src={alexandreImg}
-                    alt="Alexandre - Directeur Émilio Conseil Immobilier"
+                    alt="Alexandre - Fondateur Émilio Conseil Immobilier"
                     className="w-full"
                     style={{
-                      maskImage: "linear-gradient(to bottom, black 70%, transparent 100%), linear-gradient(to right, black 80%, transparent 100%)",
-                      WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%), linear-gradient(to right, black 80%, transparent 100%)",
-                      maskComposite: "intersect",
-                      WebkitMaskComposite: "destination-in",
+                      maskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
+                      WebkitMaskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
                     }}
                   />
                 </div>
+                {/* Gold corner accents */}
+                <div className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-accent rounded-tl-lg" />
+                <div className="absolute -top-3 -right-3 w-8 h-8 border-t-2 border-r-2 border-accent rounded-tr-lg" />
+                <div className="absolute -bottom-3 -left-3 w-8 h-8 border-b-2 border-l-2 border-accent rounded-bl-lg" />
+                <div className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-accent rounded-br-lg" />
               </div>
             </motion.div>
 
@@ -83,18 +113,18 @@ const Director = () => {
             >
               <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Fondateur & Directeur</span>
               <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-6">Alexandre</h2>
-              <p className="font-body text-muted-foreground leading-relaxed mb-6">
+              <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
                 Passionné par l'immobilier depuis plus de 10 ans, Alexandre a fondé Émilio Conseil Immobilier
                 avec une vision claire : offrir un service d'excellence et un accompagnement personnalisé
                 à chaque client.
               </p>
-              <p className="font-body text-muted-foreground leading-relaxed mb-6">
-                Fort d'une expérience solide dans les marchés parisien et francilien, il met son expertise
-                et son réseau au service de vos projets. Sa connaissance approfondie du marché,
-                combinée à une approche humaine et transparente, fait de lui un interlocuteur de confiance
-                pour toutes vos transactions immobilières.
+              <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
+                Fort d'un parcours riche au sein d'enseignes de renom — de la transaction résidentielle
+                chez Laforêt et Foncia à l'immobilier de prestige chez Barnes — Alexandre maîtrise aussi bien
+                les biens classiques que le segment luxe. Cette double expertise lui confère une vision
+                complète du marché et une capacité unique à s'adapter aux attentes de chaque client.
               </p>
-              <p className="font-body text-muted-foreground leading-relaxed mb-8">
+              <p className="font-body text-muted-foreground leading-relaxed mb-8 text-base">
                 Son objectif : transformer chaque projet immobilier en une expérience sereine et réussie,
                 en plaçant toujours l'intérêt du client au cœur de sa démarche.
               </p>
@@ -121,12 +151,12 @@ const Director = () => {
               Ce qui guide mon approche
             </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto">
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-base">
               L'immobilier est bien plus qu'une transaction. C'est un moment de vie, un projet porteur d'émotions.
               Je m'engage à vous accompagner avec exigence, bienveillance et professionnalisme.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {philosophy.map((item, i) => (
               <motion.div
                 key={item.title}
@@ -134,13 +164,13 @@ const Director = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-card p-8 rounded border border-border shadow-sm"
+                className="bg-card p-10 rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-5">
-                  <item.icon className="w-5 h-5 text-accent" />
+                <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mb-6">
+                  <item.icon className="w-7 h-7 text-accent" />
                 </div>
-                <h3 className="font-display text-lg mb-3">{item.title}</h3>
-                <p className="font-body text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                <h3 className="font-display text-xl mb-3">{item.title}</h3>
+                <p className="font-body text-muted-foreground text-base leading-relaxed">{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -159,43 +189,57 @@ const Director = () => {
               <div className="w-16 h-0.5 bg-accent mx-auto" />
             </div>
 
-            <div className="space-y-8">
-              {[
-                {
-                  period: "2016 – Aujourd'hui",
-                  title: "Fondation d'Émilio Conseil Immobilier",
-                  text: "Création de l'agence avec une ambition : proposer un service immobilier haut de gamme, centré sur l'humain et l'excellence. Développement d'un réseau off-market exclusif en Île-de-France.",
-                },
-                {
-                  period: "2012 – 2016",
-                  title: "Conseiller immobilier senior",
-                  text: "Spécialisation sur les marchés de l'ouest parisien : Boulogne-Billancourt, Issy-les-Moulineaux, Paris 15e et 16e. Plus de 150 transactions réalisées.",
-                },
-                {
-                  period: "2010 – 2012",
-                  title: "Premiers pas dans l'immobilier",
-                  text: "Découverte du métier et formation approfondie. Développement de compétences en négociation, estimation et droit immobilier.",
-                },
-              ].map((step, i) => (
-                <motion.div
-                  key={step.period}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex gap-6"
-                >
-                  <div className="flex flex-col items-center">
-                    <div className="w-3 h-3 rounded-full bg-accent flex-shrink-0 mt-1.5" />
-                    {i < 2 && <div className="w-px flex-1 bg-border mt-2" />}
-                  </div>
-                  <div className="pb-2">
-                    <span className="font-body text-accent text-xs font-semibold tracking-wider uppercase">{step.period}</span>
-                    <h3 className="font-display text-lg text-foreground mt-1 mb-2">{step.title}</h3>
-                    <p className="font-body text-muted-foreground text-sm leading-relaxed">{step.text}</p>
-                  </div>
-                </motion.div>
-              ))}
+            {/* Before Emilio - greyed out / subtle */}
+            <div className="mb-12">
+              <p className="font-body text-muted-foreground text-xs uppercase tracking-wider mb-6">Avant Émilio — Expériences fondatrices</p>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {beforeTimeline.map((item, i) => (
+                  <motion.div
+                    key={item.agency}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="bg-muted/60 border border-border/50 rounded-lg p-5 text-center"
+                  >
+                    <span className="font-display text-lg text-muted-foreground/70">{item.agency}</span>
+                    <p className="font-body text-xs text-muted-foreground/60 mt-1">{item.period}</p>
+                    <p className="font-body text-xs text-muted-foreground/50 mt-2">{item.type}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Emilio timeline */}
+            <div className="relative">
+              <div className="absolute left-6 top-0 bottom-0 w-px bg-accent/30" />
+              <div className="space-y-0">
+                {emilioTimeline.map((step, i) => (
+                  <motion.div
+                    key={step.period}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.15 }}
+                    viewport={{ once: true }}
+                    className="relative flex gap-8 group pb-10 last:pb-0"
+                  >
+                    {/* Dot with hover glow */}
+                    <div className="relative z-10 flex-shrink-0 mt-1">
+                      <div className="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                        <div className="w-3 h-3 rounded-full bg-accent group-hover:bg-primary-foreground transition-colors duration-300" />
+                      </div>
+                    </div>
+                    {/* Content card with hover effect */}
+                    <div className="flex-1 bg-card border border-border rounded-lg p-6 shadow-sm group-hover:shadow-lg group-hover:border-accent/40 transition-all duration-300 group-hover:-translate-y-1">
+                      <span className="inline-block font-body text-accent text-sm font-bold tracking-wider uppercase bg-accent/10 px-3 py-1 rounded-full group-hover:bg-accent group-hover:text-primary-foreground transition-all duration-300">
+                        {step.period}
+                      </span>
+                      <h3 className="font-display text-xl text-foreground mt-3 mb-2">{step.title}</h3>
+                      <p className="font-body text-muted-foreground text-base leading-relaxed">{step.text}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
