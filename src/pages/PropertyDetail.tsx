@@ -88,7 +88,7 @@ const PropertyDetail = () => {
   if (property.guardian) highlights.push({ icon: ShieldCheck, label: "Gardien / Concierge" });
   if (property.parking) highlights.push({ icon: Car, label: `Parking (${property.parking} place${property.parking > 1 ? "s" : ""})` });
   if (property.orientation) highlights.push({ icon: Compass, label: `Orientation ${property.orientation}` });
-  if (property.exclusive) highlights.push({ icon: Star, label: "Exclusivité Émilio" });
+  if (property.exclusive) highlights.push({ icon: Star, label: "Exclusivité" });
 
   // Build characteristics, excluding items already in highlights
   const highlightLabels = new Set(["Ascenseur", "Gardien", "Parking", "Orientation"]);

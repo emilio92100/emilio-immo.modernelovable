@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Smile } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const Footer = () => (
@@ -21,7 +21,7 @@ const Footer = () => (
               { label: "Nos Biens", path: "/biens" },
               { label: "Notre Histoire", path: "/notre-histoire" },
               { label: "Vendre", path: "/vendre" },
-              { label: "Mandat de Recherche", path: "/mandat-recherche" },
+              { label: "Acheter", path: "/mandat-recherche" },
             ].map((item) => (
               <Link
                 key={item.path}
@@ -40,9 +40,6 @@ const Footer = () => (
             <a href="tel:+33184801400" className="flex items-center gap-2 hover:text-accent transition-colors">
               <Phone className="w-4 h-4" /> 01 84 80 14 00
             </a>
-            <a href="tel:+33658957632" className="flex items-center gap-2 hover:text-accent transition-colors">
-              <Phone className="w-4 h-4" /> 06 58 95 76 32
-            </a>
             <a href="mailto:agence@emilio-immo.com" className="flex items-center gap-2 hover:text-accent transition-colors">
               <Mail className="w-4 h-4" /> agence@emilio-immo.com
             </a>
@@ -51,15 +48,21 @@ const Footer = () => (
 
         <div>
           <h4 className="font-display text-lg mb-4">Adresse</h4>
-          <p className="flex items-start gap-2 text-sm text-primary-foreground/70 font-body">
-            <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-            Île-de-France
-          </p>
+          <div className="flex flex-col gap-3 text-sm text-primary-foreground/70 font-body">
+            <p className="flex items-start gap-2">
+              <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+              Paris & Hauts-de-Seine (92)
+            </p>
+            <p className="flex items-start gap-2">
+              <Smile className="w-4 h-4 mt-0.5 flex-shrink-0 text-accent" />
+              <span className="italic text-primary-foreground/50">...et surtout, chez vous !</span>
+            </p>
+          </div>
         </div>
       </div>
 
       <div className="border-t border-primary-foreground/20 mt-12 pt-6 text-center text-xs text-primary-foreground/50 font-body">
-        © {new Date().getFullYear()} Émilio Conseil Immobilier. Tous droits réservés.
+        © {new Date().getFullYear()} Émilio Immobilier. Tous droits réservés.
       </div>
     </div>
   </footer>

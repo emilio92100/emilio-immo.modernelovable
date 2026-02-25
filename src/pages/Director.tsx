@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Award, Users, Target, Handshake, Heart, Shield } from "lucide-react";
+import { Award, Users, Target, Handshake, Heart, Shield, BadgeCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
@@ -9,10 +9,8 @@ const stats = [
   { icon: Award, label: "10+ ans d'expérience" },
   { icon: Users, label: "200+ clients accompagnés" },
   { icon: Target, label: "Expert Île-de-France" },
-  { icon: Handshake, label: "98% satisfaction client" },
+  { icon: BadgeCheck, label: "Titulaire carte T professionnelle" },
 ];
-
-
 
 const philosophy = [
   {
@@ -55,7 +53,6 @@ const emilioTimeline = [
   },
 ];
 
-
 const Director = () => {
   return (
     <div className="min-h-screen">
@@ -80,13 +77,12 @@ const Director = () => {
               className="flex justify-center"
             >
               <div className="relative max-w-md">
-                {/* Decorative frame */}
                 <div className="absolute -inset-3 border-2 border-accent/30 rounded-lg" />
                 <div className="absolute -inset-1 border border-accent/60 rounded-lg" />
                 <div className="relative overflow-hidden rounded-lg shadow-xl">
                   <img
                     src={alexandreImg}
-                    alt="Alexandre - Fondateur Émilio Conseil Immobilier"
+                    alt="Alexandre - Fondateur Émilio Immobilier"
                     className="w-full"
                     style={{
                       maskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
@@ -94,7 +90,6 @@ const Director = () => {
                     }}
                   />
                 </div>
-                {/* Gold corner accents */}
                 <div className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-accent rounded-tl-lg" />
                 <div className="absolute -top-3 -right-3 w-8 h-8 border-t-2 border-r-2 border-accent rounded-tr-lg" />
                 <div className="absolute -bottom-3 -left-3 w-8 h-8 border-b-2 border-l-2 border-accent rounded-bl-lg" />
@@ -111,7 +106,7 @@ const Director = () => {
               <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Fondateur & Directeur</span>
               <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-6">Alexandre</h2>
               <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
-                Passionné par l'immobilier depuis plus de 10 ans, j'ai fondé Émilio Conseil Immobilier
+                Passionné par l'immobilier depuis plus de 10 ans, j'ai fondé Émilio Immobilier
                 avec une idée simple : offrir à mes clients le service que j'aurais aimé recevoir moi-même.
               </p>
               <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
@@ -184,7 +179,6 @@ const Director = () => {
               <div className="w-16 h-0.5 bg-accent mx-auto" />
             </div>
 
-
             {/* Emilio timeline */}
             <div className="relative">
               <div className="absolute left-6 top-0 bottom-0 w-px bg-accent/30" />
@@ -198,13 +192,11 @@ const Director = () => {
                     viewport={{ once: true }}
                     className="relative flex gap-8 group pb-10 last:pb-0"
                   >
-                    {/* Dot with hover glow */}
                     <div className="relative z-10 flex-shrink-0 mt-1">
                       <div className="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
                         <div className="w-3 h-3 rounded-full bg-accent group-hover:bg-primary-foreground transition-colors duration-300" />
                       </div>
                     </div>
-                    {/* Content card with hover effect */}
                     <div className="flex-1 bg-card border border-border rounded-lg p-6 shadow-sm group-hover:shadow-lg group-hover:border-accent/40 transition-all duration-300 group-hover:-translate-y-1">
                       <span className="inline-block font-body text-accent text-sm font-bold tracking-wider uppercase bg-accent/10 px-3 py-1 rounded-full group-hover:bg-accent group-hover:text-primary-foreground transition-all duration-300">
                         {step.period}
