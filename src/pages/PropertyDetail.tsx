@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, MapPin, Maximize, BedDouble, Home, Calendar, Building, Thermometer,
-  Car, ChevronLeft, ChevronRight, Phone, Mail, Compass, DoorOpen, ShieldCheck,
+  Car, ChevronLeft, ChevronRight, Phone, Mail, Compass, DoorOpen, ShieldCheck, Star, CheckCircle,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -163,7 +163,7 @@ const PropertyDetail = () => {
                 <h1 className="font-display text-2xl md:text-3xl text-foreground mb-2">{property.title}</h1>
                 <div className="flex items-center gap-1.5 text-muted-foreground font-body text-sm">
                   <MapPin className="w-4 h-4" />
-                  {property.address ? `${property.address}, ` : ""}{property.city} ({property.postalCode})
+                  {property.city} ({property.postalCode})
                 </div>
                 <p className="font-display text-3xl text-accent font-semibold mt-4">
                   {formatPrice(property.price)} <span className="text-lg font-body font-normal text-muted-foreground">FAI</span>
@@ -200,6 +200,37 @@ const PropertyDetail = () => {
                   {property.description}
                 </p>
               </div>
+
+              {/* Les + du bien */}
+              {(() => {
+                const highlights: { icon: any; label: string }[] = [];
+                if (property.balcony) highlights.push({ icon: Compass, label: "Balcon" });
+                if (property.terrace) highlights.push({ icon: Compass, label: "Terrasse" });
+                if (property.cave) highlights.push({ icon: DoorOpen, label: "Cave" });
+                if (property.elevator) highlights.push({ icon: Building, label: "Ascenseur" });
+                if (property.guardian) highlights.push({ icon: ShieldCheck, label: "Gardien / Concierge" });
+                if (property.parking) highlights.push({ icon: Car, label: `Parking (${property.parking} place${property.parking > 1 ? "s" : ""})` });
+                if (property.orientation) highlights.push({ icon: Compass, label: `Orientation ${property.orientation}` });
+                if (property.exclusive) highlights.push({ icon: Star, label: "Exclusivité Émilio" });
+                return highlights.length > 0 ? (
+                  <div className="bg-accent/5 border border-accent/20 rounded p-6">
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center">
+                        <Star className="w-5 h-5 text-accent" />
+                      </div>
+                      <h2 className="font-display text-lg">Les + de ce bien</h2>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {highlights.map((h) => (
+                        <div key={h.label} className="flex items-center gap-3 bg-card rounded p-3 border border-border">
+                          <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
+                          <span className="font-body text-sm text-foreground">{h.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null;
+              })()}
 
               {/* DPE */}
               <div className="bg-card border border-border rounded p-6">

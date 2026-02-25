@@ -181,7 +181,7 @@ const Properties = () => {
       </section>
 
       {/* LISTING */}
-      <section className="py-12">
+      <section className="py-12 pb-24">
         <div className="container mx-auto px-6">
           <p className="font-body text-muted-foreground text-sm mb-6 text-center">{filtered.length} bien(s) trouvé(s)</p>
           
@@ -205,7 +205,9 @@ const Properties = () => {
       </section>
 
       {/* OFF-MARKET CTA */}
-      <section className="py-16 bg-primary">
+      <section className="relative py-16 bg-primary overflow-hidden">
+        {/* Fade gradient from listing section */}
+        <div className="absolute -top-24 left-0 right-0 h-24 bg-gradient-to-b from-background to-primary pointer-events-none" />
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
             <div className="flex items-center justify-center gap-3 mb-6">

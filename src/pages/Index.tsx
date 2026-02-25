@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, ShieldCheck, Eye, Lock, Search, Home, CheckCircle, Quote } from "lucide-react";
+import {
+  ArrowRight, Star, ShieldCheck, Eye, Lock, Search, Home, CheckCircle, Quote,
+  KeyRound, FileSearch, Handshake, TrendingUp, MapPin,
+} from "lucide-react";
 import PropertyCard from "@/components/PropertyCard";
 import ContactForm from "@/components/ContactForm";
 import Navbar from "@/components/Navbar";
@@ -27,21 +30,34 @@ const testimonials = [
   },
 ];
 
-const values = [
+const services = [
   {
-    icon: ShieldCheck,
-    title: "Expertise locale",
-    description: "Une connaissance approfondie du marché immobilier francilien pour vous conseiller au mieux.",
+    icon: KeyRound,
+    title: "Achat immobilier",
+    description: "Trouvez le bien idéal grâce à notre sélection exclusive et notre accompagnement personnalisé jusqu'à la remise des clés.",
+    link: "/mandat-recherche",
+    cta: "Confier ma recherche",
   },
   {
-    icon: Eye,
-    title: "Transparence totale",
-    description: "Un suivi clair et régulier à chaque étape de votre projet immobilier.",
+    icon: TrendingUp,
+    title: "Vente immobilière",
+    description: "Valorisez votre bien au meilleur prix grâce à une estimation précise, une stratégie de vente sur-mesure et notre réseau qualifié.",
+    link: "/vendre",
+    cta: "Estimer mon bien",
   },
   {
-    icon: Star,
-    title: "Service premium",
-    description: "Un accompagnement personnalisé et sur-mesure, du premier contact à la signature.",
+    icon: FileSearch,
+    title: "Mandat de recherche",
+    description: "Un chasseur immobilier dédié prospecte pour vous, y compris sur notre base off-market, pour dénicher la perle rare.",
+    link: "/mandat-recherche",
+    cta: "En savoir plus",
+  },
+  {
+    icon: Handshake,
+    title: "Conseil & Investissement",
+    description: "Bénéficiez de notre expertise pour vos projets d'investissement locatif ou patrimonial en Île-de-France.",
+    link: "/mandat-recherche",
+    cta: "Nous consulter",
   },
 ];
 
@@ -54,7 +70,10 @@ const Index = () => {
 
   const latestProperties = [...properties]
     .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
-    .slice(0, 4);
+    .slice(0, 5);
+
+  const featuredProperty = latestProperties[0];
+  const otherProperties = latestProperties.slice(1, 5);
 
   return (
     <div className="min-h-screen">
@@ -63,82 +82,119 @@ const Index = () => {
       {/* HERO */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-primary/70" />
-        <div className="relative z-10 container mx-auto px-6 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-tight mb-6"
-          >
-            L'immobilier d'exception,
-            <br />
-            <span className="text-gold italic">à votre portée</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.3 }}
-            className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-2xl mx-auto mb-10"
-          >
-            Conseil immobilier personnalisé en Île-de-France. Achat, vente et accompagnement sur-mesure.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Link
-              to="/biens"
-              className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
+        <div className="absolute inset-0 bg-primary/75" />
+        <div className="relative z-10 container mx-auto px-6">
+          <div className="max-w-3xl">
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="inline-block font-body text-accent font-semibold text-sm tracking-widest uppercase mb-6"
             >
-              Découvrir nos biens <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to="/mandat-recherche"
-              className="inline-flex items-center justify-center gap-2 border border-primary-foreground/40 text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary-foreground/10 transition-all"
+              Émilio Conseil Immobilier
+            </motion.span>
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1 }}
+              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-tight mb-6"
             >
-              Mandat de recherche
-            </Link>
-          </motion.div>
+              Votre projet immobilier,
+              <br />
+              <span className="text-gold italic">notre expertise</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.3 }}
+              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mb-10"
+            >
+              Achat, vente et conseil sur-mesure en Île-de-France. 
+              Accédez à des biens d'exception, y compris en off-market.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <Link
+                to="/biens"
+                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
+              >
+                Découvrir nos biens <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/mandat-recherche"
+                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/40 text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary-foreground/10 transition-all"
+              >
+                Mandat de recherche
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+        {/* Stats bar */}
+        <div className="absolute bottom-0 left-0 right-0 bg-primary/50 backdrop-blur-sm border-t border-primary-foreground/10">
+          <div className="container mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { value: "200+", label: "Transactions réussies" },
+              { value: "10+", label: "Années d'expérience" },
+              { value: "98%", label: "Clients satisfaits" },
+              { value: "50+", label: "Biens off-market" },
+            ].map((s) => (
+              <div key={s.label} className="text-center">
+                <div className="font-display text-2xl md:text-3xl text-accent font-semibold">{s.value}</div>
+                <div className="font-body text-primary-foreground/60 text-xs mt-1">{s.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* VALUES */}
+      {/* SERVICES */}
       <section className="py-20 bg-secondary">
         <div className="container mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">Notre valeur ajoutée</h2>
+            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Nos services</span>
+            <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
+              Un accompagnement à chaque étape
+            </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto" />
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {values.map((v, i) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((s, i) => (
               <motion.div
-                key={v.title}
+                key={s.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-card p-8 rounded text-center shadow-sm border border-border"
+                className="group bg-card p-8 rounded border border-border shadow-sm hover:shadow-lg hover:border-accent/30 transition-all duration-300"
               >
-                <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-5">
-                  <v.icon className="w-6 h-6 text-accent" />
+                <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mb-5 group-hover:bg-accent/20 transition-colors">
+                  <s.icon className="w-6 h-6 text-accent" />
                 </div>
-                <h3 className="font-display text-xl mb-3">{v.title}</h3>
-                <p className="font-body text-muted-foreground text-sm leading-relaxed">{v.description}</p>
+                <h3 className="font-display text-lg mb-3">{s.title}</h3>
+                <p className="font-body text-muted-foreground text-sm leading-relaxed mb-5">{s.description}</p>
+                <Link
+                  to={s.link}
+                  className="inline-flex items-center gap-1.5 text-accent font-body font-semibold text-sm hover:underline"
+                >
+                  {s.cta} <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* LATEST PROPERTIES */}
+      {/* LATEST PROPERTIES — Featured layout */}
       <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="flex items-end justify-between mb-12">
             <div>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">Derniers biens ajoutés</h2>
+              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Nos derniers biens</span>
+              <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">Sélection récente</h2>
               <div className="w-16 h-0.5 bg-accent" />
             </div>
             <Link
@@ -148,11 +204,61 @@ const Index = () => {
               Voir tout <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {latestProperties.map((p, i) => (
-              <PropertyCard key={p.id} property={p} index={i} />
+
+          {featuredProperty && (
+            <div className="grid lg:grid-cols-2 gap-6 mb-6">
+              {/* Featured large card */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <Link to={`/biens/${featuredProperty.id}`} className="group block bg-card rounded overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border h-full">
+                  <div className="relative overflow-hidden aspect-[4/3]">
+                    <img
+                      src={featuredProperty.images[0]}
+                      alt={featuredProperty.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                    {featuredProperty.exclusive && (
+                      <span className="absolute top-4 left-4 bg-accent text-accent-foreground text-xs font-body font-semibold tracking-wider uppercase px-4 py-1.5 rounded">
+                        Exclusivité
+                      </span>
+                    )}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/80 to-transparent p-6 pt-16">
+                      <span className="text-primary-foreground font-display text-2xl md:text-3xl font-semibold">
+                        {formatPrice(featuredProperty.price)} <span className="text-sm font-body font-normal opacity-80">FAI</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-display text-xl font-semibold text-foreground mb-2">{featuredProperty.title}</h3>
+                    <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-3 font-body">
+                      <MapPin className="w-3.5 h-3.5" /> {featuredProperty.city}
+                    </div>
+                    <p className="font-body text-muted-foreground text-sm line-clamp-2">{featuredProperty.description}</p>
+                  </div>
+                </Link>
+              </motion.div>
+
+              {/* 2 stacked cards */}
+              <div className="grid gap-6">
+                {otherProperties.slice(0, 2).map((p, i) => (
+                  <PropertyCard key={p.id} property={p} index={i} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Bottom row */}
+          <div className="grid sm:grid-cols-2 gap-6">
+            {otherProperties.slice(2, 4).map((p, i) => (
+              <PropertyCard key={p.id} property={p} index={i + 2} />
             ))}
           </div>
+
           <div className="mt-8 text-center md:hidden">
             <Link
               to="/biens"

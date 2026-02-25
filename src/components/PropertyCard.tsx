@@ -53,7 +53,7 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => (
         </h3>
         <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-3 font-body">
           <MapPin className="w-3.5 h-3.5" />
-          {property.city} ({property.postalCode})
+          {property.city}
         </div>
 
         <div className="flex items-center gap-4 text-sm text-muted-foreground font-body border-t border-border pt-3">
