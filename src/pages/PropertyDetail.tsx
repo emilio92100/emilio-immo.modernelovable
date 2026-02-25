@@ -71,9 +71,30 @@ const PropertyDetail = () => {
     property.guardian ? { icon: ShieldCheck, label: "Gardien", value: "Oui" } : null,
   ].filter(Boolean) as { icon: any; label: string; value: string }[];
 
+  // Build highlights
+  const highlights: { icon: any; label: string }[] = [];
+  if (property.balcony) highlights.push({ icon: Compass, label: "Balcon" });
+  if (property.terrace) highlights.push({ icon: Compass, label: "Terrasse" });
+  if (property.cave) highlights.push({ icon: DoorOpen, label: "Cave" });
+  if (property.elevator) highlights.push({ icon: Building, label: "Ascenseur" });
+  if (property.guardian) highlights.push({ icon: ShieldCheck, label: "Gardien / Concierge" });
+  if (property.parking) highlights.push({ icon: Car, label: `Parking (${property.parking} place${property.parking > 1 ? "s" : ""})` });
+  if (property.orientation) highlights.push({ icon: Compass, label: `Orientation ${property.orientation}` });
+  if (property.exclusive) highlights.push({ icon: Star, label: "Exclusivité Émilio" });
+
   return (
     <div className="min-h-screen">
       <Navbar />
+
+      {/* Sticky back button */}
+      <div className="fixed bottom-6 left-6 z-50">
+        <Link
+          to="/biens"
+          className="flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2.5 rounded-full font-body text-sm font-semibold shadow-lg hover:brightness-110 transition-all"
+        >
+          <ArrowLeft className="w-4 h-4" /> Nos biens
+        </Link>
+      </div>
 
       {/* Breadcrumb */}
       <div className="pt-20 bg-secondary border-b border-border">
@@ -175,6 +196,26 @@ const PropertyDetail = () => {
                 )}
               </div>
 
+              {/* Les + du bien — EN HAUT */}
+              {highlights.length > 0 && (
+                <div className="bg-accent/5 border border-accent/20 rounded p-6">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center">
+                      <Star className="w-5 h-5 text-accent" />
+                    </div>
+                    <h2 className="font-display text-lg">Les + de ce bien</h2>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {highlights.map((h) => (
+                      <div key={h.label} className="flex items-center gap-3 bg-card rounded p-3 border border-border">
+                        <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
+                        <span className="font-body text-sm text-foreground">{h.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Info grid */}
               <div className="bg-card border border-border rounded p-6">
                 <h2 className="font-display text-lg mb-4">Caractéristiques</h2>
@@ -194,43 +235,14 @@ const PropertyDetail = () => {
               </div>
 
               {/* Description */}
-              <div className="bg-card border border-border rounded p-6">
-                <h2 className="font-display text-lg mb-4">Description</h2>
-                <p className="font-body text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
-                  {property.description}
-                </p>
-              </div>
-
-              {/* Les + du bien */}
-              {(() => {
-                const highlights: { icon: any; label: string }[] = [];
-                if (property.balcony) highlights.push({ icon: Compass, label: "Balcon" });
-                if (property.terrace) highlights.push({ icon: Compass, label: "Terrasse" });
-                if (property.cave) highlights.push({ icon: DoorOpen, label: "Cave" });
-                if (property.elevator) highlights.push({ icon: Building, label: "Ascenseur" });
-                if (property.guardian) highlights.push({ icon: ShieldCheck, label: "Gardien / Concierge" });
-                if (property.parking) highlights.push({ icon: Car, label: `Parking (${property.parking} place${property.parking > 1 ? "s" : ""})` });
-                if (property.orientation) highlights.push({ icon: Compass, label: `Orientation ${property.orientation}` });
-                if (property.exclusive) highlights.push({ icon: Star, label: "Exclusivité Émilio" });
-                return highlights.length > 0 ? (
-                  <div className="bg-accent/5 border border-accent/20 rounded p-6">
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center">
-                        <Star className="w-5 h-5 text-accent" />
-                      </div>
-                      <h2 className="font-display text-lg">Les + de ce bien</h2>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      {highlights.map((h) => (
-                        <div key={h.label} className="flex items-center gap-3 bg-card rounded p-3 border border-border">
-                          <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
-                          <span className="font-body text-sm text-foreground">{h.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : null;
-              })()}
+              {property.description && (
+                <div className="bg-card border border-border rounded p-6">
+                  <h2 className="font-display text-lg mb-4">Description</h2>
+                  <p className="font-body text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
+                    {property.description}
+                  </p>
+                </div>
+              )}
 
               {/* DPE */}
               <div className="bg-card border border-border rounded p-6">
@@ -264,10 +276,10 @@ const PropertyDetail = () => {
                   Contactez-nous pour organiser une visite ou obtenir plus d'informations.
                 </p>
                 <a
-                  href="tel:+33658957632"
+                  href="tel:+33184801400"
                   className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-5 py-3 rounded font-body font-semibold text-sm hover:brightness-110 transition-all w-full mb-3"
                 >
-                  <Phone className="w-4 h-4" /> 06 58 95 76 32
+                  <Phone className="w-4 h-4" /> 01 84 80 14 00
                 </a>
                 <a
                   href="mailto:agence@emilio-immo.com"
