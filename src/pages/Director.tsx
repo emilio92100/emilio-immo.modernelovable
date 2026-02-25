@@ -43,7 +43,7 @@ const emilioTimeline = [
   },
   {
     period: "2021",
-    title: "Expansion en Île-de-France",
+    title: "Expansion dans les villes limitrophes",
     text: "Fort d'un bouche-à-oreille rapide, développement sur Neuilly-sur-Seine, Saint-Cloud, Garches et Issy-les-Moulineaux.",
   },
   {
