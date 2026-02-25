@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import SuccessPopup from "@/components/SuccessPopup";
 
 const ContactForm = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +25,6 @@ const ContactForm = () => {
 
       if (error) throw error;
 
-      // Try to send email notification
       try {
         await supabase.functions.invoke("send-contact-email", {
           body: { ...form, form_type: "contact" },
@@ -32,8 +33,8 @@ const ContactForm = () => {
         // Email is best-effort
       }
 
-      toast({ title: "Message envoyé !", description: "Nous vous recontacterons dans les plus brefs délais." });
       setForm({ name: "", email: "", phone: "", message: "" });
+      setShowSuccess(true);
     } catch {
       toast({ title: "Erreur", description: "Une erreur est survenue. Veuillez réessayer.", variant: "destructive" });
     } finally {
@@ -95,6 +96,12 @@ const ContactForm = () => {
           </button>
         </form>
       </div>
+      <SuccessPopup
+        open={showSuccess}
+        onClose={() => setShowSuccess(false)}
+        title="Message envoyé !"
+        description="Nous vous recontacterons dans les plus brefs délais."
+      />
     </section>
   );
 };
