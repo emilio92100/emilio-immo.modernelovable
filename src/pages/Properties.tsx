@@ -225,28 +225,27 @@ const Properties = () => {
         </div>
       </section>
 
-      {/* OFF-MARKET CTA */}
-      <section className="relative py-16 bg-primary overflow-hidden">
-        {/* Fade gradient from listing section */}
-        <div className="absolute -top-24 left-0 right-0 h-24 bg-gradient-to-b from-background to-primary pointer-events-none" />
+      {/* OFF-MARKET CTA — intégré dans le listing */}
+      <section className="pb-16">
         <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <Lock className="w-7 h-7 text-accent" />
+          <div className="max-w-4xl mx-auto bg-secondary border border-border rounded-lg p-10 md:p-14 text-center">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <Lock className="w-6 h-6 text-accent" />
+              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Off-market</span>
             </div>
-            <h2 className="font-display text-2xl md:text-4xl text-primary-foreground mb-4">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
               Vous ne voyez qu'une partie de nos biens
             </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/70 text-base md:text-lg leading-relaxed mb-4">
-              Nous travaillons en grande partie sur du <span className="text-gold font-semibold italic">off-market</span>. 
+            <p className="font-body text-muted-foreground text-base leading-relaxed mb-4 max-w-2xl mx-auto">
+              Nous travaillons en grande partie sur du <span className="text-accent font-semibold italic">off-market</span>.
               De nombreux biens d'exception ne sont jamais publiés en ligne et restent accessibles uniquement via notre réseau confidentiel.
             </p>
-            <p className="font-body text-primary-foreground/60 text-sm mb-8">
+            <p className="font-body text-muted-foreground/70 text-sm mb-8">
               Confiez-nous votre recherche et accédez à des opportunités exclusives avant tout le monde.
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/mandat-recherche"
                 className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
@@ -254,15 +253,11 @@ const Properties = () => {
                 Nous confier votre recherche <ArrowRight className="w-4 h-4" />
               </Link>
               <a
-                href="tel:+33100000000"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/30 text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary-foreground/10 transition-all"
+                href="tel:+33184801400"
+                className="inline-flex items-center justify-center gap-2 border border-border text-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-muted transition-all"
               >
-                <Phone className="w-4 h-4" /> Nous appeler
+                <Phone className="w-4 h-4" /> 01 84 80 14 00
               </a>
-            </div>
-
-            <div className="flex items-center justify-center gap-6 text-primary-foreground/50 font-body text-xs">
-              <span className="flex items-center gap-2"><Mail className="w-3 h-3" /> contact@emilio-conseil.fr</span>
             </div>
           </div>
         </div>

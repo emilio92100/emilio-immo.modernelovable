@@ -38,11 +38,11 @@ const Navbar = () => {
         </div>
 
         <a
-          href="tel:+33658957632"
-          className="hidden lg:flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 text-sm font-body tracking-wide hover:bg-navy-light transition-colors rounded"
+          href="tel:+33184801400"
+          className="hidden lg:flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 text-sm font-body tracking-wide hover:brightness-110 transition-colors rounded"
         >
-          <Phone className="w-4 h-4" />
-          06 58 95 76 32
+  <Phone className="w-4 h-4" />
+          01 84 80 14 00
         </a>
 
         {/* Mobile toggle */}
@@ -72,11 +72,11 @@ const Navbar = () => {
               </Link>
             ))}
             <a
-              href="tel:+33658957632"
-              className="flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 text-sm font-body tracking-wide rounded w-fit"
+          href="tel:+33184801400"
+              className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 text-sm font-body tracking-wide rounded w-fit"
             >
               <Phone className="w-4 h-4" />
-              06 58 95 76 32
+              01 84 80 14 00
             </a>
           </div>
         </div>

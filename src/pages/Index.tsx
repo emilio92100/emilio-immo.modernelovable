@@ -61,6 +61,13 @@ const services = [
   },
 ];
 
+const offMarketStats = [
+  { value: "50+", label: "Biens off-market", description: "Biens exclusifs non diffusés sur les portails classiques" },
+  { value: "200+", label: "Transactions", description: "Transactions réussies grâce à notre réseau privilégié" },
+  { value: "98%", label: "Satisfaction", description: "De nos clients recommandent nos services" },
+  { value: "72h", label: "Réactivité", description: "Délai moyen pour vous proposer un bien ciblé" },
+];
+
 const Index = () => {
   const [properties, setProperties] = useState<Property[]>(mockProperties);
 
@@ -70,10 +77,7 @@ const Index = () => {
 
   const latestProperties = [...properties]
     .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
-    .slice(0, 5);
-
-  const featuredProperty = latestProperties[0];
-  const otherProperties = latestProperties.slice(1, 5);
+    .slice(0, 6);
 
   return (
     <div className="min-h-screen">
@@ -188,7 +192,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* LATEST PROPERTIES — Featured layout */}
+      {/* LATEST PROPERTIES — Taille uniforme */}
       <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="flex items-end justify-between mb-12">
@@ -205,57 +209,9 @@ const Index = () => {
             </Link>
           </div>
 
-          {featuredProperty && (
-            <div className="grid lg:grid-cols-2 gap-6 mb-6">
-              {/* Featured large card */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-              >
-                <Link to={`/biens/${featuredProperty.id}`} className="group block bg-card rounded overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border h-full">
-                  <div className="relative overflow-hidden aspect-[4/3]">
-                    <img
-                      src={featuredProperty.images[0]}
-                      alt={featuredProperty.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                    {featuredProperty.exclusive && (
-                      <span className="absolute top-4 left-4 bg-accent text-accent-foreground text-xs font-body font-semibold tracking-wider uppercase px-4 py-1.5 rounded">
-                        Exclusivité
-                      </span>
-                    )}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/80 to-transparent p-6 pt-16">
-                      <span className="text-primary-foreground font-display text-2xl md:text-3xl font-semibold">
-                        {formatPrice(featuredProperty.price)} <span className="text-sm font-body font-normal opacity-80">FAI</span>
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-2">{featuredProperty.title}</h3>
-                    <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-3 font-body">
-                      <MapPin className="w-3.5 h-3.5" /> {featuredProperty.city}
-                    </div>
-                    <p className="font-body text-muted-foreground text-sm line-clamp-2">{featuredProperty.description}</p>
-                  </div>
-                </Link>
-              </motion.div>
-
-              {/* 2 stacked cards */}
-              <div className="grid gap-6">
-                {otherProperties.slice(0, 2).map((p, i) => (
-                  <PropertyCard key={p.id} property={p} index={i} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Bottom row */}
-          <div className="grid sm:grid-cols-2 gap-6">
-            {otherProperties.slice(2, 4).map((p, i) => (
-              <PropertyCard key={p.id} property={p} index={i + 2} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {latestProperties.map((p, i) => (
+              <PropertyCard key={p.id} property={p} index={i} />
             ))}
           </div>
 
@@ -270,66 +226,57 @@ const Index = () => {
         </div>
       </section>
 
-      {/* OFF-MARKET */}
+      {/* OFF-MARKET — Hover cards with stats */}
       <section className="py-20 bg-primary">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <Lock className="w-6 h-6 text-accent" />
-                <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Accès privilégié</span>
-              </div>
-              <h2 className="font-display text-3xl md:text-4xl text-primary-foreground mb-6">
-                Notre base <span className="text-gold italic">Off-Market</span>
-              </h2>
-              <p className="font-body text-primary-foreground/70 leading-relaxed mb-6">
-                Accédez à des biens d'exception qui ne sont jamais diffusés sur les portails immobiliers classiques.
-                Notre réseau privilégié nous permet de vous proposer des opportunités uniques avant leur mise sur le marché.
-              </p>
-              <ul className="space-y-3 mb-8">
-                {[
-                  "Biens exclusifs non diffusés",
-                  "Accès prioritaire avant mise en marché",
-                  "Réseau confidentiel de vendeurs",
-                  "Opportunités d'investissement rares",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-primary-foreground/80 font-body text-sm">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/mandat-recherche"
-                className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 font-body font-semibold text-sm rounded hover:brightness-110 transition-all"
+          <div className="text-center mb-14">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Lock className="w-6 h-6 text-accent" />
+              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Accès privilégié</span>
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl text-primary-foreground mb-4">
+              Notre base <span className="text-gold italic">Off-Market</span>
+            </h2>
+            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
+            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">
+              Accédez à des biens d'exception qui ne sont jamais diffusés sur les portails classiques.
+              Notre réseau privilégié vous ouvre les portes d'opportunités uniques.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {offMarketStats.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="group relative bg-primary-foreground/5 border border-primary-foreground/10 rounded-lg p-8 text-center cursor-default overflow-hidden transition-all duration-500 hover:bg-primary-foreground/10 hover:border-accent/30"
               >
-                Accéder au off-market <ArrowRight className="w-4 h-4" />
-              </Link>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-2 gap-4"
-            >
-              {[
-                { label: "Biens off-market", value: "50+" },
-                { label: "Transactions réussies", value: "200+" },
-                { label: "Clients satisfaits", value: "98%" },
-                { label: "Années d'expérience", value: "10+" },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-primary-foreground/5 border border-primary-foreground/10 rounded p-6 text-center">
-                  <div className="font-display text-3xl text-accent mb-2">{stat.value}</div>
-                  <div className="font-body text-primary-foreground/60 text-xs tracking-wide">{stat.label}</div>
+                {/* Default view */}
+                <div className="transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-4">
+                  <div className="font-display text-4xl text-accent mb-2 font-semibold">{stat.value}</div>
+                  <div className="font-body text-primary-foreground/70 text-sm tracking-wide">{stat.label}</div>
                 </div>
-              ))}
-            </motion.div>
+                {/* Hover view */}
+                <div className="absolute inset-0 flex items-center justify-center p-6 opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+                  <div className="text-center">
+                    <div className="font-display text-2xl text-accent mb-2 font-semibold">{stat.value}</div>
+                    <p className="font-body text-primary-foreground/80 text-sm leading-relaxed">{stat.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/mandat-recherche"
+              className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold text-sm rounded hover:brightness-110 transition-all"
+            >
+              Accéder au off-market <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
