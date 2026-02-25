@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Award, Users, Target, Handshake, Heart, TrendingUp, Shield, Briefcase } from "lucide-react";
+import { Award, Users, Target, Handshake, Heart, Shield } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
@@ -12,26 +12,28 @@ const stats = [
   { icon: Handshake, label: "98% satisfaction client" },
 ];
 
+
+
 const philosophy = [
   {
-    icon: Heart,
-    title: "L'humain avant tout",
-    description: "Chaque projet est unique. Je prends le temps de comprendre vos besoins, vos contraintes et vos aspirations pour vous offrir un accompagnement véritablement personnalisé.",
+    icon: Handshake,
+    title: "Je vous écoute vraiment",
+    description: "Je ne suis pas là pour vous vendre un bien à tout prix. Je prends le temps de vous connaître, de comprendre ce que vous cherchez vraiment, et je vous dis franchement si un bien n'est pas fait pour vous.",
   },
   {
     icon: Shield,
-    title: "Confiance & Transparence",
-    description: "Pas de promesses en l'air. Je m'engage à vous communiquer des informations fiables, des estimations justes et un suivi régulier à chaque étape.",
+    title: "Je joue cartes sur table",
+    description: "Pas de discours commercial, pas de chiffres gonflés. Je vous donne mon avis honnête, même quand ce n'est pas ce que vous voulez entendre. C'est comme ça qu'on construit une relation de confiance.",
   },
   {
-    icon: TrendingUp,
-    title: "Performance & Résultat",
-    description: "Grâce à une connaissance fine du marché et un réseau étendu, je négocie dans votre intérêt pour obtenir les meilleures conditions possibles.",
+    icon: Target,
+    title: "Je me bats pour vos intérêts",
+    description: "Négocier, c'est mon métier. Je connais les prix, je connais le marché, et je mets toute mon énergie pour vous obtenir les meilleures conditions — que vous achetiez ou que vous vendiez.",
   },
   {
-    icon: Briefcase,
-    title: "Réseau Off-Market",
-    description: "Mon réseau confidentiel me permet d'accéder à des biens jamais publiés. Un avantage décisif pour mes clients acquéreurs les plus exigeants.",
+    icon: Heart,
+    title: "Je reste disponible, tout simplement",
+    description: "Un doute le soir ? Une question le week-end ? Je décroche. L'immobilier ne s'arrête pas à 18h, et moi non plus. Vous pouvez compter sur moi du début à la fin.",
   },
 ];
 
@@ -39,25 +41,20 @@ const emilioTimeline = [
   {
     period: "Septembre 2020",
     title: "Lancement d'Émilio Immobilier",
-    text: "Création de l'agence avec un premier secteur sur Boulogne-Billancourt. Un démarrage ambitieux, porté par une vision claire du service immobilier.",
+    text: "Création de l'agence avec un premier secteur sur Boulogne-Billancourt. Un démarrage ambitieux, porté par l'envie de faire les choses différemment.",
   },
   {
     period: "2021",
-    title: "Expansion villes limitrophes",
-    text: "Fort d'un succès rapide à Boulogne, développement sur les communes voisines : Issy-les-Moulineaux, Meudon, Sèvres et Chaville.",
+    title: "Expansion en Île-de-France",
+    text: "Fort d'un bouche-à-oreille rapide, développement sur Neuilly-sur-Seine, Saint-Cloud, Garches et Issy-les-Moulineaux.",
   },
   {
     period: "2023",
-    title: "Ouverture sur Paris Ouest",
-    text: "Trois ans après sa création, Émilio s'implante sur les arrondissements prisés de l'ouest parisien : 15e, 16e et 17e arrondissements.",
+    title: "Implantation à Paris",
+    text: "Ouverture sur les 16e, 15e, 6e et 7e arrondissements — des secteurs où nous sommes aujourd'hui bien établis, avec des propriétaires qui nous recommandent régulièrement grâce à notre travail professionnel.",
   },
 ];
 
-const beforeTimeline = [
-  { period: "2 ans", agency: "BARNES", type: "Immobilier de prestige" },
-  { period: "1 an", agency: "FONCIA", type: "Gestion & transaction" },
-  { period: "4 ans", agency: "LAFORÊT", type: "Transaction résidentielle" },
-];
 
 const Director = () => {
   return (
@@ -114,19 +111,17 @@ const Director = () => {
               <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Fondateur & Directeur</span>
               <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-6">Alexandre</h2>
               <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
-                Passionné par l'immobilier depuis plus de 10 ans, Alexandre a fondé Émilio Conseil Immobilier
-                avec une vision claire : offrir un service d'excellence et un accompagnement personnalisé
-                à chaque client.
+                Passionné par l'immobilier depuis plus de 10 ans, j'ai fondé Émilio Conseil Immobilier
+                avec une idée simple : offrir à mes clients le service que j'aurais aimé recevoir moi-même.
               </p>
               <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
-                Fort d'un parcours riche au sein d'enseignes de renom — de la transaction résidentielle
-                chez Laforêt et Foncia à l'immobilier de prestige chez Barnes — Alexandre maîtrise aussi bien
-                les biens classiques que le segment luxe. Cette double expertise lui confère une vision
-                complète du marché et une capacité unique à s'adapter aux attentes de chaque client.
+                Avant de créer Émilio, j'ai travaillé chez Laforêt, Foncia puis Barnes.
+                Ces expériences m'ont permis de toucher aussi bien aux biens classiques qu'à l'immobilier de prestige,
+                et de développer une vision complète du marché.
               </p>
               <p className="font-body text-muted-foreground leading-relaxed mb-8 text-base">
-                Son objectif : transformer chaque projet immobilier en une expérience sereine et réussie,
-                en plaçant toujours l'intérêt du client au cœur de sa démarche.
+                Mon objectif aujourd'hui : que chaque client se sente accompagné, écouté et en confiance
+                du premier appel jusqu'à la signature.
               </p>
 
               <div className="grid grid-cols-2 gap-4">
@@ -189,26 +184,6 @@ const Director = () => {
               <div className="w-16 h-0.5 bg-accent mx-auto" />
             </div>
 
-            {/* Before Emilio - greyed out / subtle */}
-            <div className="mb-12">
-              <p className="font-body text-muted-foreground text-xs uppercase tracking-wider mb-6">Avant Émilio — Expériences fondatrices</p>
-              <div className="grid sm:grid-cols-3 gap-4">
-                {beforeTimeline.map((item, i) => (
-                  <motion.div
-                    key={item.agency}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                    viewport={{ once: true }}
-                    className="bg-muted/60 border border-border/50 rounded-lg p-5 text-center"
-                  >
-                    <span className="font-display text-lg text-muted-foreground/70">{item.agency}</span>
-                    <p className="font-body text-xs text-muted-foreground/60 mt-1">{item.period}</p>
-                    <p className="font-body text-xs text-muted-foreground/50 mt-2">{item.type}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
 
             {/* Emilio timeline */}
             <div className="relative">
