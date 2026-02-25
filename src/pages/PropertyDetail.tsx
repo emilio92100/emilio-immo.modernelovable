@@ -11,6 +11,25 @@ import ContactForm from "@/components/ContactForm";
 import DPEBadge from "@/components/DPEBadge";
 import SuccessPopup from "@/components/SuccessPopup";
 import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed } from "@/lib/properties";
+
+const getDisplayTitle = (property: Property) => {
+  const type = property.type || "Bien";
+  if (property.rooms > 0) {
+    return `${type} ${property.rooms} pièce${property.rooms > 1 ? "s" : ""}`;
+  }
+  return type;
+};
+
+const getDisplayCity = (property: Property) => {
+  const city = property.city;
+  if (city.toLowerCase().startsWith("paris") && property.postalCode.startsWith("75")) {
+    const arrNum = parseInt(property.postalCode.slice(3), 10);
+    if (arrNum > 0 && !city.includes("ème") && !city.includes("er")) {
+      return `Paris ${arrNum}${arrNum === 1 ? "er" : "ème"}`;
+    }
+  }
+  return city;
+};
 import { supabase } from "@/integrations/supabase/client";
 
 const PropertyDetail = () => {
@@ -183,10 +202,10 @@ const PropertyDetail = () => {
                     Réf. {property.id}
                   </span>
                 </div>
-                <h1 className="font-display text-2xl md:text-3xl text-foreground mb-2">{property.title}</h1>
+                <h1 className="font-display text-2xl md:text-3xl text-foreground mb-2">{getDisplayTitle(property)}</h1>
                 <div className="flex items-center gap-1.5 text-muted-foreground font-body text-sm">
                   <MapPin className="w-4 h-4" />
-                  {property.city} ({property.postalCode})
+                  {getDisplayCity(property)} ({property.postalCode})
                 </div>
                 <p className="font-display text-3xl text-accent font-semibold mt-4">
                   {formatPrice(property.price)} <span className="text-lg font-body font-normal text-muted-foreground">FAI</span>
