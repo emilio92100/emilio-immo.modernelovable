@@ -79,20 +79,7 @@ const PropertyDetail = () => {
   const nextImage = () => setCurrentImage((c) => (c + 1) % property.images.length);
   const prevImage = () => setCurrentImage((c) => (c - 1 + property.images.length) % property.images.length);
 
-  const infoItems = [
-    { icon: Maximize, label: "Surface", value: `${property.surface} m²` },
-    property.rooms > 0 ? { icon: Home, label: "Pièces", value: `${property.rooms}` } : null,
-    property.bedrooms > 0 ? { icon: BedDouble, label: "Chambres", value: `${property.bedrooms}` } : null,
-    property.floor ? { icon: Building, label: "Étage", value: `${property.floor}/${property.totalFloors}` } : null,
-    property.orientation ? { icon: Compass, label: "Orientation", value: property.orientation } : null,
-    property.yearBuilt && property.yearBuilt > 0 ? { icon: Calendar, label: "Année", value: `${property.yearBuilt}` } : null,
-    property.heating ? { icon: Thermometer, label: "Chauffage", value: property.heating } : null,
-    property.parking ? { icon: Car, label: "Parking", value: `${property.parking} place(s)` } : null,
-    property.elevator ? { icon: DoorOpen, label: "Ascenseur", value: "Oui" } : null,
-    property.guardian ? { icon: ShieldCheck, label: "Gardien", value: "Oui" } : null,
-  ].filter(Boolean) as { icon: any; label: string; value: string }[];
-
-  // Build highlights
+  // Build highlights (attractive features)
   const highlights: { icon: any; label: string }[] = [];
   if (property.balcony) highlights.push({ icon: Compass, label: "Balcon" });
   if (property.terrace) highlights.push({ icon: Compass, label: "Terrasse" });
@@ -102,6 +89,19 @@ const PropertyDetail = () => {
   if (property.parking) highlights.push({ icon: Car, label: `Parking (${property.parking} place${property.parking > 1 ? "s" : ""})` });
   if (property.orientation) highlights.push({ icon: Compass, label: `Orientation ${property.orientation}` });
   if (property.exclusive) highlights.push({ icon: Star, label: "Exclusivité Émilio" });
+
+  // Build characteristics, excluding items already in highlights
+  const highlightLabels = new Set(["Ascenseur", "Gardien", "Parking", "Orientation"]);
+  const infoItems = [
+    { icon: Maximize, label: "Surface", value: `${property.surface} m²` },
+    property.rooms > 0 ? { icon: Home, label: "Pièces", value: `${property.rooms}` } : null,
+    property.bedrooms > 0 ? { icon: BedDouble, label: "Chambres", value: `${property.bedrooms}` } : null,
+    property.floor ? { icon: Building, label: "Étage", value: `${property.floor}/${property.totalFloors}` } : null,
+    !property.orientation ? null : null, // already in highlights
+    property.yearBuilt && property.yearBuilt > 0 ? { icon: Calendar, label: "Année", value: `${property.yearBuilt}` } : null,
+    property.heating ? { icon: Thermometer, label: "Chauffage", value: property.heating } : null,
+    // Skip parking, elevator, guardian — they're in highlights
+  ].filter(Boolean) as { icon: any; label: string; value: string }[];
 
   return (
     <div className="min-h-screen">
