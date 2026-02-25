@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       contact_submissions: {
         Row: {
+          admin_notes: string | null
           budget: string | null
           created_at: string
           desired_location: string | null
@@ -23,6 +24,7 @@ export type Database = {
           email: string
           form_type: string
           id: string
+          is_called: boolean
           message: string | null
           name: string
           phone: string | null
@@ -32,6 +34,7 @@ export type Database = {
           timeline: string | null
         }
         Insert: {
+          admin_notes?: string | null
           budget?: string | null
           created_at?: string
           desired_location?: string | null
@@ -39,6 +42,7 @@ export type Database = {
           email: string
           form_type?: string
           id?: string
+          is_called?: boolean
           message?: string | null
           name: string
           phone?: string | null
@@ -48,6 +52,7 @@ export type Database = {
           timeline?: string | null
         }
         Update: {
+          admin_notes?: string | null
           budget?: string | null
           created_at?: string
           desired_location?: string | null
@@ -55,6 +60,7 @@ export type Database = {
           email?: string
           form_type?: string
           id?: string
+          is_called?: boolean
           message?: string | null
           name?: string
           phone?: string | null
