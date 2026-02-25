@@ -36,15 +36,21 @@ serve(async (req) => {
 });
 
 function extractCDATA(text: string): string {
-  // Match <![CDATA[...]]> or plain text
-  const cdataMatch = text.match(/<!\[CDATA\[([\s\S]*?)\]\]>/);
-  if (cdataMatch) return cdataMatch[1].trim();
+  // Collect ALL CDATA blocks and concatenate them
+  const cdataRegex = /<!\[CDATA\[([\s\S]*?)\]\]>/g;
+  const parts: string[] = [];
+  let m;
+  while ((m = cdataRegex.exec(text)) !== null) {
+    parts.push(m[1]);
+  }
+  if (parts.length > 0) return parts.join("\n").trim();
   // Strip any remaining tags
   return text.replace(/<[^>]*>/g, "").trim();
 }
 
 function getTagContent(xml: string, tag: string): string {
-  const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i");
+  // Use greedy match to capture full content including nested CDATA
+  const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*)<\\/${tag}>`, "i");
   const match = xml.match(regex);
   if (!match) {
     // Try self-closing or content without closing tag
