@@ -86,7 +86,7 @@ const Index = () => {
       {/* HERO */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/50 via-primary/30 to-secondary" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-secondary" />
         <div className="relative z-10 container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
             <motion.span
