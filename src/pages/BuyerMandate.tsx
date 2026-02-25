@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import BuyerMandateForm from "@/components/BuyerMandateForm";
+import PricingSection from "@/components/PricingSection";
 
 const steps = [
   {
@@ -193,6 +194,49 @@ const BuyerMandate = () => {
           </div>
         </div>
       </section>
+
+      {/* PRICING */}
+      <PricingSection
+        heading="Nos honoraires de recherche"
+        subheading="Des tarifs clairs pour un accompagnement sur-mesure dans votre projet d'achat."
+        plans={[
+          {
+            title: "Mandat de Recherche Simple",
+            rate: "4% TTC",
+            subtitle: "du prix d'acquisition du bien",
+            features: [
+              { text: "Définition de vos critères", included: true },
+              { text: "Recherche sur le marché visible", included: true },
+              { text: "Organisation des visites", included: true },
+              { text: "Conseil et accompagnement", included: true },
+              { text: "Accès au réseau off-market exclusif", included: false },
+              { text: "Prospection dédiée et prioritaire", included: false },
+              { text: "Négociation renforcée en votre faveur", included: false },
+              { text: "Reporting hebdomadaire personnalisé", included: false },
+              { text: "Délai de recherche réduit de moitié", included: false },
+            ],
+            cta: "Choisir le mandat simple",
+          },
+          {
+            title: "Mandat Exclusif de Recherche",
+            rate: "2,5% TTC",
+            subtitle: "du prix d'acquisition du bien",
+            recommended: true,
+            features: [
+              { text: "Définition approfondie de vos critères", included: true },
+              { text: "Recherche marché visible + off-market", included: true },
+              { text: "Organisation et pré-sélection des visites", included: true },
+              { text: "Conseil et accompagnement premium", included: true },
+              { text: "Accès prioritaire au réseau off-market", included: true },
+              { text: "Prospection dédiée et intensive", included: true },
+              { text: "Négociation experte en votre faveur", included: true },
+              { text: "Reporting hebdomadaire personnalisé", included: true },
+              { text: "Délai de recherche réduit de moitié", included: true },
+            ],
+            cta: "Choisir le mandat exclusif",
+          },
+        ]}
+      />
 
       <ContactForm />
       <Footer />
