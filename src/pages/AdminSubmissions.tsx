@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Phone, Mail, Home, Search, MessageSquare, Clock, User, MapPin, Banknote, Maximize, CalendarClock, X } from "lucide-react";
+import { ArrowLeft, Phone, Mail, Home, Search, MessageSquare, Clock, User, MapPin, Banknote, Maximize, CalendarClock, X, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 
@@ -28,13 +29,36 @@ const typeLabels: Record<string, { label: string; color: string; icon: any }> = 
 };
 
 const AdminSubmissions = () => {
+  const navigate = useNavigate();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
 
   useEffect(() => {
-    const fetchSubmissions = async () => {
+    // Check auth
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate("/admin");
+        return;
+      }
+
+      // Check admin role
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session.user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+
+      if (!roleData) {
+        await supabase.auth.signOut();
+        navigate("/admin");
+        return;
+      }
+
+      // Fetch submissions
       const { data, error } = await supabase
         .from("contact_submissions")
         .select("*")
@@ -43,8 +67,8 @@ const AdminSubmissions = () => {
       if (!error && data) setSubmissions(data as Submission[]);
       setLoading(false);
     };
-    fetchSubmissions();
-  }, []);
+    checkAuth();
+  }, [navigate]);
 
   const filtered = activeFilter === "all" ? submissions : submissions.filter((s) => s.form_type === activeFilter);
 
@@ -60,19 +84,29 @@ const AdminSubmissions = () => {
     rappel_bien: submissions.filter((s) => s.form_type === "rappel_bien").length,
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/admin");
+  };
+
   return (
     <div className="min-h-screen bg-secondary">
       <Navbar />
       <div className="pt-24 pb-12">
         <div className="container mx-auto px-6">
-          <div className="flex items-center gap-4 mb-8">
-            <Link to="/" className="text-muted-foreground hover:text-accent transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <div>
-              <h1 className="font-display text-2xl md:text-3xl text-foreground">Demandes reçues</h1>
-              <p className="font-body text-sm text-muted-foreground mt-1">{submissions.length} demande(s) au total</p>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <Link to="/" className="text-muted-foreground hover:text-accent transition-colors">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div>
+                <h1 className="font-display text-2xl md:text-3xl text-foreground">Demandes reçues</h1>
+                <p className="font-body text-sm text-muted-foreground mt-1">{submissions.length} demande(s) au total</p>
+              </div>
             </div>
+            <button onClick={handleLogout} className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-body text-sm transition-colors">
+              <LogOut className="w-4 h-4" /> Déconnexion
+            </button>
           </div>
 
           {/* Filters */}
