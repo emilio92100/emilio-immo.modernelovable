@@ -86,7 +86,7 @@ const Index = () => {
       {/* HERO */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/50 via-primary/30 to-secondary" />
         <div className="relative z-10 container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
             <motion.span
@@ -101,7 +101,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.1 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground font-semibold leading-tight mb-6"
+              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-tight mb-6"
             >
               Votre projet immobilier,
               <br />
@@ -111,7 +111,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.3 }}
-              className="font-body text-muted-foreground text-lg md:text-xl max-w-xl mx-auto mb-10"
+              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mx-auto mb-10"
             >
               Achat, vente et conseil sur-mesure en Île-de-France. 
               Accédez à des biens d'exception, y compris en off-market.
@@ -130,7 +130,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/mandat-recherche"
-                className="inline-flex items-center justify-center gap-2 border border-foreground/30 text-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-foreground/5 transition-all"
+                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/40 text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary-foreground/10 transition-all"
               >
                 Mandat de recherche
               </Link>
