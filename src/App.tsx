@@ -10,6 +10,7 @@ import Director from "./pages/Director";
 import SellPage from "./pages/SellPage";
 import BuyerMandate from "./pages/BuyerMandate";
 import PropertyDetail from "./pages/PropertyDetail";
+import AdminSubmissions from "./pages/AdminSubmissions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/directeur" element={<Director />} />
           <Route path="/vendre" element={<SellPage />} />
           <Route path="/mandat-recherche" element={<BuyerMandate />} />
+          <Route path="/admin/demandes" element={<AdminSubmissions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
