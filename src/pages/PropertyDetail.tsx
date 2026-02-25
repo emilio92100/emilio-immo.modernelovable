@@ -3,13 +3,15 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, MapPin, Maximize, BedDouble, Home, Calendar, Building, Thermometer,
-  Car, ChevronLeft, ChevronRight, Phone, Mail, Compass, DoorOpen, ShieldCheck, Star, CheckCircle,
+  Car, ChevronLeft, ChevronRight, Phone, Mail, Compass, DoorOpen, ShieldCheck, Star, CheckCircle, Send,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import DPEBadge from "@/components/DPEBadge";
+import SuccessPopup from "@/components/SuccessPopup";
 import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed } from "@/lib/properties";
+import { supabase } from "@/integrations/supabase/client";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -284,6 +286,9 @@ const PropertyDetail = () => {
                   <Mail className="w-4 h-4" /> agence@emilio-immo.com
                 </a>
 
+                {/* Callback form */}
+                <CallbackForm propertyRef={property.id} propertyTitle={property.title} />
+
                 <div className="mt-6 pt-6 border-t border-border">
                   <p className="font-body text-xs text-muted-foreground mb-2">Commodités</p>
                   <div className="flex flex-wrap gap-2">
@@ -303,6 +308,76 @@ const PropertyDetail = () => {
       <ContactForm />
       <Footer />
     </div>
+  );
+};
+
+/* ---------- Callback Form (sidebar) ---------- */
+const CallbackForm = ({ propertyRef, propertyTitle }: { propertyRef: string; propertyTitle: string }) => {
+  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const inputClass =
+    "w-full px-3 py-2.5 bg-background border border-border text-foreground placeholder:text-muted-foreground rounded font-body text-sm focus:outline-none focus:border-accent transition-colors";
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { error } = await supabase.from("contact_submissions").insert({
+        form_type: "rappel_bien",
+        name: `${form.firstName} ${form.lastName}`,
+        email: form.email,
+        phone: form.phone,
+        message: form.message || `Demande de rappel pour le bien : ${propertyTitle} (Réf. ${propertyRef})`,
+      });
+      if (error) throw error;
+
+      try {
+        await supabase.functions.invoke("send-contact-email", {
+          body: {
+            form_type: "rappel_bien",
+            name: `${form.firstName} ${form.lastName}`,
+            email: form.email,
+            phone: form.phone,
+            message: `Bien concerné : ${propertyTitle} (Réf. ${propertyRef})\n\n${form.message || "Pas de message complémentaire."}`,
+          },
+        });
+      } catch { /* best-effort */ }
+
+      setForm({ firstName: "", lastName: "", email: "", phone: "", message: "" });
+      setShowSuccess(true);
+    } catch {
+      // fallback toast handled inline
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <div className="mt-6 pt-6 border-t border-border">
+        <h4 className="font-display text-sm mb-3">Être rappelé pour ce bien</h4>
+        <form onSubmit={handleSubmit} className="space-y-2.5">
+          <div className="grid grid-cols-2 gap-2">
+            <input type="text" placeholder="Prénom *" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className={inputClass} />
+            <input type="text" placeholder="Nom *" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className={inputClass} />
+          </div>
+          <input type="email" placeholder="Email *" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} />
+          <input type="tel" placeholder="Téléphone *" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} />
+          <textarea placeholder="Message (optionnel)" rows={2} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`${inputClass} resize-none`} />
+          <button type="submit" disabled={loading} className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-2.5 rounded font-body font-semibold text-sm hover:brightness-110 transition-all disabled:opacity-50">
+            <Send className="w-3.5 h-3.5" /> {loading ? "Envoi..." : "Demander un rappel"}
+          </button>
+        </form>
+      </div>
+      <SuccessPopup
+        open={showSuccess}
+        onClose={() => setShowSuccess(false)}
+        title="Demande de rappel envoyée !"
+        description="Un conseiller vous recontactera dans les plus brefs délais."
+      />
+    </>
   );
 };
 
