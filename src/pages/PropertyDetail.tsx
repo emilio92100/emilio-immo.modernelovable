@@ -329,7 +329,9 @@ const CallbackForm = ({ propertyRef, propertyTitle }: { propertyRef: string; pro
         name: `${form.firstName} ${form.lastName}`,
         email: form.email,
         phone: form.phone,
-        message: form.message || `Demande de rappel pour le bien : ${propertyTitle} (Réf. ${propertyRef})`,
+        message: form.message || null,
+        property_ref: propertyRef,
+        property_title: propertyTitle,
       });
       if (error) throw error;
 
