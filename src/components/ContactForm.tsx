@@ -1,15 +1,44 @@
 import { useState } from "react";
 import { Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactForm = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "Message envoyé !", description: "Nous vous recontacterons dans les plus brefs délais." });
-    setForm({ name: "", email: "", phone: "", message: "" });
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.from("contact_submissions").insert({
+        form_type: "contact",
+        name: form.name,
+        email: form.email,
+        phone: form.phone || null,
+        message: form.message || null,
+      });
+
+      if (error) throw error;
+
+      // Try to send email notification
+      try {
+        await supabase.functions.invoke("send-contact-email", {
+          body: { ...form, form_type: "contact" },
+        });
+      } catch {
+        // Email is best-effort
+      }
+
+      toast({ title: "Message envoyé !", description: "Nous vous recontacterons dans les plus brefs délais." });
+      setForm({ name: "", email: "", phone: "", message: "" });
+    } catch {
+      toast({ title: "Erreur", description: "Une erreur est survenue. Veuillez réessayer.", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -59,9 +88,10 @@ const ContactForm = () => {
           />
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-3 rounded font-body font-semibold tracking-wide text-sm hover:brightness-110 transition-all"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-3 rounded font-body font-semibold tracking-wide text-sm hover:brightness-110 transition-all disabled:opacity-50"
           >
-            <Send className="w-4 h-4" /> Envoyer
+            <Send className="w-4 h-4" /> {loading ? "Envoi en cours..." : "Envoyer"}
           </button>
         </form>
       </div>
