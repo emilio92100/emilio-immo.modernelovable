@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Search, Filter, MapPin, FileCheck, Handshake, ArrowRight, CheckCircle, Clock, Target, Users, Shield, Gem, HeartHandshake } from "lucide-react";
-import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
+import BuyerMandateForm from "@/components/BuyerMandateForm";
 
 const steps = [
   {
@@ -189,12 +189,13 @@ const BuyerMandate = () => {
               <p className="font-body text-muted-foreground text-sm mb-6">
                 Remplissez le formulaire de contact ci-dessous ou appelez-nous directement pour nous exposer votre projet.
               </p>
-              <Link
-                to="/#contact"
-                className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 font-body font-semibold text-sm rounded hover:brightness-110 transition-all w-full justify-center"
-              >
-                Nous contacter <ArrowRight className="w-4 h-4" />
-              </Link>
+              <BuyerMandateForm
+                trigger={
+                  <button className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 font-body font-semibold text-sm rounded hover:brightness-110 transition-all w-full justify-center">
+                    Décrire mon projet <ArrowRight className="w-4 h-4" />
+                  </button>
+                }
+              />
               <p className="text-center mt-4 font-body text-muted-foreground text-xs">
                 Ou appelez directement : <a href="tel:+33658957632" className="text-accent hover:underline">06 58 95 76 32</a>
               </p>
