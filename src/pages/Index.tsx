@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Star, ShieldCheck, Eye, Lock, Search, Home, CheckCircle, Quote } from "lucide-react";
@@ -5,12 +6,8 @@ import PropertyCard from "@/components/PropertyCard";
 import ContactForm from "@/components/ContactForm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { mockProperties, formatPrice } from "@/lib/properties";
+import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed } from "@/lib/properties";
 import heroBg from "@/assets/hero-bg.jpg";
-
-const latestProperties = [...mockProperties]
-  .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
-  .slice(0, 4);
 
 const testimonials = [
   {
@@ -49,6 +46,16 @@ const values = [
 ];
 
 const Index = () => {
+  const [properties, setProperties] = useState<Property[]>(mockProperties);
+
+  useEffect(() => {
+    fetchPropertiesFromFeed().then(setProperties);
+  }, []);
+
+  const latestProperties = [...properties]
+    .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+    .slice(0, 4);
+
   return (
     <div className="min-h-screen">
       <Navbar />

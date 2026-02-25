@@ -22,6 +22,7 @@ export interface Property {
   parking?: number;
   cave?: boolean;
   balcony?: boolean;
+  terrace?: boolean;
   elevator?: boolean;
   guardian?: boolean;
   charges?: number;
@@ -33,6 +34,7 @@ export interface Property {
   longitude?: number;
 }
 
+// Fallback mock data used when edge function is unavailable
 export const mockProperties: Property[] = [
   {
     id: "60059431",
@@ -70,11 +72,10 @@ export const mockProperties: Property[] = [
     rooms: 3,
     bedrooms: 2,
     type: "Appartement",
-    description: "RUE DE SILLY / METRO LIGNE 10 / Dans une copropriété bien entretenue, nous vous proposons en étage ce bel appartement rénové. Il se compose d'une entrée, d'un salon lumineux avec cuisine aménagée et équipée, espace nuit avec deux chambres, une salle de bains et wc séparé. Au sous sol une cave. Possibilité d'acquérir un box en sus du prix. Très bon emplacement, commerces au pied de l'immeuble.",
+    description: "RUE DE SILLY / METRO LIGNE 10 / Dans une copropriété bien entretenue, nous vous proposons en étage ce bel appartement rénové.",
     images: [
       "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/6/0/0/5/6/8/0/5/60056805a.jpg?DATEMAJ=20/02/2026-16:59:26",
       "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/6/0/0/5/6/8/0/5/60056805b.jpg?DATEMAJ=20/02/2026-16:59:26",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/6/0/0/5/6/8/0/5/60056805c.jpg?DATEMAJ=20/02/2026-16:59:26",
     ],
     dateAdded: "2026-02-20",
     exclusive: true,
@@ -99,7 +100,7 @@ export const mockProperties: Property[] = [
     rooms: 3,
     bedrooms: 2,
     type: "Appartement",
-    description: "A PROXIMITÉ du métro Mairie de Montrouge, dans une rue calme, nous vous proposons ce logement à la vente; en étage avec ascenseur, très bien configuré sans perte d'espace. Il se compose d'une entrée, séjour avec cuisine ouverte façon bar, wc séparé, salle d'eau, et deux chambres avec placards. Commerces au pied de l'immeuble. Cave en sous sol.",
+    description: "A PROXIMITÉ du métro Mairie de Montrouge, dans une rue calme.",
     images: ["https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/6/0/0/2/9/1/9/1/60029191a.jpg?DATEMAJ=16/02/2026-17:09:33"],
     dateAdded: "2026-02-16",
     exclusive: true,
@@ -122,7 +123,7 @@ export const mockProperties: Property[] = [
     rooms: 4,
     bedrooms: 3,
     type: "Appartement",
-    description: "Dans un bel immeuble bien entretenu, idéalement situé à proximité immédiate de Montparnasse et de toutes les commodités, nous vous proposons ce très bel appartement en étage. Il se compose d'une entrée, d'un séjour spacieux et lumineux, d'une cuisine indépendante, de trois chambres, ainsi que de deux pièces d'eau avec WC. De nombreux rangements viennent compléter l'agencement, offrant un confort de vie optimal. Une cave en sous-sol est incluse. Garage possible en sus du prix.",
+    description: "Dans un bel immeuble bien entretenu, idéalement situé à proximité immédiate de Montparnasse.",
     images: ["https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/9/9/2/4/3/9/1/59924391a.jpg?DATEMAJ=01/02/2026-17:50:53"],
     dateAdded: "2026-02-01",
     exclusive: true,
@@ -136,25 +137,6 @@ export const mockProperties: Property[] = [
     address: "13 Rue Littré",
   },
   {
-    id: "59702167",
-    title: "Immeuble de rapport - Paris 2ème",
-    price: 4200000,
-    city: "Paris 2ème",
-    postalCode: "75002",
-    surface: 432,
-    rooms: 0,
-    bedrooms: 0,
-    type: "Immeuble",
-    description: "Nous vous proposons un immeuble de rapport en monopropriété, idéalement situé dans le très recherché quartier Bonne-Nouvelle, sur un emplacement commerçant de premier ordre. L'immeuble est entièrement occupé et génère actuellement 155 900 euros de revenus locatifs annuels. D'une surface totale d'environ 432 m², il se développe sur 5 étages. Produit rare sur le marché.",
-    images: ["https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/9/7/0/2/1/6/7/59702167a.jpg?DATEMAJ=17/12/2025-15:10:06"],
-    dateAdded: "2025-12-17",
-    exclusive: true,
-    totalFloors: 5,
-    latitude: 48.868978,
-    longitude: 2.351232,
-    address: "128 Rue d'Aboukir",
-  },
-  {
     id: "58747369",
     title: "Appartement 4 pièces - Boulogne-Billancourt",
     price: 745000,
@@ -164,18 +146,9 @@ export const mockProperties: Property[] = [
     rooms: 4,
     bedrooms: 2,
     type: "Appartement",
-    description: "Limite Paris 16 - 4 pièces - Vue dégagée - Étage élevé. Porte de St Cloud, Limite Paris 16, découvrez cet appartement traversant situé au 7e étage d'un immeuble sécurisé avec gardien. D'une surface de 71,16 m², ce bien très lumineux se compose actuellement : d'une entrée, d'un vaste séjour d'environ 28 m² ouvrant sur un large balcon filant exposé doublement, d'une cuisine indépendante, de deux chambres également prolongées par le balcon, d'une salle d'eau, d'un dressing et de multiples rangements intégrés. Ce bien à rafraîchir offre une vue imprenable, s'étendant du Parc des Princes jusqu'à la Tour Eiffel.",
+    description: "Limite Paris 16 - 4 pièces - Vue dégagée - Étage élevé.",
     images: [
       "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369a.jpg?DATEMAJ=19/06/2025-22:53:15",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369b.jpg?DATEMAJ=19/06/2025-22:53:15",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369c.jpg?DATEMAJ=19/06/2025-22:53:15",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369d.jpg?DATEMAJ=19/06/2025-22:53:15",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369e.jpg?DATEMAJ=19/06/2025-22:53:15",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369f.jpg?DATEMAJ=19/06/2025-22:53:15",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369g.jpg?DATEMAJ=19/06/2025-22:53:16",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369h.jpg?DATEMAJ=19/06/2025-22:53:16",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369i.jpg?DATEMAJ=19/06/2025-22:53:16",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/7/4/7/3/6/9/58747369j.jpg?DATEMAJ=19/06/2025-22:53:16",
     ],
     dateAdded: "2025-06-19",
     exclusive: false,
@@ -194,128 +167,6 @@ export const mockProperties: Property[] = [
     address: "19 Avenue Ferdinand Buisson",
   },
   {
-    id: "58686240",
-    title: "Appartement 4 pièces - Paris 15ème",
-    price: 1495000,
-    city: "Paris 15ème",
-    postalCode: "75015",
-    surface: 100.24,
-    rooms: 4,
-    bedrooms: 3,
-    type: "Appartement",
-    description: "Avenue de Suffren - Vue exceptionnelle sur la Tour Eiffel. Situé au pied du Champ de Mars, dans une copropriété de standing avec gardien, cet appartement au 4ème étage avec ascenseur offre une vue imprenable sur la Tour Eiffel depuis le salon et la salle à manger. L'appartement se compose d'une belle entrée, d'un double séjour, d'une cuisine indépendante, de deux chambres au calme sur cour, une salle de bains et WC séparé. Une cave complète ce bien.",
-    images: [
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240a.jpg?DATEMAJ=14/06/2025-15:32:56",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240b.jpg?DATEMAJ=14/06/2025-15:32:58",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240c.jpg?DATEMAJ=14/06/2025-15:33:01",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240d.jpg?DATEMAJ=14/06/2025-15:33:04",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240e.jpg?DATEMAJ=14/06/2025-15:33:07",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240f.jpg?DATEMAJ=14/06/2025-15:33:10",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240g.jpg?DATEMAJ=14/06/2025-15:33:12",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240h.jpg?DATEMAJ=14/06/2025-15:33:14",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240i.jpg?DATEMAJ=14/06/2025-15:33:16",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240j.jpg?DATEMAJ=14/06/2025-15:33:18",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240k.jpg?DATEMAJ=14/06/2025-15:33:19",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240l.jpg?DATEMAJ=14/06/2025-15:33:21",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/6/8/6/2/4/0/58686240m.jpg?DATEMAJ=14/06/2025-15:33:23",
-    ],
-    dateAdded: "2025-06-13",
-    exclusive: false,
-    energyClass: "E",
-    gesClass: "D",
-    orientation: "Est",
-    floor: 4,
-    totalFloors: 7,
-    elevator: true,
-    guardian: true,
-    cave: true,
-    yearBuilt: 1900,
-    heating: "Collectif gaz",
-    consoEnergie: 278,
-    valeurGes: 36,
-    charges: 5400,
-    latitude: 48.854074,
-    longitude: 2.296086,
-    address: "42 Avenue de Suffren",
-  },
-  {
-    id: "58361847",
-    title: "Studio - Paris 6ème",
-    price: 79000,
-    city: "Paris 6ème",
-    postalCode: "75006",
-    surface: 9.64,
-    rooms: 1,
-    bedrooms: 0,
-    type: "Appartement",
-    description: "EMPLACEMENT PRIVILÉGIÉ, situé Rue des Beaux Arts, au dernier étage d'un immeuble bien entretenu, nous vous proposons cette chambre à la vente équipée d'une kitchenette et d'une douche. WC sur le palier. Ascenseur jusqu'au 5ème, le dernier étage se fait par les escaliers.",
-    images: [
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/3/6/1/8/4/7/58361847a.jpg?DATEMAJ=05/05/2025-21:59:29",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/3/6/1/8/4/7/58361847b.jpg?DATEMAJ=05/05/2025-21:59:29",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/3/6/1/8/4/7/58361847c.jpg?DATEMAJ=05/05/2025-21:59:29",
-    ],
-    dateAdded: "2025-05-03",
-    exclusive: false,
-    energyClass: "D",
-    gesClass: "B",
-    orientation: "Sud",
-    floor: 6,
-    totalFloors: 6,
-    elevator: true,
-    yearBuilt: 1930,
-    heating: "Individuel électrique",
-    consoEnergie: 485,
-    valeurGes: 14,
-    charges: 400,
-    latitude: 48.85627,
-    longitude: 2.336235,
-    address: "3 Rue des Beaux-Arts",
-  },
-  {
-    id: "56527064",
-    title: "Appartement 3 pièces - Boulogne-Billancourt",
-    price: 669000,
-    city: "Boulogne-Billancourt",
-    postalCode: "92100",
-    surface: 66.95,
-    rooms: 3,
-    bedrooms: 2,
-    type: "Appartement",
-    description: "Situé Rue Edouard Detaille, à proximité des commerces, nous vous proposons ce bel appartement en étage avec ascenseur bénéficiant d'un balcon. Il se compose d'un séjour menant à un balcon exposition SUD/OUEST avec vue dégagée; une cuisine indépendante aménagée et équipée, un dégagement menant à deux belles chambres dont une qui mène à un deuxième petit balcon. WC séparé. Salle de bains avec fenêtres. Un dressing. Nombreux rangements.",
-    images: [
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064a.jpg?DATEMAJ=18/04/2025-01:24:26",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064b.jpg?DATEMAJ=18/04/2025-01:24:27",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064c.jpg?DATEMAJ=18/04/2025-01:24:28",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064d.jpg?DATEMAJ=18/04/2025-01:24:28",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064e.jpg?DATEMAJ=18/04/2025-01:24:29",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064f.jpg?DATEMAJ=18/04/2025-01:24:29",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064g.jpg?DATEMAJ=18/04/2025-01:24:30",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064h.jpg?DATEMAJ=18/04/2025-01:24:30",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064i.jpg?DATEMAJ=18/04/2025-01:24:31",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064j.jpg?DATEMAJ=18/04/2025-01:24:31",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064k.jpg?DATEMAJ=18/04/2025-01:24:32",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/6/5/2/7/0/6/4/56527064l.jpg?DATEMAJ=18/04/2025-01:24:32",
-    ],
-    dateAdded: "2024-09-27",
-    exclusive: false,
-    energyClass: "D",
-    gesClass: "D",
-    orientation: "Sud-Ouest",
-    floor: 3,
-    totalFloors: 7,
-    elevator: true,
-    balcony: true,
-    cave: true,
-    yearBuilt: 1952,
-    heating: "Collectif gaz",
-    consoEnergie: 228,
-    valeurGes: 36,
-    charges: 3120,
-    latitude: 48.838123,
-    longitude: 2.248851,
-    address: "12 Rue Edouard Detaille",
-  },
-  {
     id: "58186914",
     title: "Maison 5 pièces - Boulogne-Billancourt",
     price: 1585000,
@@ -325,22 +176,9 @@ export const mockProperties: Property[] = [
     rooms: 5,
     bedrooms: 3,
     type: "Maison",
-    description: "BOULOGNE SUD - QUARTIER PIERRE GRENIER / Maison récente avec deux jardins, Calme absolu, 3 chambres, Parking. Située à l'arrière d'une copropriété, dans un environnement verdoyant et paisible, cette maison récente de 2017 vous séduira par son calme absolu et ses deux jardins privatifs. Au rez-de-chaussée, vous trouverez une entrée, un bel espace de vie lumineux avec cuisine ouverte donnant sur le jardin, une buanderie, des WC séparés, et de nombreux rangements. À l'étage, l'espace nuit comprend trois chambres, dont une suite parentale avec salle d'eau et baignoire, WC, dressing.",
+    description: "BOULOGNE SUD - QUARTIER PIERRE GRENIER / Maison récente avec deux jardins.",
     images: [
       "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914a.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914b.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914c.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914d.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914f.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914g.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914i.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914j.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914k.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914l.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914m.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914n.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914o.jpg?DATEMAJ=06/12/2025-15:25:47",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/8/1/8/6/9/1/4/58186914p.jpg?DATEMAJ=06/12/2025-15:25:47",
     ],
     dateAdded: "2025-03-27",
     exclusive: false,
@@ -368,16 +206,9 @@ export const mockProperties: Property[] = [
     rooms: 2,
     bedrooms: 1,
     type: "Appartement",
-    description: "5 MIN A PIED METRO - RIVES DE SEINE - Dans une jolie copropriété verdoyante, joli deux pièces en étage sans aucune perte de place. Ce logement se compose d'un séjour/cuisine lumineux; grande chambre avec rangements, une salle d'eau avec WC. Au sous sol une cave. Une place de parking possible en sus du prix. Copropriété récente (2009). Idéal premier achat ou investissement. Commerces et métro tout proche de l'appartement.",
+    description: "5 MIN A PIED METRO - RIVES DE SEINE - Dans une jolie copropriété verdoyante.",
     images: [
       "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/0/1/7/3/8/2/6/50173826a.jpg?DATEMAJ=16/02/2026-15:42:52",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/0/1/7/3/8/2/6/50173826b.jpg?DATEMAJ=16/02/2026-15:42:52",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/0/1/7/3/8/2/6/50173826c.jpg?DATEMAJ=16/02/2026-15:42:52",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/0/1/7/3/8/2/6/50173826d.jpg?DATEMAJ=16/02/2026-15:42:52",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/0/1/7/3/8/2/6/50173826e.jpg?DATEMAJ=16/02/2026-15:42:52",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/0/1/7/3/8/2/6/50173826f.jpg?DATEMAJ=16/02/2026-15:42:52",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/0/1/7/3/8/2/6/50173826g.jpg?DATEMAJ=16/02/2026-15:42:52",
-      "https://media.immo-facile.com/office12/emilie_immob/catalog/images/pr_p/5/0/1/7/3/8/2/6/50173826h.jpg?DATEMAJ=16/02/2026-15:42:52",
     ],
     dateAdded: "2022-06-27",
     exclusive: true,
@@ -404,3 +235,28 @@ export const mockProperties: Property[] = [
 export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(price);
 };
+
+export async function fetchPropertiesFromFeed(): Promise<Property[]> {
+  try {
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+    if (!projectId) {
+      console.warn("No project ID found, using mock data");
+      return mockProperties;
+    }
+    
+    const res = await fetch(`https://${projectId}.supabase.co/functions/v1/fetch-properties`, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    
+    const data = await res.json();
+    if (data.properties && data.properties.length > 0) {
+      return data.properties;
+    }
+    return mockProperties;
+  } catch (err) {
+    console.warn("Failed to fetch live feed, using mock data:", err);
+    return mockProperties;
+  }
+}
