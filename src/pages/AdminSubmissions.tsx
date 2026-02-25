@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { fetchPropertiesFromFeed, Property } from "@/lib/properties";
+import { fetchPropertiesFromFeed, Property, formatPrice } from "@/lib/properties";
 import {
   Phone, Mail, Home, Search, MessageSquare, Clock, User, MapPin,
   Banknote, Maximize, CalendarClock, X, LogOut, CheckCircle, Circle,
-  StickyNote, Settings, ChevronRight, Building, Send, Eye, EyeOff, Lock, Save,
+  StickyNote, Settings, ChevronRight, Building, Eye, EyeOff, Save,
+  ExternalLink, Sparkles, Archive,
 } from "lucide-react";
 
 interface Submission {
@@ -27,10 +28,20 @@ interface Submission {
   created_at: string;
 }
 
-const typeConfig: Record<string, { label: string; bg: string; text: string; icon: any }> = {
-  contact: { label: "Contact", bg: "bg-sky-50", text: "text-sky-700", icon: MessageSquare },
-  mandat_recherche: { label: "Mandat recherche", bg: "bg-violet-50", text: "text-violet-700", icon: Search },
-  rappel_bien: { label: "Rappel bien", bg: "bg-amber-50", text: "text-amber-700", icon: Phone },
+const getTypeLabel = (form_type: string) => {
+  switch (form_type) {
+    case "rappel_bien": return "Demande info sur bien";
+    case "mandat_recherche": return "Accompagnement acheteur";
+    default: return "Demande générale";
+  }
+};
+
+const getTypeStyle = (form_type: string) => {
+  switch (form_type) {
+    case "rappel_bien": return { bg: "bg-amber-50", text: "text-amber-700", icon: Home };
+    case "mandat_recherche": return { bg: "bg-violet-50", text: "text-violet-700", icon: Search };
+    default: return { bg: "bg-sky-50", text: "text-sky-700", icon: MessageSquare };
+  }
 };
 
 const formatDate = (iso: string) => {
@@ -63,6 +74,7 @@ const AdminSubmissions = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [selected, setSelected] = useState<Submission | null>(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [viewMode, setViewMode] = useState<"nouveau" | "ancien">("nouveau");
 
   useEffect(() => {
     const init = async () => {
@@ -86,8 +98,13 @@ const AdminSubmissions = () => {
     init();
   }, [navigate]);
 
-  const filtered = activeFilter === "all" ? submissions : submissions.filter((s) => s.form_type === activeFilter);
-  const uncalledCount = submissions.filter((s) => !s.is_called).length;
+  const newSubmissions = submissions.filter((s) => !s.is_called);
+  const oldSubmissions = submissions.filter((s) => s.is_called);
+
+  const applyTypeFilter = (list: Submission[]) =>
+    activeFilter === "all" ? list : list.filter((s) => s.form_type === activeFilter);
+
+  const displayed = applyTypeFilter(viewMode === "nouveau" ? newSubmissions : oldSubmissions);
 
   const counts: Record<string, number> = {
     all: submissions.length,
@@ -124,17 +141,17 @@ const AdminSubmissions = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/30">
       {/* Top bar */}
       <header className="bg-card border-b border-border sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-accent rounded flex items-center justify-center">
+            <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
               <Building className="w-4 h-4 text-accent-foreground" />
             </div>
-            <span className="font-display text-sm">Espace Admin</span>
+            <span className="font-display text-sm font-semibold">Administration</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <button onClick={() => setShowSettings(true)} className="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">
               <Settings className="w-4 h-4" />
             </button>
@@ -145,112 +162,180 @@ const AdminSubmissions = () => {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-          {[
-            { label: "Total", value: counts.all, sub: `${uncalledCount} non traité(s)` },
-            { label: "Contacts", value: counts.contact },
-            { label: "Mandats", value: counts.mandat_recherche },
-            { label: "Rappels", value: counts.rappel_bien },
-          ].map((s) => (
-            <div key={s.label} className="bg-card border border-border rounded-lg p-4">
-              <p className="font-body text-xs text-muted-foreground">{s.label}</p>
-              <p className="font-display text-2xl text-foreground mt-1">{s.value}</p>
-              {s.sub && <p className="font-body text-xs text-muted-foreground mt-0.5">{s.sub}</p>}
-            </div>
-          ))}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+        {/* Nouveau / Ancien toggle */}
+        <div className="flex items-center gap-3 mb-5">
+          <button
+            onClick={() => setViewMode("nouveau")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-body text-sm font-medium transition-all ${
+              viewMode === "nouveau"
+                ? "bg-accent text-accent-foreground shadow-sm"
+                : "bg-card border border-border text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Sparkles className="w-4 h-4" />
+            Nouveau
+            {newSubmissions.length > 0 && (
+              <span className={`ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full ${
+                viewMode === "nouveau" ? "bg-accent-foreground/20 text-accent-foreground" : "bg-accent/10 text-accent"
+              }`}>
+                {newSubmissions.length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setViewMode("ancien")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-body text-sm font-medium transition-all ${
+              viewMode === "ancien"
+                ? "bg-foreground text-background shadow-sm"
+                : "bg-card border border-border text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Archive className="w-4 h-4" />
+            Traité
+            {oldSubmissions.length > 0 && (
+              <span className="ml-1 text-xs px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">
+                {oldSubmissions.length}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Filters */}
-        <div className="flex gap-1 mb-4 bg-muted rounded-lg p-1">
+        {/* Type filters */}
+        <div className="flex gap-1 mb-5 bg-card border border-border rounded-lg p-1">
           {[
             { key: "all", label: "Toutes" },
-            { key: "contact", label: "Contact" },
-            { key: "mandat_recherche", label: "Mandats" },
-            { key: "rappel_bien", label: "Rappels" },
+            { key: "contact", label: "Demande générale" },
+            { key: "mandat_recherche", label: "Accompagnement" },
+            { key: "rappel_bien", label: "Info bien" },
           ].map((f) => (
             <button
               key={f.key}
               onClick={() => setActiveFilter(f.key)}
               className={`flex-1 py-2 rounded-md font-body text-xs sm:text-sm transition-all ${
                 activeFilter === f.key
-                  ? "bg-background text-foreground shadow-sm font-medium"
+                  ? "bg-muted text-foreground shadow-sm font-medium"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {f.label} <span className="text-muted-foreground">({counts[f.key]})</span>
+              {f.label}
             </button>
           ))}
         </div>
 
         {/* List */}
-        {filtered.length === 0 ? (
-          <div className="text-center py-16">
-            <MessageSquare className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="font-body text-muted-foreground text-sm">Aucune demande</p>
+        {displayed.length === 0 ? (
+          <div className="text-center py-20">
+            {viewMode === "nouveau" ? (
+              <>
+                <CheckCircle className="w-12 h-12 text-emerald-300 mx-auto mb-3" />
+                <p className="font-body text-muted-foreground text-sm">Aucune nouvelle demande</p>
+                <p className="font-body text-muted-foreground/60 text-xs mt-1">Toutes les demandes ont été traitées</p>
+              </>
+            ) : (
+              <>
+                <Archive className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
+                <p className="font-body text-muted-foreground text-sm">Aucune demande traitée</p>
+              </>
+            )}
           </div>
         ) : (
-          <div className="space-y-2">
-            {filtered.map((s) => {
-              const tc = typeConfig[s.form_type] || typeConfig.contact;
-              const TypeIcon = tc.icon;
+          <div className="space-y-3">
+            {displayed.map((s) => {
+              const style = getTypeStyle(s.form_type);
+              const TypeIcon = style.icon;
               const prop = getPropertyForSubmission(s);
               return (
                 <div
                   key={s.id}
-                  className={`bg-card border rounded-lg transition-all hover:shadow-sm group ${
-                    s.is_called ? "border-border/50 opacity-70" : "border-border"
+                  onClick={() => setSelected(s)}
+                  className={`bg-card border rounded-xl transition-all hover:shadow-md cursor-pointer group ${
+                    s.is_called ? "border-border/60" : "border-border"
                   }`}
                 >
-                  <div className="flex items-center gap-3 p-4">
-                    {/* Called toggle */}
-                    <button
-                      onClick={(e) => { e.stopPropagation(); toggleCalled(s.id, s.is_called); }}
-                      className="flex-shrink-0"
-                      title={s.is_called ? "Marquer non traité" : "Marquer traité"}
-                    >
-                      {s.is_called ? (
-                        <CheckCircle className="w-5 h-5 text-emerald-500" />
-                      ) : (
-                        <Circle className="w-5 h-5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
-                      )}
-                    </button>
-
-                    {/* Property thumbnail for rappel_bien */}
-                    {s.form_type === "rappel_bien" && prop && (
-                      <div className="flex-shrink-0 w-14 h-14 rounded overflow-hidden border border-border hidden sm:block">
-                        <img src={prop.images[0]} alt="" className="w-full h-full object-cover" />
+                  <div className="p-4">
+                    {/* Top row: badge + time */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-md ${style.bg} ${style.text}`}>
+                        <TypeIcon className="w-3 h-3" /> {getTypeLabel(s.form_type)}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-body text-[11px] text-muted-foreground">{relativeDate(s.created_at)}</span>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleCalled(s.id, s.is_called); }}
+                          title={s.is_called ? "Marquer non traité" : "Marquer traité"}
+                          className="p-1"
+                        >
+                          {s.is_called ? (
+                            <CheckCircle className="w-5 h-5 text-emerald-500" />
+                          ) : (
+                            <Circle className="w-5 h-5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
+                          )}
+                        </button>
                       </div>
-                    )}
+                    </div>
 
-                    {/* Content */}
-                    <button onClick={() => setSelected(s)} className="flex-1 text-left min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded ${tc.bg} ${tc.text}`}>
-                          <TypeIcon className="w-3 h-3" /> {tc.label}
-                        </span>
-                        {s.admin_notes && <StickyNote className="w-3 h-3 text-amber-400" />}
-                        {s.form_type === "rappel_bien" && s.property_title && (
-                          <span className="text-[11px] text-muted-foreground truncate max-w-[200px]">
-                            — {s.property_title}
+                    {/* Contact info */}
+                    <div className="flex items-start gap-3">
+                      {/* Property image for rappel_bien */}
+                      {s.form_type === "rappel_bien" && prop && prop.images[0] && (
+                        <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border border-border">
+                          <img src={prop.images[0]} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      )}
+
+                      <div className="flex-1 min-w-0">
+                        <p className="font-body text-sm font-semibold text-foreground">{s.name}</p>
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
+                          {s.phone && (
+                            <span className="font-body text-xs text-muted-foreground flex items-center gap-1">
+                              <Phone className="w-3 h-3" /> {s.phone}
+                            </span>
+                          )}
+                          <span className="font-body text-xs text-muted-foreground flex items-center gap-1">
+                            <Mail className="w-3 h-3" /> {s.email}
                           </span>
+                        </div>
+
+                        {/* Property info for rappel_bien */}
+                        {s.form_type === "rappel_bien" && prop && (
+                          <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+                            <MapPin className="w-3 h-3" />
+                            <span className="truncate">{prop.title} — {formatPrice(prop.price)}</span>
+                            <Link
+                              to={`/biens/${prop.id}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-accent hover:underline flex items-center gap-0.5 flex-shrink-0"
+                            >
+                              Voir <ExternalLink className="w-3 h-3" />
+                            </Link>
+                          </div>
+                        )}
+                        {s.form_type === "rappel_bien" && !prop && s.property_title && (
+                          <div className="mt-2 text-xs text-muted-foreground">
+                            <span>Bien : {s.property_title} (Réf. {s.property_ref})</span>
+                          </div>
+                        )}
+
+                        {/* Mandat summary */}
+                        {s.form_type === "mandat_recherche" && (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {s.budget && <MiniTag label={s.budget} />}
+                            {s.desired_location && <MiniTag label={s.desired_location} />}
+                            {s.property_type && <MiniTag label={s.property_type} />}
+                          </div>
+                        )}
+
+                        {/* Message preview */}
+                        {s.form_type === "contact" && s.message && (
+                          <p className="font-body text-xs text-muted-foreground mt-2 line-clamp-1">{s.message}</p>
                         )}
                       </div>
-                      <div className="flex items-baseline gap-2">
-                        <span className={`font-body text-sm ${s.is_called ? "text-muted-foreground line-through" : "text-foreground font-medium"}`}>
-                          {s.name}
-                        </span>
-                        {s.phone && <span className="font-body text-xs text-muted-foreground hidden sm:inline">{s.phone}</span>}
-                      </div>
-                    </button>
 
-                    {/* Time + actions */}
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="font-body text-[11px] text-muted-foreground hidden md:block">{relativeDate(s.created_at)}</span>
-                      <button onClick={() => setSelected(s)} className="p-1.5 text-muted-foreground hover:text-accent rounded transition-colors">
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
+                      {/* Notes indicator */}
+                      {s.admin_notes && (
+                        <StickyNote className="w-4 h-4 text-amber-400 flex-shrink-0 mt-1" />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -289,7 +374,7 @@ const DetailPanel = ({
 }) => {
   const [notes, setNotes] = useState(s.admin_notes || "");
   const [notesDirty, setNotesDirty] = useState(false);
-  const tc = typeConfig[s.form_type] || typeConfig.contact;
+  const style = getTypeStyle(s.form_type);
 
   useEffect(() => {
     setNotes(s.admin_notes || "");
@@ -306,12 +391,12 @@ const DetailPanel = ({
         {/* Header */}
         <div className="sticky top-0 bg-background border-b border-border px-5 py-4 flex items-center justify-between z-10">
           <div className="flex items-center gap-2">
-            <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded ${tc.bg} ${tc.text}`}>
-              {tc.label}
+            <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-md ${style.bg} ${style.text}`}>
+              {getTypeLabel(s.form_type)}
             </span>
             <button
               onClick={onToggleCalled}
-              className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded transition-colors ${
+              className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-md transition-colors ${
                 s.is_called ? "bg-emerald-50 text-emerald-700" : "bg-muted text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -340,22 +425,22 @@ const DetailPanel = ({
           {s.form_type === "rappel_bien" && property && (
             <section>
               <SectionTitle>Bien concerné</SectionTitle>
-              <div className="mt-3 border border-border rounded-lg overflow-hidden">
+              <div className="mt-3 border border-border rounded-xl overflow-hidden">
                 <img src={property.images[0]} alt={property.title} className="w-full h-40 object-cover" />
                 <div className="p-4">
-                  <p className="font-display text-sm text-foreground">{property.title}</p>
+                  <p className="font-display text-sm text-foreground font-semibold">{property.title}</p>
                   <p className="font-body text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                    <MapPin className="w-3 h-3" /> {property.city} • {property.surface} m² • Réf. {property.id}
+                    <MapPin className="w-3 h-3" /> {property.city} • {property.surface} m² • {property.rooms} pièces
                   </p>
                   <p className="font-display text-accent text-sm font-semibold mt-2">
-                    {new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(property.price)}
+                    {formatPrice(property.price)}
                   </p>
                   <Link
                     to={`/biens/${property.id}`}
-                    className="inline-flex items-center gap-1 text-accent text-xs font-body mt-3 hover:underline"
+                    className="inline-flex items-center gap-1.5 text-accent text-xs font-body font-medium mt-3 hover:underline"
                     onClick={onClose}
                   >
-                    Voir la fiche complète <ChevronRight className="w-3 h-3" />
+                    Voir la fiche complète <ExternalLink className="w-3 h-3" />
                   </Link>
                 </div>
               </div>
@@ -365,8 +450,8 @@ const DetailPanel = ({
           {s.form_type === "rappel_bien" && !property && s.property_title && (
             <section>
               <SectionTitle>Bien concerné</SectionTitle>
-              <div className="mt-3 border border-border rounded-lg p-4">
-                <p className="font-display text-sm">{s.property_title}</p>
+              <div className="mt-3 border border-border rounded-xl p-4">
+                <p className="font-display text-sm font-semibold">{s.property_title}</p>
                 <p className="font-body text-xs text-muted-foreground mt-1">Réf. {s.property_ref}</p>
               </div>
             </section>
@@ -410,7 +495,7 @@ const DetailPanel = ({
               {notesDirty && (
                 <button
                   onClick={() => { onSaveNotes(notes); setNotesDirty(false); }}
-                  className="mt-2 inline-flex items-center gap-1.5 bg-accent text-accent-foreground px-3 py-1.5 rounded font-body text-xs font-semibold hover:brightness-110 transition-all"
+                  className="mt-2 inline-flex items-center gap-1.5 bg-accent text-accent-foreground px-3 py-1.5 rounded-md font-body text-xs font-semibold hover:brightness-110 transition-all"
                 >
                   <Save className="w-3 h-3" /> Enregistrer
                 </button>
@@ -437,7 +522,6 @@ const DetailPanel = ({
 
 /* ======== SETTINGS PANEL ======== */
 const SettingsPanel = ({ onClose }: { onClose: () => void }) => {
-  const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -452,7 +536,7 @@ const SettingsPanel = ({ onClose }: { onClose: () => void }) => {
     setLoading(true);
     const { error } = await supabase.auth.updateUser({ password: newPw });
     if (error) { setMessage({ type: "error", text: error.message }); }
-    else { setMessage({ type: "success", text: "Mot de passe modifié avec succès." }); setCurrentPw(""); setNewPw(""); setConfirmPw(""); }
+    else { setMessage({ type: "success", text: "Mot de passe modifié avec succès." }); setNewPw(""); setConfirmPw(""); }
     setLoading(false);
   };
 
@@ -534,6 +618,10 @@ const MiniCard = ({ icon: Icon, label, value }: { icon: any; label: string; valu
     </div>
     <span className="font-body text-sm text-foreground font-medium">{value}</span>
   </div>
+);
+
+const MiniTag = ({ label }: { label: string }) => (
+  <span className="font-body text-[11px] bg-muted text-muted-foreground px-2 py-0.5 rounded-md">{label}</span>
 );
 
 export default AdminSubmissions;
