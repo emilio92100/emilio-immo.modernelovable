@@ -86,13 +86,13 @@ const PropertyDetail = () => {
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Sticky back button */}
-      <div className="fixed bottom-6 left-6 z-50">
+      {/* Sticky top back button - appears on scroll */}
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 z-40">
         <Link
           to="/biens"
-          className="flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2.5 rounded-full font-body text-sm font-semibold shadow-lg hover:brightness-110 transition-all"
+          className="flex items-center gap-2 bg-card/95 backdrop-blur-md text-foreground border border-border px-6 py-2.5 rounded-full font-body text-sm font-semibold shadow-lg hover:shadow-xl hover:border-accent transition-all"
         >
-          <ArrowLeft className="w-4 h-4" /> Nos biens
+          <ArrowLeft className="w-4 h-4" /> Nos Biens
         </Link>
       </div>
 
@@ -235,12 +235,12 @@ const PropertyDetail = () => {
               </div>
 
               {/* Description */}
-              {property.description && (
+              {property.description && property.description.trim().length > 0 && (
                 <div className="bg-card border border-border rounded p-6">
                   <h2 className="font-display text-lg mb-4">Description</h2>
-                  <p className="font-body text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
+                  <div className="font-body text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
                     {property.description}
-                  </p>
+                  </div>
                 </div>
               )}
 

@@ -94,13 +94,15 @@ const BuyerMandate = () => {
                 viewport={{ once: true }}
                 className={`flex flex-col md:flex-row items-center gap-8 ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}
               >
-                <div className="md:w-1/2">
-                  <img
-                    src={step.image}
-                    alt={step.title}
-                    className="w-full aspect-[4/3] object-cover rounded shadow-lg"
-                    loading="lazy"
-                  />
+              <div className="md:w-1/2 flex justify-center">
+                  <div className="w-64 h-64 rounded-full overflow-hidden shadow-lg border-4 border-accent/20">
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
                 <div className="md:w-1/2">
                   <div className="flex items-center gap-3 mb-3">
