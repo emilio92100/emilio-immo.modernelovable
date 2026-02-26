@@ -43,10 +43,10 @@ const RoomDetailsBlock = ({ roomDetails }: { roomDetails: RoomDetail[] }) => {
           </div>
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg max-h-[75vh] flex flex-col rounded-2xl p-0 gap-0 overflow-hidden border-0 shadow-2xl">
+      <DialogContent className="sm:max-w-lg max-h-[75vh] flex flex-col rounded-2xl p-0 gap-0 overflow-hidden border-0 shadow-2xl [&>button.absolute]:text-primary-foreground [&>button.absolute]:opacity-100 [&>button.absolute]:hover:text-white">
         {/* Fixed header */}
-        <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-primary to-navy-light">
-          <DialogTitle className="font-display text-xl text-primary-foreground flex items-center gap-3">
+        <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-primary to-navy-light relative">
+          <DialogTitle className="font-display text-xl text-primary-foreground flex items-center gap-3 pr-8">
             <div className="w-11 h-11 bg-primary-foreground/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
               <Home className="w-5 h-5 text-primary-foreground" />
             </div>
