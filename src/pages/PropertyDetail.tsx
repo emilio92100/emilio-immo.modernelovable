@@ -9,9 +9,73 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import DPEBadge from "@/components/DPEBadge";
 import SuccessPopup from "@/components/SuccessPopup";
 import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed, RoomDetail } from "@/lib/properties";
+
+/* ---------- Room Details Popup Block ---------- */
+const RoomDetailsBlock = ({ roomDetails }: { roomDetails: RoomDetail[] }) => {
+  const formatLevel = (level: number | null | undefined) => {
+    if (level === null || level === undefined || level === 0) return "—";
+    return `Étage ${level}`;
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button className="w-full bg-gradient-to-r from-accent to-accent/80 rounded-lg p-6 shadow-lg hover:brightness-110 transition-all cursor-pointer text-left group">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-accent-foreground/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
+                <Home className="w-6 h-6 text-accent-foreground" />
+              </div>
+              <div>
+                <h2 className="font-display text-xl text-accent-foreground">Détail des pièces</h2>
+                <p className="font-body text-sm text-accent-foreground/80 mt-1">
+                  {roomDetails.length} pièce{roomDetails.length > 1 ? "s" : ""} — <span className="underline underline-offset-2">cliquez pour voir</span>
+                </p>
+              </div>
+            </div>
+            <div className="w-10 h-10 bg-accent-foreground/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Maximize className="w-5 h-5 text-accent-foreground" />
+            </div>
+          </div>
+        </button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="font-display text-xl flex items-center gap-3">
+            <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center">
+              <Home className="w-5 h-5 text-accent" />
+            </div>
+            Détail des pièces
+          </DialogTitle>
+        </DialogHeader>
+        <div className="overflow-x-auto mt-4">
+          <table className="w-full font-body text-sm">
+            <thead>
+              <tr className="border-b-2 border-accent/20 text-left">
+                <th className="pb-3 text-accent font-semibold">Niveau</th>
+                <th className="pb-3 text-accent font-semibold">Pièce</th>
+                <th className="pb-3 text-accent font-semibold text-right">Surface</th>
+              </tr>
+            </thead>
+            <tbody>
+              {roomDetails.map((room, i) => (
+                <tr key={i} className="border-b border-border/50 last:border-0 hover:bg-accent/5 transition-colors">
+                  <td className="py-3 text-muted-foreground">{formatLevel(room.level)}</td>
+                  <td className="py-3 text-foreground font-medium">{room.type}</td>
+                  <td className="py-3 text-foreground text-right">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const getDisplayTitle = (property: Property) => {
   const type = property.type || "Bien";
@@ -268,45 +332,7 @@ const PropertyDetail = () => {
 
               {/* Room details - collapsible */}
               {property.roomDetails && property.roomDetails.length > 0 && (
-                <Accordion type="single" collapsible className="rounded-lg overflow-hidden shadow-lg">
-                  <AccordionItem value="rooms" className="border-0">
-                    <AccordionTrigger className="px-6 py-5 bg-gradient-to-r from-accent to-accent/80 hover:no-underline hover:brightness-110 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-11 h-11 bg-accent-foreground/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
-                          <Home className="w-5 h-5 text-accent-foreground" />
-                        </div>
-                        <div className="text-left">
-                          <h2 className="font-display text-lg text-accent-foreground">Détail des pièces</h2>
-                          <p className="font-body text-xs text-accent-foreground/70">{property.roomDetails.length} pièce{property.roomDetails.length > 1 ? "s" : ""} détaillée{property.roomDetails.length > 1 ? "s" : ""} — cliquez pour voir</p>
-                        </div>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="bg-card border border-t-0 border-accent/20 rounded-b-lg px-6 pb-5 pt-4">
-                      <div className="overflow-x-auto">
-                        <table className="w-full font-body text-sm">
-                          <thead>
-                            <tr className="border-b-2 border-accent/20 text-left">
-                              <th className="pb-3 text-accent font-semibold">Niveau</th>
-                              <th className="pb-3 text-accent font-semibold">Pièce</th>
-                              <th className="pb-3 text-accent font-semibold">Surface</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {property.roomDetails.map((room, i) => (
-                              <tr key={i} className="border-b border-border/50 last:border-0 hover:bg-accent/5 transition-colors">
-                                <td className="py-3 text-muted-foreground">
-                                  {room.level !== null && room.level !== undefined ? `Étage ${room.level}` : ""}
-                                </td>
-                                <td className="py-3 text-foreground font-medium">{room.type}</td>
-                                <td className="py-3 text-foreground">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <RoomDetailsBlock roomDetails={property.roomDetails} />
               )}
 
               {/* DPE */}
