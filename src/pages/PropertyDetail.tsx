@@ -43,27 +43,28 @@ const RoomDetailsBlock = ({ roomDetails }: { roomDetails: RoomDetail[] }) => {
           </div>
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="font-display text-xl flex items-center gap-3">
-            <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center">
-              <Home className="w-5 h-5 text-accent" />
+      <DialogContent className="sm:max-w-md max-h-[70vh] flex flex-col rounded-xl p-0 gap-0 overflow-hidden">
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-border bg-accent/5">
+          <DialogTitle className="font-display text-lg flex items-center gap-3">
+            <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
+              <Home className="w-5 h-5 text-accent-foreground" />
             </div>
             Détail des pièces
+            <span className="ml-auto text-sm font-body font-normal text-muted-foreground">{roomDetails.length} pièce{roomDetails.length > 1 ? "s" : ""}</span>
           </DialogTitle>
         </DialogHeader>
-        <div className="overflow-x-auto mt-4">
+        <div className="overflow-y-auto flex-1 px-6 py-4">
           <table className="w-full font-body text-sm">
-            <thead>
+            <thead className="sticky top-0 bg-background">
               <tr className="border-b-2 border-accent/20 text-left">
-                <th className="pb-3 text-accent font-semibold">Niveau</th>
-                <th className="pb-3 text-accent font-semibold">Pièce</th>
-                <th className="pb-3 text-accent font-semibold text-right">Surface</th>
+                <th className="pb-3 text-accent font-semibold text-xs uppercase tracking-wider">Niveau</th>
+                <th className="pb-3 text-accent font-semibold text-xs uppercase tracking-wider">Pièce</th>
+                <th className="pb-3 text-accent font-semibold text-xs uppercase tracking-wider text-right">Surface</th>
               </tr>
             </thead>
             <tbody>
               {roomDetails.map((room, i) => (
-                <tr key={i} className="border-b border-border/50 last:border-0 hover:bg-accent/5 transition-colors">
+                <tr key={i} className="border-b border-border/40 last:border-0 hover:bg-accent/5 transition-colors">
                   <td className="py-3 text-muted-foreground">{formatLevel(room.level)}</td>
                   <td className="py-3 text-foreground font-medium">{room.type}</td>
                   <td className="py-3 text-foreground text-right">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
