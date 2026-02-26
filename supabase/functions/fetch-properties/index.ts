@@ -140,11 +140,33 @@ function parseXML(xml: string) {
     const terrace = getBool(propSection, "terrasse") || getNum(propSection, "nbre_terrasse") > 0;
     const elevator = getBool(propSection, "ascenseur");
     const guardian = getBool(propSection, "gardien");
+    const garden = getBool(propSection, "jardin");
     const exclusive = getTagContent(vente, "type_mandat").toUpperCase() === "E";
 
     // Charges
     const charges = getNum(alur, "charges_annuelles") || getNum(propSection, "charges_copropriete");
     const taxeFonciere = getNum(propSection, "taxe_fonciere");
+
+    // Room details (pièces)
+    const piecesSection = getSection(bien, "pieces");
+    const roomDetails: any[] = [];
+    const pieceRegex = /<piece>([\s\S]*?)<\/piece>/gi;
+    let pieceMatch;
+    while ((pieceMatch = pieceRegex.exec(piecesSection)) !== null) {
+      const p = pieceMatch[1];
+      const typePiece = getTagContent(p, "type_piece");
+      const surfacePiece = getNum(p, "surface_piece");
+      const descPiece = getTagContent(p, "description_piece");
+      const niveauPiece = getNum(p, "niveau_piece");
+      if (typePiece) {
+        roomDetails.push({
+          type: typePiece,
+          surface: surfacePiece,
+          description: descPiece,
+          level: niveauPiece,
+        });
+      }
+    }
 
     // Images: <img>URL format (may not have closing tags)
     const imagesSection = getSection(bien, "images");
@@ -199,6 +221,8 @@ function parseXML(xml: string) {
         address,
         latitude,
         longitude,
+        garden,
+        roomDetails,
       });
     }
   }

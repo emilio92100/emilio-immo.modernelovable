@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import DPEBadge from "@/components/DPEBadge";
 import SuccessPopup from "@/components/SuccessPopup";
-import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed } from "@/lib/properties";
+import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed, RoomDetail } from "@/lib/properties";
 
 const getDisplayTitle = (property: Property) => {
   const type = property.type || "Bien";
@@ -83,6 +83,7 @@ const PropertyDetail = () => {
   const highlights: { icon: any; label: string }[] = [];
   if (property.balcony) highlights.push({ icon: Compass, label: "Balcon" });
   if (property.terrace) highlights.push({ icon: Compass, label: "Terrasse" });
+  if (property.garden) highlights.push({ icon: Compass, label: "Jardin" });
   if (property.cave) highlights.push({ icon: DoorOpen, label: "Cave" });
   if (property.elevator) highlights.push({ icon: Building, label: "Ascenseur" });
   if (property.guardian) highlights.push({ icon: ShieldCheck, label: "Gardien / Concierge" });
@@ -255,7 +256,36 @@ const PropertyDetail = () => {
                 </div>
               </div>
 
-              {/* Description */}
+              {/* Room details */}
+              {property.roomDetails && property.roomDetails.length > 0 && (
+                <div className="bg-card border border-border rounded p-6">
+                  <h2 className="font-display text-lg mb-4">Détail des pièces</h2>
+                  <div className="overflow-x-auto">
+                    <table className="w-full font-body text-sm">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          <th className="pb-2 text-muted-foreground font-medium">Pièce</th>
+                          <th className="pb-2 text-muted-foreground font-medium">Surface</th>
+                          <th className="pb-2 text-muted-foreground font-medium hidden sm:table-cell">Niveau</th>
+                          <th className="pb-2 text-muted-foreground font-medium hidden sm:table-cell">Info</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {property.roomDetails.map((room, i) => (
+                          <tr key={i} className="border-b border-border/50 last:border-0">
+                            <td className="py-2.5 text-foreground font-medium">{room.type}</td>
+                            <td className="py-2.5 text-foreground">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
+                            <td className="py-2.5 text-muted-foreground hidden sm:table-cell">
+                              {room.level === 0 ? "RDC" : `Étage ${room.level}`}
+                            </td>
+                            <td className="py-2.5 text-muted-foreground hidden sm:table-cell">{room.description || "—"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
               {property.description && property.description.trim().length > 0 && (
                 <div className="bg-card border border-border rounded p-6">
                   <h2 className="font-display text-lg mb-4">Description</h2>
@@ -313,6 +343,8 @@ const PropertyDetail = () => {
                   <div className="flex flex-wrap gap-2">
                     {property.cave && <span className="bg-secondary text-foreground text-xs font-body px-2 py-1 rounded">Cave</span>}
                     {property.balcony && <span className="bg-secondary text-foreground text-xs font-body px-2 py-1 rounded">Balcon</span>}
+                    {property.terrace && <span className="bg-secondary text-foreground text-xs font-body px-2 py-1 rounded">Terrasse</span>}
+                    {property.garden && <span className="bg-secondary text-foreground text-xs font-body px-2 py-1 rounded">Jardin</span>}
                     {property.elevator && <span className="bg-secondary text-foreground text-xs font-body px-2 py-1 rounded">Ascenseur</span>}
                     {property.guardian && <span className="bg-secondary text-foreground text-xs font-body px-2 py-1 rounded">Gardien</span>}
                     {property.parking && <span className="bg-secondary text-foreground text-xs font-body px-2 py-1 rounded">Parking</span>}

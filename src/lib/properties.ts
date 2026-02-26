@@ -1,3 +1,10 @@
+export interface RoomDetail {
+  type: string;
+  surface: number;
+  description: string;
+  level: number;
+}
+
 export interface Property {
   id: string;
   title: string;
@@ -32,6 +39,8 @@ export interface Property {
   address?: string;
   latitude?: number;
   longitude?: number;
+  garden?: boolean;
+  roomDetails?: RoomDetail[];
 }
 
 // Fallback mock data used when edge function is unavailable
