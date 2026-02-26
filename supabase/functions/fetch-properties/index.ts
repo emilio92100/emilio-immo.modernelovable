@@ -157,13 +157,14 @@ function parseXML(xml: string) {
       const typePiece = getTagContent(p, "type_piece");
       const surfacePiece = getNum(p, "surface_piece");
       const descPiece = getTagContent(p, "description_piece");
-      const niveauPiece = getNum(p, "niveau_piece");
+      const niveauRaw = getTagContent(p, "niveau_piece");
+      const niveauPiece = niveauRaw ? parseInt(niveauRaw, 10) : null;
       if (typePiece) {
         roomDetails.push({
           type: typePiece,
           surface: surfacePiece,
           description: descPiece,
-          level: niveauPiece,
+          level: isNaN(niveauPiece as any) ? null : niveauPiece,
         });
       }
     }

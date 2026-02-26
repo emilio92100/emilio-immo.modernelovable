@@ -8,6 +8,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import DPEBadge from "@/components/DPEBadge";
 import SuccessPopup from "@/components/SuccessPopup";
 import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed, RoomDetail } from "@/lib/properties";
@@ -256,36 +257,6 @@ const PropertyDetail = () => {
                 </div>
               </div>
 
-              {/* Room details */}
-              {property.roomDetails && property.roomDetails.length > 0 && (
-                <div className="bg-card border border-border rounded p-6">
-                  <h2 className="font-display text-lg mb-4">Détail des pièces</h2>
-                  <div className="overflow-x-auto">
-                    <table className="w-full font-body text-sm">
-                      <thead>
-                        <tr className="border-b border-border text-left">
-                          <th className="pb-2 text-muted-foreground font-medium">Pièce</th>
-                          <th className="pb-2 text-muted-foreground font-medium">Surface</th>
-                          <th className="pb-2 text-muted-foreground font-medium hidden sm:table-cell">Niveau</th>
-                          <th className="pb-2 text-muted-foreground font-medium hidden sm:table-cell">Info</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {property.roomDetails.map((room, i) => (
-                          <tr key={i} className="border-b border-border/50 last:border-0">
-                            <td className="py-2.5 text-foreground font-medium">{room.type}</td>
-                            <td className="py-2.5 text-foreground">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
-                            <td className="py-2.5 text-muted-foreground hidden sm:table-cell">
-                              {room.level === 0 ? "RDC" : `Étage ${room.level}`}
-                            </td>
-                            <td className="py-2.5 text-muted-foreground hidden sm:table-cell">{room.description || "—"}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
               {property.description && property.description.trim().length > 0 && (
                 <div className="bg-card border border-border rounded p-6">
                   <h2 className="font-display text-lg mb-4">Description</h2>
@@ -293,6 +264,49 @@ const PropertyDetail = () => {
                     {property.description}
                   </div>
                 </div>
+              )}
+
+              {/* Room details - collapsible */}
+              {property.roomDetails && property.roomDetails.length > 0 && (
+                <Accordion type="single" collapsible className="bg-card border border-border rounded overflow-hidden">
+                  <AccordionItem value="rooms" className="border-0">
+                    <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Home className="w-4 h-4 text-accent" />
+                        </div>
+                        <div className="text-left">
+                          <h2 className="font-display text-lg">Détail des pièces</h2>
+                          <p className="font-body text-xs text-muted-foreground">{property.roomDetails.length} pièce{property.roomDetails.length > 1 ? "s" : ""} détaillée{property.roomDetails.length > 1 ? "s" : ""}</p>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-4">
+                      <div className="overflow-x-auto">
+                        <table className="w-full font-body text-sm">
+                          <thead>
+                            <tr className="border-b border-border text-left">
+                              <th className="pb-2 text-muted-foreground font-medium">Niveau</th>
+                              <th className="pb-2 text-muted-foreground font-medium">Pièce</th>
+                              <th className="pb-2 text-muted-foreground font-medium">Surface</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {property.roomDetails.map((room, i) => (
+                              <tr key={i} className="border-b border-border/50 last:border-0">
+                                <td className="py-2.5 text-muted-foreground">
+                                  {room.level !== null && room.level !== undefined ? (room.level === 0 ? "RDC" : `Étage ${room.level}`) : ""}
+                                </td>
+                                <td className="py-2.5 text-foreground font-medium">{room.type}</td>
+                                <td className="py-2.5 text-foreground">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               )}
 
               {/* DPE */}

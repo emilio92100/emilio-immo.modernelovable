@@ -2,7 +2,7 @@ export interface RoomDetail {
   type: string;
   surface: number;
   description: string;
-  level: number;
+  level: number | null;
 }
 
 export interface Property {
