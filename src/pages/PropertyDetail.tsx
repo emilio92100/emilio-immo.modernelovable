@@ -268,37 +268,37 @@ const PropertyDetail = () => {
 
               {/* Room details - collapsible */}
               {property.roomDetails && property.roomDetails.length > 0 && (
-                <Accordion type="single" collapsible className="bg-card border border-border rounded overflow-hidden">
+                <Accordion type="single" collapsible className="rounded-lg overflow-hidden shadow-lg">
                   <AccordionItem value="rooms" className="border-0">
-                    <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-muted/50 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Home className="w-4 h-4 text-accent" />
+                    <AccordionTrigger className="px-6 py-5 bg-gradient-to-r from-accent to-accent/80 hover:no-underline hover:brightness-110 transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-11 h-11 bg-accent-foreground/20 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
+                          <Home className="w-5 h-5 text-accent-foreground" />
                         </div>
                         <div className="text-left">
-                          <h2 className="font-display text-lg">Détail des pièces</h2>
-                          <p className="font-body text-xs text-muted-foreground">{property.roomDetails.length} pièce{property.roomDetails.length > 1 ? "s" : ""} détaillée{property.roomDetails.length > 1 ? "s" : ""}</p>
+                          <h2 className="font-display text-lg text-accent-foreground">Détail des pièces</h2>
+                          <p className="font-body text-xs text-accent-foreground/70">{property.roomDetails.length} pièce{property.roomDetails.length > 1 ? "s" : ""} détaillée{property.roomDetails.length > 1 ? "s" : ""} — cliquez pour voir</p>
                         </div>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-4">
+                    <AccordionContent className="bg-card border border-t-0 border-accent/20 rounded-b-lg px-6 pb-5 pt-4">
                       <div className="overflow-x-auto">
                         <table className="w-full font-body text-sm">
                           <thead>
-                            <tr className="border-b border-border text-left">
-                              <th className="pb-2 text-muted-foreground font-medium">Niveau</th>
-                              <th className="pb-2 text-muted-foreground font-medium">Pièce</th>
-                              <th className="pb-2 text-muted-foreground font-medium">Surface</th>
+                            <tr className="border-b-2 border-accent/20 text-left">
+                              <th className="pb-3 text-accent font-semibold">Niveau</th>
+                              <th className="pb-3 text-accent font-semibold">Pièce</th>
+                              <th className="pb-3 text-accent font-semibold">Surface</th>
                             </tr>
                           </thead>
                           <tbody>
                             {property.roomDetails.map((room, i) => (
-                              <tr key={i} className="border-b border-border/50 last:border-0">
-                                <td className="py-2.5 text-muted-foreground">
-                                  {room.level !== null && room.level !== undefined ? (room.level === 0 ? "RDC" : `Étage ${room.level}`) : ""}
+                              <tr key={i} className="border-b border-border/50 last:border-0 hover:bg-accent/5 transition-colors">
+                                <td className="py-3 text-muted-foreground">
+                                  {room.level !== null && room.level !== undefined ? `Étage ${room.level}` : ""}
                                 </td>
-                                <td className="py-2.5 text-foreground font-medium">{room.type}</td>
-                                <td className="py-2.5 text-foreground">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
+                                <td className="py-3 text-foreground font-medium">{room.type}</td>
+                                <td className="py-3 text-foreground">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
                               </tr>
                             ))}
                           </tbody>
