@@ -16,9 +16,10 @@ const Properties = () => {
   const [roomsFilter, setRoomsFilter] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [typeFilter, setTypeFilter] = useState("");
-  const [groundFloor, setGroundFloor] = useState<"any" | "yes" | "no">("any");
+  const [groundFloor, setGroundFloor] = useState<"any" | "yes" | "no" | "last">("any");
   const [balconyFilter, setBalconyFilter] = useState(false);
   const [terraceFilter, setTerraceFilter] = useState(false);
+  const [elevatorFilter, setElevatorFilter] = useState(false);
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
   useEffect(() => {
@@ -37,15 +38,18 @@ const Properties = () => {
       if (typeFilter && p.type.toLowerCase() !== typeFilter.toLowerCase()) return false;
       if (groundFloor === "yes" && (p.floor !== 0 && p.floor !== undefined)) return false;
       if (groundFloor === "no" && p.floor === 0) return false;
+      if (groundFloor === "last" && (p.floor === undefined || p.totalFloors === undefined || p.floor !== p.totalFloors)) return false;
+      if (groundFloor === "last" && (p.floor === undefined || p.totalFloors === undefined || p.floor !== p.totalFloors)) return false;
       if (balconyFilter && !p.balcony) return false;
       if (terraceFilter && !p.terrace) return false;
+      if (elevatorFilter && !p.elevator) return false;
       return true;
     });
-  }, [properties, searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor, balconyFilter, terraceFilter]);
+  }, [properties, searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor, balconyFilter, terraceFilter, elevatorFilter]);
 
   const uniqueCities = useMemo(() => [...new Set(properties.map(p => p.city))].sort(), [properties]);
 
-  const activeFiltersCount = [searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor !== "any", balconyFilter, terraceFilter].filter(Boolean).length;
+  const activeFiltersCount = [searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor !== "any", balconyFilter, terraceFilter, elevatorFilter].filter(Boolean).length;
 
   const clearFilters = () => {
     setSearchCity("");
@@ -56,6 +60,7 @@ const Properties = () => {
     setGroundFloor("any");
     setBalconyFilter(false);
     setTerraceFilter(false);
+    setElevatorFilter(false);
   };
 
   // Map view: grouped by city
@@ -83,25 +88,25 @@ const Properties = () => {
         </div>
       </section>
 
-      {/* SEARCH BAR - Modern */}
-      <section className="py-6 bg-card border-b border-border sticky top-[60px] z-40 shadow-sm">
+      {/* SEARCH BAR - Compact & Modern */}
+      <section className="py-4 bg-card border-b border-border sticky top-[60px] z-40 shadow-sm">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-secondary/50 backdrop-blur-sm rounded-2xl p-4 border border-border"
+            className="max-w-4xl mx-auto bg-secondary/50 backdrop-blur-sm rounded-2xl p-3 border border-border"
           >
-            {/* Main filters */}
-            <div className="flex flex-col md:flex-row gap-3">
+            {/* Main filters row */}
+            <div className="flex flex-col sm:flex-row gap-2">
               {/* City search */}
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
                 <input
                   type="text"
                   placeholder="Ville ou code postal..."
                   value={searchCity}
                   onChange={(e) => setSearchCity(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all"
+                  className="w-full pl-9 pr-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all"
                   list="cities-list"
                 />
                 <datalist id="cities-list">
@@ -110,11 +115,11 @@ const Properties = () => {
               </div>
 
               {/* Rooms */}
-              <div className="relative md:w-40">
+              <div className="relative sm:w-32">
                 <select
                   value={roomsFilter}
                   onChange={(e) => setRoomsFilter(e.target.value)}
-                  className="w-full px-4 py-3.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
+                  className="w-full px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
                 >
                   <option value="">Pièces</option>
                   <option value="1">1 pièce</option>
@@ -123,38 +128,38 @@ const Properties = () => {
                   <option value="4">4 pièces</option>
                   <option value="5">5+ pièces</option>
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
               </div>
 
               {/* Price range */}
-              <div className="flex gap-2 md:w-64">
+              <div className="flex gap-1.5 sm:w-48">
                 <input
                   type="number"
                   placeholder="Min €"
                   value={priceMin}
                   onChange={(e) => setPriceMin(e.target.value)}
-                  className="w-1/2 px-3 py-3.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
+                  className="w-1/2 px-2.5 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
                 />
                 <input
                   type="number"
                   placeholder="Max €"
                   value={priceMax}
                   onChange={(e) => setPriceMax(e.target.value)}
-                  className="w-1/2 px-3 py-3.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
+                  className="w-1/2 px-2.5 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
                 />
               </div>
 
               {/* Advanced toggle */}
               <button
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-body text-sm transition-all ${
+                className={`flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-body text-xs font-semibold tracking-wide transition-all whitespace-nowrap ${
                   showAdvanced ? "bg-accent text-accent-foreground" : "bg-card border border-border hover:border-accent/40"
                 }`}
               >
-                <SlidersHorizontal className="w-4 h-4" />
-                <span className="hidden sm:inline">Filtres</span>
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                Filtres Avancés
                 {activeFiltersCount > 0 && (
-                  <span className="bg-accent text-accent-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                  <span className="bg-accent text-accent-foreground text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold leading-none">
                     {activeFiltersCount}
                   </span>
                 )}
@@ -171,58 +176,54 @@ const Properties = () => {
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className="mt-4 pt-4 border-t border-border grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="mt-3 pt-3 border-t border-border grid grid-cols-2 md:grid-cols-5 gap-2">
                     <div className="relative">
                       <select
                         value={typeFilter}
                         onChange={(e) => setTypeFilter(e.target.value)}
-                        className="w-full px-4 py-3 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none"
+                        className="w-full px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none"
                       >
                         <option value="">Type de bien</option>
                         <option value="Appartement">Appartement</option>
                         <option value="Maison">Maison</option>
                         <option value="Immeuble">Immeuble</option>
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
                     </div>
 
                     <div className="relative">
                       <select
                         value={groundFloor}
-                        onChange={(e) => setGroundFloor(e.target.value as "any" | "yes" | "no")}
-                        className="w-full px-4 py-3 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none"
+                        onChange={(e) => setGroundFloor(e.target.value as "any" | "yes" | "no" | "last")}
+                        className="w-full px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none"
                       >
                         <option value="any">Étage (tous)</option>
                         <option value="yes">RDC uniquement</option>
                         <option value="no">Étage uniquement</option>
+                        <option value="last">Dernier étage</option>
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
                     </div>
 
-                    <label className="flex items-center gap-3 px-4 py-3 bg-card border border-border rounded-xl font-body text-sm cursor-pointer hover:border-accent/40 transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={balconyFilter}
-                        onChange={(e) => setBalconyFilter(e.target.checked)}
-                        className="w-4 h-4 accent-accent rounded"
-                      />
+                    <label className="flex items-center gap-2 px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm cursor-pointer hover:border-accent/40 transition-colors">
+                      <input type="checkbox" checked={balconyFilter} onChange={(e) => setBalconyFilter(e.target.checked)} className="w-3.5 h-3.5 accent-accent rounded" />
                       Balcon
                     </label>
 
-                    <label className="flex items-center gap-3 px-4 py-3 bg-card border border-border rounded-xl font-body text-sm cursor-pointer hover:border-accent/40 transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={terraceFilter}
-                        onChange={(e) => setTerraceFilter(e.target.checked)}
-                        className="w-4 h-4 accent-accent rounded"
-                      />
+                    <label className="flex items-center gap-2 px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm cursor-pointer hover:border-accent/40 transition-colors">
+                      <input type="checkbox" checked={terraceFilter} onChange={(e) => setTerraceFilter(e.target.checked)} className="w-3.5 h-3.5 accent-accent rounded" />
                       Terrasse
+                    </label>
+
+                    <label className="flex items-center gap-2 px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm cursor-pointer hover:border-accent/40 transition-colors">
+                      <input type="checkbox" checked={elevatorFilter} onChange={(e) => setElevatorFilter(e.target.checked)} className="w-3.5 h-3.5 accent-accent rounded" />
+                      Ascenseur
                     </label>
                   </div>
                   {activeFiltersCount > 0 && (
-                    <div className="mt-3 flex justify-end">
+                    <div className="mt-2 flex justify-end">
                       <button onClick={clearFilters} className="flex items-center gap-1.5 text-accent font-body text-xs font-semibold hover:underline">
-                        <X className="w-3 h-3" /> Réinitialiser les filtres
+                        <X className="w-3 h-3" /> Réinitialiser
                       </button>
                     </div>
                   )}
