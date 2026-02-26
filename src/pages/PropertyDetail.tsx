@@ -43,35 +43,38 @@ const RoomDetailsBlock = ({ roomDetails }: { roomDetails: RoomDetail[] }) => {
           </div>
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md max-h-[70vh] flex flex-col rounded-xl p-0 gap-0 overflow-hidden">
-        <DialogHeader className="px-6 pt-6 pb-4 border-b border-border bg-accent/5">
-          <DialogTitle className="font-display text-lg flex items-center gap-3">
-            <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
-              <Home className="w-5 h-5 text-accent-foreground" />
+      <DialogContent className="sm:max-w-lg max-h-[75vh] flex flex-col rounded-2xl p-0 gap-0 overflow-hidden border-0 shadow-2xl">
+        {/* Fixed header */}
+        <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-primary to-navy-light">
+          <DialogTitle className="font-display text-xl text-primary-foreground flex items-center gap-3">
+            <div className="w-11 h-11 bg-primary-foreground/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <Home className="w-5 h-5 text-primary-foreground" />
             </div>
-            Détail des pièces
-            <span className="ml-auto text-sm font-body font-normal text-muted-foreground">{roomDetails.length} pièce{roomDetails.length > 1 ? "s" : ""}</span>
+            <div>
+              <span>Détail des pièces</span>
+              <p className="text-sm font-body font-normal text-primary-foreground/70 mt-0.5">{roomDetails.length} pièce{roomDetails.length > 1 ? "s" : ""}</p>
+            </div>
           </DialogTitle>
-        </DialogHeader>
-        <div className="overflow-y-auto flex-1 px-6 py-4">
-          <table className="w-full font-body text-sm">
-            <thead className="sticky top-0 bg-background">
-              <tr className="border-b-2 border-accent/20 text-left">
-                <th className="pb-3 text-accent font-semibold text-xs uppercase tracking-wider">Niveau</th>
-                <th className="pb-3 text-accent font-semibold text-xs uppercase tracking-wider">Pièce</th>
-                <th className="pb-3 text-accent font-semibold text-xs uppercase tracking-wider text-right">Surface</th>
-              </tr>
-            </thead>
-            <tbody>
-              {roomDetails.map((room, i) => (
-                <tr key={i} className="border-b border-border/40 last:border-0 hover:bg-accent/5 transition-colors">
-                  <td className="py-3 text-muted-foreground">{formatLevel(room.level)}</td>
-                  <td className="py-3 text-foreground font-medium">{room.type}</td>
-                  <td className="py-3 text-foreground text-right">{room.surface > 0 ? `${room.surface} m²` : "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        </div>
+
+        {/* Fixed column headers */}
+        <div className="px-6 pt-3 pb-2 bg-background border-b border-border">
+          <div className="grid grid-cols-[1fr_2fr_1fr] gap-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-accent">Niveau</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-accent">Pièce</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-accent text-right">Surface</span>
+          </div>
+        </div>
+
+        {/* Scrollable rows */}
+        <div className="overflow-y-auto flex-1 px-6 py-2">
+          {roomDetails.map((room, i) => (
+            <div key={i} className="grid grid-cols-[1fr_2fr_1fr] gap-2 py-3 border-b border-border/30 last:border-0 hover:bg-accent/5 rounded-lg px-1 transition-colors">
+              <span className="text-sm text-muted-foreground font-body">{formatLevel(room.level)}</span>
+              <span className="text-sm text-foreground font-medium font-body">{room.type}</span>
+              <span className="text-sm text-foreground font-body text-right">{room.surface > 0 ? `${room.surface} m²` : "—"}</span>
+            </div>
+          ))}
         </div>
       </DialogContent>
     </Dialog>
