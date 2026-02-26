@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import BuyerMandateForm from "@/components/BuyerMandateForm";
+import BuyerMandateStepperForm from "@/components/BuyerMandateStepperForm";
 import PricingSection from "@/components/PricingSection";
 
 const steps = [
@@ -158,42 +159,27 @@ const BuyerMandate = () => {
       {/* Advantages */}
       <section className="py-20">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-            <div>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground mb-6">
-                Les avantages de nous confier votre recherche
-              </h2>
-              <div className="w-16 h-0.5 bg-accent mb-8" />
-              <ul className="space-y-5">
-                {advantages.map((a) => (
-                  <li key={a.text} className="flex items-center gap-4 font-body text-foreground text-sm">
-                    <div className="w-9 h-9 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <a.icon className="w-4 h-4 text-accent" />
-                    </div>
-                    {a.text}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-card p-8 rounded shadow-sm border border-border">
-              <h3 className="font-display text-xl mb-4">Démarrez votre recherche</h3>
-              <p className="font-body text-muted-foreground text-sm mb-6">
-                Remplissez le formulaire ci-dessous ou appelez-nous directement pour nous exposer votre projet.
-              </p>
-              <BuyerMandateForm
-                trigger={
-                  <button className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 font-body font-semibold text-sm rounded hover:brightness-110 transition-all w-full justify-center">
-                    Décrire mon projet <ArrowRight className="w-4 h-4" />
-                  </button>
-                }
-              />
-              <p className="text-center mt-4 font-body text-muted-foreground text-xs">
-                Ou appelez directement : <a href="tel:+33184801400" className="text-accent hover:underline">01 84 80 14 00</a>
-              </p>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-6">
+              Les avantages de nous confier votre recherche
+            </h2>
+            <div className="w-16 h-0.5 bg-accent mx-auto mb-10" />
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {advantages.map((a) => (
+                <div key={a.text} className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border">
+                  <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+                    <a.icon className="w-5 h-5 text-accent" />
+                  </div>
+                  <span className="font-body text-foreground text-sm text-center">{a.text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
+
+      {/* Stepper Form */}
+      <BuyerMandateStepperForm />
 
       {/* PRICING */}
       <PricingSection
