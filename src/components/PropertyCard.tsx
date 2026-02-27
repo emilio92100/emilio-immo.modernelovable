@@ -3,7 +3,7 @@ import { Property, formatPrice } from "@/lib/properties";
 import { MapPin, Maximize, BedDouble, Home, Eye, ArrowRight, Bath, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+
 
 interface PropertyCardProps {
   property: Property;
@@ -50,105 +50,124 @@ const QuickViewPopup = ({
   open: boolean;
   onClose: () => void;
 }) => (
-  <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-    <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-xl border-border [&>button.absolute]:hidden">
-      <DialogTitle className="sr-only">{getDisplayTitle(property)}</DialogTitle>
-
-      {/* Image header */}
-      <div className="relative aspect-[16/9] overflow-hidden">
-        <img
-          src={property.images[0]}
-          alt={property.title}
-          className="w-full h-full object-cover"
-        />
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 w-10 h-10 rounded-full bg-foreground/60 hover:bg-foreground/80 flex items-center justify-center transition-colors"
+  <AnimatePresence>
+    {open && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.92, y: 20 }}
+          transition={{ type: "spring", damping: 28, stiffness: 350 }}
+          onClick={(e) => e.stopPropagation()}
+          className="relative max-w-2xl w-full mx-4 bg-card rounded-xl overflow-hidden shadow-2xl border border-border"
         >
-          <X className="w-5 h-5 text-background" />
-        </button>
-        {/* Badge VENTE */}
-        <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-body font-bold tracking-wider uppercase px-3 py-1.5 rounded">
-          Vente
-        </span>
-        {property.exclusive && (
-          <span className="absolute top-3 left-[5.5rem] bg-accent text-accent-foreground text-xs font-body font-bold tracking-wider uppercase px-3 py-1.5 rounded">
-            Exclusivité
-          </span>
-        )}
-        {/* Price */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/90 to-transparent p-5 pt-14">
-          <span className="text-primary-foreground font-display text-2xl font-bold">
-            {formatPrice(property.price)}
-          </span>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-6 space-y-4">
-        <div>
-          <h3 className="font-display text-xl font-semibold text-foreground">
-            {getDisplayTitle(property)}
-          </h3>
-          <div className="flex items-center gap-1.5 text-muted-foreground text-sm mt-1 font-body">
-            <MapPin className="w-3.5 h-3.5 text-accent" />
-            {getDisplayCity(property)}, {property.postalCode}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-5 text-sm text-muted-foreground font-body border-t border-b border-border py-3">
-          <span className="flex items-center gap-1.5">
-            <Maximize className="w-4 h-4 text-accent" /> {property.surface} m²
-          </span>
-          {property.rooms > 0 && (
-            <span className="flex items-center gap-1.5">
-              <Home className="w-4 h-4 text-accent" /> {property.rooms} pièces
+          {/* Image header */}
+          <div className="relative aspect-[16/9] overflow-hidden">
+            <motion.img
+              initial={{ scale: 1.08 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              src={property.images[0]}
+              alt={property.title}
+              className="w-full h-full object-cover"
+            />
+            <button
+              onClick={onClose}
+              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-foreground/60 hover:bg-foreground/80 flex items-center justify-center transition-colors"
+            >
+              <X className="w-5 h-5 text-background" />
+            </button>
+            <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-body font-bold tracking-wider uppercase px-3 py-1.5 rounded">
+              Vente
             </span>
-          )}
-          {property.bedrooms > 0 && (
-            <span className="flex items-center gap-1.5">
-              <BedDouble className="w-4 h-4 text-accent" /> {property.bedrooms} ch.
-            </span>
-          )}
-        </div>
-
-        <p className="font-body text-muted-foreground text-sm leading-relaxed line-clamp-3">
-          {property.description}
-        </p>
-
-        {/* Feature badges */}
-        {getFeatureBadges(property).length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {getFeatureBadges(property).map((badge) => (
-              <span
-                key={badge}
-                className="text-xs font-body font-medium text-accent border border-accent/30 rounded-full px-3 py-1"
-              >
-                {badge}
+            {property.exclusive && (
+              <span className="absolute top-3 left-[5.5rem] bg-accent text-accent-foreground text-xs font-body font-bold tracking-wider uppercase px-3 py-1.5 rounded">
+                Exclusivité
               </span>
-            ))}
+            )}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/90 to-transparent p-5 pt-14">
+              <span className="text-primary-foreground font-display text-2xl font-bold">
+                {formatPrice(property.price)}
+              </span>
+            </div>
           </div>
-        )}
 
-        {/* Actions */}
-        <div className="flex gap-3 pt-2">
-          <button
-            onClick={onClose}
-            className="flex-1 border border-border text-foreground font-body font-semibold text-sm py-3 rounded-lg hover:bg-muted transition-colors"
+          {/* Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.12, duration: 0.3 }}
+            className="p-6 space-y-4"
           >
-            Fermer
-          </button>
-          <Link
-            to={`/biens/${property.id}`}
-            className="flex-1 inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground font-body font-semibold text-sm py-3 rounded-lg hover:brightness-110 transition-all"
-          >
-            <ArrowRight className="w-4 h-4" /> Voir en détail
-          </Link>
-        </div>
-      </div>
-    </DialogContent>
-  </Dialog>
+            <div>
+              <h3 className="font-display text-xl font-semibold text-foreground">
+                {getDisplayTitle(property)}
+              </h3>
+              <div className="flex items-center gap-1.5 text-muted-foreground text-sm mt-1 font-body">
+                <MapPin className="w-3.5 h-3.5 text-accent" />
+                {getDisplayCity(property)}, {property.postalCode}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-5 text-sm text-muted-foreground font-body border-t border-b border-border py-3">
+              <span className="flex items-center gap-1.5">
+                <Maximize className="w-4 h-4 text-accent" /> {property.surface} m²
+              </span>
+              {property.rooms > 0 && (
+                <span className="flex items-center gap-1.5">
+                  <Home className="w-4 h-4 text-accent" /> {property.rooms} pièces
+                </span>
+              )}
+              {property.bedrooms > 0 && (
+                <span className="flex items-center gap-1.5">
+                  <BedDouble className="w-4 h-4 text-accent" /> {property.bedrooms} ch.
+                </span>
+              )}
+            </div>
+
+            <p className="font-body text-muted-foreground text-sm leading-relaxed line-clamp-3">
+              {property.description}
+            </p>
+
+            {getFeatureBadges(property).length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {getFeatureBadges(property).map((badge) => (
+                  <span
+                    key={badge}
+                    className="text-xs font-body font-medium text-accent border border-accent/30 rounded-full px-3 py-1"
+                  >
+                    {badge}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={onClose}
+                className="flex-1 border border-border text-foreground font-body font-semibold text-sm py-3 rounded-lg hover:bg-muted transition-colors"
+              >
+                Fermer
+              </button>
+              <Link
+                to={`/biens/${property.id}`}
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground font-body font-semibold text-sm py-3 rounded-lg hover:brightness-110 transition-all"
+              >
+                <ArrowRight className="w-4 h-4" /> Voir en détail
+              </Link>
+            </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
 );
 
 /* ── Property Card ── */
