@@ -63,10 +63,6 @@ const engagements = [
 }];
 
 
-const offMarketStats = [
-{ value: "50+", label: "Biens off-market", description: "Biens exclusifs non diffusés sur les portails classiques" },
-{ value: "200+", label: "Transactions", description: "Transactions réussies grâce à notre réseau privilégié" },
-{ value: "72h", label: "Réactivité", description: "Délai moyen pour vous proposer un bien ciblé" }];
 
 
 const Index = () => {
@@ -87,23 +83,27 @@ const Index = () => {
       {/* HERO */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-secondary" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/85 via-primary/65 to-primary/40" />
         <div className="relative z-10 container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="inline-block font-body text-accent font-semibold text-sm tracking-widest uppercase mb-6">
-
-              Emilio Immobilier
-            </motion.span>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="inline-flex items-center gap-3 mb-8"
+            >
+              <div className="h-px w-10 bg-accent" />
+              <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">
+                Emilio Immobilier
+              </span>
+              <div className="h-px w-10 bg-accent" />
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.1 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-tight mb-6">
-
+              transition={{ duration: 1, delay: 0.15 }}
+              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-[1.1] mb-7"
+            >
               Votre projet immobilier,
               <br />
               <span className="text-accent italic">notre expertise</span>
@@ -111,77 +111,92 @@ const Index = () => {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.3 }}
-              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mx-auto mb-10">
-
+              transition={{ duration: 0.9, delay: 0.35 }}
+              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mx-auto mb-11 leading-relaxed"
+            >
               Achat, vente et conseil sur-mesure en Île-de-France.
               Accédez à des biens d'exception, y compris en off-market.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center">
-
+              transition={{ duration: 0.9, delay: 0.55 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
               <Link
                 to="/biens"
-                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all">
-
+                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
+              >
                 Découvrir nos biens <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/vendre"
-                className="inline-flex items-center justify-center gap-2 border text-accent px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:text-accent-foreground transition-all bg-primary text-center border-accent">
-
+                className="inline-flex items-center justify-center gap-2 border border-accent text-accent px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-accent hover:text-accent-foreground transition-all"
+              >
                 <Home className="w-4 h-4" /> Je souhaite vendre
               </Link>
             </motion.div>
           </div>
         </div>
         {/* Stats bar */}
-        <div className="absolute bottom-0 left-0 right-0 bg-secondary/80 backdrop-blur-sm border-t border-border">
+        <div className="absolute bottom-0 left-0 right-0 bg-primary/60 backdrop-blur-md border-t border-primary-foreground/10">
           <div className="container mx-auto px-6 py-5 grid grid-cols-3 gap-4">
             {[
-            { value: "200+", label: "Transactions réussies" },
-            { value: "10+", label: "Années d'expérience" },
-            { value: "50+", label: "Biens off-market" }].
-            map((s) =>
-            <div key={s.label} className="text-center">
+              { value: "200+", label: "Transactions réussies" },
+              { value: "10+", label: "Années d'expérience" },
+              { value: "50+", label: "Biens off-market" },
+            ].map((s) => (
+              <div key={s.label} className="text-center">
                 <div className="font-display text-2xl md:text-3xl text-accent font-semibold">{s.value}</div>
-                <div className="font-body text-muted-foreground text-xs mt-1">{s.label}</div>
+                <div className="font-body text-primary-foreground/60 text-xs mt-1 tracking-wide">{s.label}</div>
               </div>
-            )}
+            ))}
           </div>
         </div>
       </section>
 
       {/* ENGAGEMENTS */}
-      <section className="py-20 bg-secondary">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-14">
-            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Ce qui nous définit</span>
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
-              Nos engagements
+      <section className="py-24 bg-secondary relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-accent/3 rounded-full translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/3 rounded-full -translate-x-1/2 translate-y-1/2" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-3 mb-5">
+              <div className="h-px w-8 bg-accent" />
+              <span className="font-body text-accent font-semibold text-xs tracking-[0.25em] uppercase">Ce qui nous définit</span>
+              <div className="h-px w-8 bg-accent" />
+            </div>
+            <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">
+              Nos <span className="text-accent italic">engagements</span>
             </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto" />
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {engagements.map((e, i) =>
-            <motion.div
-              key={e.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              viewport={{ once: true }}
-              className="group bg-card p-8 rounded-lg border border-border shadow-sm hover:shadow-lg hover:border-accent/30 hover:-translate-y-1 transition-all duration-300">
-
-                <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mb-5 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
-                  <e.icon className="w-6 h-6 text-accent" />
+            <p className="font-body text-muted-foreground max-w-lg mx-auto text-base leading-relaxed">
+              Six piliers qui guident chacune de nos actions et garantissent une expérience irréprochable.
+            </p>
+          </motion.div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {engagements.map((e, i) => (
+              <motion.div
+                key={e.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                viewport={{ once: true }}
+                className="group relative bg-card p-8 rounded-xl border border-border hover:border-accent/40 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500"
+              >
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-xl" />
+                <div className="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent group-hover:scale-105 transition-all duration-500">
+                  <e.icon className="w-6 h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
-                <h3 className="font-display text-lg mb-3">{e.title}</h3>
-                <p className="font-body text-muted-foreground text-base leading-relaxed">{e.description}</p>
+                <h3 className="font-display text-lg mb-3 text-foreground">{e.title}</h3>
+                <p className="font-body text-muted-foreground text-sm leading-relaxed">{e.description}</p>
               </motion.div>
-            )}
+            ))}
           </div>
         </div>
       </section>
@@ -355,58 +370,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* OFF-MARKET ACHAT */}
-      <section className="py-20 bg-primary">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-14">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Lock className="w-6 h-6 text-accent" />
-              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Accès privilégié</span>
-            </div>
-            <h2 className="font-display text-3xl md:text-4xl text-primary-foreground mb-4">
-              Notre base <span className="text-gold italic">Off-Market</span>
-            </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed text-base">
-              Accédez à des biens d'exception qui ne sont jamais diffusés sur les portails classiques.
-              Notre réseau privilégié vous ouvre les portes d'opportunités uniques.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
-            {offMarketStats.map((stat, i) =>
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              viewport={{ once: true }}
-              className="group relative bg-primary-foreground/5 border border-primary-foreground/10 rounded-lg p-8 text-center cursor-default overflow-hidden transition-all duration-500 hover:bg-primary-foreground/10 hover:border-accent/30">
-
-                <div className="transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-4">
-                  <div className="font-display text-4xl text-accent mb-2 font-semibold">{stat.value}</div>
-                  <div className="font-body text-primary-foreground/70 text-sm tracking-wide">{stat.label}</div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center p-6 opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                  <div className="text-center">
-                    <div className="font-display text-2xl text-accent mb-2 font-semibold">{stat.value}</div>
-                    <p className="font-body text-primary-foreground/80 text-sm leading-relaxed">{stat.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/mandat-recherche"
-              className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold text-sm rounded hover:brightness-110 transition-all">
-
-              Accéder au off-market <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* TESTIMONIALS */}
       <section className="py-20 bg-secondary">
