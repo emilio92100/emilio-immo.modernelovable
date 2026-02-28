@@ -31,7 +31,7 @@ const MentionsLegales = () =>
 
         <div>
           <h2 className="font-display text-2xl text-foreground mb-3">Activité réglementée</h2>
-          <p>Emilio Immobilier est titulaire de la carte professionnelle de transaction sur immeubles et fonds de commerce (Carte T) numéro CPI 9201 2020 000 045 344, délivrée par la Chambre de Commerce et d'Industrie conformément à la loi n° 70-9 du 2 janvier 1970 (loi Hoguet) et au décret n° 72-678 du 20 juillet 1972.
+          <p>RT CONSEILS est titulaire de la carte professionnelle de transaction sur immeubles et fonds de commerce (Carte T) numéro CPI 9201 2020 000 045 344, délivrée par la Chambre de Commerce et d'Industrie conformément à la loi n° 70-9 du 2 janvier 1970 (loi Hoguet) et au décret n° 72-678 du 20 juillet 1972.
 
 
 
