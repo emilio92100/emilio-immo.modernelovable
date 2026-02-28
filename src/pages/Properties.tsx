@@ -107,11 +107,7 @@ const Properties = () => {
                   value={searchCity}
                   onChange={(e) => setSearchCity(e.target.value)}
                   className="w-full pl-9 pr-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all"
-                  list="cities-list"
                 />
-                <datalist id="cities-list">
-                  {uniqueCities.map(c => <option key={c} value={c} />)}
-                </datalist>
               </div>
 
               {/* Rooms */}
