@@ -1,8 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const MentionsLegales = () => (
-  <div className="min-h-screen">
+const MentionsLegales = () =>
+<div className="min-h-screen">
     <Navbar />
 
     <section className="pt-28 pb-12 bg-primary">
@@ -17,12 +17,12 @@ const MentionsLegales = () => (
 
         <div>
           <h2 className="font-display text-2xl text-foreground mb-3">Éditeur du site</h2>
-          <p>
-            Le site <strong className="text-foreground">emilio-immo.com</strong> est édité par la société Emilio Immobilier,
+          <p>Le site emilio-immo.com est édité par la société RT CONSEILS, société par actions simplifiée au capital de 1 000 EUROS.
+          <strong className="text-foreground">emilio-immo.com</strong> est édité par la société Emilio Immobilier,
             société par actions simplifiée au capital variable.
           </p>
           <ul className="list-disc list-inside mt-3 space-y-1">
-            <li>Siège social : Paris & Hauts-de-Seine (92)</li>
+            <li>Siège social : 10 Avenue Kléber - Paris 75016 </li>
             <li>Directeur de la publication : <strong className="text-foreground">Alexandre ROGELET</strong></li>
             <li>Téléphone : 01 84 80 14 00</li>
             <li>E-mail : agence@emilio-immo.com</li>
@@ -110,7 +110,7 @@ const MentionsLegales = () => (
     </section>
 
     <Footer />
-  </div>
-);
+  </div>;
+
 
 export default MentionsLegales;
