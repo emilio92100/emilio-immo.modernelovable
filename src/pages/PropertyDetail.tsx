@@ -1,9 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, MapPin, Maximize, BedDouble, Home, Calendar, Building, Thermometer,
-  Car, ChevronLeft, ChevronRight, Phone, Mail, Compass, DoorOpen, ShieldCheck, Star, CheckCircle, Send,
+  Car, ChevronLeft, ChevronRight, Phone, Mail, Compass, DoorOpen, ShieldCheck, Star, CheckCircle, Send, X,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -108,7 +108,7 @@ const PropertyDetail = () => {
   );
   const [loading, setLoading] = useState(true);
   const [currentImage, setCurrentImage] = useState(0);
-
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   useEffect(() => {
     fetchPropertiesFromFeed().then((data) => {
       const found = data.find((p) => p.id === id);
@@ -210,7 +210,8 @@ const PropertyDetail = () => {
               transition={{ duration: 0.3 }}
               src={property.images[currentImage]}
               alt={`${property.title} - Photo ${currentImage + 1}`}
-              className="w-full aspect-[16/10] object-cover rounded"
+              className="w-full aspect-[16/10] object-cover rounded cursor-pointer"
+              onClick={() => setLightboxOpen(true)}
             />
             {property.images.length > 1 && (
               <>
@@ -399,6 +400,55 @@ const PropertyDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Fullscreen Lightbox (mobile) */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-4 right-4 z-10 bg-white/10 backdrop-blur-sm p-2.5 rounded-full text-white hover:bg-white/20 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white/10 backdrop-blur-sm p-2.5 rounded-full text-white hover:bg-white/20 transition-colors"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <motion.img
+              key={currentImage}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2 }}
+              src={property.images[currentImage]}
+              alt={`Photo ${currentImage + 1}`}
+              className="max-w-[95vw] max-h-[85vh] object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            <button
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white/10 backdrop-blur-sm p-2.5 rounded-full text-white hover:bg-white/20 transition-colors"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full font-body text-sm">
+              {currentImage + 1} / {property.images.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <ContactForm />
       <Footer />
