@@ -20,7 +20,9 @@ const Properties = () => {
   const [balconyFilter, setBalconyFilter] = useState(false);
   const [terraceFilter, setTerraceFilter] = useState(false);
   const [elevatorFilter, setElevatorFilter] = useState(false);
+  const [bedroomsMin, setBedroomsMin] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
 
   useEffect(() => {
     fetchPropertiesFromFeed().then((data) => {
@@ -43,13 +45,14 @@ const Properties = () => {
       if (balconyFilter && !p.balcony) return false;
       if (terraceFilter && !p.terrace) return false;
       if (elevatorFilter && !p.elevator) return false;
+      if (bedroomsMin && p.bedrooms < Number(bedroomsMin)) return false;
       return true;
     });
-  }, [properties, searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor, balconyFilter, terraceFilter, elevatorFilter]);
+  }, [properties, searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor, balconyFilter, terraceFilter, elevatorFilter, bedroomsMin]);
 
   const uniqueCities = useMemo(() => [...new Set(properties.map(p => p.city))].sort(), [properties]);
 
-  const activeFiltersCount = [searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor !== "any", balconyFilter, terraceFilter, elevatorFilter].filter(Boolean).length;
+  const activeFiltersCount = [searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor !== "any", balconyFilter, terraceFilter, elevatorFilter, bedroomsMin].filter(Boolean).length;
 
   const clearFilters = () => {
     setSearchCity("");
@@ -61,7 +64,13 @@ const Properties = () => {
     setBalconyFilter(false);
     setTerraceFilter(false);
     setElevatorFilter(false);
+    setBedroomsMin("");
   };
+
+  const filteredCities = useMemo(() => {
+    if (!searchCity) return [];
+    return uniqueCities.filter(c => c.toLowerCase().includes(searchCity.toLowerCase())).slice(0, 6);
+  }, [searchCity, uniqueCities]);
 
   // Map view: grouped by city
   const citiesWithProperties = useMemo(() => {
@@ -98,16 +107,32 @@ const Properties = () => {
           >
             {/* Main filters row */}
             <div className="flex flex-col sm:flex-row gap-2">
-              {/* City search */}
+              {/* City search with autocomplete */}
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
                 <input
                   type="text"
                   placeholder="Ville ou code postal..."
                   value={searchCity}
-                  onChange={(e) => setSearchCity(e.target.value)}
+                  onChange={(e) => { setSearchCity(e.target.value); setShowCitySuggestions(true); }}
+                  onFocus={() => setShowCitySuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowCitySuggestions(false), 150)}
                   className="w-full pl-9 pr-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all"
                 />
+                {showCitySuggestions && filteredCities.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-xl shadow-lg z-50 overflow-hidden">
+                    {filteredCities.map(city => (
+                      <button
+                        key={city}
+                        onMouseDown={() => { setSearchCity(city); setShowCitySuggestions(false); }}
+                        className="w-full text-left px-3 py-2 font-body text-sm hover:bg-accent/10 transition-colors flex items-center gap-2"
+                      >
+                        <MapPin className="w-3.5 h-3.5 text-accent" />
+                        {city}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Rooms */}
@@ -172,7 +197,7 @@ const Properties = () => {
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className="mt-3 pt-3 border-t border-border grid grid-cols-2 md:grid-cols-5 gap-2">
+                  <div className="mt-3 pt-3 border-t border-border grid grid-cols-2 md:grid-cols-6 gap-2">
                     <div className="relative">
                       <select
                         value={typeFilter}
@@ -197,6 +222,21 @@ const Properties = () => {
                         <option value="yes">RDC uniquement</option>
                         <option value="no">Étage uniquement</option>
                         <option value="last">Dernier étage</option>
+                      </select>
+                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                    </div>
+
+                    <div className="relative">
+                      <select
+                        value={bedroomsMin}
+                        onChange={(e) => setBedroomsMin(e.target.value)}
+                        className="w-full px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none"
+                      >
+                        <option value="">Chambres min.</option>
+                        <option value="1">1+ chambre</option>
+                        <option value="2">2+ chambres</option>
+                        <option value="3">3+ chambres</option>
+                        <option value="4">4+ chambres</option>
                       </select>
                       <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
                     </div>
