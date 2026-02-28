@@ -204,20 +204,12 @@ const Index = () => {
       {/* LATEST PROPERTIES */}
       <section className="py-20">
         <div className="container mx-auto px-6">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Nos derniers biens</span>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
-                Une sélection de nos derniers biens
-              </h2>
-              <div className="w-16 h-0.5 bg-accent" />
-            </div>
-            <Link
-              to="/biens"
-              className="hidden md:flex items-center gap-2 text-accent font-body font-semibold text-sm hover:underline">
-
-              Voir tout <ArrowRight className="w-4 h-4" />
-            </Link>
+        <div className="text-center mb-12">
+            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Nos derniers biens</span>
+            <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
+              Une sélection de nos derniers biens
+            </h2>
+            <div className="w-16 h-0.5 bg-accent mx-auto" />
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
