@@ -52,11 +52,13 @@ const MentionsLegales = () =>
 
         <div>
           <h2 className="font-display text-2xl text-foreground mb-3">Garantie financière</h2>
-          <p>
-            Conformément à la réglementation en vigueur, Emilio Immobilier justifie d'une garantie financière 
-            suffisante pour couvrir les fonds qu'elle est amenée à détenir pour le compte de ses clients, 
-            si applicable.
-          </p>
+          <p>Conformément à la réglementation en vigueur, Emilio Immobilier justifie d'une garantie financière suffisante pour couvrir les fonds qu'elle est amenée à détenir pour le compte de ses clients, si applicable.
+
+
+
+La société [Nom de votre société], titulaire de la carte professionnelle délivrée par la CCI, déclare ne pas détenir de garantie financière, conformément aux dispositions de la loi n°70-9 du 2 janvier 1970 et de son décret d’application n°72-678 du 20 juillet 1972.
+
+La société s’interdit de recevoir, détenir ou manipuler des fonds, effets ou valeurs pour le compte de ses clients, à l’exception de sa rémunération ou de ses honoraires.</p>
         </div>
 
         <div>
@@ -111,6 +113,4 @@ const MentionsLegales = () =>
 
     <Footer />
   </div>;
-
-
 export default MentionsLegales;
