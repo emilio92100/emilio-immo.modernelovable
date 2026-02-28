@@ -17,7 +17,7 @@ const MentionsLegales = () =>
 
         <div>
           <h2 className="font-display text-2xl text-foreground mb-3">Éditeur du site</h2>
-          <p>Le site emilio-immo.com est édité par la société RT CONSEILS, société par actions simplifiée au capital de 1 000 EUROS.
+          <p>Le site www.emilio-immo.com est édité par la société RT CONSEILS, société par actions simplifiée au capital de 1 000 EUROS.
           <strong className="text-foreground">emilio-immo.com</strong> est édité par la société Emilio Immobilier,
             société par actions simplifiée au capital variable.
           </p>
