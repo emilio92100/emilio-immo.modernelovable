@@ -93,11 +93,11 @@ const MentionsLegales = () =>
 
         <div>
           <h2 className="font-display text-2xl text-foreground mb-3">Médiation</h2>
-          <p>
-            Conformément aux articles L.616-1 et R.616-1 du Code de la consommation, Emilio Immobilier propose 
-            un dispositif de médiation de la consommation. Le médiateur retenu est accessible via le site 
-            de la Médiation de la consommation ou par courrier.
-          </p>
+          <p>Conformément aux articles L.616-1 et R.616-1 du Code de la consommation, RT CONSEILS propose un dispositif de médiation de la consommation. Le médiateur retenu est accessible via le site de la Médiation de la consommation ou par courrier.
+
+
+
+        </p>
         </div>
 
         <div>
