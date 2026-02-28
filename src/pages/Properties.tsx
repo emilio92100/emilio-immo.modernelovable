@@ -89,7 +89,7 @@ const Properties = () => {
       </section>
 
       {/* SEARCH BAR - Compact & Modern */}
-      <section className="py-4 bg-card border-b border-border sticky top-[60px] z-40 shadow-sm">
+      <section className="py-4 bg-card border-b border-border md:sticky md:top-[60px] z-40 shadow-sm">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
