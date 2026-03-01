@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import alexandreImg from "@/assets/alexandre.png";
-import teamImg from "@/assets/team.png";
+
 
 const stats = [
   { icon: Award, label: "10+ ans d'expérience" },
@@ -183,26 +183,28 @@ const Director = () => {
             </p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="relative">
-              <div className="absolute -inset-4 bg-accent/10 rounded-2xl blur-sm" />
-              <div className="relative overflow-hidden rounded-xl shadow-2xl border-2 border-accent/20">
-                <img
-                  src={teamImg}
-                  alt="L'équipe Emilio Immobilier"
-                  className="w-full"
-                />
-              </div>
+          {/* Placeholder for future individual team photos */}
+          <div className="max-w-4xl mx-auto mb-14">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {["Alexandre", "Collaborateur", "Collaborateur", "Collaborateur"].map((name, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  className="text-center"
+                >
+                  <div className="w-full aspect-square bg-primary-foreground/10 rounded-xl border border-accent/20 flex items-center justify-center mb-3">
+                    <Users className="w-10 h-10 text-accent/40" />
+                  </div>
+                  <p className="font-body text-primary-foreground/60 text-sm">{i === 0 ? "Alexandre" : "Bientôt"}</p>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mt-14 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
               { value: "5", label: "collaborateurs passionnés" },
               { value: "100%", label: "des clients suivis personnellement" },
