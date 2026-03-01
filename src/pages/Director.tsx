@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import { Award, Users, Target, Handshake, Heart, Shield, BadgeCheck } from "lucide-react";
+import { Award, Users, Target, BadgeCheck, Star, Clock, MessageCircle, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import alexandreImg from "@/assets/alexandre.png";
+import teamImg from "@/assets/team.png";
 
 const stats = [
   { icon: Award, label: "10+ ans d'expérience" },
@@ -12,26 +13,26 @@ const stats = [
   { icon: BadgeCheck, label: "Titulaire carte T professionnelle" },
 ];
 
-const philosophy = [
+const values = [
   {
-    icon: Handshake,
-    title: "Je vous écoute vraiment",
-    description: "Je ne suis pas là pour vous vendre un bien à tout prix. Je prends le temps de vous connaître, de comprendre ce que vous cherchez vraiment, et je vous dis franchement si un bien n'est pas fait pour vous.",
+    icon: MessageCircle,
+    title: "Transparence totale",
+    text: "On vous dit les choses telles qu'elles sont. Pas de promesses en l'air, pas d'estimations gonflées. Vous méritez la vérité pour prendre les bonnes décisions.",
   },
   {
-    icon: Shield,
-    title: "Je joue cartes sur table",
-    description: "Pas de discours commercial, pas de chiffres gonflés. Je vous donne mon avis honnête, même quand ce n'est pas ce que vous voulez entendre. C'est comme ça qu'on construit une relation de confiance.",
+    icon: ShieldCheck,
+    title: "Engagement sans faille",
+    text: "Chaque dossier est traité avec la même rigueur, qu'il s'agisse d'un studio ou d'un hôtel particulier. Nous nous engageons sur des résultats, pas sur des mots.",
   },
   {
-    icon: Target,
-    title: "Je me bats pour vos intérêts",
-    description: "Négocier, c'est mon métier. Je connais les prix, je connais le marché, et je mets toute mon énergie pour vous obtenir les meilleures conditions — que vous achetiez ou que vous vendiez.",
+    icon: Clock,
+    title: "Disponibilité réelle",
+    text: "Soir, week-end, jour férié : quand vous avez besoin de nous, nous répondons. L'immobilier n'attend pas, nous non plus.",
   },
   {
-    icon: Heart,
-    title: "Je reste disponible, tout simplement",
-    description: "Un doute le soir ? Une question le week-end ? Je décroche. L'immobilier ne s'arrête pas à 18h, et moi non plus. Vous pouvez compter sur moi du début à la fin.",
+    icon: Star,
+    title: "Excellence du service",
+    text: "Photos professionnelles, dossiers complets, accompagnement juridique, suivi personnalisé — nous ne laissons rien au hasard pour que votre projet aboutisse.",
   },
 ];
 
@@ -49,7 +50,7 @@ const emilioTimeline = [
   {
     period: "2023",
     title: "Implantation à Paris",
-    text: "Ouverture sur les 16e, 15e, 6e et 7e arrondissements — des secteurs où nous sommes aujourd'hui bien établis, avec des propriétaires qui nous recommandent régulièrement grâce à notre travail professionnel.",
+    text: "Ouverture sur les 16e, 15e, 6e et 7e arrondissements — des secteurs où nous sommes aujourd'hui bien établis.",
   },
 ];
 
@@ -58,6 +59,7 @@ const Director = () => {
     <div className="min-h-screen">
       <Navbar />
 
+      {/* Hero */}
       <section className="pt-28 pb-12 bg-primary">
         <div className="container mx-auto px-6 text-center">
           <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Notre Histoire</h1>
@@ -166,36 +168,91 @@ const Director = () => {
         </div>
       </section>
 
-      {/* Philosophy / Values */}
+      {/* Team Section */}
+      <section className="py-20 bg-primary">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-14">
+            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Notre force</span>
+            <h2 className="font-display text-3xl md:text-4xl text-primary-foreground mt-3 mb-4">
+              Une équipe à taille humaine
+            </h2>
+            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
+            <p className="font-body text-primary-foreground/80 max-w-2xl mx-auto text-base leading-relaxed">
+              Chez Emilio, chaque collaborateur partage les mêmes valeurs : l'écoute, l'exigence et le goût du travail bien fait. 
+              Nous formons une équipe soudée où chaque client est connu par son prénom, pas par un numéro de dossier.
+            </p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="relative">
+              <div className="absolute -inset-4 bg-accent/10 rounded-2xl blur-sm" />
+              <div className="relative overflow-hidden rounded-xl shadow-2xl border-2 border-accent/20">
+                <img
+                  src={teamImg}
+                  alt="L'équipe Emilio Immobilier"
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8 mt-14 max-w-4xl mx-auto">
+            {[
+              { value: "5", label: "collaborateurs passionnés" },
+              { value: "100%", label: "des clients suivis personnellement" },
+              { value: "7j/7", label: "à votre écoute" },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <span className="font-display text-4xl md:text-5xl text-accent">{stat.value}</span>
+                <p className="font-body text-primary-foreground/80 text-sm mt-2">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Values – Nos engagements */}
       <section className="py-20 bg-secondary">
         <div className="container mx-auto px-6">
           <div className="text-center mb-14">
-            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Ma philosophie</span>
+            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Ce qui nous définit</span>
             <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
-              Ce qui guide mon approche
+              Nos engagements
             </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-base leading-relaxed">
-              L'immobilier est bien plus qu'une transaction. C'est un moment de vie, un projet porteur d'émotions.
-              Je m'engage à vous accompagner avec exigence, bienveillance et professionnalisme.
-            </p>
+            <div className="w-16 h-0.5 bg-accent mx-auto" />
           </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {philosophy.map((item, i) => (
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {values.map((item, i) => (
               <motion.div
                 key={item.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-card p-10 rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow"
+                className="group relative bg-card rounded-xl border border-border p-8 hover:border-accent/40 transition-all duration-300 hover:shadow-lg"
               >
-                <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mb-6">
-                  <item.icon className="w-7 h-7 text-accent" />
+                <div className="flex items-start gap-5">
+                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-accent transition-colors duration-300">
+                    <item.icon className="w-6 h-6 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl text-foreground mb-2">{item.title}</h3>
+                    <p className="font-body text-muted-foreground text-base leading-relaxed">{item.text}</p>
+                  </div>
                 </div>
-                <h3 className="font-display text-xl mb-3">{item.title}</h3>
-                <p className="font-body text-muted-foreground text-base leading-relaxed">{item.description}</p>
-
               </motion.div>
             ))}
           </div>
@@ -207,14 +264,13 @@ const Director = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-14">
-              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Mon parcours</span>
+              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Notre parcours</span>
               <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
                 Un chemin guidé par la passion
               </h2>
               <div className="w-16 h-0.5 bg-accent mx-auto" />
             </div>
 
-            {/* Emilio timeline */}
             <div className="relative">
               <div className="absolute left-6 top-0 bottom-0 w-px bg-accent/30" />
               <div className="space-y-0">
