@@ -34,12 +34,12 @@ const engagements = [
 {
   icon: Shield,
   title: "Transparence totale",
-  description: "Aucun frais caché, des honoraires clairs dès le départ. Vous savez exactement où vous en êtes à chaque étape."
+  description: "Un suivi clair à chaque étape de votre projet. Vous êtes informé en temps réel, sans zone d'ombre."
 },
 {
   icon: Heart,
   title: "Écoute & bienveillance",
-  description: "Votre projet est unique. Nous prenons le temps de comprendre vos besoins et de vous conseiller avec sincérité."
+  description: "Votre projet est unique. Nous prenons le temps de comprendre vos attentes pour vous conseiller avec sincérité."
 },
 {
   icon: Handshake,
@@ -49,17 +49,17 @@ const engagements = [
 {
   icon: Clock,
   title: "Réactivité 7j/7",
-  description: "Une question, un doute ? Nous sommes disponibles et réactifs tout au long de votre projet."
+  description: "Une question, un doute ? Notre équipe est disponible et réactive tout au long de votre projet."
 },
 {
   icon: Eye,
   title: "Accès off-market",
-  description: "Profitez de biens exclusifs jamais publiés en ligne, accessibles uniquement via notre réseau."
+  description: "Profitez de biens exclusifs jamais publiés en ligne, accessibles uniquement via notre réseau privilégié."
 },
 {
   icon: Award,
   title: "Expertise locale",
-  description: "Plus de 10 ans d'expérience sur Paris et les Hauts-de-Seine pour une connaissance fine du marché."
+  description: "Une connaissance fine de Paris et des Hauts-de-Seine pour un accompagnement sur-mesure."
 }];
 
 
@@ -163,9 +163,11 @@ const Index = () => {
       </section>
 
       {/* ENGAGEMENTS */}
-      <section className="py-28 bg-primary relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] border border-accent/10 rounded-full translate-x-1/3 -translate-y-1/3" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 border border-accent/10 rounded-full -translate-x-1/3 translate-y-1/3" />
+      <section className="py-28 bg-background relative overflow-hidden">
+        {/* Subtle decorative background */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -179,38 +181,31 @@ const Index = () => {
               <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Ce qui nous définit</span>
               <div className="h-px w-12 bg-accent" />
             </div>
-            <h2 className="font-display text-4xl md:text-6xl text-primary-foreground mb-5">
+            <h2 className="font-display text-4xl md:text-6xl text-foreground mb-5">
               Nos <span className="text-accent italic">engagements</span>
             </h2>
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
-              Six piliers qui guident chacune de nos actions et garantissent une expérience irréprochable.
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+              Six valeurs essentielles au service de votre projet immobilier.
             </p>
           </motion.div>
 
-          {/* Bento-style grid */}
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {engagements.map((e, i) => (
               <motion.div
                 key={e.title}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className={`group relative rounded-2xl border border-primary-foreground/10 p-10 backdrop-blur-sm hover:border-accent/50 transition-all duration-500 overflow-hidden ${
-                  i === 0 ? "md:col-span-2 lg:col-span-1" : ""
-                }`}
-                style={{ background: "linear-gradient(135deg, hsla(215,55%,28%,0.8), hsla(215,55%,18%,0.9))" }}
+                className="group relative bg-card rounded-2xl border border-border p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500"
               >
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <div className="relative z-10">
-                  <div className="w-14 h-14 border border-accent/30 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent group-hover:border-accent group-hover:scale-110 transition-all duration-500">
-                    <e.icon className="w-6 h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
-                  </div>
-                  <h3 className="font-display text-2xl md:text-2xl mb-4 text-primary-foreground">{e.title}</h3>
-                  <p className="font-body text-primary-foreground/70 text-lg leading-relaxed">{e.description}</p>
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-7 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                  <e.icon className="w-7 h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
+                <h3 className="font-display text-2xl mb-4 text-foreground">{e.title}</h3>
+                <p className="font-body text-muted-foreground text-lg leading-relaxed">{e.description}</p>
               </motion.div>
             ))}
           </div>
