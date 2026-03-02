@@ -146,9 +146,9 @@ const Director = () => {
                 avec une idée simple : offrir à mes clients le service que j'aurais aimé recevoir moi-même.
               </p>
               <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
-                Avant de créer Emilio, j'ai travaillé chez Laforêt, Foncia puis Barnes.
-                Ces expériences m'ont permis de toucher aussi bien aux biens classiques qu'à l'immobilier de prestige,
-                et de développer une vision complète du marché.
+                Avant de créer Emilio, j'ai évolué au sein de plusieurs agences immobilières reconnues,
+                de réseaux généralistes à des enseignes spécialisées dans l'immobilier de luxe.
+                Ces expériences m'ont permis de développer une vision complète du marché, du bien classique au prestige.
               </p>
               <p className="font-body text-muted-foreground leading-relaxed mb-8 text-base">
                 Mon objectif aujourd'hui : que chaque client se sente accompagné, écouté et en confiance
@@ -172,36 +172,15 @@ const Director = () => {
       <section className="py-20 bg-primary">
         <div className="container mx-auto px-6">
           <div className="text-center mb-14">
-            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Notre force</span>
-            <h2 className="font-display text-3xl md:text-4xl text-primary-foreground mt-3 mb-4">
+            <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Notre force</span>
+            <h2 className="font-display text-4xl md:text-5xl text-primary-foreground mt-3 mb-4">
               Une équipe à taille humaine
             </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/80 max-w-2xl mx-auto text-base leading-relaxed">
+            <p className="font-body text-primary-foreground/80 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
               Chez Emilio, chaque collaborateur partage les mêmes valeurs : l'écoute, l'exigence et le goût du travail bien fait. 
               Nous formons une équipe soudée où chaque client est connu par son prénom, pas par un numéro de dossier.
             </p>
-          </div>
-
-          {/* Placeholder for future individual team photos */}
-          <div className="max-w-4xl mx-auto mb-14">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {["Alexandre", "Collaborateur", "Collaborateur", "Collaborateur"].map((name, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center"
-                >
-                  <div className="w-full aspect-square bg-primary-foreground/10 rounded-xl border border-accent/20 flex items-center justify-center mb-3">
-                    <Users className="w-10 h-10 text-accent/40" />
-                  </div>
-                  <p className="font-body text-primary-foreground/60 text-sm">{i === 0 ? "Alexandre" : "Bientôt"}</p>
-                </motion.div>
-              ))}
-            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">

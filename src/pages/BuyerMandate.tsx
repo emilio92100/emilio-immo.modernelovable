@@ -82,35 +82,54 @@ const BuyerMandate = () => {
         </div>
       </section>
 
-      {/* Steps with colored blocks */}
-      <section className="py-20">
+      {/* Steps - Visual Timeline */}
+      <section className="py-24">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">Comment ça fonctionne ?</h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto" />
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-3 mb-6">
+              <div className="h-px w-12 bg-accent" />
+              <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Le processus</span>
+              <div className="h-px w-12 bg-accent" />
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-5">
+              Comment ça <span className="text-accent italic">fonctionne</span> ?
+            </h2>
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+              Un accompagnement en 5 étapes clés pour trouver le bien qui vous correspond.
+            </p>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-6">
+          <div className="max-w-5xl mx-auto relative">
+            {/* Vertical line */}
+            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-accent/20 md:-translate-x-px" />
+
             {steps.map((step, i) => (
               <motion.div
                 key={step.title}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: i * 0.12 }}
                 viewport={{ once: true }}
-                className={`flex items-start gap-6 p-8 rounded-xl border-2 ${step.color} hover:shadow-lg transition-all duration-300`}
+                className={`relative flex items-start mb-16 last:mb-0 ${
+                  i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                }`}
               >
-                <div className={`w-16 h-16 ${step.iconColor} rounded-2xl flex items-center justify-center flex-shrink-0`}>
-                  <step.icon className="w-8 h-8 text-accent" />
+                {/* Center dot */}
+                <div className="absolute left-8 md:left-1/2 -translate-x-1/2 z-10">
+                  <div className="w-16 h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center shadow-lg">
+                    <step.icon className="w-7 h-7" />
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="font-display text-accent text-sm font-bold bg-accent/10 px-3 py-1 rounded-full">
+
+                {/* Content card */}
+                <div className={`ml-24 md:ml-0 md:w-[calc(50%-3rem)] ${i % 2 === 0 ? "md:pr-4 md:text-right" : "md:pl-4 md:ml-auto"}`}>
+                  <div className="bg-card p-8 md:p-10 rounded-2xl border border-border shadow-sm hover:shadow-xl hover:border-accent/30 transition-all duration-500 group">
+                    <span className="inline-block font-body text-accent text-sm font-bold tracking-wider uppercase bg-accent/10 px-4 py-1.5 rounded-full mb-4 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300">
                       Étape {i + 1}
                     </span>
+                    <h3 className="font-display text-2xl md:text-3xl mb-4 text-foreground">{step.title}</h3>
+                    <p className="font-body text-muted-foreground text-lg leading-relaxed">{step.description}</p>
                   </div>
-                  <h3 className="font-display text-xl md:text-2xl mb-3 text-foreground">{step.title}</h3>
-                  <p className="font-body text-muted-foreground leading-relaxed">{step.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -119,18 +138,20 @@ const BuyerMandate = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 bg-secondary">
+      <section className="py-24 bg-secondary">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">Durée estimée de votre projet</h2>
+          <div className="text-center mb-20">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-5">
+              Durée estimée de <span className="text-accent italic">votre projet</span>
+            </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground max-w-xl mx-auto">
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
               Voici le déroulement type d'une recherche accompagnée, du premier contact à la remise des clés.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto relative">
-            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-border md:-translate-x-px" />
+          <div className="max-w-5xl mx-auto relative">
+            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-accent/20 md:-translate-x-px" />
 
             {timelineSteps.map((step, i) => (
               <motion.div
@@ -139,16 +160,16 @@ const BuyerMandate = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className={`relative flex items-start mb-10 ${
+                className={`relative flex items-start mb-14 last:mb-0 ${
                   i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                 }`}
               >
-                <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-accent rounded-full border-4 border-secondary -translate-x-1/2 mt-1 z-10" />
+                <div className="absolute left-8 md:left-1/2 w-5 h-5 bg-accent rounded-full border-4 border-secondary -translate-x-1/2 mt-2 z-10 shadow-md" />
 
-                <div className={`ml-14 md:ml-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                  <span className="font-display text-accent text-xs font-bold tracking-wider uppercase">{step.week}</span>
-                  <h4 className="font-display text-lg text-foreground mt-1 mb-1">{step.label}</h4>
-                  <p className="font-body text-muted-foreground text-sm">{step.description}</p>
+                <div className={`ml-20 md:ml-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-14 md:text-right" : "md:pl-14"}`}>
+                  <span className="font-display text-accent text-base font-bold tracking-wider uppercase">{step.week}</span>
+                  <h4 className="font-display text-2xl text-foreground mt-2 mb-2">{step.label}</h4>
+                  <p className="font-body text-muted-foreground text-lg leading-relaxed">{step.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -157,21 +178,28 @@ const BuyerMandate = () => {
       </section>
 
       {/* Advantages */}
-      <section className="py-20">
+      <section className="py-24">
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-6">
-              Les avantages de nous confier votre recherche
+          <div className="max-w-5xl mx-auto text-center">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-6">
+              Les <span className="text-accent italic">avantages</span> de nous confier votre recherche
             </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-10" />
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {advantages.map((a) => (
-                <div key={a.text} className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border">
-                  <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-                    <a.icon className="w-5 h-5 text-accent" />
+            <div className="w-16 h-0.5 bg-accent mx-auto mb-14" />
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+              {advantages.map((a, i) => (
+                <motion.div
+                  key={a.text}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group flex flex-col items-center gap-5 p-8 bg-card rounded-2xl border border-border hover:border-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
+                >
+                  <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                    <a.icon className="w-7 h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                   </div>
-                  <span className="font-body text-foreground text-sm text-center">{a.text}</span>
-                </div>
+                  <span className="font-body text-foreground text-lg font-medium text-center leading-snug">{a.text}</span>
+                </motion.div>
               ))}
             </div>
           </div>

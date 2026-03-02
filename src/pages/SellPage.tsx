@@ -78,29 +78,29 @@ const SellPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <span className="inline-block font-body text-accent text-sm font-semibold tracking-widest uppercase mb-4">Vendez en toute sérénité</span>
-            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground mb-6 leading-tight">
+            <span className="inline-block font-body text-accent text-base font-semibold tracking-widest uppercase mb-4">Vendez en toute sérénité</span>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-primary-foreground mb-6 leading-tight">
               Votre bien mérite<br />
               <span className="text-gold italic">le meilleur accompagnement</span>
             </h1>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-8">
+            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-8">
               De l'estimation à la remise des clés, nous vous accompagnons avec expertise, 
               transparence et engagement. Chaque vente est unique, notre approche aussi.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <EstimationForm
                 trigger={
-                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all">
-                    Estimation gratuite <ArrowRight className="w-4 h-4" />
+                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 font-body font-semibold tracking-wide text-base rounded hover:brightness-110 transition-all">
+                    Estimation gratuite <ArrowRight className="w-5 h-5" />
                   </button>
                 }
               />
               <a
                 href="tel:+33184801400"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/30 text-primary-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-primary-foreground/10 transition-all"
+                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/30 text-primary-foreground px-8 py-4 font-body font-semibold tracking-wide text-base rounded hover:bg-primary-foreground/10 transition-all"
               >
-                <Phone className="w-4 h-4" /> Nous appeler
+                <Phone className="w-5 h-5" /> Nous appeler
               </a>
             </div>
           </motion.div>
@@ -120,8 +120,8 @@ const SellPage = () => {
                 viewport={{ once: true }}
                 className="p-6 md:p-8 text-center border-r last:border-r-0 border-border"
               >
-                <div className="font-display text-2xl md:text-3xl text-accent mb-1">{s.value}</div>
-                <div className="font-body text-muted-foreground text-xs tracking-wide">{s.label}</div>
+                <div className="font-display text-3xl md:text-4xl text-accent mb-1">{s.value}</div>
+                <div className="font-body text-muted-foreground text-sm tracking-wide">{s.label}</div>
               </motion.div>
             ))}
           </div>
@@ -129,14 +129,14 @@ const SellPage = () => {
       </section>
 
       {/* INTRO */}
-      <section className="py-20">
+      <section className="py-24">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-6">
+            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-6">
               Pourquoi vendre avec <span className="text-gold italic">Emilio</span> ?
             </h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground leading-relaxed text-base">
+            <p className="font-body text-muted-foreground leading-relaxed text-lg md:text-xl">
               Vendre un bien immobilier est une étape importante. C'est pourquoi nous mettons tout en œuvre
               pour que cette expérience soit fluide, sereine et aboutisse au meilleur résultat possible. 
               Notre connaissance approfondie du marché francilien, combinée à une approche humaine et personnalisée, 
@@ -147,12 +147,12 @@ const SellPage = () => {
       </section>
 
       {/* PROCESS */}
-      <section className="py-20 bg-secondary">
+      <section className="py-24 bg-secondary">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">Notre processus en 6 étapes</h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-4" />
-            <p className="font-body text-muted-foreground max-w-xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-5">Notre processus en <span className="text-accent italic">6 étapes</span></h2>
+            <div className="w-16 h-0.5 bg-accent mx-auto mb-5" />
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
               Un accompagnement structuré et transparent pour une vente réussie.
             </p>
           </div>
@@ -168,7 +168,7 @@ const SellPage = () => {
                 className="relative flex gap-6 md:gap-8 pb-12 last:pb-0"
               >
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-display font-bold text-sm shrink-0 shadow-md">
+                  <div className="w-14 h-14 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-display font-bold text-lg shrink-0 shadow-md">
                     {i + 1}
                   </div>
                   {i < steps.length - 1 && (
@@ -176,18 +176,18 @@ const SellPage = () => {
                   )}
                 </div>
                 
-                <div className="bg-card p-6 md:p-8 rounded-lg shadow-sm border border-border flex-1 mb-2">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
-                      <step.icon className="w-5 h-5 text-accent" />
+                <div className="bg-card p-8 md:p-10 rounded-xl shadow-sm border border-border flex-1 mb-2">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+                      <step.icon className="w-6 h-6 text-accent" />
                     </div>
-                    <h3 className="font-display text-lg md:text-xl">{step.title}</h3>
+                    <h3 className="font-display text-xl md:text-2xl">{step.title}</h3>
                   </div>
-                  <p className="font-body text-muted-foreground text-base leading-relaxed mb-4">{step.description}</p>
-                  <div className="grid grid-cols-2 gap-2">
+                  <p className="font-body text-muted-foreground text-lg leading-relaxed mb-5">{step.description}</p>
+                  <div className="grid grid-cols-2 gap-3">
                     {step.details.map((d) => (
-                      <div key={d} className="flex items-center gap-2 font-body text-xs text-muted-foreground">
-                        <CheckCircle className="w-3.5 h-3.5 text-accent shrink-0" />
+                      <div key={d} className="flex items-center gap-2 font-body text-base text-muted-foreground">
+                        <CheckCircle className="w-4 h-4 text-accent shrink-0" />
                         {d}
                       </div>
                     ))}
@@ -200,17 +200,17 @@ const SellPage = () => {
       </section>
 
       {/* ADVANTAGES */}
-      <section className="py-20">
+      <section className="py-24">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">Nos engagements</h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-4" />
-            <p className="font-body text-muted-foreground max-w-xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-5">Nos <span className="text-accent italic">engagements</span></h2>
+            <div className="w-16 h-0.5 bg-accent mx-auto mb-5" />
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
               Ce qui fait la différence quand vous nous confiez la vente de votre bien.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {advantages.map((a, i) => (
               <motion.div
                 key={a.title}
@@ -218,13 +218,13 @@ const SellPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="bg-card p-7 rounded-lg shadow-sm border border-border hover:shadow-md hover:border-accent/30 transition-all"
+                className="group bg-card p-8 rounded-2xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 hover:-translate-y-1 transition-all duration-500"
               >
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
-                  <a.icon className="w-5 h-5 text-accent" />
+                <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                  <a.icon className="w-6 h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
-                <h3 className="font-display text-lg mb-2">{a.title}</h3>
-                <p className="font-body text-muted-foreground text-base leading-relaxed">{a.desc}</p>
+                <h3 className="font-display text-xl md:text-2xl mb-3">{a.title}</h3>
+                <p className="font-body text-muted-foreground text-lg leading-relaxed">{a.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -232,18 +232,18 @@ const SellPage = () => {
       </section>
 
       {/* TESTIMONIAL */}
-      <section className="py-16 bg-primary">
+      <section className="py-20 bg-primary">
         <div className="container mx-auto px-6">
           <div className="max-w-2xl mx-auto text-center">
             <div className="flex justify-center gap-1 mb-4">
-              {[1,2,3,4,5].map(s => <Star key={s} className="w-5 h-5 fill-accent text-accent" />)}
+              {[1,2,3,4,5].map(s => <Star key={s} className="w-6 h-6 fill-accent text-accent" />)}
             </div>
-            <blockquote className="font-display text-xl md:text-2xl text-primary-foreground italic leading-relaxed mb-6">
+            <blockquote className="font-display text-2xl md:text-3xl text-primary-foreground italic leading-relaxed mb-6">
               "La vente de notre appartement s'est déroulée de manière exceptionnelle. 
               L'estimation était juste, la mise en valeur parfaite et nous avons vendu 
               en seulement 3 semaines au prix souhaité."
             </blockquote>
-            <p className="font-body text-primary-foreground/60 text-sm">— Sophie & Marc L., vente à Boulogne-Billancourt</p>
+            <p className="font-body text-primary-foreground/60 text-base">— Sophie & Marc L., vente à Boulogne-Billancourt</p>
           </div>
         </div>
       </section>
@@ -292,19 +292,19 @@ const SellPage = () => {
       />
 
       {/* CTA FINAL */}
-      <section className="py-20 bg-secondary">
+      <section className="py-24 bg-secondary">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mb-4">
+          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-5">
             Prêt à vendre votre bien ?
           </h2>
           <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8">
+          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8 text-lg md:text-xl">
             Commencez par une estimation gratuite et sans engagement.
           </p>
           <EstimationForm
             trigger={
-              <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-10 py-4 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all">
-                Demander une estimation gratuite <ArrowRight className="w-4 h-4" />
+              <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-10 py-4 font-body font-semibold tracking-wide text-base rounded hover:brightness-110 transition-all">
+                Demander une estimation gratuite <ArrowRight className="w-5 h-5" />
               </button>
             }
           />

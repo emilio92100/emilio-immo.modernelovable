@@ -163,9 +163,9 @@ const Index = () => {
       </section>
 
       {/* ENGAGEMENTS */}
-      <section className="py-28 bg-secondary relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/5 rounded-full -translate-x-1/2 translate-y-1/2" />
+      <section className="py-28 bg-primary relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] border border-accent/10 rounded-full translate-x-1/3 -translate-y-1/3" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 border border-accent/10 rounded-full -translate-x-1/3 translate-y-1/3" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -179,29 +179,38 @@ const Index = () => {
               <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Ce qui nous définit</span>
               <div className="h-px w-12 bg-accent" />
             </div>
-            <h2 className="font-display text-4xl md:text-6xl text-foreground mb-5">
+            <h2 className="font-display text-4xl md:text-6xl text-primary-foreground mb-5">
               Nos <span className="text-accent italic">engagements</span>
             </h2>
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
               Six piliers qui guident chacune de nos actions et garantissent une expérience irréprochable.
             </p>
           </motion.div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
+
+          {/* Bento-style grid */}
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {engagements.map((e, i) => (
               <motion.div
                 key={e.title}
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.6, delay: i * 0.1, type: "spring", stiffness: 100 }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="group relative bg-card p-10 rounded-2xl border border-border hover:border-accent/50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+                className={`group relative rounded-2xl border border-primary-foreground/10 p-10 backdrop-blur-sm hover:border-accent/50 transition-all duration-500 overflow-hidden ${
+                  i === 0 ? "md:col-span-2 lg:col-span-1" : ""
+                }`}
+                style={{ background: "linear-gradient(135deg, hsla(215,55%,28%,0.8), hsla(215,55%,18%,0.9))" }}
               >
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl" />
-                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-7 group-hover:bg-accent group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                  <e.icon className="w-7 h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="relative z-10">
+                  <div className="w-14 h-14 border border-accent/30 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent group-hover:border-accent group-hover:scale-110 transition-all duration-500">
+                    <e.icon className="w-6 h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                  </div>
+                  <h3 className="font-display text-2xl md:text-2xl mb-4 text-primary-foreground">{e.title}</h3>
+                  <p className="font-body text-primary-foreground/70 text-lg leading-relaxed">{e.description}</p>
                 </div>
-                <h3 className="font-display text-xl md:text-2xl mb-4 text-foreground">{e.title}</h3>
-                <p className="font-body text-muted-foreground text-base md:text-lg leading-relaxed">{e.description}</p>
               </motion.div>
             ))}
           </div>

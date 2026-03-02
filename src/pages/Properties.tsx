@@ -315,7 +315,7 @@ const Properties = () => {
                       <p className="font-body text-muted-foreground text-xs">{props.length} bien(s)</p>
                     </div>
                   </div>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {props.map((p, i) => (
                       <PropertyCard key={p.id} property={p} index={i} />
                     ))}
@@ -328,7 +328,7 @@ const Properties = () => {
               )}
             </div>
           ) : filtered.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((p, i) => (
                 <PropertyCard key={p.id} property={p} index={i} />
               ))}
