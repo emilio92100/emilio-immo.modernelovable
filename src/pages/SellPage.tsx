@@ -157,36 +157,38 @@ const SellPage = () => {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-0">
+          <div className="max-w-4xl mx-auto space-y-6 md:space-y-0">
             {steps.map((step, i) => (
               <motion.div
                 key={step.title}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="relative flex gap-6 md:gap-8 pb-12 last:pb-0"
+                className="relative flex flex-col md:flex-row gap-4 md:gap-8 pb-0 md:pb-12 last:pb-0"
               >
-                <div className="flex flex-col items-center">
-                  <div className="w-14 h-14 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-display font-bold text-lg shrink-0 shadow-md">
+                {/* Number + line - horizontal on mobile, vertical on desktop */}
+                <div className="flex md:flex-col items-center gap-3 md:gap-0">
+                  <div className="w-11 h-11 md:w-14 md:h-14 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-display font-bold text-base md:text-lg shrink-0 shadow-md">
                     {i + 1}
                   </div>
+                  <h3 className="font-display text-lg md:hidden">{step.title}</h3>
                   {i < steps.length - 1 && (
-                    <div className="w-0.5 flex-1 bg-accent/20 mt-2" />
+                    <div className="hidden md:block w-0.5 flex-1 bg-accent/20 mt-2" />
                   )}
                 </div>
                 
-                <div className="bg-card p-8 md:p-10 rounded-xl shadow-sm border border-border flex-1 mb-2">
-                  <div className="flex items-center gap-3 mb-4">
+                <div className="bg-card p-5 md:p-10 rounded-xl shadow-sm border border-border flex-1 mb-2">
+                  <div className="hidden md:flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
                       <step.icon className="w-6 h-6 text-accent" />
                     </div>
-                    <h3 className="font-display text-xl md:text-2xl">{step.title}</h3>
+                    <h3 className="font-display text-2xl">{step.title}</h3>
                   </div>
-                  <p className="font-body text-muted-foreground text-lg leading-relaxed mb-5">{step.description}</p>
-                  <div className="grid grid-cols-2 gap-3">
+                  <p className="font-body text-muted-foreground text-base md:text-lg leading-relaxed mb-4 md:mb-5">{step.description}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                     {step.details.map((d) => (
-                      <div key={d} className="flex items-center gap-2 font-body text-base text-muted-foreground">
+                      <div key={d} className="flex items-center gap-2 font-body text-sm md:text-base text-muted-foreground">
                         <CheckCircle className="w-4 h-4 text-accent shrink-0" />
                         {d}
                       </div>
