@@ -150,7 +150,7 @@ const SellPage = () => {
       <section className="py-24 bg-secondary">
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-5">Notre processus en <span className="text-accent italic">6 étapes</span></h2>
+            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-5">Notre processus en<br className="sm:hidden" /> <span className="text-accent italic">6 étapes</span></h2>
             <div className="w-16 h-0.5 bg-accent mx-auto mb-5" />
             <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
               Un accompagnement structuré et transparent pour une vente réussie.
