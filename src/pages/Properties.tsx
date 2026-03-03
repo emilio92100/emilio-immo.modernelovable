@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import PropertyCard from "@/components/PropertyCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed } from "@/lib/properties";
 
 const Properties = () => {
@@ -84,6 +85,11 @@ const Properties = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Biens immobiliers à vendre — Paris & Hauts-de-Seine | Émilio"
+        description="Consultez nos biens immobiliers à vendre à Paris et dans les Hauts-de-Seine. Appartements, maisons, biens de prestige. Mise à jour quotidienne."
+        canonical="https://emilio-immobilier.fr/biens"
+      />
       <Navbar />
 
       {/* HEADER */}
