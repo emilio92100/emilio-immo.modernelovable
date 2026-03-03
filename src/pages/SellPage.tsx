@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import EstimationForm from "@/components/EstimationForm";
 import PricingSection from "@/components/PricingSection";
+import SEOHead from "@/components/SEOHead";
 
 const steps = [
   {
@@ -67,6 +68,11 @@ const stats = [
 const SellPage = () => {
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Vendre votre bien — Émilio Immobilier | Paris & Hauts-de-Seine"
+        description="Vendez votre bien immobilier au meilleur prix avec Émilio Immobilier. Estimation gratuite, photos professionnelles, accompagnement complet de A à Z."
+        canonical="https://emilio-immobilier.fr/vendre"
+      />
       <Navbar />
 
       {/* HERO */}

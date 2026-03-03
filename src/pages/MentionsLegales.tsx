@@ -1,8 +1,14 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 
 const MentionsLegales = () =>
 <div className="min-h-screen">
+    <SEOHead
+      title="Mentions légales — Émilio Immobilier"
+      description="Mentions légales d'Émilio Immobilier. Informations sur l'éditeur, l'hébergeur et les conditions d'utilisation du site."
+      canonical="https://emilio-immobilier.fr/mentions-legales"
+    />
     <Navbar />
 
     <section className="pt-28 pb-12 bg-primary">

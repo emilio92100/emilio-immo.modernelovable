@@ -6,6 +6,7 @@ import ContactForm from "@/components/ContactForm";
 import BuyerMandateForm from "@/components/BuyerMandateForm";
 import BuyerMandateStepperForm from "@/components/BuyerMandateStepperForm";
 import PricingSection from "@/components/PricingSection";
+import SEOHead from "@/components/SEOHead";
 
 const steps = [
   {
@@ -66,6 +67,11 @@ const timelineSteps = [
 const BuyerMandate = () => {
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Mandat de recherche — Émilio Immobilier | Chasseur immobilier"
+        description="Confiez votre recherche immobilière à Émilio Immobilier. Accès aux biens off-market, accompagnement personnalisé, négociation experte à Paris et Hauts-de-Seine."
+        canonical="https://emilio-immobilier.fr/mandat-recherche"
+      />
       <Navbar />
 
       {/* Hero */}

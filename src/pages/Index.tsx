@@ -9,6 +9,7 @@ import PropertyCard from "@/components/PropertyCard";
 import ContactForm from "@/components/ContactForm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Property, mockProperties, fetchPropertiesFromFeed } from "@/lib/properties";
 
 
@@ -78,6 +79,27 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Émilio Immobilier — Agence immobilière Paris & Hauts-de-Seine"
+        description="Agence immobilière à Paris et Hauts-de-Seine. Vente, achat, estimation gratuite. Accompagnement personnalisé par un expert local depuis 2020."
+        canonical="https://emilio-immobilier.fr/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "RealEstateAgent",
+          "name": "Émilio Immobilier",
+          "url": "https://emilio-immobilier.fr",
+          "telephone": "+33184801400",
+          "description": "Agence immobilière spécialisée à Paris et Hauts-de-Seine. Vente, achat, estimation gratuite.",
+          "areaServed": ["Paris", "Boulogne-Billancourt", "Neuilly-sur-Seine", "Saint-Cloud", "Garches", "Issy-les-Moulineaux"],
+          "priceRange": "€€€",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Boulogne-Billancourt",
+            "addressRegion": "Île-de-France",
+            "addressCountry": "FR"
+          }
+        }}
+      />
       <Navbar />
 
       {/* HERO */}
