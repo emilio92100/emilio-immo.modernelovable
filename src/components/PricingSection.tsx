@@ -13,12 +13,18 @@ interface PricingPlan {
 interface PricingSectionProps {
   heading: string;
   subheading: string;
-  plans: [PricingPlan, PricingPlan];
+  plans: PricingPlan[];
   onCtaClick?: () => void;
   ctaElement?: React.ReactNode;
+  note?: React.ReactNode;
 }
 
-const PricingSection = ({ heading, subheading, plans }: PricingSectionProps) => {
+const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProps) => {
+  const gridClassName =
+    plans.length === 1
+      ? "grid max-w-2xl mx-auto"
+      : "grid md:grid-cols-2 gap-8 max-w-4xl mx-auto";
+
   return (
     <section className="py-20">
       <div className="container mx-auto px-6">
@@ -28,7 +34,7 @@ const PricingSection = ({ heading, subheading, plans }: PricingSectionProps) => 
           <p className="font-body text-muted-foreground max-w-xl mx-auto text-base">{subheading}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className={gridClassName}>
           {plans.map((plan, i) => (
             <motion.div
               key={plan.title}
@@ -73,6 +79,12 @@ const PricingSection = ({ heading, subheading, plans }: PricingSectionProps) => 
             </motion.div>
           ))}
         </div>
+
+        {note && (
+          <div className="max-w-3xl mx-auto mt-8 rounded-2xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">
+            <p className="font-body text-sm md:text-base text-muted-foreground leading-relaxed">{note}</p>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -218,25 +218,9 @@ const BuyerMandate = () => {
       {/* PRICING */}
       <PricingSection
         heading="Nos honoraires de recherche"
-        subheading="Des tarifs clairs pour un accompagnement sur-mesure dans votre projet d'achat."
+        subheading="Un accompagnement premium, pensé exclusivement pour défendre vos intérêts tout au long de votre achat."
+        note="Pour garantir un travail de qualité, une recherche approfondie et un accompagnement réellement sur-mesure, nous travaillons uniquement en mandat exclusif. Cela nous permet de nous engager pleinement à vos côtés et de mobiliser tout notre réseau pour trouver le bien qui vous correspond."
         plans={[
-          {
-            title: "Mandat de Recherche Simple",
-            rate: "4% TTC",
-            subtitle: "du prix d'acquisition du bien",
-            features: [
-              { text: "Définition de vos critères", included: true },
-              { text: "Recherche sur le marché visible", included: true },
-              { text: "Organisation des visites", included: true },
-              { text: "Conseil et accompagnement", included: true },
-              { text: "Accès au réseau off-market exclusif", included: false },
-              { text: "Prospection dédiée et prioritaire", included: false },
-              { text: "Négociation renforcée en votre faveur", included: false },
-              { text: "Reporting hebdomadaire personnalisé", included: false },
-              { text: "Délai de recherche réduit de moitié", included: false },
-            ],
-            cta: "Choisir le mandat simple",
-          },
           {
             title: "Mandat Exclusif de Recherche",
             rate: "2,5% TTC",
