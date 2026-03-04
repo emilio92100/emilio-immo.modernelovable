@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CheckCircle, X, Crown, ArrowRight } from "lucide-react";
+import { CheckCircle, X, Crown, Sparkles } from "lucide-react";
 
 interface PricingPlan {
   title: string;
@@ -33,6 +33,19 @@ const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProp
           <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
           <p className="font-body text-muted-foreground max-w-xl mx-auto text-base">{subheading}</p>
         </div>
+
+        {note && (
+          <div className="max-w-3xl mx-auto mb-10 rounded-3xl border border-accent/20 bg-accent/5 px-6 py-6 md:px-8 md:py-7">
+            <div className="flex items-start gap-4 md:gap-5">
+              <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent text-accent-foreground shadow-sm">
+                <Sparkles className="h-7 w-7" />
+              </div>
+              <p className="font-body text-base md:text-xl text-foreground leading-relaxed text-left">
+                {note}
+              </p>
+            </div>
+          </div>
+        )}
 
         <div className={gridClassName}>
           {plans.map((plan, i) => (
@@ -80,11 +93,6 @@ const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProp
           ))}
         </div>
 
-        {note && (
-          <div className="max-w-3xl mx-auto mt-8 rounded-2xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">
-            <p className="font-body text-sm md:text-base text-muted-foreground leading-relaxed">{note}</p>
-          </div>
-        )}
       </div>
     </section>
   );
