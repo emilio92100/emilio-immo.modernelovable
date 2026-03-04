@@ -219,7 +219,7 @@ const BuyerMandate = () => {
       <PricingSection
         heading="Nos honoraires de recherche"
         subheading="Un accompagnement premium, pensé exclusivement pour défendre vos intérêts tout au long de votre achat."
-        note="Pour garantir un travail de qualité, une recherche approfondie et un accompagnement réellement sur-mesure, nous travaillons uniquement en mandat exclusif. Cela nous permet de nous engager pleinement à vos côtés et de mobiliser tout notre réseau pour trouver le bien qui vous correspond."
+        note="Pour garantir un travail de qualité, une recherche approfondie et un accompagnement réellement sur-mesure, nous travaillons uniquement en mandat exclusif afin de nous engager pleinement à vos côtés et de mobiliser tout notre réseau pour trouver le bien qui vous correspond."
         plans={[
           {
             title: "Mandat Exclusif de Recherche",
