@@ -20,10 +20,10 @@ interface PricingSectionProps {
 }
 
 const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProps) => {
-  const gridClassName =
-    plans.length === 1
-      ? "grid max-w-2xl mx-auto"
-      : "grid md:grid-cols-2 gap-8 max-w-4xl mx-auto";
+  const isSinglePlan = plans.length === 1;
+  const gridClassName = isSinglePlan
+    ? "grid max-w-2xl mx-auto"
+    : "grid md:grid-cols-2 gap-8 max-w-4xl mx-auto";
 
   return (
     <section className="py-20">
@@ -35,12 +35,12 @@ const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProp
         </div>
 
         {note && (
-          <div className="max-w-3xl mx-auto mb-10 rounded-3xl border border-accent/20 bg-accent/5 px-6 py-6 md:px-8 md:py-7">
-            <div className="flex items-start gap-4 md:gap-5">
-              <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent text-accent-foreground shadow-sm">
-                <Sparkles className="h-7 w-7" />
+          <div className="max-w-2xl mx-auto mb-10 rounded-3xl border border-accent/20 bg-accent/5 px-6 py-7 md:px-8 md:py-8">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-accent text-accent-foreground shadow-sm">
+                <Sparkles className="h-8 w-8" />
               </div>
-              <p className="font-body text-base md:text-xl text-foreground leading-relaxed text-left">
+              <p className="font-body text-lg md:text-2xl text-foreground leading-relaxed max-w-2xl mx-auto">
                 {note}
               </p>
             </div>
@@ -55,11 +55,11 @@ const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProp
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.15 }}
               viewport={{ once: true }}
-              className={`relative rounded-xl border-2 p-8 transition-all ${
+              className={`relative rounded-xl border-2 p-8 md:p-10 transition-all ${
                 plan.recommended
                   ? "border-accent bg-accent/5 shadow-lg scale-[1.02]"
                   : "border-border bg-card shadow-sm"
-              }`}
+              } ${isSinglePlan ? "max-w-xl mx-auto w-full" : ""}`}
             >
               {plan.recommended && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
@@ -75,9 +75,9 @@ const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProp
                 <p className="font-body text-muted-foreground text-sm">{plan.subtitle}</p>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-4 max-w-md mx-auto">
                 {plan.features.map((f) => (
-                  <li key={f.text} className="flex items-start gap-3 font-body text-sm">
+                  <li key={f.text} className="flex items-start justify-center gap-3 font-body text-sm text-center">
                     {f.included ? (
                       <CheckCircle className="w-5 h-5 text-accent shrink-0 mt-0.5" />
                     ) : (
@@ -92,7 +92,6 @@ const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProp
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );
