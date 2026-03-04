@@ -98,8 +98,8 @@ const Index = () => {
             "addressRegion": "Île-de-France",
             "addressCountry": "FR"
           }
-        }}
-      />
+        }} />
+      
       <Navbar />
 
       {/* HERO */}
@@ -110,8 +110,8 @@ const Index = () => {
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          src="/videos/hero.mp4"
-        />
+          src="/videos/hero.mp4" />
+        
         <div className="absolute inset-0 bg-gradient-to-b from-primary/85 via-primary/65 to-primary/40" />
         <div className="relative z-10 container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
@@ -119,10 +119,10 @@ const Index = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
-              className="inline-flex items-center gap-3 mb-8"
-            >
+              className="inline-flex items-center gap-3 mb-8">
+              
               <div className="h-px w-10 bg-accent" />
-              <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">
+              <span className="font-body text-accent font-semibold tracking-[0.3em] uppercase text-lg text-center">
                 Emilio Immobilier
               </span>
               <div className="h-px w-10 bg-accent" />
@@ -131,8 +131,8 @@ const Index = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.15 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-[1.1] mb-7"
-            >
+              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-[1.1] mb-7">
+              
               Votre projet immobilier,
               <br />
               <span className="text-accent italic">notre expertise</span>
@@ -141,8 +141,8 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.35 }}
-              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mx-auto mb-11 leading-relaxed"
-            >
+              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mx-auto mb-11 leading-relaxed">
+              
               Achat, vente et conseil sur-mesure en Île-de-France.
               Accédez à des biens d'exception, y compris en off-market.
             </motion.p>
@@ -150,18 +150,18 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.55 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
+              className="flex flex-col sm:flex-row gap-4 justify-center">
+              
               <Link
                 to="/biens"
-                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
-              >
+                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all">
+                
                 Découvrir nos biens <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/vendre"
-                className="inline-flex items-center justify-center gap-2 border border-accent text-accent px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-accent hover:text-accent-foreground transition-all"
-              >
+                className="inline-flex items-center justify-center gap-2 border border-accent text-accent px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-accent hover:text-accent-foreground transition-all">
+                
                 <Home className="w-4 h-4" /> Je souhaite vendre
               </Link>
             </motion.div>
@@ -171,15 +171,15 @@ const Index = () => {
         <div className="absolute bottom-0 left-0 right-0 bg-primary/60 backdrop-blur-md border-t border-primary-foreground/10">
           <div className="container mx-auto px-6 py-5 grid grid-cols-3 gap-4">
             {[
-              { value: "200+", label: "Transactions réussies" },
-              { value: "10+", label: "Années d'expérience" },
-              { value: "50+", label: "Biens off-market" },
-            ].map((s) => (
-              <div key={s.label} className="text-center">
+            { value: "200+", label: "Transactions réussies" },
+            { value: "10+", label: "Années d'expérience" },
+            { value: "50+", label: "Biens off-market" }].
+            map((s) =>
+            <div key={s.label} className="text-center">
                 <div className="font-display text-2xl md:text-3xl text-accent font-semibold">{s.value}</div>
                 <div className="font-body text-primary-foreground/60 text-xs mt-1 tracking-wide">{s.label}</div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -196,8 +196,8 @@ const Index = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
-          >
+            className="text-center mb-20">
+            
             <div className="inline-flex items-center gap-3 mb-6">
               <div className="h-px w-12 bg-accent" />
               <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Ce qui nous définit</span>
@@ -212,15 +212,15 @@ const Index = () => {
           </motion.div>
 
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {engagements.map((e, i) => (
-              <motion.div
-                key={e.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                viewport={{ once: true }}
-                className="group relative bg-card rounded-2xl border border-border p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500"
-              >
+            {engagements.map((e, i) =>
+            <motion.div
+              key={e.title}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              viewport={{ once: true }}
+              className="group relative bg-card rounded-2xl border border-border p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
+              
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-7 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
@@ -229,7 +229,7 @@ const Index = () => {
                 <h3 className="font-display text-2xl mb-4 text-foreground">{e.title}</h3>
                 <p className="font-body text-muted-foreground text-lg leading-relaxed">{e.description}</p>
               </motion.div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -277,8 +277,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
-            >
+              className="text-center mb-16">
+              
               <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-5 py-2 mb-6">
                 <Lock className="w-4 h-4 text-accent" />
                 <span className="font-body text-accent font-semibold text-xs tracking-widest uppercase">Vente confidentielle</span>
@@ -301,38 +301,38 @@ const Index = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="space-y-5"
-              >
+                className="space-y-5">
+                
                 {[
-                  {
-                    icon: Eye,
-                    title: "Aucune diffusion publique",
-                    desc: "Votre bien reste invisible sur SeLoger, LeBonCoin et autres plateformes. Seuls nos acquéreurs pré-qualifiés y ont accès."
-                  },
-                  {
-                    icon: Shield,
-                    title: "Confidentialité garantie",
-                    desc: "Ni vos voisins, ni votre entourage ne seront informés de la mise en vente. Un processus 100% discret."
-                  },
-                  {
-                    icon: Zap,
-                    title: "Acquéreurs ciblés & qualifiés",
-                    desc: "Nous présentons votre bien uniquement à des acheteurs dont le profil correspond parfaitement, pour des visites utiles."
-                  },
-                  {
-                    icon: Handshake,
-                    title: "Négociation maîtrisée",
-                    desc: "Moins de visibilité, plus de rareté : votre bien se positionne comme une opportunité exclusive sur le marché."
-                  }
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                    viewport={{ once: true }}
-                    className="group flex gap-4 p-5 rounded-xl bg-card border border-border hover:border-accent/30 hover:shadow-lg transition-all duration-300"
-                  >
+                {
+                  icon: Eye,
+                  title: "Aucune diffusion publique",
+                  desc: "Votre bien reste invisible sur SeLoger, LeBonCoin et autres plateformes. Seuls nos acquéreurs pré-qualifiés y ont accès."
+                },
+                {
+                  icon: Shield,
+                  title: "Confidentialité garantie",
+                  desc: "Ni vos voisins, ni votre entourage ne seront informés de la mise en vente. Un processus 100% discret."
+                },
+                {
+                  icon: Zap,
+                  title: "Acquéreurs ciblés & qualifiés",
+                  desc: "Nous présentons votre bien uniquement à des acheteurs dont le profil correspond parfaitement, pour des visites utiles."
+                },
+                {
+                  icon: Handshake,
+                  title: "Négociation maîtrisée",
+                  desc: "Moins de visibilité, plus de rareté : votre bien se positionne comme une opportunité exclusive sur le marché."
+                }].
+                map((item, i) =>
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group flex gap-4 p-5 rounded-xl bg-card border border-border hover:border-accent/30 hover:shadow-lg transition-all duration-300">
+                  
                     <div className="w-12 h-12 shrink-0 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
                       <item.icon className="w-5 h-5 text-accent" />
                     </div>
@@ -341,7 +341,7 @@ const Index = () => {
                       <p className="font-body text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
                     </div>
                   </motion.div>
-                ))}
+                )}
               </motion.div>
 
               {/* Right — decorative card */}
@@ -350,8 +350,8 @@ const Index = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="relative"
-              >
+                className="relative">
+                
                 <div className="relative bg-primary rounded-2xl p-10 md:p-12 overflow-hidden">
                   {/* Decorative circles */}
                   <div className="absolute -top-10 -right-10 w-40 h-40 border border-accent/10 rounded-full" />
@@ -372,19 +372,19 @@ const Index = () => {
                     </p>
                     <div className="flex items-center gap-6 mb-8 pb-8 border-b border-primary-foreground/10">
                       {[
-                        { val: "72h", lab: "Délai moyen" },
-                        { val: "98%", lab: "Taux de succès" }
-                      ].map(s => (
-                        <div key={s.lab}>
+                      { val: "72h", lab: "Délai moyen" },
+                      { val: "98%", lab: "Taux de succès" }].
+                      map((s) =>
+                      <div key={s.lab}>
                           <div className="font-display text-3xl text-accent font-semibold">{s.val}</div>
                           <div className="font-body text-primary-foreground/50 text-xs mt-1">{s.lab}</div>
                         </div>
-                      ))}
+                      )}
                     </div>
                     <Link
                       to="/vendre"
-                      className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-7 py-3 font-body font-semibold text-sm rounded hover:brightness-110 transition-all"
-                    >
+                      className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-7 py-3 font-body font-semibold text-sm rounded hover:brightness-110 transition-all">
+                      
                       Vendre en off-market <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
