@@ -1,248 +1,418 @@
 import { motion } from "framer-motion";
-import { Search, MapPin, FileCheck, Handshake, ArrowRight, Clock, Target, Users, Shield, Gem, HeartHandshake, CheckCircle, Eye, Home } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BadgeCheck,
+  BellRing,
+  Building2,
+  CheckCircle2,
+  Clock3,
+  FileSearch,
+  Phone,
+  ReceiptText,
+  Search,
+  ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
-import BuyerMandateForm from "@/components/BuyerMandateForm";
 import BuyerMandateStepperForm from "@/components/BuyerMandateStepperForm";
-import PricingSection from "@/components/PricingSection";
 import SEOHead from "@/components/SEOHead";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import heroImage from "@/assets/hero-bg.jpg";
+import BuyerProcessTimeline from "@/components/buyer-mandate/BuyerProcessTimeline";
 
-const steps = [
+const problemCards = [
   {
-    icon: Target,
-    title: "Définition de vos critères",
-    description: "Nous analysons en détail vos besoins, votre budget, vos préférences de localisation et vos contraintes pour cibler les biens parfaits.",
-    color: "bg-accent/10 border-accent/20",
-    iconColor: "bg-accent/20",
+    icon: Clock3,
+    title: "Trop d'annonces",
+    description: "Des centaines d'annonces, mais peu de biens réellement intéressants.",
   },
   {
-    icon: Search,
-    title: "Recherche personnalisée",
-    description: "Notre équipe active son réseau et explore le marché visible et off-market pour identifier les opportunités correspondant à vos critères.",
-    color: "bg-primary/5 border-primary/15",
-    iconColor: "bg-primary/10",
+    icon: TrendingUp,
+    title: "Prix difficiles à analyser",
+    description: "Difficile de savoir si le prix demandé correspond réellement au marché.",
   },
   {
-    icon: MapPin,
-    title: "Visites organisées",
-    description: "Nous pré-sélectionnons les biens pertinents et organisons les visites en fonction de vos disponibilités, avec une analyse détaillée de chaque bien.",
-    color: "bg-accent/10 border-accent/20",
-    iconColor: "bg-accent/20",
+    icon: Users,
+    title: "Concurrence entre acheteurs",
+    description: "Les meilleurs biens partent souvent en quelques jours.",
   },
   {
-    icon: FileCheck,
-    title: "Analyse & négociation",
-    description: "Vérification technique du bien, analyse du prix par rapport au marché et négociation dans votre intérêt pour obtenir les meilleures conditions.",
-    color: "bg-primary/5 border-primary/15",
-    iconColor: "bg-primary/10",
-  },
-  {
-    icon: Handshake,
-    title: "Accompagnement jusqu'à la signature",
-    description: "Suivi administratif complet, coordination avec les notaires et accompagnement jusqu'à la remise des clés de votre nouveau bien.",
-    color: "bg-accent/10 border-accent/20",
-    iconColor: "bg-accent/20",
+    icon: ReceiptText,
+    title: "Analyse technique complexe",
+    description: "Diagnostics, charges, travaux votés… beaucoup d'informations difficiles à interpréter.",
   },
 ];
 
-const advantages = [
-  { icon: Gem, text: "Accès à des biens off-market exclusifs" },
-  { icon: Clock, text: "Gain de temps considérable" },
-  { icon: Target, text: "Expertise du marché francilien" },
-  { icon: Shield, text: "Négociation professionnelle en votre faveur" },
-  { icon: FileCheck, text: "Accompagnement juridique et administratif" },
-  { icon: Users, text: "Un seul interlocuteur dédié à votre projet" },
-];
+const processFlow = ["Recherche", "Analyse", "Négociation", "Acquisition"];
 
 const timelineSteps = [
-  { week: "Semaine 1", label: "Premier rendez-vous", description: "Définition des critères, du budget et de la stratégie de recherche" },
-  { week: "Semaines 2-4", label: "Recherche active", description: "Prospection intensive, réseau off-market, pré-sélection des biens" },
-  { week: "Semaines 4-8", label: "Visites ciblées", description: "Organisation des visites, analyses comparatives détaillées" },
-  { week: "Semaines 8-10", label: "Offre & négociation", description: "Rédaction de l'offre, négociation du prix et des conditions" },
-  { week: "Semaines 10-12", label: "Compromis de vente", description: "Signature du compromis, suivi du dossier de financement" },
-  { week: "Mois 3-4", label: "Signature définitive", description: "Acte authentique chez le notaire et remise des clés" },
+  {
+    title: "Définition précise de votre recherche",
+    description: "Analyse complète de vos critères, de votre budget et de votre tempo d'acquisition pour cadrer une stratégie réaliste et efficace dès le départ.",
+  },
+  {
+    title: "Recherche active sur tout le marché",
+    description: "Nous activons les portails immobiliers, les agences partenaires et notre réseau qualifié pour détecter les meilleures opportunités visibles et discrètes.",
+  },
+  {
+    title: "Sélection et pré-analyse des biens",
+    description: "Avant chaque visite, nous filtrons les biens, analysons leur cohérence de prix et écartons ceux qui ne tiennent pas la route.",
+  },
+  {
+    title: "Organisation des visites pertinentes",
+    description: "Vous ne visitez que des biens réellement alignés avec votre projet, avec un parcours clair et optimisé.",
+  },
+  {
+    title: "Analyse complète du bien",
+    description: "Nous passons en revue copropriété, diagnostics, historique, charges et points de vigilance pour sécuriser votre décision.",
+  },
+  {
+    title: "Négociation stratégique",
+    description: "Nous construisons l'offre, défendons votre position et négocions le prix ainsi que les conditions dans votre intérêt.",
+  },
+];
+
+const pricingItems = [
+  "recherche active sur l'ensemble du marché immobilier",
+  "mobilisation de notre réseau off-market",
+  "analyse du prix réel du marché",
+  "sélection et tri des biens",
+  "organisation des visites",
+  "analyse des documents techniques et de copropriété",
+  "stratégie et négociation du prix",
+  "accompagnement jusqu'à la signature chez le notaire",
+];
+
+const trustStats = [
+  { value: "10+", label: "années d'expérience" },
+  { value: "300+", label: "transactions réalisées" },
+  { value: "Paris", label: "expertise fine du marché" },
+  { value: "Réseau", label: "d'agences partenaires activé" },
 ];
 
 const BuyerMandate = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background text-foreground">
       <SEOHead
-        title="Mandat de recherche — Émilio Immobilier | Chasseur immobilier"
-        description="Confiez votre recherche immobilière à Émilio Immobilier. Accès aux biens off-market, accompagnement personnalisé, négociation experte à Paris et Hauts-de-Seine."
+        title="Acheter un bien à Paris | Emilio Immobilier"
+        description="Mandat de recherche exclusif Emilio Immobilier : recherche, analyse, off-market et négociation pour acheter le bon bien au bon prix à Paris et dans les Hauts-de-Seine."
         canonical="https://emilio-immobilier.fr/mandat-recherche"
       />
       <Navbar />
 
-      {/* Hero */}
-      <section className="pt-28 pb-16 bg-primary relative overflow-hidden">
-        <div className="relative container mx-auto px-6 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <HeartHandshake className="w-12 h-12 text-accent mx-auto mb-6" />
-            <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Acheter avec Emilio</h1>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-lg">
-              Confiez-nous votre recherche immobilière. Nous trouvons le bien idéal pour vous, en toute sérénité.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <main className="overflow-hidden">
+        <section className="relative isolate pt-28">
+          <div className="absolute inset-0">
+            <img src={heroImage} alt="Appartement parisien lumineux" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-background/45" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/45 to-background" />
+          </div>
 
-      {/* Steps - Visual Timeline */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="h-px w-12 bg-accent" />
-              <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Le processus</span>
-              <div className="h-px w-12 bg-accent" />
+          <div className="relative container mx-auto px-6 pb-24 pt-12 md:pb-32 md:pt-20">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="max-w-4xl"
+            >
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-background/85 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-muted-foreground shadow-sm backdrop-blur">
+                <Sparkles className="h-4 w-4 text-primary" />
+                Mandat de recherche exclusif
+              </div>
+              <h1 className="font-sans-modern max-w-4xl text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-6xl lg:text-7xl">
+                Achetez le bon bien, au bon prix, sans perdre des mois à chercher.
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-foreground/80 md:text-xl">
+                Avec notre mandat de recherche exclusif, nous analysons le marché, trouvons les biens et négocions pour vous.
+              </p>
+
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                <Button asChild size="lg" className="rounded-full px-8 text-base shadow-lg shadow-primary/15">
+                  <a href="#mandat-form">Parler de mon projet</a>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="rounded-full border-border bg-background/85 px-8 text-base backdrop-blur hover:bg-background">
+                  <a href="#contact">Être rappelé</a>
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="py-24 md:py-28">
+          <div className="container mx-auto px-6">
+            <div className="mx-auto max-w-3xl text-center">
+              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">Le constat</span>
+              <h2 className="font-sans-modern mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+                Pourquoi acheter un bien est devenu si compliqué ?
+              </h2>
             </div>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-5">
-              Comment ça <span className="text-accent italic">fonctionne</span> ?
-            </h2>
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
-              Un accompagnement en 5 étapes clés pour trouver le bien qui vous correspond.
-            </p>
-          </div>
 
-          <div className="max-w-5xl mx-auto relative">
-            {/* Vertical line */}
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-accent/20 md:-translate-x-px" />
-
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.12 }}
-                viewport={{ once: true }}
-                className={`relative flex items-start mb-16 last:mb-0 ${
-                  i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-              >
-                {/* Center dot */}
-                <div className="absolute left-8 md:left-1/2 -translate-x-1/2 z-10">
-                  <div className="w-16 h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center shadow-lg">
-                    <step.icon className="w-7 h-7" />
-                  </div>
-                </div>
-
-                {/* Content card */}
-                <div className={`ml-24 md:ml-0 md:w-[calc(50%-3rem)] ${i % 2 === 0 ? "md:pr-4 md:text-right" : "md:pl-4 md:ml-auto"}`}>
-                  <div className="bg-card p-8 md:p-10 rounded-2xl border border-border shadow-sm hover:shadow-xl hover:border-accent/30 transition-all duration-500 group">
-                    <span className="inline-block font-body text-accent text-sm font-bold tracking-wider uppercase bg-accent/10 px-4 py-1.5 rounded-full mb-4 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300">
-                      Étape {i + 1}
-                    </span>
-                    <h3 className="font-display text-2xl md:text-3xl mb-4 text-foreground">{step.title}</h3>
-                    <p className="font-body text-muted-foreground text-lg leading-relaxed">{step.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-24 bg-secondary">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-5">
-              Durée estimée de <span className="text-accent italic">votre projet</span>
-            </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
-              Voici le déroulement type d'une recherche accompagnée, du premier contact à la remise des clés.
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto relative">
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-accent/20 md:-translate-x-px" />
-
-            {timelineSteps.map((step, i) => (
-              <motion.div
-                key={step.week}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className={`relative flex items-start mb-14 last:mb-0 ${
-                  i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-              >
-                <div className="absolute left-8 md:left-1/2 w-5 h-5 bg-accent rounded-full border-4 border-secondary -translate-x-1/2 mt-2 z-10 shadow-md" />
-
-                <div className={`ml-20 md:ml-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-14 md:text-right" : "md:pl-14"}`}>
-                  <span className="font-display text-accent text-base font-bold tracking-wider uppercase">{step.week}</span>
-                  <h4 className="font-display text-2xl text-foreground mt-2 mb-2">{step.label}</h4>
-                  <p className="font-body text-muted-foreground text-lg leading-relaxed">{step.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Advantages */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto text-center">
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-6">
-              Les <span className="text-accent italic">avantages</span> de nous confier votre recherche
-            </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-14" />
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
-              {advantages.map((a, i) => (
+            <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+              {problemCards.map((item, index) => (
                 <motion.div
-                  key={a.text}
-                  initial={{ opacity: 0, y: 30 }}
+                  key={item.title}
+                  initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group flex flex-col items-center gap-5 p-8 bg-card rounded-2xl border border-border hover:border-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.45, delay: index * 0.08 }}
                 >
-                  <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                    <a.icon className="w-7 h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
-                  </div>
-                  <span className="font-body text-foreground text-lg font-medium text-center leading-snug">{a.text}</span>
+                  <Card className="h-full rounded-[1.75rem] border-border bg-card/80 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <CardContent className="p-7">
+                      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-primary">
+                        <item.icon className="h-6 w-6" />
+                      </div>
+                      <h3 className="font-sans-modern text-xl font-semibold tracking-tight">{item.title}</h3>
+                      <p className="mt-3 text-base leading-relaxed text-muted-foreground">{item.description}</p>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               ))}
             </div>
           </div>
+        </section>
+
+        <section className="py-24 md:py-28">
+          <div className="container mx-auto px-6">
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center">
+              <div className="max-w-2xl">
+                <span className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">Notre solution</span>
+                <h2 className="font-sans-modern mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+                  Un accompagnement complet grâce au mandat de recherche exclusif
+                </h2>
+                <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
+                  <p>Chez Emilio Immobilier, nous accompagnons les acquéreurs de façon proactive.</p>
+                  <p>Nous travaillons uniquement sous mandat de recherche exclusif afin de garantir un travail sérieux, approfondi et efficace.</p>
+                  <p>L'exclusivité nous permet de mobiliser notre temps, notre réseau et nos outils pour trouver les meilleures opportunités.</p>
+                </div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.55 }}
+                className="rounded-[2rem] border border-border bg-card p-6 shadow-sm md:p-8"
+              >
+                <div className="grid gap-4 md:grid-cols-4">
+                  {processFlow.map((item, index) => (
+                    <motion.div
+                      key={item}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1, duration: 0.35 }}
+                      className="flex items-center gap-3 md:flex-col md:items-start"
+                    >
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
+                        <span className="font-sans-modern text-sm font-semibold">0{index + 1}</span>
+                      </div>
+                      <div className="flex items-center gap-3 md:flex-col md:items-start md:gap-4">
+                        <p className="font-sans-modern text-lg font-semibold tracking-tight text-foreground">{item}</p>
+                        {index < processFlow.length - 1 && (
+                          <ArrowRight className="h-4 w-4 text-muted-foreground md:h-5 md:w-5 md:rotate-0" />
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 md:py-28">
+          <div className="container mx-auto px-6">
+            <div className="rounded-[2.25rem] border border-primary/10 bg-secondary/60 p-8 md:p-12">
+              <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center">
+                <div>
+                  <span className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">Off market</span>
+                  <h2 className="font-sans-modern mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+                    Accédez aux biens avant tout le monde
+                  </h2>
+                  <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+                    Grâce à notre réseau d'agences, de propriétaires et de professionnels de l'immobilier, nous pouvons vous proposer :
+                  </p>
+                  <ul className="mt-8 space-y-4">
+                    {[
+                      "des biens avant leur publication sur les portails immobiliers",
+                      "des opportunités off-market",
+                      "des biens réservés à certains acheteurs qualifiés",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3 text-base leading-relaxed text-foreground md:text-lg">
+                        <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.55 }}
+                  className="relative mx-auto w-full max-w-md"
+                >
+                  <div className="absolute left-8 top-10 h-full w-full rounded-[2rem] border border-border bg-card/60" />
+                  <div className="absolute left-4 top-5 h-full w-full rounded-[2rem] border border-border bg-card/80" />
+                  <div className="relative rounded-[2rem] border border-primary/15 bg-background p-6 shadow-xl">
+                    <div className="mb-6 flex items-center justify-between">
+                      <span className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary-foreground">
+                        <BellRing className="h-4 w-4" />
+                        Off Market
+                      </span>
+                      <BadgeCheck className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="rounded-[1.5rem] border border-border bg-secondary/50 p-5">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Nouvelle opportunité</p>
+                          <h3 className="font-sans-modern mt-2 text-2xl font-semibold tracking-tight">Paris 16e</h3>
+                        </div>
+                        <Building2 className="h-10 w-10 text-primary" />
+                      </div>
+                      <div className="mt-6 grid gap-3 text-sm text-muted-foreground">
+                        <div className="rounded-2xl border border-border bg-background px-4 py-3">Appartement familial lumineux</div>
+                        <div className="rounded-2xl border border-border bg-background px-4 py-3">Analyse marché déjà préparée</div>
+                        <div className="rounded-2xl border border-border bg-background px-4 py-3">Visite prioritaire réservée</div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 md:py-28">
+          <div className="container mx-auto px-6">
+            <div className="mx-auto max-w-3xl text-center">
+              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">Méthode</span>
+              <h2 className="font-sans-modern mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+                Comment nous travaillons pour vous
+              </h2>
+            </div>
+            <div className="mt-14">
+              <BuyerProcessTimeline steps={timelineSteps} />
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 md:py-28">
+          <div className="container mx-auto px-6">
+            <div className="mx-auto max-w-5xl rounded-[2.25rem] border border-primary/15 bg-card p-8 shadow-xl shadow-primary/5 md:p-12">
+              <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+                <div>
+                  <span className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">Rémunération</span>
+                  <h2 className="font-sans-modern mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+                    Un accompagnement complet pour 2,5 % du prix d'acquisition
+                  </h2>
+                  <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
+                    Cette rémunération comprend l'ensemble du travail réalisé pour sécuriser votre achat.
+                  </p>
+                  <div className="mt-8 inline-flex items-end gap-3 rounded-[1.5rem] border border-border bg-secondary/50 px-6 py-5">
+                    <span className="font-sans-modern text-5xl font-semibold tracking-tight md:text-6xl">2,5 %</span>
+                    <span className="pb-1 text-sm uppercase tracking-[0.2em] text-muted-foreground">TTC</span>
+                  </div>
+                  <p className="mt-6 text-base text-foreground">
+                    La rémunération est uniquement due en cas d'acquisition réussie.
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {pricingItems.map((item, index) => (
+                    <motion.div
+                      key={item}
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.35, delay: index * 0.05 }}
+                      className="flex gap-3 rounded-[1.25rem] border border-border bg-background p-4"
+                    >
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                      <p className="text-sm leading-relaxed text-foreground">{item}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 md:py-28">
+          <div className="container mx-auto px-6">
+            <div className="mx-auto max-w-3xl text-center">
+              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">Crédibilité</span>
+              <h2 className="font-sans-modern mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+                Pourquoi nous faire confiance
+              </h2>
+            </div>
+
+            <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+              {trustStats.map((item, index) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 22 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.45, delay: index * 0.08 }}
+                  className="rounded-[1.75rem] border border-border bg-card p-8 text-center shadow-sm"
+                >
+                  <p className="font-sans-modern text-4xl font-semibold tracking-tight text-primary md:text-5xl">{item.value}</p>
+                  <p className="mt-3 text-base leading-relaxed text-muted-foreground">{item.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="pb-24 pt-10 md:pb-28">
+          <div className="container mx-auto px-6">
+            <div className="rounded-[2.25rem] border border-primary/10 bg-primary px-8 py-12 text-primary-foreground shadow-2xl shadow-primary/15 md:px-12 md:py-16">
+              <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-2xl">
+                  <span className="text-sm font-semibold uppercase tracking-[0.3em] text-primary-foreground/70">Parlons-en</span>
+                  <h2 className="font-sans-modern mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+                    Parlons de votre projet immobilier
+                  </h2>
+                  <p className="mt-5 text-lg leading-relaxed text-primary-foreground/75">
+                    Un premier échange nous permettra de comprendre votre projet et de définir la stratégie de recherche.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <Button asChild size="lg" variant="secondary" className="rounded-full px-8 text-base transition-transform duration-300 hover:-translate-y-0.5">
+                    <a href="#mandat-form">
+                      <Phone className="h-4 w-4" />
+                      Planifier un appel
+                    </a>
+                  </Button>
+                  <Button asChild size="lg" className="rounded-full border border-primary-foreground/15 bg-primary-foreground/10 px-8 text-base text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5 hover:bg-primary-foreground/15">
+                    <a href="#contact">
+                      <ArrowUpRight className="h-4 w-4" />
+                      Être rappelé
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div id="mandat-form">
+          <BuyerMandateStepperForm />
         </div>
-      </section>
+        <div id="contact">
+          <ContactForm />
+        </div>
+      </main>
 
-      {/* Stepper Form */}
-      <BuyerMandateStepperForm />
-
-      {/* PRICING */}
-      <PricingSection
-        heading="Nos honoraires de recherche"
-        subheading="Un accompagnement premium, pensé exclusivement pour défendre vos intérêts tout au long de votre achat."
-        note="Pour garantir un travail de qualité, une recherche approfondie et un accompagnement réellement sur-mesure, nous travaillons uniquement en mandat exclusif afin de nous engager pleinement à vos côtés et de mobiliser tout notre réseau pour trouver le bien qui vous correspond."
-        plans={[
-          {
-            title: "Mandat Exclusif de Recherche",
-            rate: "2,5% TTC",
-            subtitle: "du prix d'acquisition du bien",
-            recommended: true,
-            features: [
-              { text: "Définition approfondie de vos critères", included: true },
-              { text: "Recherche marché visible + off-market", included: true },
-              { text: "Organisation et pré-sélection des visites", included: true },
-              { text: "Conseil et accompagnement premium", included: true },
-              { text: "Accès prioritaire au réseau off-market", included: true },
-              { text: "Prospection dédiée et intensive", included: true },
-              { text: "Négociation experte en votre faveur", included: true },
-              { text: "Reporting hebdomadaire personnalisé", included: true },
-              { text: "Délai de recherche réduit de moitié", included: true },
-            ],
-            cta: "Choisir le mandat exclusif",
-          },
-        ]}
-      />
-
-      <ContactForm />
       <Footer />
     </div>
   );
