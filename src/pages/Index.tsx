@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowRight, Star, Lock, Search, Home, Quote,
-  Shield, Heart, Handshake, Eye, Zap, Clock, Award, MapPin } from
+  Eye, Zap, Handshake, Shield, MapPin } from
 "lucide-react";
+import EngagementsSection from "@/components/EngagementsSection";
 import PropertyCard from "@/components/PropertyCard";
 import ContactForm from "@/components/ContactForm";
 import Navbar from "@/components/Navbar";
@@ -30,38 +31,6 @@ const testimonials = [
   rating: 5
 }];
 
-
-const engagements = [
-{
-  icon: Shield,
-  title: "Transparence totale",
-  description: "Un suivi clair à chaque étape de votre projet. Vous êtes informé en temps réel, sans zone d'ombre."
-},
-{
-  icon: Heart,
-  title: "Écoute & bienveillance",
-  description: "Votre projet est unique. Nous prenons le temps de comprendre vos attentes pour vous conseiller avec sincérité."
-},
-{
-  icon: Handshake,
-  title: "Négociation experte",
-  description: "Nous défendons vos intérêts avec rigueur pour vous obtenir les meilleures conditions du marché."
-},
-{
-  icon: Clock,
-  title: "Réactivité 7j/7",
-  description: "Une question, un doute ? Notre équipe est disponible et réactive tout au long de votre projet."
-},
-{
-  icon: Eye,
-  title: "Accès off-market",
-  description: "Profitez de biens exclusifs jamais publiés en ligne, accessibles uniquement via notre réseau privilégié."
-},
-{
-  icon: Award,
-  title: "Expertise locale",
-  description: "Une connaissance fine de Paris et des Hauts-de-Seine pour un accompagnement sur-mesure."
-}];
 
 
 
@@ -184,55 +153,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ENGAGEMENTS */}
-      <section className="py-28 bg-background relative overflow-hidden">
-        {/* Subtle decorative background */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-20">
-            
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="h-px w-12 bg-accent" />
-              <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Ce qui nous définit</span>
-              <div className="h-px w-12 bg-accent" />
-            </div>
-            <h2 className="font-display text-4xl md:text-6xl text-foreground mb-5">
-              Nos <span className="text-accent italic">engagements</span>
-            </h2>
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
-              Six valeurs essentielles au service de votre projet immobilier.
-            </p>
-          </motion.div>
-
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {engagements.map((e, i) =>
-            <motion.div
-              key={e.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              viewport={{ once: true }}
-              className="group relative bg-card rounded-2xl border border-border p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
-              
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-7 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                  <e.icon className="w-7 h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
-                </div>
-                <h3 className="font-display text-2xl mb-4 text-foreground">{e.title}</h3>
-                <p className="font-body text-muted-foreground text-lg leading-relaxed">{e.description}</p>
-              </motion.div>
-            )}
-          </div>
-        </div>
-      </section>
+      <EngagementsSection />
 
       {/* LATEST PROPERTIES */}
       <section className="py-20">
