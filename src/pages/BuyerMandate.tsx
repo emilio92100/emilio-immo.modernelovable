@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
-import { Search, MapPin, FileCheck, Handshake, ArrowRight, Clock, Target, Users, Shield, Gem, HeartHandshake, CheckCircle, Eye, Home } from "lucide-react";
+import { Search, MapPin, FileCheck, Handshake, Target, Shield, Gem, Clock, Users, HeartHandshake, ArrowDown, Sparkles, Key } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
-import BuyerMandateForm from "@/components/BuyerMandateForm";
 import BuyerMandateStepperForm from "@/components/BuyerMandateStepperForm";
 import PricingSection from "@/components/PricingSection";
 import SEOHead from "@/components/SEOHead";
@@ -11,57 +10,52 @@ import SEOHead from "@/components/SEOHead";
 const steps = [
   {
     icon: Target,
+    num: "01",
     title: "Définition de vos critères",
-    description: "Nous analysons en détail vos besoins, votre budget, vos préférences de localisation et vos contraintes pour cibler les biens parfaits.",
-    color: "bg-accent/10 border-accent/20",
-    iconColor: "bg-accent/20",
+    description: "Analyse approfondie de vos besoins, budget, localisation et contraintes.",
   },
   {
     icon: Search,
+    num: "02",
     title: "Recherche personnalisée",
-    description: "Notre équipe active son réseau et explore le marché visible et off-market pour identifier les opportunités correspondant à vos critères.",
-    color: "bg-primary/5 border-primary/15",
-    iconColor: "bg-primary/10",
+    description: "Prospection active sur le marché visible et off-market via notre réseau.",
   },
   {
     icon: MapPin,
+    num: "03",
     title: "Visites organisées",
-    description: "Nous pré-sélectionnons les biens pertinents et organisons les visites en fonction de vos disponibilités, avec une analyse détaillée de chaque bien.",
-    color: "bg-accent/10 border-accent/20",
-    iconColor: "bg-accent/20",
+    description: "Pré-sélection et organisation de visites avec analyse détaillée.",
   },
   {
     icon: FileCheck,
+    num: "04",
     title: "Analyse & négociation",
-    description: "Vérification technique du bien, analyse du prix par rapport au marché et négociation dans votre intérêt pour obtenir les meilleures conditions.",
-    color: "bg-primary/5 border-primary/15",
-    iconColor: "bg-primary/10",
+    description: "Vérification technique, analyse du prix et négociation en votre faveur.",
   },
   {
     icon: Handshake,
-    title: "Accompagnement jusqu'à la signature",
-    description: "Suivi administratif complet, coordination avec les notaires et accompagnement jusqu'à la remise des clés de votre nouveau bien.",
-    color: "bg-accent/10 border-accent/20",
-    iconColor: "bg-accent/20",
+    num: "05",
+    title: "Signature & remise des clés",
+    description: "Suivi administratif, coordination notaire et accompagnement complet.",
   },
 ];
 
 const advantages = [
-  { icon: Gem, text: "Accès à des biens off-market exclusifs" },
-  { icon: Clock, text: "Gain de temps considérable" },
-  { icon: Target, text: "Expertise du marché francilien" },
-  { icon: Shield, text: "Négociation professionnelle en votre faveur" },
-  { icon: FileCheck, text: "Accompagnement juridique et administratif" },
-  { icon: Users, text: "Un seul interlocuteur dédié à votre projet" },
+  { icon: Gem, title: "Off-market", text: "Accès à des biens exclusifs non publiés" },
+  { icon: Clock, title: "Gain de temps", text: "Nous cherchons, vous choisissez" },
+  { icon: Target, title: "Expertise locale", text: "Connaissance fine du marché francilien" },
+  { icon: Shield, title: "Négociation", text: "Défense de vos intérêts financiers" },
+  { icon: FileCheck, title: "Juridique", text: "Accompagnement administratif complet" },
+  { icon: Users, title: "Interlocuteur unique", text: "Un seul expert dédié à votre projet" },
 ];
 
 const timelineSteps = [
-  { week: "Semaine 1", label: "Premier rendez-vous", description: "Définition des critères, du budget et de la stratégie de recherche" },
-  { week: "Semaines 2-4", label: "Recherche active", description: "Prospection intensive, réseau off-market, pré-sélection des biens" },
-  { week: "Semaines 4-8", label: "Visites ciblées", description: "Organisation des visites, analyses comparatives détaillées" },
-  { week: "Semaines 8-10", label: "Offre & négociation", description: "Rédaction de l'offre, négociation du prix et des conditions" },
-  { week: "Semaines 10-12", label: "Compromis de vente", description: "Signature du compromis, suivi du dossier de financement" },
-  { week: "Mois 3-4", label: "Signature définitive", description: "Acte authentique chez le notaire et remise des clés" },
+  { week: "Sem. 1", label: "Premier RDV", icon: "📋" },
+  { week: "Sem. 2-4", label: "Recherche active", icon: "🔍" },
+  { week: "Sem. 4-8", label: "Visites ciblées", icon: "🏠" },
+  { week: "Sem. 8-10", label: "Négociation", icon: "🤝" },
+  { week: "Sem. 10-12", label: "Compromis", icon: "📝" },
+  { week: "Mois 3-4", label: "Clés en main", icon: "🔑" },
 ];
 
 const BuyerMandate = () => {
@@ -74,67 +68,102 @@ const BuyerMandate = () => {
       />
       <Navbar />
 
-      {/* Hero */}
-      <section className="pt-28 pb-16 bg-primary relative overflow-hidden">
-        <div className="relative container mx-auto px-6 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <HeartHandshake className="w-12 h-12 text-accent mx-auto mb-6" />
-            <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Acheter avec Emilio</h1>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-lg">
-              Confiez-nous votre recherche immobilière. Nous trouvons le bien idéal pour vous, en toute sérénité.
+      {/* Hero — Full bleed with bold typography */}
+      <section className="relative min-h-[70vh] flex items-center justify-center bg-primary overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 opacity-[0.04]">
+          <div className="absolute top-20 left-10 w-72 h-72 rounded-full border border-primary-foreground" />
+          <div className="absolute bottom-10 right-20 w-96 h-96 rounded-full border border-primary-foreground" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-primary-foreground" />
+        </div>
+
+        <div className="relative container mx-auto px-6 text-center py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-5 py-2 mb-8">
+              <HeartHandshake className="w-4 h-4 text-accent" />
+              <span className="font-body text-accent text-sm font-semibold tracking-wide">Chasseur immobilier</span>
+            </div>
+
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-primary-foreground mb-6 leading-[1.1]">
+              Trouvons ensemble
+              <br />
+              <span className="italic text-accent">votre bien idéal</span>
+            </h1>
+
+            <p className="font-body text-primary-foreground/60 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-10">
+              Un accompagnement sur-mesure pour votre achat immobilier à Paris et Hauts-de-Seine. Du premier rendez-vous à la remise des clés.
             </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="#formulaire"
+                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-full font-body font-semibold text-base hover:brightness-110 transition-all shadow-lg shadow-accent/25"
+              >
+                Démarrer ma recherche
+              </a>
+              <a
+                href="#processus"
+                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/20 text-primary-foreground/80 px-8 py-4 rounded-full font-body font-medium text-base hover:bg-primary-foreground/5 transition-all"
+              >
+                Comment ça marche <ArrowDown className="w-4 h-4" />
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Steps - Visual Timeline */}
-      <section className="py-24">
+      {/* Steps — Horizontal numbered cards */}
+      <section id="processus" className="py-28 bg-background">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="h-px w-12 bg-accent" />
-              <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Le processus</span>
-              <div className="h-px w-12 bg-accent" />
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-5">
-              Comment ça <span className="text-accent italic">fonctionne</span> ?
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Le processus</span>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mt-4 mb-5">
+              5 étapes vers <span className="text-accent italic">votre nouveau chez-vous</span>
             </h2>
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
-              Un accompagnement en 5 étapes clés pour trouver le bien qui vous correspond.
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
+              Une méthode éprouvée, un accompagnement à chaque étape.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="max-w-5xl mx-auto relative">
-            {/* Vertical line */}
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-accent/20 md:-translate-x-px" />
-
+          <div className="max-w-6xl mx-auto space-y-6">
             {steps.map((step, i) => (
               <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.12 }}
+                key={step.num}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className={`relative flex items-start mb-16 last:mb-0 ${
-                  i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
+                className="group relative"
               >
-                {/* Center dot */}
-                <div className="absolute left-8 md:left-1/2 -translate-x-1/2 z-10">
-                  <div className="w-16 h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center shadow-lg">
-                    <step.icon className="w-7 h-7" />
-                  </div>
-                </div>
-
-                {/* Content card */}
-                <div className={`ml-24 md:ml-0 md:w-[calc(50%-3rem)] ${i % 2 === 0 ? "md:pr-4 md:text-right" : "md:pl-4 md:ml-auto"}`}>
-                  <div className="bg-card p-8 md:p-10 rounded-2xl border border-border shadow-sm hover:shadow-xl hover:border-accent/30 transition-all duration-500 group">
-                    <span className="inline-block font-body text-accent text-sm font-bold tracking-wider uppercase bg-accent/10 px-4 py-1.5 rounded-full mb-4 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300">
-                      Étape {i + 1}
+                <div className="flex items-stretch bg-card rounded-2xl border border-border overflow-hidden hover:border-accent/30 hover:shadow-xl transition-all duration-500">
+                  {/* Number block */}
+                  <div className="hidden md:flex w-32 shrink-0 items-center justify-center bg-primary group-hover:bg-accent transition-colors duration-500">
+                    <span className="font-display text-4xl text-primary-foreground/30 group-hover:text-accent-foreground/80 transition-colors duration-500">
+                      {step.num}
                     </span>
-                    <h3 className="font-display text-2xl md:text-3xl mb-4 text-foreground">{step.title}</h3>
-                    <p className="font-body text-muted-foreground text-lg leading-relaxed">{step.description}</p>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 flex items-center gap-5 p-7 md:p-8">
+                    <div className="w-14 h-14 shrink-0 rounded-xl bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:scale-105 transition-all duration-500">
+                      <step.icon className="w-6 h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                    </div>
+                    <div>
+                      <span className="md:hidden font-body text-accent text-xs font-bold tracking-wider uppercase">Étape {step.num}</span>
+                      <h3 className="font-display text-xl md:text-2xl text-foreground mb-1">{step.title}</h3>
+                      <p className="font-body text-muted-foreground text-base leading-relaxed">{step.description}</p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -143,77 +172,100 @@ const BuyerMandate = () => {
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="py-24 bg-secondary">
+      {/* Advantages — Bento-style grid */}
+      <section className="py-28 bg-primary">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-5">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Pourquoi nous choisir</span>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-primary-foreground mt-4 mb-5">
+              Vos <span className="text-accent italic">avantages</span>
+            </h2>
+          </motion.div>
+
+          <div className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {advantages.map((a, i) => (
+              <motion.div
+                key={a.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                viewport={{ once: true }}
+                className="group relative bg-primary-foreground/[0.04] border border-primary-foreground/10 rounded-2xl p-8 hover:bg-primary-foreground/[0.08] hover:border-accent/30 transition-all duration-500"
+              >
+                <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-5 group-hover:bg-accent group-hover:scale-105 transition-all duration-500">
+                  <a.icon className="w-5 h-5 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                </div>
+                <h3 className="font-display text-lg text-primary-foreground mb-2">{a.title}</h3>
+                <p className="font-body text-primary-foreground/50 text-sm leading-relaxed">{a.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline — Horizontal scroll */}
+      <section className="py-28 bg-secondary overflow-hidden">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Planning</span>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mt-4 mb-5">
               Durée estimée de <span className="text-accent italic">votre projet</span>
             </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
-              Voici le déroulement type d'une recherche accompagnée, du premier contact à la remise des clés.
+            <p className="font-body text-muted-foreground max-w-xl mx-auto text-lg leading-relaxed">
+              Du premier contact à la remise des clés en 3 à 4 mois.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="max-w-5xl mx-auto relative">
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-accent/20 md:-translate-x-px" />
+          {/* Horizontal timeline */}
+          <div className="max-w-6xl mx-auto">
+            <div className="relative">
+              {/* Line */}
+              <div className="hidden md:block absolute top-12 left-0 right-0 h-px bg-accent/20" />
 
-            {timelineSteps.map((step, i) => (
-              <motion.div
-                key={step.week}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className={`relative flex items-start mb-14 last:mb-0 ${
-                  i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-              >
-                <div className="absolute left-8 md:left-1/2 w-5 h-5 bg-accent rounded-full border-4 border-secondary -translate-x-1/2 mt-2 z-10 shadow-md" />
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-4">
+                {timelineSteps.map((step, i) => (
+                  <motion.div
+                    key={step.week}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="text-center group"
+                  >
+                    {/* Dot */}
+                    <div className="relative flex justify-center mb-6">
+                      <div className="w-[26px] h-[26px] rounded-full bg-accent/20 border-4 border-secondary flex items-center justify-center group-hover:bg-accent transition-colors duration-500 z-10">
+                        <div className="w-2 h-2 rounded-full bg-accent group-hover:bg-accent-foreground transition-colors duration-500" />
+                      </div>
+                    </div>
 
-                <div className={`ml-20 md:ml-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-14 md:text-right" : "md:pl-14"}`}>
-                  <span className="font-display text-accent text-base font-bold tracking-wider uppercase">{step.week}</span>
-                  <h4 className="font-display text-2xl text-foreground mt-2 mb-2">{step.label}</h4>
-                  <p className="font-body text-muted-foreground text-lg leading-relaxed">{step.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Advantages */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto text-center">
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-6">
-              Les <span className="text-accent italic">avantages</span> de nous confier votre recherche
-            </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-14" />
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
-              {advantages.map((a, i) => (
-                <motion.div
-                  key={a.text}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group flex flex-col items-center gap-5 p-8 bg-card rounded-2xl border border-border hover:border-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
-                >
-                  <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                    <a.icon className="w-7 h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
-                  </div>
-                  <span className="font-body text-foreground text-lg font-medium text-center leading-snug">{a.text}</span>
-                </motion.div>
-              ))}
+                    <div className="text-3xl mb-3">{step.icon}</div>
+                    <span className="block font-body text-accent text-xs font-bold tracking-wider uppercase mb-1">{step.week}</span>
+                    <h4 className="font-display text-base text-foreground leading-tight">{step.label}</h4>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Stepper Form */}
-      <BuyerMandateStepperForm />
+      <div id="formulaire">
+        <BuyerMandateStepperForm />
+      </div>
 
       {/* PRICING */}
       <PricingSection
