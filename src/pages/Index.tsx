@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowRight, Star, Lock, Search, Home, Quote,
-  Shield, Heart, Handshake, Eye, Zap, Clock, Award, MapPin } from
+  Eye, Zap, Handshake, Shield, MapPin } from
 "lucide-react";
+import EngagementsSection from "@/components/EngagementsSection";
 import PropertyCard from "@/components/PropertyCard";
 import ContactForm from "@/components/ContactForm";
 import Navbar from "@/components/Navbar";
