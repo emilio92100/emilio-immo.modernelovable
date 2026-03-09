@@ -14,6 +14,7 @@ import AdminSubmissions from "./pages/AdminSubmissions";
 import AdminLogin from "./pages/AdminLogin";
 import MentionsLegales from "./pages/MentionsLegales";
 import NotFound from "./pages/NotFound";
+import NewFeaturePopup from "./components/NewFeaturePopup";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <NewFeaturePopup />
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
