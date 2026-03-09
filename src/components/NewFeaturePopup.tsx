@@ -12,7 +12,7 @@ const NewFeaturePopup = () => {
       const t2 = setTimeout(() => {
         setOpen(false);
         sessionStorage.setItem("new-feature-seen", "1");
-      }, 5800);
+      }, 7800);
       return () => { clearTimeout(t1); clearTimeout(t2); };
     }
   }, []);
@@ -67,7 +67,7 @@ const NewFeaturePopup = () => {
               <motion.div
                 initial={{ width: "100%" }}
                 animate={{ width: "0%" }}
-                transition={{ duration: 5, ease: "linear" }}
+                transition={{ duration: 7, ease: "linear" }}
                 className="h-full bg-accent rounded-full"
               />
             </div>
