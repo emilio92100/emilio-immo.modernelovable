@@ -12,7 +12,7 @@ const NewFeaturePopup = () => {
       const t2 = setTimeout(() => {
         setOpen(false);
         sessionStorage.setItem("new-feature-seen", "1");
-      }, 5800);
+      }, 7800);
       return () => { clearTimeout(t1); clearTimeout(t2); };
     }
   }, []);
