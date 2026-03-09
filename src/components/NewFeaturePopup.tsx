@@ -67,7 +67,7 @@ const NewFeaturePopup = () => {
               <motion.div
                 initial={{ width: "100%" }}
                 animate={{ width: "0%" }}
-                transition={{ duration: 5, ease: "linear" }}
+                transition={{ duration: 7, ease: "linear" }}
                 className="h-full bg-accent rounded-full"
               />
             </div>
