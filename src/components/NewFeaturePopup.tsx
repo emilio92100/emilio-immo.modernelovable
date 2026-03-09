@@ -52,13 +52,13 @@ const NewFeaturePopup = () => {
               <Sparkles className="w-7 h-7 text-accent" />
             </div>
 
-            <p className="font-display text-lg sm:text-xl font-bold text-foreground mb-2">
+            <p className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2">
               Nouveau ! 🎉
             </p>
-            <p className="font-display text-sm font-semibold text-accent mb-3">
+            <p className="font-display text-base sm:text-lg font-semibold text-accent mb-3">
               Détail des surfaces
             </p>
-            <p className="font-body text-sm text-muted-foreground leading-relaxed">
+            <p className="font-body text-base text-muted-foreground leading-relaxed">
               Consultez désormais le détail de chaque surface pièce par pièce directement sur la fiche d'un bien.
             </p>
 
