@@ -33,7 +33,7 @@ const RoomDetailsBlock = ({ roomDetails }: { roomDetails: RoomDetail[] }) => {
               <div>
                 <h2 className="font-display text-xl text-accent-foreground">Détail des pièces</h2>
                 <p className="font-body text-sm text-accent-foreground/80 mt-1">
-                  {roomDetails.length} pièce{roomDetails.length > 1 ? "s" : ""} — <span className="underline underline-offset-2">cliquez pour voir</span>
+                  {roomDetails.length} surface{roomDetails.length > 1 ? "s" : ""} — <span className="underline underline-offset-2">cliquez pour voir</span>
                 </p>
               </div>
             </div>
