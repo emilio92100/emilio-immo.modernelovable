@@ -88,7 +88,7 @@ const Properties = () => {
       <SEOHead
         title="Biens immobiliers à vendre — Paris & Hauts-de-Seine | Émilio"
         description="Consultez nos biens immobiliers à vendre à Paris et dans les Hauts-de-Seine. Appartements, maisons, biens de prestige. Mise à jour quotidienne."
-        canonical="https://emilio-immobilier.fr/biens"
+        canonical="https://www.emilio-immo.com/biens"
       />
       <Navbar />
 

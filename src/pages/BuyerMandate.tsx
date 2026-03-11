@@ -64,7 +64,7 @@ const BuyerMandate = () => {
       <SEOHead
         title="Mandat de recherche — Émilio Immobilier | Chasseur immobilier"
         description="Confiez votre recherche immobilière à Émilio Immobilier. Accès aux biens off-market, accompagnement personnalisé, négociation experte à Paris et Hauts-de-Seine."
-        canonical="https://emilio-immobilier.fr/mandat-recherche"
+        canonical="https://www.emilio-immo.com/mandat-recherche"
       />
       <Navbar />
 
