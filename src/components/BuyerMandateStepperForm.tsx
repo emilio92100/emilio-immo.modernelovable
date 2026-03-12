@@ -199,7 +199,6 @@ const BuyerMandateStepperForm = () => {
                 <option value="balcon">Balcon</option>
                 <option value="terrasse">Terrasse</option>
                 <option value="jardin">Jardin</option>
-                <option value="loggia">Loggia</option>
               </select>
             </div>
           </div>
