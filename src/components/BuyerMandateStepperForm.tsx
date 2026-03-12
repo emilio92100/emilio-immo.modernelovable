@@ -48,7 +48,7 @@ const BuyerMandateStepperForm = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const budget = [form.budget_min, form.budget_max].filter(Boolean).join(" - ");
+      const budget = form.budget_max || null;
       const { error } = await supabase.from("contact_submissions").insert({
         form_type: "mandat_recherche",
         name: form.name,
@@ -102,7 +102,7 @@ const BuyerMandateStepperForm = () => {
 
   const canProceed = () => {
     switch (step) {
-      case 0: return form.budget_min && form.budget_max && form.financement;
+      case 0: return form.budget_max && form.financement;
       case 1: return form.desired_location;
       case 2: return form.property_type;
       case 3: return true;
@@ -117,15 +117,9 @@ const BuyerMandateStepperForm = () => {
         return (
           <div className="space-y-5">
             <h3 className="font-display text-xl md:text-2xl text-foreground">Budget et Financement</h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className={labelClass}>Budget minimum {requiredStar}</label>
-                <input type="text" placeholder="Ex: 200000" value={form.budget_min} onChange={(e) => update("budget_min", e.target.value)} className={inputClass} />
-              </div>
-              <div>
-                <label className={labelClass}>Budget maximum {requiredStar}</label>
-                <input type="text" placeholder="Ex: 350000" value={form.budget_max} onChange={(e) => update("budget_max", e.target.value)} className={inputClass} />
-              </div>
+            <div>
+              <label className={labelClass}>Budget maximum {requiredStar}</label>
+              <input type="text" placeholder="Ex: 350 000 €" value={form.budget_max} onChange={(e) => update("budget_max", e.target.value)} className={inputClass} />
             </div>
             <div>
               <label className={labelClass}>Financement {requiredStar}</label>
@@ -144,8 +138,8 @@ const BuyerMandateStepperForm = () => {
           <div className="space-y-5">
             <h3 className="font-display text-xl md:text-2xl text-foreground">Localisation souhaitée</h3>
             <div>
-              <label className={labelClass}>Ville ou secteur {requiredStar}</label>
-              <input type="text" placeholder="Ex: Paris 16ème, Neuilly-sur-Seine..." value={form.desired_location} onChange={(e) => update("desired_location", e.target.value)} className={inputClass} />
+              <label className={labelClass}>Ville(s) ou secteur(s) {requiredStar}</label>
+              <textarea placeholder="Ex: Paris 16ème, Neuilly-sur-Seine, Boulogne-Billancourt..." rows={2} value={form.desired_location} onChange={(e) => update("desired_location", e.target.value)} className={`${inputClass} resize-none`} />
             </div>
             <div>
               <label className={labelClass}>Quartiers préférés</label>
@@ -191,6 +185,7 @@ const BuyerMandateStepperForm = () => {
                 <select value={form.floor_preference} onChange={(e) => update("floor_preference", e.target.value)} className={selectClass}>
                   <option value="">Indifférent</option>
                   <option value="rdc">Rez-de-chaussée</option>
+                  <option value="tout_sauf_rdc">Tout sauf RDC</option>
                   <option value="etage_bas">Étage bas (1-3)</option>
                   <option value="etage_haut">Étage élevé (4+)</option>
                   <option value="dernier">Dernier étage</option>
@@ -204,7 +199,6 @@ const BuyerMandateStepperForm = () => {
                 <option value="balcon">Balcon</option>
                 <option value="terrasse">Terrasse</option>
                 <option value="jardin">Jardin</option>
-                <option value="loggia">Loggia</option>
               </select>
             </div>
           </div>
