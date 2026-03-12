@@ -102,7 +102,7 @@ const BuyerMandateStepperForm = () => {
 
   const canProceed = () => {
     switch (step) {
-      case 0: return form.budget_min && form.budget_max && form.financement;
+      case 0: return form.budget_max && form.financement;
       case 1: return form.desired_location;
       case 2: return form.property_type;
       case 3: return true;
