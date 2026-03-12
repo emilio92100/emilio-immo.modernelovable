@@ -119,7 +119,22 @@ const BuyerMandateStepperForm = () => {
             <h3 className="font-display text-xl md:text-2xl text-foreground">Budget et Financement</h3>
             <div>
               <label className={labelClass}>Budget maximum {requiredStar}</label>
-              <input type="text" placeholder="Ex: 350 000 €" value={form.budget_max} onChange={(e) => update("budget_max", e.target.value)} className={inputClass} />
+              <div className="relative">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="Ex: 350 000"
+                  value={form.budget_max}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^0-9]/g, "");
+                    if (raw === "") { update("budget_max", ""); return; }
+                    const formatted = Number(raw).toLocaleString("fr-FR");
+                    update("budget_max", formatted);
+                  }}
+                  className={inputClass}
+                />
+                <span className={`absolute right-4 top-1/2 -translate-y-1/2 text-accent font-semibold text-lg transition-all duration-300 ${form.budget_max ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"}`}>€</span>
+              </div>
             </div>
             <div>
               <label className={labelClass}>Financement {requiredStar}</label>
