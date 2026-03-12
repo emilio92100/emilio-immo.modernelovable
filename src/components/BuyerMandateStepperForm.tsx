@@ -48,7 +48,7 @@ const BuyerMandateStepperForm = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const budget = [form.budget_min, form.budget_max].filter(Boolean).join(" - ");
+      const budget = form.budget_max || null;
       const { error } = await supabase.from("contact_submissions").insert({
         form_type: "mandat_recherche",
         name: form.name,
