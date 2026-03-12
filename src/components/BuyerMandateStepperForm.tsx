@@ -185,6 +185,7 @@ const BuyerMandateStepperForm = () => {
                 <select value={form.floor_preference} onChange={(e) => update("floor_preference", e.target.value)} className={selectClass}>
                   <option value="">Indifférent</option>
                   <option value="rdc">Rez-de-chaussée</option>
+                  <option value="tout_sauf_rdc">Tout sauf RDC</option>
                   <option value="etage_bas">Étage bas (1-3)</option>
                   <option value="etage_haut">Étage élevé (4+)</option>
                   <option value="dernier">Dernier étage</option>
