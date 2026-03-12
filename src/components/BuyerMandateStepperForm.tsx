@@ -138,8 +138,8 @@ const BuyerMandateStepperForm = () => {
           <div className="space-y-5">
             <h3 className="font-display text-xl md:text-2xl text-foreground">Localisation souhaitée</h3>
             <div>
-              <label className={labelClass}>Ville ou secteur {requiredStar}</label>
-              <input type="text" placeholder="Ex: Paris 16ème, Neuilly-sur-Seine..." value={form.desired_location} onChange={(e) => update("desired_location", e.target.value)} className={inputClass} />
+              <label className={labelClass}>Ville(s) ou secteur(s) {requiredStar}</label>
+              <textarea placeholder="Ex: Paris 16ème, Neuilly-sur-Seine, Boulogne-Billancourt..." rows={2} value={form.desired_location} onChange={(e) => update("desired_location", e.target.value)} className={`${inputClass} resize-none`} />
             </div>
             <div>
               <label className={labelClass}>Quartiers préférés</label>
