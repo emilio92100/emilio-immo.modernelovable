@@ -117,15 +117,9 @@ const BuyerMandateStepperForm = () => {
         return (
           <div className="space-y-5">
             <h3 className="font-display text-xl md:text-2xl text-foreground">Budget et Financement</h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className={labelClass}>Budget minimum {requiredStar}</label>
-                <input type="text" placeholder="Ex: 200000" value={form.budget_min} onChange={(e) => update("budget_min", e.target.value)} className={inputClass} />
-              </div>
-              <div>
-                <label className={labelClass}>Budget maximum {requiredStar}</label>
-                <input type="text" placeholder="Ex: 350000" value={form.budget_max} onChange={(e) => update("budget_max", e.target.value)} className={inputClass} />
-              </div>
+            <div>
+              <label className={labelClass}>Budget maximum {requiredStar}</label>
+              <input type="text" placeholder="Ex: 350 000 €" value={form.budget_max} onChange={(e) => update("budget_max", e.target.value)} className={inputClass} />
             </div>
             <div>
               <label className={labelClass}>Financement {requiredStar}</label>
