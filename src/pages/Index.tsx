@@ -185,33 +185,33 @@ const Index = () => {
       </section>
 
       {/* ENGAGEMENTS */}
-      <section className="py-28 bg-background relative overflow-hidden">
+      <section className="py-14 sm:py-28 bg-background relative overflow-hidden">
         {/* Subtle decorative background */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-20">
+            className="text-center mb-10 sm:mb-20">
             
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="h-px w-12 bg-accent" />
-              <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Ce qui nous définit</span>
-              <div className="h-px w-12 bg-accent" />
+            <div className="inline-flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+              <div className="h-px w-8 sm:w-12 bg-accent" />
+              <span className="font-body text-accent font-semibold text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase">Ce qui nous définit</span>
+              <div className="h-px w-8 sm:w-12 bg-accent" />
             </div>
-            <h2 className="font-display text-2xl sm:text-4xl md:text-6xl text-foreground mb-5">
+            <h2 className="font-display text-xl sm:text-4xl md:text-6xl text-foreground mb-3 sm:mb-5">
               Nos <span className="text-accent italic">engagements</span>
             </h2>
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm sm:text-lg md:text-xl leading-relaxed">
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-xs sm:text-lg md:text-xl leading-relaxed">
               Six valeurs essentielles au service de votre projet immobilier.
             </p>
           </motion.div>
 
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
             {engagements.map((e, i) =>
             <motion.div
               key={e.title}
@@ -219,15 +219,15 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
               viewport={{ once: true }}
-               className="group relative bg-card rounded-2xl border border-border p-6 sm:p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
+               className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-4 sm:p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
               
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0 rounded-t-xl sm:rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-5 sm:mb-7 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                  <e.icon className="w-5 h-5 sm:w-7 sm:h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                <div className="w-9 h-9 sm:w-16 sm:h-16 bg-accent/10 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-7 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                  <e.icon className="w-4 h-4 sm:w-7 sm:h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
-                <h3 className="font-display text-lg sm:text-2xl mb-3 sm:mb-4 text-foreground">{e.title}</h3>
-                <p className="font-body text-muted-foreground text-sm sm:text-lg leading-relaxed">{e.description}</p>
+                <h3 className="font-display text-sm sm:text-2xl mb-1.5 sm:mb-4 text-foreground leading-tight">{e.title}</h3>
+                <p className="font-body text-muted-foreground text-[11px] sm:text-lg leading-relaxed">{e.description}</p>
               </motion.div>
             )}
           </div>
