@@ -203,10 +203,10 @@ const Index = () => {
               <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Ce qui nous définit</span>
               <div className="h-px w-12 bg-accent" />
             </div>
-            <h2 className="font-display text-4xl md:text-6xl text-foreground mb-5">
+            <h2 className="font-display text-2xl sm:text-4xl md:text-6xl text-foreground mb-5">
               Nos <span className="text-accent italic">engagements</span>
             </h2>
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm sm:text-lg md:text-xl leading-relaxed">
               Six valeurs essentielles au service de votre projet immobilier.
             </p>
           </motion.div>
@@ -219,15 +219,15 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
               viewport={{ once: true }}
-              className="group relative bg-card rounded-2xl border border-border p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
+               className="group relative bg-card rounded-2xl border border-border p-6 sm:p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
               
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-7 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                  <e.icon className="w-7 h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-5 sm:mb-7 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                  <e.icon className="w-5 h-5 sm:w-7 sm:h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
-                <h3 className="font-display text-2xl mb-4 text-foreground">{e.title}</h3>
-                <p className="font-body text-muted-foreground text-lg leading-relaxed">{e.description}</p>
+                <h3 className="font-display text-lg sm:text-2xl mb-3 sm:mb-4 text-foreground">{e.title}</h3>
+                <p className="font-body text-muted-foreground text-sm sm:text-lg leading-relaxed">{e.description}</p>
               </motion.div>
             )}
           </div>
