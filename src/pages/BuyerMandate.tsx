@@ -84,9 +84,9 @@ const BuyerMandate = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-4xl mx-auto"
           >
-            <div className="inline-flex items-center gap-1.5 bg-accent/15 border border-accent/25 rounded-full px-3 py-1.5 md:px-5 md:py-2 mb-5 md:mb-8">
-              <HeartHandshake className="w-3.5 h-3.5 md:w-4 md:h-4 text-accent" />
-              <span className="font-body text-accent text-xs md:text-sm font-semibold tracking-wide">Chasseur immobilier</span>
+            <div className="hidden md:inline-flex items-center gap-1.5 bg-accent/15 border border-accent/25 rounded-full px-5 py-2 mb-8">
+              <HeartHandshake className="w-4 h-4 text-accent" />
+              <span className="font-body text-accent text-sm font-semibold tracking-wide">Chasseur immobilier</span>
             </div>
 
             <h1 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-7xl text-primary-foreground mb-4 md:mb-6 leading-[1.1]">
