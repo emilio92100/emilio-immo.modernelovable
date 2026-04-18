@@ -299,19 +299,19 @@ const SellPage = () => {
       />
 
       {/* CTA FINAL */}
-      <section className="py-24 bg-secondary">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-5">
+      <section className="py-12 md:py-24 bg-secondary">
+        <div className="container mx-auto px-5 md:px-6 text-center">
+          <h2 className="font-display text-2xl md:text-5xl text-foreground mb-3 md:mb-5">
             Prêt à vendre votre bien ?
           </h2>
-          <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8 text-lg md:text-xl">
+          <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
+          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-6 md:mb-8 text-sm md:text-lg lg:text-xl">
             Commencez par une estimation gratuite et sans engagement.
           </p>
           <EstimationForm
             trigger={
-              <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-10 py-4 font-body font-semibold tracking-wide text-base rounded hover:brightness-110 transition-all">
-                Demander une estimation gratuite <ArrowRight className="w-5 h-5" />
+              <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 md:px-10 md:py-4 font-body font-semibold tracking-wide text-sm md:text-base rounded hover:brightness-110 transition-all">
+                Demander une estimation gratuite <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
               </button>
             }
           />
