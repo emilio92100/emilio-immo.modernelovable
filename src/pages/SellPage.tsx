@@ -115,8 +115,8 @@ const SellPage = () => {
 
       {/* STATS */}
       <section className="py-0 -mt-1">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-3 bg-card rounded-lg shadow-lg border border-border -mt-8 relative z-10">
+        <div className="container mx-auto px-5 md:px-6">
+          <div className="grid grid-cols-3 bg-card rounded-lg shadow-lg border border-border -mt-6 md:-mt-8 relative z-10">
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
@@ -124,10 +124,10 @@ const SellPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-6 md:p-8 text-center border-r last:border-r-0 border-border"
+                className="p-4 md:p-8 text-center border-r last:border-r-0 border-border"
               >
-                <div className="font-display text-3xl md:text-4xl text-accent mb-1">{s.value}</div>
-                <div className="font-body text-muted-foreground text-sm tracking-wide">{s.label}</div>
+                <div className="font-display text-xl md:text-4xl text-accent mb-0.5 md:mb-1">{s.value}</div>
+                <div className="font-body text-muted-foreground text-[10px] md:text-sm tracking-wide leading-tight">{s.label}</div>
               </motion.div>
             ))}
           </div>
@@ -135,14 +135,14 @@ const SellPage = () => {
       </section>
 
       {/* INTRO */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
+      <section className="py-12 md:py-24">
+        <div className="container mx-auto px-5 md:px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-6">
+            <h2 className="font-display text-2xl md:text-5xl text-foreground mb-4 md:mb-6">
               Pourquoi vendre avec <span className="text-gold italic">Emilio</span> ?
             </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground leading-relaxed text-lg md:text-xl">
+            <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
+            <p className="font-body text-muted-foreground leading-relaxed text-sm md:text-lg lg:text-xl">
               Vendre un bien immobilier est une étape importante. C'est pourquoi nous mettons tout en œuvre
               pour que cette expérience soit fluide, sereine et aboutisse au meilleur résultat possible. 
               Notre connaissance approfondie du marché francilien, combinée à une approche humaine et personnalisée, 
@@ -153,17 +153,17 @@ const SellPage = () => {
       </section>
 
       {/* PROCESS */}
-      <section className="py-24 bg-secondary">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-5">Notre processus en<br className="sm:hidden" /> <span className="text-accent italic">6 étapes</span></h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-5" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+      <section className="py-12 md:py-24 bg-secondary">
+        <div className="container mx-auto px-5 md:px-6">
+          <div className="text-center mb-10 md:mb-20">
+            <h2 className="font-display text-2xl md:text-5xl text-foreground mb-3 md:mb-5">Notre processus en<br className="sm:hidden" /> <span className="text-accent italic">6 étapes</span></h2>
+            <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-3 md:mb-5" />
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm md:text-lg lg:text-xl leading-relaxed">
               Un accompagnement structuré et transparent pour une vente réussie.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-6 md:space-y-0">
+          <div className="max-w-4xl mx-auto space-y-4 md:space-y-0">
             {steps.map((step, i) => (
               <motion.div
                 key={step.title}
@@ -171,31 +171,30 @@ const SellPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="relative flex flex-col md:flex-row gap-4 md:gap-8 pb-0 md:pb-12 last:pb-0"
+                className="relative flex flex-col md:flex-row gap-3 md:gap-8 pb-0 md:pb-12 last:pb-0"
               >
-                {/* Number + line - horizontal on mobile, vertical on desktop */}
                 <div className="flex md:flex-col items-center gap-3 md:gap-0">
-                  <div className="w-11 h-11 md:w-14 md:h-14 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-display font-bold text-base md:text-lg shrink-0 shadow-md">
+                  <div className="w-9 h-9 md:w-14 md:h-14 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-display font-bold text-sm md:text-lg shrink-0 shadow-md">
                     {i + 1}
                   </div>
-                  <h3 className="font-display text-lg md:hidden">{step.title}</h3>
+                  <h3 className="font-display text-base md:hidden">{step.title}</h3>
                   {i < steps.length - 1 && (
                     <div className="hidden md:block w-0.5 flex-1 bg-accent/20 mt-2" />
                   )}
                 </div>
                 
-                <div className="bg-card p-5 md:p-10 rounded-xl shadow-sm border border-border flex-1 mb-2">
+                <div className="bg-card p-4 md:p-10 rounded-xl shadow-sm border border-border flex-1 mb-2">
                   <div className="hidden md:flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
                       <step.icon className="w-6 h-6 text-accent" />
                     </div>
                     <h3 className="font-display text-2xl">{step.title}</h3>
                   </div>
-                  <p className="font-body text-muted-foreground text-base md:text-lg leading-relaxed mb-4 md:mb-5">{step.description}</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
+                  <p className="font-body text-muted-foreground text-xs md:text-lg leading-relaxed mb-3 md:mb-5">{step.description}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-3">
                     {step.details.map((d) => (
-                      <div key={d} className="flex items-center gap-2 font-body text-sm md:text-base text-muted-foreground">
-                        <CheckCircle className="w-4 h-4 text-accent shrink-0" />
+                      <div key={d} className="flex items-center gap-2 font-body text-xs md:text-base text-muted-foreground">
+                        <CheckCircle className="w-3.5 h-3.5 md:w-4 md:h-4 text-accent shrink-0" />
                         {d}
                       </div>
                     ))}
@@ -208,17 +207,17 @@ const SellPage = () => {
       </section>
 
       {/* ADVANTAGES */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-5">Nos <span className="text-accent italic">engagements</span></h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-5" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+      <section className="py-12 md:py-24">
+        <div className="container mx-auto px-5 md:px-6">
+          <div className="text-center mb-10 md:mb-20">
+            <h2 className="font-display text-2xl md:text-5xl text-foreground mb-3 md:mb-5">Nos <span className="text-accent italic">engagements</span></h2>
+            <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-3 md:mb-5" />
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm md:text-lg lg:text-xl leading-relaxed">
               Ce qui fait la différence quand vous nous confiez la vente de votre bien.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 max-w-5xl mx-auto">
             {advantages.map((a, i) => (
               <motion.div
                 key={a.title}
@@ -226,13 +225,13 @@ const SellPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="group bg-card p-8 rounded-2xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 hover:-translate-y-1 transition-all duration-500"
+                className="group bg-card p-4 md:p-8 rounded-xl md:rounded-2xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 hover:-translate-y-1 transition-all duration-500"
               >
-                <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                  <a.icon className="w-6 h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                <div className="w-9 h-9 md:w-14 md:h-14 bg-accent/10 rounded-lg md:rounded-2xl flex items-center justify-center mb-3 md:mb-5 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                  <a.icon className="w-4 h-4 md:w-6 md:h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
-                <h3 className="font-display text-xl md:text-2xl mb-3">{a.title}</h3>
-                <p className="font-body text-muted-foreground text-lg leading-relaxed">{a.desc}</p>
+                <h3 className="font-display text-sm md:text-2xl mb-1.5 md:mb-3">{a.title}</h3>
+                <p className="font-body text-muted-foreground text-[11px] md:text-lg leading-relaxed">{a.desc}</p>
               </motion.div>
             ))}
           </div>
