@@ -95,11 +95,42 @@ function parseXML(xml: string) {
     const commentaires = getSection(bien, "commentaires");
     const alur = getSection(bien, "alur");
 
-    // Property type section: <maison> or <appartement>
+    // Property type section: <maison>, <appartement>, <immeuble>, <terrain>, <local>, <parking>, <bureaux>
     const maisonSection = getSection(bien, "maison");
     const appartSection = getSection(bien, "appartement");
-    const propSection = maisonSection || appartSection;
-    const propertyType = maisonSection ? "Maison" : "Appartement";
+    const immeubleSection = getSection(bien, "immeuble");
+    const terrainSection = getSection(bien, "terrain");
+    const localSection = getSection(bien, "local") || getSection(bien, "local_commercial");
+    const parkingSection = getSection(bien, "parking") || getSection(bien, "garage");
+    const bureauxSection = getSection(bien, "bureaux") || getSection(bien, "bureau");
+
+    let propSection = "";
+    let propertyType = "Appartement";
+    if (maisonSection) { propSection = maisonSection; propertyType = "Maison"; }
+    else if (immeubleSection) { propSection = immeubleSection; propertyType = "Immeuble"; }
+    else if (terrainSection) { propSection = terrainSection; propertyType = "Terrain"; }
+    else if (localSection) { propSection = localSection; propertyType = "Local commercial"; }
+    else if (bureauxSection) { propSection = bureauxSection; propertyType = "Bureaux"; }
+    else if (parkingSection) { propSection = parkingSection; propertyType = "Parking"; }
+    else if (appartSection) { propSection = appartSection; propertyType = "Appartement"; }
+    else {
+      // Fallback: try reading type from info_generales
+      const typeBien = getTagContent(infoGen, "type_bien").toLowerCase();
+      if (typeBien.includes("immeuble")) propertyType = "Immeuble";
+      else if (typeBien.includes("maison")) propertyType = "Maison";
+      else if (typeBien.includes("terrain")) propertyType = "Terrain";
+      else if (typeBien.includes("local")) propertyType = "Local commercial";
+      else if (typeBien.includes("bureau")) propertyType = "Bureaux";
+      else if (typeBien.includes("parking") || typeBien.includes("garage")) propertyType = "Parking";
+    }
+
+    // Surface fallback: try reading from multiple possible locations
+    const surfaceFallback = getNum(propSection, "surface_habitable")
+      || getNum(propSection, "surface")
+      || getNum(propSection, "surface_totale")
+      || getNum(bien, "surface_habitable")
+      || getNum(bien, "surface")
+      || getNum(infoGen, "surface");
 
     // ID & dates
     const id = getTagContent(infoGen, "aff_id") || getTagContent(infoGen, "aff_num") || Math.random().toString(36).substr(2);
@@ -120,7 +151,7 @@ function parseXML(xml: string) {
     const description = getTagContent(commentaires, "fr") || "";
 
     // Property details from maison/appartement section
-    const surface = getNum(propSection, "surface_habitable") || getNum(propSection, "surface");
+    const surface = surfaceFallback;
     const rooms = getNum(propSection, "nbre_pieces");
     const bedrooms = getNum(propSection, "nbre_chambres");
     const floor = getNum(propSection, "num_etage");

@@ -8,11 +8,11 @@ const NewFeaturePopup = () => {
   useEffect(() => {
     const seen = sessionStorage.getItem("new-feature-seen");
     if (!seen) {
-      const t1 = setTimeout(() => setOpen(true), 800);
+      const t1 = setTimeout(() => setOpen(true), 5000);
       const t2 = setTimeout(() => {
         setOpen(false);
         sessionStorage.setItem("new-feature-seen", "1");
-      }, 7800);
+      }, 12000);
       return () => { clearTimeout(t1); clearTimeout(t2); };
     }
   }, []);
