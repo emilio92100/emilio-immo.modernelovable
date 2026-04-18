@@ -239,18 +239,18 @@ const SellPage = () => {
       </section>
 
       {/* TESTIMONIAL */}
-      <section className="py-20 bg-primary">
-        <div className="container mx-auto px-6">
+      <section className="py-12 md:py-20 bg-primary">
+        <div className="container mx-auto px-5 md:px-6">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="flex justify-center gap-1 mb-4">
-              {[1,2,3,4,5].map(s => <Star key={s} className="w-6 h-6 fill-accent text-accent" />)}
+            <div className="flex justify-center gap-1 mb-3 md:mb-4">
+              {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 md:w-6 md:h-6 fill-accent text-accent" />)}
             </div>
-            <blockquote className="font-display text-2xl md:text-3xl text-primary-foreground italic leading-relaxed mb-6">
+            <blockquote className="font-display text-base md:text-3xl text-primary-foreground italic leading-relaxed mb-4 md:mb-6">
               "La vente de notre appartement s'est déroulée de manière exceptionnelle. 
               L'estimation était juste, la mise en valeur parfaite et nous avons vendu 
               en seulement 3 semaines au prix souhaité."
             </blockquote>
-            <p className="font-body text-primary-foreground/60 text-base">— Sophie & Marc L., vente à Boulogne-Billancourt</p>
+            <p className="font-body text-primary-foreground/60 text-xs md:text-base">— Sophie & Marc L., vente à Boulogne-Billancourt</p>
           </div>
         </div>
       </section>
