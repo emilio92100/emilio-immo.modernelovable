@@ -76,37 +76,37 @@ const SellPage = () => {
       <Navbar />
 
       {/* HERO */}
-      <section className="pt-28 pb-16 bg-primary relative overflow-hidden">
+      <section className="pt-20 md:pt-28 pb-10 md:pb-16 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary via-primary to-primary/90" />
-        <div className="relative container mx-auto px-6 text-center">
+        <div className="relative container mx-auto px-5 md:px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <span className="inline-block font-body text-accent text-base font-semibold tracking-widest uppercase mb-4">Vendez en toute sérénité</span>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-primary-foreground mb-6 leading-tight">
+            <span className="inline-block font-body text-accent text-[10px] md:text-base font-semibold tracking-[0.25em] md:tracking-widest uppercase mb-3 md:mb-4">Vendez en toute sérénité</span>
+            <h1 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-primary-foreground mb-4 md:mb-6 leading-tight">
               Votre bien mérite<br />
               <span className="text-gold italic">le meilleur accompagnement</span>
             </h1>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-8">
+            <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
+            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-sm md:text-lg lg:text-xl leading-relaxed mb-6 md:mb-8">
               De l'estimation à la remise des clés, nous vous accompagnons avec expertise, 
               transparence et engagement. Chaque vente est unique, notre approche aussi.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <EstimationForm
                 trigger={
-                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 font-body font-semibold tracking-wide text-base rounded hover:brightness-110 transition-all">
-                    Estimation gratuite <ArrowRight className="w-5 h-5" />
+                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 md:px-8 md:py-4 font-body font-semibold tracking-wide text-sm md:text-base rounded hover:brightness-110 transition-all">
+                    Estimation gratuite <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                 }
               />
               <a
                 href="tel:+33184801400"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/30 text-primary-foreground px-8 py-4 font-body font-semibold tracking-wide text-base rounded hover:bg-primary-foreground/10 transition-all"
+                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/30 text-primary-foreground px-6 py-3 md:px-8 md:py-4 font-body font-semibold tracking-wide text-sm md:text-base rounded hover:bg-primary-foreground/10 transition-all"
               >
-                <Phone className="w-5 h-5" /> Nous appeler
+                <Phone className="w-4 h-4 md:w-5 md:h-5" /> Nous appeler
               </a>
             </div>
           </motion.div>
