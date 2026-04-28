@@ -134,6 +134,10 @@ const PropertyDetail = () => {
   if (!property) {
     return (
       <div className="min-h-screen">
+        <SEOHead
+          title="Bien introuvable — Émilio Immobilier"
+          description="Ce bien n'est plus disponible. Découvrez nos autres biens à vendre à Paris et dans les Hauts-de-Seine."
+        />
         <Navbar />
         <div className="pt-28 pb-20 text-center container mx-auto px-6">
           <h1 className="font-display text-3xl mb-4">Bien introuvable</h1>
@@ -176,6 +180,26 @@ const PropertyDetail = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title={`${getDisplayTitle(property)} ${getDisplayCity(property)} ${property.surface ? property.surface + ' m² ' : ''}— Émilio Immobilier`.slice(0, 70)}
+        description={`${getDisplayTitle(property)} à ${getDisplayCity(property)}${property.surface ? ' — ' + property.surface + ' m²' : ''}${property.bedrooms ? ', ' + property.bedrooms + ' chambre' + (property.bedrooms > 1 ? 's' : '') : ''}. ${formatPrice(property.price)}. Émilio Immobilier, votre expert local.`.slice(0, 160)}
+        canonical={`https://www.emilio-immo.com/biens/${property.id}`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: `${getDisplayTitle(property)} — ${getDisplayCity(property)}`,
+          description: property.description?.slice(0, 300),
+          image: property.images?.slice(0, 3),
+          offers: {
+            "@type": "Offer",
+            price: property.price,
+            priceCurrency: "EUR",
+            availability: "https://schema.org/InStock",
+            url: `https://www.emilio-immo.com/biens/${property.id}`,
+          },
+          brand: { "@type": "Organization", name: "Émilio Immobilier" },
+        }}
+      />
       <Navbar />
 
       {/* Sticky top back button - appears on scroll */}
