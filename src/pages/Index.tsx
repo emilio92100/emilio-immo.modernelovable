@@ -131,19 +131,19 @@ const Index = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.15 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground font-semibold leading-[1.1] mb-7">
+              className="font-display text-4xl md:text-5xl lg:text-6xl text-primary-foreground font-semibold leading-[1.1] mb-7">
               
-              Votre projet immobilier,
-              <br />
+              <span className="block">Votre projet immobilier,</span>
               <span className="text-accent italic">notre expertise</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.35 }}
-              className="font-body text-primary-foreground/80 text-lg md:text-xl max-w-xl mx-auto mb-11 leading-relaxed">
+              className="font-body text-primary-foreground/80 text-base md:text-lg max-w-2xl mx-auto mb-11 leading-relaxed">
               
               Achat, vente et conseil sur-mesure en Île-de-France.
+              <br className="hidden md:block" />
               Accédez à des biens d'exception, y compris en off-market.
             </motion.p>
             <motion.div
@@ -203,15 +203,15 @@ const Index = () => {
               <span className="font-body text-accent font-semibold text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase">Ce qui nous définit</span>
               <div className="h-px w-8 sm:w-12 bg-accent" />
             </div>
-            <h2 className="font-display text-xl sm:text-4xl md:text-6xl text-foreground mb-3 sm:mb-5">
+            <h2 className="font-display text-xl sm:text-3xl md:text-4xl text-foreground mb-3 sm:mb-5">
               Nos <span className="text-accent italic">engagements</span>
             </h2>
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-xs sm:text-lg md:text-xl leading-relaxed">
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-xs sm:text-base md:text-lg leading-relaxed">
               Six valeurs essentielles au service de votre projet immobilier.
             </p>
           </motion.div>
 
-          <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {engagements.map((e, i) =>
             <motion.div
               key={e.title}
@@ -219,15 +219,15 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
               viewport={{ once: true }}
-               className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-4 sm:p-10 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
+               className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-4 sm:p-7 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
               
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0 rounded-t-xl sm:rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="w-9 h-9 sm:w-16 sm:h-16 bg-accent/10 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-7 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                  <e.icon className="w-4 h-4 sm:w-7 sm:h-7 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                <div className="w-9 h-9 sm:w-12 sm:h-12 bg-accent/10 rounded-xl sm:rounded-xl flex items-center justify-center mb-3 sm:mb-5 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                  <e.icon className="w-4 h-4 sm:w-5 sm:h-5 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
-                <h3 className="font-display text-sm sm:text-2xl mb-1.5 sm:mb-4 text-foreground leading-tight">{e.title}</h3>
-                <p className="font-body text-muted-foreground text-[11px] sm:text-lg leading-relaxed">{e.description}</p>
+                <h3 className="font-display text-sm sm:text-lg mb-1.5 sm:mb-3 text-foreground leading-tight">{e.title}</h3>
+                <p className="font-body text-muted-foreground text-[11px] sm:text-sm leading-relaxed">{e.description}</p>
               </motion.div>
             )}
           </div>

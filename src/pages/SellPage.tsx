@@ -84,13 +84,13 @@ const SellPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <span className="inline-block font-body text-accent text-[10px] md:text-base font-semibold tracking-[0.25em] md:tracking-widest uppercase mb-3 md:mb-4">Vendez en toute sérénité</span>
-            <h1 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-primary-foreground mb-4 md:mb-6 leading-tight">
+            <span className="inline-block font-body text-accent text-[10px] md:text-sm font-semibold tracking-[0.25em] md:tracking-widest uppercase mb-3 md:mb-4">Vendez en toute sérénité</span>
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-primary-foreground mb-4 md:mb-6 leading-tight">
               Votre bien mérite<br />
               <span className="text-gold italic">le meilleur accompagnement</span>
             </h1>
             <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-sm md:text-lg lg:text-xl leading-relaxed mb-6 md:mb-8">
+            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-sm md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8">
               De l'estimation à la remise des clés, nous vous accompagnons avec expertise, 
               transparence et engagement. Chaque vente est unique, notre approche aussi.
             </p>
@@ -126,8 +126,8 @@ const SellPage = () => {
                 viewport={{ once: true }}
                 className="p-4 md:p-8 text-center border-r last:border-r-0 border-border"
               >
-                <div className="font-display text-xl md:text-4xl text-accent mb-0.5 md:mb-1">{s.value}</div>
-                <div className="font-body text-muted-foreground text-[10px] md:text-sm tracking-wide leading-tight">{s.label}</div>
+                <div className="font-display text-xl md:text-3xl text-accent mb-0.5 md:mb-1">{s.value}</div>
+                <div className="font-body text-muted-foreground text-[10px] md:text-xs tracking-wide leading-tight">{s.label}</div>
               </motion.div>
             ))}
           </div>
@@ -138,11 +138,11 @@ const SellPage = () => {
       <section className="py-12 md:py-24">
         <div className="container mx-auto px-5 md:px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="font-display text-2xl md:text-5xl text-foreground mb-4 md:mb-6">
+            <h2 className="font-display text-2xl md:text-4xl text-foreground mb-4 md:mb-6">
               Pourquoi vendre avec <span className="text-gold italic">Emilio</span> ?
             </h2>
             <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
-            <p className="font-body text-muted-foreground leading-relaxed text-sm md:text-lg lg:text-xl">
+            <p className="font-body text-muted-foreground leading-relaxed text-sm md:text-base lg:text-lg">
               Vendre un bien immobilier est une étape importante. C'est pourquoi nous mettons tout en œuvre
               pour que cette expérience soit fluide, sereine et aboutisse au meilleur résultat possible. 
               Notre connaissance approfondie du marché francilien, combinée à une approche humaine et personnalisée, 
@@ -156,9 +156,9 @@ const SellPage = () => {
       <section className="py-12 md:py-24 bg-secondary">
         <div className="container mx-auto px-5 md:px-6">
           <div className="text-center mb-10 md:mb-20">
-            <h2 className="font-display text-2xl md:text-5xl text-foreground mb-3 md:mb-5">Notre processus en<br className="sm:hidden" /> <span className="text-accent italic">6 étapes</span></h2>
+            <h2 className="font-display text-2xl md:text-4xl text-foreground mb-3 md:mb-5">Notre processus en<br className="sm:hidden" /> <span className="text-accent italic">6 étapes</span></h2>
             <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-3 md:mb-5" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm md:text-lg lg:text-xl leading-relaxed">
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm md:text-base lg:text-lg leading-relaxed">
               Un accompagnement structuré et transparent pour une vente réussie.
             </p>
           </div>
@@ -183,17 +183,17 @@ const SellPage = () => {
                   )}
                 </div>
                 
-                <div className="bg-card p-4 md:p-10 rounded-xl shadow-sm border border-border flex-1 mb-2">
+                <div className="bg-card p-4 md:p-7 rounded-xl shadow-sm border border-border flex-1 mb-2">
                   <div className="hidden md:flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-                      <step.icon className="w-6 h-6 text-accent" />
+                    <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
+                      <step.icon className="w-5 h-5 text-accent" />
                     </div>
-                    <h3 className="font-display text-2xl">{step.title}</h3>
+                    <h3 className="font-display text-xl">{step.title}</h3>
                   </div>
-                  <p className="font-body text-muted-foreground text-xs md:text-lg leading-relaxed mb-3 md:mb-5">{step.description}</p>
+                  <p className="font-body text-muted-foreground text-xs md:text-base leading-relaxed mb-3 md:mb-5">{step.description}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-3">
                     {step.details.map((d) => (
-                      <div key={d} className="flex items-center gap-2 font-body text-xs md:text-base text-muted-foreground">
+                      <div key={d} className="flex items-center gap-2 font-body text-xs md:text-sm text-muted-foreground">
                         <CheckCircle className="w-3.5 h-3.5 md:w-4 md:h-4 text-accent shrink-0" />
                         {d}
                       </div>
@@ -210,14 +210,14 @@ const SellPage = () => {
       <section className="py-12 md:py-24">
         <div className="container mx-auto px-5 md:px-6">
           <div className="text-center mb-10 md:mb-20">
-            <h2 className="font-display text-2xl md:text-5xl text-foreground mb-3 md:mb-5">Nos <span className="text-accent italic">engagements</span></h2>
+            <h2 className="font-display text-2xl md:text-4xl text-foreground mb-3 md:mb-5">Nos <span className="text-accent italic">engagements</span></h2>
             <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-3 md:mb-5" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm md:text-lg lg:text-xl leading-relaxed">
+            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm md:text-base lg:text-lg leading-relaxed">
               Ce qui fait la différence quand vous nous confiez la vente de votre bien.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 max-w-5xl mx-auto">
             {advantages.map((a, i) => (
               <motion.div
                 key={a.title}
@@ -225,13 +225,13 @@ const SellPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="group bg-card p-4 md:p-8 rounded-xl md:rounded-2xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 hover:-translate-y-1 transition-all duration-500"
+                className="group bg-card p-4 md:p-6 rounded-xl md:rounded-2xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 hover:-translate-y-1 transition-all duration-500"
               >
-                <div className="w-9 h-9 md:w-14 md:h-14 bg-accent/10 rounded-lg md:rounded-2xl flex items-center justify-center mb-3 md:mb-5 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                  <a.icon className="w-4 h-4 md:w-6 md:h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                <div className="w-9 h-9 md:w-11 md:h-11 bg-accent/10 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                  <a.icon className="w-4 h-4 md:w-5 md:h-5 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
-                <h3 className="font-display text-sm md:text-2xl mb-1.5 md:mb-3">{a.title}</h3>
-                <p className="font-body text-muted-foreground text-[11px] md:text-lg leading-relaxed">{a.desc}</p>
+                <h3 className="font-display text-sm md:text-lg mb-1.5 md:mb-2">{a.title}</h3>
+                <p className="font-body text-muted-foreground text-[11px] md:text-sm leading-relaxed">{a.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -245,12 +245,12 @@ const SellPage = () => {
             <div className="flex justify-center gap-1 mb-3 md:mb-4">
               {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 md:w-6 md:h-6 fill-accent text-accent" />)}
             </div>
-            <blockquote className="font-display text-base md:text-3xl text-primary-foreground italic leading-relaxed mb-4 md:mb-6">
+            <blockquote className="font-display text-base md:text-2xl text-primary-foreground italic leading-relaxed mb-4 md:mb-6">
               "La vente de notre appartement s'est déroulée de manière exceptionnelle. 
               L'estimation était juste, la mise en valeur parfaite et nous avons vendu 
               en seulement 3 semaines au prix souhaité."
             </blockquote>
-            <p className="font-body text-primary-foreground/60 text-xs md:text-base">— Sophie & Marc L., vente à Boulogne-Billancourt</p>
+            <p className="font-body text-primary-foreground/60 text-xs md:text-sm">— Sophie & Marc L., vente à Boulogne-Billancourt</p>
           </div>
         </div>
       </section>
@@ -301,11 +301,11 @@ const SellPage = () => {
       {/* CTA FINAL */}
       <section className="py-12 md:py-24 bg-secondary">
         <div className="container mx-auto px-5 md:px-6 text-center">
-          <h2 className="font-display text-2xl md:text-5xl text-foreground mb-3 md:mb-5">
+          <h2 className="font-display text-2xl md:text-4xl text-foreground mb-3 md:mb-5">
             Prêt à vendre votre bien ?
           </h2>
           <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
-          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-6 md:mb-8 text-sm md:text-lg lg:text-xl">
+          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-6 md:mb-8 text-sm md:text-base lg:text-lg">
             Commencez par une estimation gratuite et sans engagement.
           </p>
           <EstimationForm
