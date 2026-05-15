@@ -98,29 +98,29 @@ const AchatBoulogneBillancourt = () => {
       <Navbar />
 
       {/* HERO */}
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-primary overflow-hidden">
+      <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 bg-primary overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04]">
           <div className="absolute top-20 left-10 w-72 h-72 rounded-full border border-primary-foreground" />
           <div className="absolute bottom-10 right-20 w-96 h-96 rounded-full border border-primary-foreground" />
         </div>
-        <div className="container mx-auto px-5 md:px-6 relative">
+        <div className="container mx-auto px-5 md:px-6 relative text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="max-w-4xl"
+            className="max-w-4xl mx-auto"
           >
-            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-4 py-1.5 mb-6">
+            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-4 py-1.5 mb-8">
               <MapPin className="w-3.5 h-3.5 text-accent" />
               <span className="font-body text-accent text-xs font-semibold tracking-wide uppercase">Hauts-de-Seine · 92100</span>
             </div>
-            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-[1.1] mb-6">
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-[1.1] mb-8">
               Achat d'appartement à <span className="italic text-accent">Boulogne-Billancourt</span>
             </h1>
-            <p className="font-body text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-2xl mb-8">
+            <p className="font-body text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-10">
               Vous cherchez à acheter un appartement à Boulogne-Billancourt ? Notre agence vous accompagne dans toutes les étapes de votre projet : analyse du marché, sélection des meilleurs biens (visibles et off-market), visites, négociation et signature.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 to="/biens"
                 className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full font-body font-semibold text-sm hover:brightness-110 transition-all"
