@@ -95,7 +95,7 @@ const EstimationPage = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Estimation immobilière gratuite Paris & Hauts-de-Seine | Emilio Immobilier"
-        description="Estimation gratuite et instantanée de votre appartement à Paris et dans les Hauts-de-Seine. Méthode DVF + expertise locale. Sans engagement, résultat sous 24h."
+        description="Estimation gratuite de votre appartement à Paris et dans les Hauts-de-Seine. Méthode DVF + expertise locale. Sans engagement, réponse d'un conseiller sous 24h."
         canonical={PAGE_URL}
         jsonLd={jsonLd}
       />
