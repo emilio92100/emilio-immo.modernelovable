@@ -441,6 +441,83 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
 
             <div className="px-5 md:px-6 py-5">
           <AnimatePresence mode="wait">
+            {submitting && step === 3 && (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="py-8 space-y-7"
+              >
+                <div className="text-center space-y-2">
+                  <div className="inline-flex w-14 h-14 rounded-full bg-accent/15 items-center justify-center mb-2">
+                    <Loader2 className="w-7 h-7 text-accent animate-spin" />
+                  </div>
+                  <h3 className="font-display text-xl text-foreground">
+                    Analyse en cours
+                  </h3>
+                  <p className="font-body text-sm text-muted-foreground">
+                    Notre algorithme étudie votre bien — quelques secondes…
+                  </p>
+                </div>
+
+                {/* Progress bar */}
+                <div className="relative h-1.5 bg-muted rounded-full overflow-hidden max-w-sm mx-auto">
+                  <motion.div
+                    initial={{ width: "0%" }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 9, ease: "linear" }}
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent/80 to-accent rounded-full"
+                  />
+                </div>
+
+                {/* Animated steps */}
+                <div className="max-w-sm mx-auto space-y-3">
+                  {[
+                    { label: "Lecture des caractéristiques de votre bien", icon: Home },
+                    { label: "Analyse des ventes récentes du quartier", icon: MapPin },
+                    { label: "Comparaison avec les biens similaires", icon: Building2 },
+                    { label: "Calcul de la fourchette indicative", icon: TrendingUp },
+                  ].map((s, i) => {
+                    const done = loadingPhase > i;
+                    const active = loadingPhase === i;
+                    return (
+                      <motion.div
+                        key={s.label}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border transition-all ${
+                          active
+                            ? "border-accent/40 bg-accent/5"
+                            : done
+                            ? "border-border bg-card opacity-70"
+                            : "border-border/50 bg-transparent opacity-40"
+                        }`}
+                      >
+                        <div className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center ${
+                          done
+                            ? "bg-accent text-accent-foreground"
+                            : active
+                            ? "bg-accent/15 text-accent"
+                            : "bg-muted text-muted-foreground"
+                        }`}>
+                          {done ? (
+                            <CheckCircle2 className="w-4 h-4" />
+                          ) : active ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <s.icon className="w-3.5 h-3.5" />
+                          )}
+                        </div>
+                        <span className="font-body text-sm text-foreground flex-1">{s.label}</span>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+
             {step === 1 && (
               <motion.div
                 key="s1"
