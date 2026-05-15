@@ -400,35 +400,45 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 bg-background border-border rounded-2xl shadow-2xl">
-        {/* Premium header */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-[hsl(215_55%_18%)] px-6 md:px-8 py-7">
-          <div aria-hidden className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-accent/15 blur-3xl" />
-          <div aria-hidden className="absolute -bottom-20 -left-10 w-48 h-48 rounded-full border border-primary-foreground/10" />
-          <div className="relative">
-            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-3 py-1 mb-3">
-              <ShieldCheck className="w-3.5 h-3.5 text-accent" />
-              <span className="font-body text-accent text-[11px] font-semibold tracking-[0.2em] uppercase">
-                Gratuit · Confidentiel · Sous 24h
-              </span>
+      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 bg-background border-0 rounded-3xl shadow-2xl estimation-scroll">
+        <style>{`
+          .estimation-scroll::-webkit-scrollbar { width: 6px; }
+          .estimation-scroll::-webkit-scrollbar-track { background: transparent; }
+          .estimation-scroll::-webkit-scrollbar-thumb {
+            background: hsl(var(--accent) / 0.35);
+            border-radius: 9999px;
+          }
+          .estimation-scroll::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent) / 0.6); }
+          .estimation-scroll { scrollbar-width: thin; scrollbar-color: hsl(var(--accent) / 0.35) transparent; }
+        `}</style>
+
+        {/* Compact premium header */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-primary to-[hsl(215_55%_16%)] px-6 md:px-7 pt-6 pb-5 rounded-t-3xl">
+          <div aria-hidden className="absolute -top-12 -right-10 w-40 h-40 rounded-full bg-accent/15 blur-3xl" />
+          <div className="relative flex items-start gap-3">
+            <div className="shrink-0 w-11 h-11 rounded-2xl bg-accent/15 border border-accent/30 flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-accent" />
             </div>
-            <DialogTitle className="font-display text-2xl md:text-3xl text-primary-foreground leading-tight">
-              Estimez votre bien <span className="italic text-accent">en quelques clics</span>
-            </DialogTitle>
-            <DialogDescription className="font-body text-sm md:text-base text-primary-foreground/70 mt-2 max-w-lg">
-              Analyse basée sur les dernières transactions de votre quartier, affinée par un conseiller dédié.
-            </DialogDescription>
+            <div className="min-w-0 flex-1">
+              <DialogTitle className="font-display text-xl md:text-2xl text-primary-foreground leading-snug">
+                Estimez votre bien <span className="italic text-accent">en quelques clics</span>
+              </DialogTitle>
+              <DialogDescription className="font-body text-[13px] md:text-sm text-primary-foreground/70 mt-1.5 flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0" />
+                Gratuit · Confidentiel · Réponse sous 24h
+              </DialogDescription>
+            </div>
           </div>
         </div>
 
         {/* Stepper */}
         {step < 4 && (
-          <div className="px-6 md:px-8 pt-6 pb-2 bg-card/50 border-b border-border">
+          <div className="px-6 md:px-7 pt-5 pb-3 bg-card/40">
             <StepperBar />
           </div>
         )}
 
-        <div className="px-6 md:px-8 py-6">
+        <div className="px-6 md:px-7 py-6">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div
