@@ -7,6 +7,9 @@ export type SellCityData = {
   avgDelayUs: string; // délai avec notre agence
   profilAcheteurs: string;
   marketAngle: string; // pourquoi vendre maintenant
+  quartiersForts: { name: string; desc: string }[];
+  pointsForts: string[];
+  erreursAEviter: { title: string; desc: string }[];
   faqs: { q: string; a: string }[];
 };
 
