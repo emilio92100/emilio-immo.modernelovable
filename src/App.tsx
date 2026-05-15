@@ -14,6 +14,13 @@ import AdminSubmissions from "./pages/AdminSubmissions";
 import AdminLogin from "./pages/AdminLogin";
 import MentionsLegales from "./pages/MentionsLegales";
 import AchatBoulogneBillancourt from "./pages/AchatBoulogneBillancourt";
+import AchatNeuillySurSeine from "./pages/AchatNeuillySurSeine";
+import AchatIssyLesMoulineaux from "./pages/AchatIssyLesMoulineaux";
+import AchatLevalloisPerret from "./pages/AchatLevalloisPerret";
+import AchatParis16 from "./pages/AchatParis16";
+import AchatParis15 from "./pages/AchatParis15";
+import AchatParis7 from "./pages/AchatParis7";
+import AchatParis6 from "./pages/AchatParis6";
 import NotFound from "./pages/NotFound";
 import NewFeaturePopup from "./components/NewFeaturePopup";
 
@@ -38,6 +45,13 @@ const App = () => (
           <Route path="/admin/demandes" element={<AdminSubmissions />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
           <Route path="/achat-appartement-boulogne-billancourt" element={<AchatBoulogneBillancourt />} />
+          <Route path="/achat-appartement-neuilly-sur-seine" element={<AchatNeuillySurSeine />} />
+          <Route path="/achat-appartement-issy-les-moulineaux" element={<AchatIssyLesMoulineaux />} />
+          <Route path="/achat-appartement-levallois-perret" element={<AchatLevalloisPerret />} />
+          <Route path="/achat-appartement-paris-16" element={<AchatParis16 />} />
+          <Route path="/achat-appartement-paris-15" element={<AchatParis15 />} />
+          <Route path="/achat-appartement-paris-7" element={<AchatParis7 />} />
+          <Route path="/achat-appartement-paris-6" element={<AchatParis6 />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
