@@ -62,8 +62,8 @@ const BuyerMandate = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Mandat de recherche — Émilio Immobilier | Chasseur immobilier"
-        description="Confiez votre recherche immobilière à Émilio Immobilier. Accès aux biens off-market, accompagnement personnalisé, négociation experte à Paris et Hauts-de-Seine."
+        title="Mandat de recherche — Emilio Immobilier | Chasseur immobilier"
+        description="Confiez votre recherche immobilière à Emilio Immobilier. Accès aux biens off-market, accompagnement personnalisé, négociation experte à Paris et Hauts-de-Seine."
         canonical="https://www.emilio-immo.com/mandat-recherche"
       />
       <Navbar />

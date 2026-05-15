@@ -58,7 +58,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
     "@graph": [
       {
         "@type": "RealEstateAgent",
-        name: "Émilio Immobilier",
+        name: "Emilio Immobilier",
         url: PAGE_URL,
         areaServed: { "@type": "Place", name: city.name },
         telephone: "+33184801400",

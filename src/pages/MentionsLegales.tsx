@@ -5,8 +5,8 @@ import SEOHead from "@/components/SEOHead";
 const MentionsLegales = () =>
 <div className="min-h-screen">
     <SEOHead
-      title="Mentions légales — Émilio Immobilier"
-      description="Mentions légales d'Émilio Immobilier. Informations sur l'éditeur, l'hébergeur et les conditions d'utilisation du site."
+      title="Mentions légales — Emilio Immobilier"
+      description="Mentions légales d'Emilio Immobilier. Informations sur l'éditeur, l'hébergeur et les conditions d'utilisation du site."
       canonical="https://www.emilio-immo.com/mentions-legales"
     />
     <Navbar />

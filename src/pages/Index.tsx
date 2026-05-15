@@ -80,13 +80,13 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Émilio Immobilier — Agence immobilière Paris & Hauts-de-Seine"
+        title="Emilio Immobilier — Agence immobilière Paris & Hauts-de-Seine"
         description="Agence immobilière à Paris et Hauts-de-Seine. Vente, achat, estimation gratuite. Accompagnement personnalisé par un expert local depuis 2020."
         canonical="https://www.emilio-immo.com/"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "RealEstateAgent",
-          "name": "Émilio Immobilier",
+          "name": "Emilio Immobilier",
           "url": "https://www.emilio-immo.com",
           "telephone": "+33184801400",
           "description": "Agence immobilière spécialisée à Paris et Hauts-de-Seine. Vente, achat, estimation gratuite.",
