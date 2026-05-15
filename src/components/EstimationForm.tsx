@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Send, Home, ChevronDown } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Send, Home, MapPin, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SuccessPopup from "@/components/SuccessPopup";
@@ -33,6 +33,7 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
     firstName: "",
     address: "",
     postalCode: "",
+    city: "",
     phone: "",
     reason: "",
     surface: "",
@@ -40,6 +41,55 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
     bedrooms: "",
     message: "",
   });
+
+  type Suggestion = { label: string; name: string; postcode: string; city: string };
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const debounceRef = useRef<number | null>(null);
+  const justSelectedRef = useRef(false);
+
+  useEffect(() => {
+    if (justSelectedRef.current) {
+      justSelectedRef.current = false;
+      return;
+    }
+    if (debounceRef.current) window.clearTimeout(debounceRef.current);
+    const q = form.address.trim();
+    if (q.length < 3) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    debounceRef.current = window.setTimeout(async () => {
+      try {
+        setSearching(true);
+        const res = await fetch(
+          `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(q)}&limit=6&autocomplete=1`
+        );
+        const data = await res.json();
+        const items: Suggestion[] = (data.features || []).map((f: any) => ({
+          label: f.properties.label,
+          name: f.properties.name,
+          postcode: f.properties.postcode,
+          city: f.properties.city,
+        }));
+        setSuggestions(items);
+        setShowSuggestions(items.length > 0);
+      } catch {
+        setSuggestions([]);
+      } finally {
+        setSearching(false);
+      }
+    }, 250);
+  }, [form.address]);
+
+  const selectSuggestion = (s: Suggestion) => {
+    justSelectedRef.current = true;
+    setForm((prev) => ({ ...prev, address: s.name, postalCode: s.postcode, city: s.city }));
+    setShowSuggestions(false);
+    setSuggestions([]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +104,7 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
         message: [
           `Adresse : ${form.address}`,
           `Code postal : ${form.postalCode}`,
+          `Ville : ${form.city}`,
           `Raison : ${form.reason}`,
           form.surface ? `Surface : ${form.surface} m²` : null,
           form.floor ? `Étage : ${form.floor}` : null,
@@ -70,14 +121,14 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
             form_type: "estimation",
             name: `${form.firstName} ${form.lastName}`,
             phone: form.phone,
-            message: `Estimation demandée\nAdresse : ${form.address}\nCode postal : ${form.postalCode}\nRaison : ${form.reason}`,
+            message: `Estimation demandée\nAdresse : ${form.address}\nCode postal : ${form.postalCode}\nVille : ${form.city}\nRaison : ${form.reason}`,
           },
         });
       } catch {
         // best-effort
       }
 
-      setForm({ lastName: "", firstName: "", address: "", postalCode: "", phone: "", reason: "", surface: "", floor: "", bedrooms: "", message: "" });
+      setForm({ lastName: "", firstName: "", address: "", postalCode: "", city: "", phone: "", reason: "", surface: "", floor: "", bedrooms: "", message: "" });
       setOpen(false);
       setShowSuccess(true);
     } catch {
@@ -115,9 +166,47 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
               <input type="text" placeholder="Nom *" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className={inputClass} />
               <input type="text" placeholder="Prénom *" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className={inputClass} />
             </div>
-            <input type="text" placeholder="Adresse du bien *" required value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className={inputClass} />
-            <div className="grid sm:grid-cols-2 gap-3">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Adresse du bien * (ex: 12 rue de Paris)"
+                required
+                autoComplete="off"
+                value={form.address}
+                onChange={(e) => setForm({ ...form, address: e.target.value })}
+                onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                className={inputClass}
+              />
+              {searching && (
+                <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground animate-spin" />
+              )}
+              {showSuggestions && suggestions.length > 0 && (
+                <ul className="absolute z-50 left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-lg max-h-64 overflow-y-auto">
+                  {suggestions.map((s, i) => (
+                    <li key={i}>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          selectSuggestion(s);
+                        }}
+                        className="w-full flex items-start gap-2 px-3 py-2 text-left hover:bg-muted font-body text-sm text-foreground border-b border-border last:border-b-0"
+                      >
+                        <MapPin className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+                        <span>{s.label}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p className="text-[11px] text-muted-foreground mt-1 font-body">
+                Commencez à taper l'adresse, le code postal et la ville se rempliront automatiquement.
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-3">
               <input type="text" placeholder="Code postal *" required value={form.postalCode} onChange={(e) => setForm({ ...form, postalCode: e.target.value })} className={inputClass} />
+              <input type="text" placeholder="Ville *" required value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className={inputClass} />
               <input type="tel" placeholder="Téléphone *" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} />
             </div>
 
