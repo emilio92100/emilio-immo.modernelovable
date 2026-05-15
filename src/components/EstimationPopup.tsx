@@ -989,11 +989,21 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
                     </p>
                   </>
                 ) : (
-                  <p className="font-body text-sm text-muted-foreground max-w-md mx-auto">
-                    Pas assez de ventes récentes dans la base publique pour ce code postal. Pas
-                    d'inquiétude : <strong className="text-foreground">notre conseiller vous
-                    rappellera sous 24h</strong> avec une estimation experte personnalisée.
-                  </p>
+                  <>
+                    <p className="font-body text-sm text-muted-foreground max-w-md mx-auto">
+                      Votre demande est bien enregistrée. Pour ce type de bien, une estimation
+                      précise nécessite l'œil d'un expert sur place — c'est pourquoi nous préférons
+                      vous rappeler avec une analyse réellement personnalisée plutôt qu'une
+                      fourchette générique.
+                    </p>
+                    <div className="bg-card border border-border rounded-xl p-4 max-w-md mx-auto">
+                      <p className="font-body text-xs text-muted-foreground leading-relaxed">
+                        Notre estimation prend en compte l'étage, l'exposition, la vue, l'état réel,
+                        le DPE, la copropriété et la dynamique micro-locale — autant de critères
+                        qu'aucun calculateur en ligne ne peut intégrer fidèlement.
+                      </p>
+                    </div>
+                  </>
                 )}
 
                 <div className="bg-accent/10 border border-accent/25 rounded-xl p-4 text-left">
