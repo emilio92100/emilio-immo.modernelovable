@@ -311,7 +311,7 @@ const EstimationPage = () => {
             Lancez votre estimation maintenant
           </h2>
           <p className="font-body text-primary-foreground/75 text-base md:text-lg mb-9 max-w-xl mx-auto">
-            Moins de 2 minutes. Aucun engagement. Résultat affiché immédiatement, accompagné d'un avis de valeur sous 24h si vous le souhaitez.
+            Aucun engagement. Un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée, accompagnée d'un avis de valeur si vous le souhaitez.
           </p>
           <EstimationPopup
             trigger={
