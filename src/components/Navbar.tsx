@@ -9,7 +9,6 @@ const navItems = [
   { label: "Accueil", path: "/" },
   { label: "Nos Biens", path: "/biens" },
   { label: "Vendre", path: "/vendre" },
-  { label: "Estimation", path: "/estimation" },
   { label: "Acheter", path: "/mandat-recherche" },
   { label: "Notre Histoire", path: "/notre-histoire" },
 ];

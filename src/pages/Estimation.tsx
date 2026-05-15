@@ -38,7 +38,7 @@ const faqs = [
   },
   {
     q: "Combien de temps prend l'estimation ?",
-    a: "L'estimation en ligne prend moins de 2 minutes. Pour un avis de valeur signé après visite, comptez 24 à 48h après notre passage.",
+    a: "Après réception de votre demande, un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée. Pour un avis de valeur signé après visite, comptez 24 à 48h après notre passage.",
   },
   {
     q: "Mes données sont-elles confidentielles ?",
