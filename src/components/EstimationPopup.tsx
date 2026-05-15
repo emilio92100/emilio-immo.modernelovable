@@ -23,6 +23,7 @@ import {
   Send,
   Compass,
   TreePine,
+  X,
 } from "lucide-react";
 import {
   Dialog,
@@ -30,6 +31,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
@@ -298,37 +300,18 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
     const progress = ((step - 1) / 2) * 100;
     return (
       <div className="w-full">
-        <div className="flex items-center justify-between mb-3">
-          {stepLabels.map((label, i) => {
-            const n = (i + 1) as 1 | 2 | 3;
-            const active = step >= n;
-            const done = step > n;
-            return (
-              <div key={label} className="flex flex-col items-center gap-1.5 flex-1">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center font-display text-sm transition-all duration-300 ${
-                    active
-                      ? "bg-accent text-accent-foreground shadow-[0_0_0_4px_hsl(var(--accent)/0.18)]"
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {done ? <CheckCircle2 className="w-4 h-4" /> : n}
-                </div>
-                <span
-                  className={`font-body text-[11px] tracking-wide uppercase transition-colors ${
-                    active ? "text-foreground font-semibold" : "text-muted-foreground"
-                  }`}
-                >
-                  {label}
-                </span>
-              </div>
-            );
-          })}
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-body text-[11px] uppercase tracking-[0.14em] text-muted-foreground font-semibold">
+            Étape {step}/3
+          </span>
+          <span className="font-body text-[12px] text-foreground font-semibold">
+            {stepLabels[step - 1]}
+          </span>
         </div>
-        <div className="relative h-1 bg-muted rounded-full overflow-hidden">
+        <div className="relative h-1.5 bg-muted rounded-full overflow-hidden">
           <motion.div
             initial={false}
-            animate={{ width: `${progress}%` }}
+            animate={{ width: `${Math.max(progress, 4)}%` }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent/80 to-accent rounded-full"
           />
@@ -400,45 +383,48 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 bg-background border-0 rounded-3xl shadow-2xl estimation-scroll">
+      <DialogContent
+        className="max-w-xl p-0 bg-transparent border-0 shadow-none gap-0 rounded-none [&>button]:hidden overflow-visible"
+      >
         <style>{`
           .estimation-scroll::-webkit-scrollbar { width: 6px; }
           .estimation-scroll::-webkit-scrollbar-track { background: transparent; }
           .estimation-scroll::-webkit-scrollbar-thumb {
-            background: hsl(var(--accent) / 0.35);
+            background: hsl(var(--accent) / 0.4);
             border-radius: 9999px;
           }
-          .estimation-scroll::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent) / 0.6); }
-          .estimation-scroll { scrollbar-width: thin; scrollbar-color: hsl(var(--accent) / 0.35) transparent; }
+          .estimation-scroll::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent) / 0.65); }
+          .estimation-scroll { scrollbar-width: thin; scrollbar-color: hsl(var(--accent) / 0.4) transparent; }
         `}</style>
 
-        {/* Compact premium header */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-primary to-[hsl(215_55%_16%)] px-6 md:px-7 pt-6 pb-5 rounded-t-3xl">
-          <div aria-hidden className="absolute -top-12 -right-10 w-40 h-40 rounded-full bg-accent/15 blur-3xl" />
-          <div className="relative flex items-start gap-3">
-            <div className="shrink-0 w-11 h-11 rounded-2xl bg-accent/15 border border-accent/30 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-accent" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <DialogTitle className="font-display text-xl md:text-2xl text-primary-foreground leading-snug">
-                Estimez votre bien <span className="italic text-accent">en quelques clics</span>
+        <div className="relative w-full max-h-[90vh] flex flex-col rounded-2xl overflow-hidden bg-background shadow-[0_25px_60px_-15px_rgba(0,0,0,0.55)]">
+          {/* Compact header — single thin band */}
+          <div className="relative shrink-0 bg-primary px-5 md:px-6 py-3.5 flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <DialogTitle className="font-display text-base md:text-lg text-primary-foreground leading-tight tracking-tight">
+                Estimation <span className="italic text-accent font-normal">gratuite</span> de votre bien
               </DialogTitle>
-              <DialogDescription className="font-body text-[13px] md:text-sm text-primary-foreground/70 mt-1.5 flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0" />
-                Gratuit · Confidentiel · Réponse sous 24h
+              <DialogDescription className="font-body text-[11px] md:text-[12px] text-primary-foreground/65 mt-0.5">
+                Confidentiel · Réponse sous 24h
               </DialogDescription>
             </div>
+            <DialogClose
+              aria-label="Fermer"
+              className="shrink-0 w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 border border-primary-foreground/20 hover:border-primary-foreground/40 flex items-center justify-center text-primary-foreground transition-all focus:outline-none focus:ring-2 focus:ring-accent/50"
+            >
+              <X className="w-4 h-4" />
+            </DialogClose>
           </div>
-        </div>
 
-        {/* Stepper */}
-        {step < 4 && (
-          <div className="px-6 md:px-7 pt-5 pb-3 bg-card/40">
-            <StepperBar />
-          </div>
-        )}
+          {/* Scrollable body */}
+          <div className="flex-1 overflow-y-auto estimation-scroll">
+            {step < 4 && (
+              <div className="px-5 md:px-6 pt-4 pb-3 border-b border-border/60 bg-card/30">
+                <StepperBar />
+              </div>
+            )}
 
-        <div className="px-6 md:px-7 py-6">
+            <div className="px-5 md:px-6 py-5">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div
@@ -943,6 +929,8 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
