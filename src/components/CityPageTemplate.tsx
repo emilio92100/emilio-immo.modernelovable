@@ -111,11 +111,11 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
                 {city.postalLabel}
               </span>
             </div>
-            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-[1.1] mb-8">
-              Achat & vente d'appartement à{" "}
-              <span className="block mt-2 italic text-accent">{city.name}</span>
+            <h1 className="font-display text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl text-primary-foreground leading-[1.1] mb-8">
+              Achat & vente d'appartement{" "}
+              <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
             </h1>
-            <p className="font-body text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-10">
+            <p className="font-body text-primary-foreground/80 text-base md:text-xl leading-relaxed max-w-3xl mx-auto mb-10">
               {city.heroIntro}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -142,13 +142,13 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
       {/* MARCHÉ */}
       <section className="py-24 md:py-36 bg-background">
         <div className="container mx-auto px-5 md:px-6 max-w-5xl text-center">
-          <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">
+          <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
             Le marché
           </span>
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-10">
-            Le marché immobilier à <span className="italic text-accent">{city.name}</span>
+          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mt-4 mb-10">
+            Le marché immobilier <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
           </h2>
-          <div className="prose prose-lg max-w-3xl mx-auto font-body text-muted-foreground leading-relaxed space-y-6 text-left md:text-center">
+          <div className="max-w-3xl mx-auto font-body text-base md:text-lg text-muted-foreground leading-relaxed space-y-6 text-left md:text-center">
             {city.marketParagraphs.map((p, i) => (
               <p key={i}>{renderMarkdownLight(p)}</p>
             ))}
@@ -207,16 +207,16 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
       {/* QUARTIERS */}
       <section className="py-24 md:py-36 bg-background">
         <div className="container mx-auto px-5 md:px-6 max-w-6xl">
-          <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">
+          <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
             Les quartiers
           </span>
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-3">
-            Où acheter à <span className="italic text-accent">{city.name}</span> ?
+          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mt-4 mb-4">
+            Où acheter <span className="italic text-accent whitespace-nowrap">à {city.name}</span> ?
           </h2>
-          <p className="font-body text-muted-foreground mb-10 max-w-2xl">
+          <p className="font-body text-base md:text-lg text-muted-foreground mb-10 max-w-3xl leading-relaxed">
             Chaque quartier a son identité. Voici notre sélection pour vous aider à cibler.
           </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {city.quartiers.map((q, i) => (
               <motion.div
                 key={q.name}
@@ -224,10 +224,10 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
                 viewport={{ once: true }}
-                className="bg-card border border-border rounded-xl p-5 hover:border-accent/40 transition-colors"
+                className="bg-card border border-border rounded-2xl p-6 md:p-7 hover:border-accent/40 hover:shadow-lg transition-all"
               >
-                <h3 className="font-display text-lg text-foreground mb-2">{q.name}</h3>
-                <p className="font-body text-sm text-muted-foreground leading-relaxed">{q.desc}</p>
+                <h3 className="font-display text-xl text-foreground mb-3">{q.name}</h3>
+                <p className="font-body text-[15px] md:text-base text-muted-foreground leading-relaxed">{q.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -239,11 +239,11 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
         <div className="container mx-auto px-5 md:px-6 max-w-6xl">
           <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div>
-              <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">
+              <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
                 Disponibles
               </span>
-              <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3">
-                Nos biens à <span className="italic text-accent">{city.name}</span>
+              <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mt-4">
+                Nos biens <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
               </h2>
             </div>
             <Link
@@ -280,11 +280,11 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
       {/* TRANSPORTS / ATOUTS */}
       <section className="py-24 md:py-36 bg-primary">
         <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">
+          <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
             Cadre de vie
           </span>
-          <h2 className="font-display text-2xl md:text-4xl text-primary-foreground mt-3 mb-10">
-            Pourquoi vivre à <span className="italic text-accent">{city.name}</span> ?
+          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-primary-foreground leading-[1.15] mt-4 mb-10">
+            Pourquoi vivre <span className="italic text-accent whitespace-nowrap">à {city.name}</span> ?
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-primary-foreground/[0.04] border border-primary-foreground/10 rounded-xl p-6">
@@ -318,23 +318,23 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
       {/* FAQ */}
       <section className="py-24 md:py-36 bg-secondary">
         <div className="container mx-auto px-5 md:px-6 max-w-3xl">
-          <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">
+          <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
             Questions fréquentes
           </span>
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-10">
-            {city.name} : <span className="italic text-accent">vos questions</span>
+          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mt-4 mb-10">
+            <span className="whitespace-nowrap">{city.name}</span> : <span className="italic text-accent whitespace-nowrap">vos questions</span>
           </h2>
           <Accordion type="single" collapsible className="space-y-4">
             {city.faqs.map((f, i) => (
               <AccordionItem
                 key={i}
                 value={`faq-${i}`}
-                className="bg-card border border-border rounded-xl px-6 overflow-hidden data-[state=open]:border-accent/30 transition-colors"
+                className="bg-card border border-border rounded-2xl px-7 overflow-hidden data-[state=open]:border-accent/30 transition-colors"
               >
-                <AccordionTrigger className="font-display text-base md:text-lg text-foreground py-5 hover:no-underline gap-4 [&[data-state=open]>svg]:text-accent">
+                <AccordionTrigger className="font-display text-base md:text-xl text-foreground py-6 hover:no-underline gap-4 text-left [&[data-state=open]>svg]:text-accent">
                   {f.q}
                 </AccordionTrigger>
-                <AccordionContent className="font-body text-sm text-muted-foreground leading-relaxed pb-5">
+                <AccordionContent className="font-body text-base md:text-lg text-muted-foreground leading-relaxed pb-6">
                   {f.a}
                 </AccordionContent>
               </AccordionItem>
@@ -346,10 +346,10 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
       {/* CTA FINAL */}
       <section className="py-24 md:py-36 bg-background">
         <div className="container mx-auto px-5 md:px-6 max-w-3xl text-center">
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mb-5">
+          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mb-6">
             {city.estimationCta}
           </h2>
-          <p className="font-body text-muted-foreground mb-8 max-w-xl mx-auto">
+          <p className="font-body text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
             Estimation gratuite par notre équipe d'experts du marché local, puis appel
             d'un conseiller sous 24h pour affiner.
           </p>
