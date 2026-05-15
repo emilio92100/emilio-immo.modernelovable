@@ -13,6 +13,13 @@ const STATIC_URLS = [
   { loc: "/mandat-recherche", changefreq: "monthly", priority: "0.8" },
   { loc: "/notre-histoire", changefreq: "monthly", priority: "0.7" },
   { loc: "/achat-appartement-boulogne-billancourt", changefreq: "weekly", priority: "0.9" },
+  { loc: "/achat-appartement-neuilly-sur-seine", changefreq: "weekly", priority: "0.9" },
+  { loc: "/achat-appartement-issy-les-moulineaux", changefreq: "weekly", priority: "0.9" },
+  { loc: "/achat-appartement-levallois-perret", changefreq: "weekly", priority: "0.9" },
+  { loc: "/achat-appartement-paris-16", changefreq: "weekly", priority: "0.9" },
+  { loc: "/achat-appartement-paris-15", changefreq: "weekly", priority: "0.9" },
+  { loc: "/achat-appartement-paris-7", changefreq: "weekly", priority: "0.9" },
+  { loc: "/achat-appartement-paris-6", changefreq: "weekly", priority: "0.9" },
   { loc: "/mentions-legales", changefreq: "yearly", priority: "0.3" },
 ];
 
