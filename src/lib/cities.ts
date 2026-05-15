@@ -242,7 +242,7 @@ const cities: Record<string, CityData> = {
         a: "6 à 10 semaines pour un bien bien positionné. La demande est très soutenue sur les 2 et 3 pièces.",
       },
     ],
-    estimationCta: "Vous vendez à Issy-les-Moulineaux ? Estimation basée sur les dernières ventes du quartier.",
+    estimationCta: "Vous vendez à Issy-les-Moulineaux ? Estimation experte sous 24h.",
   },
 
   "levallois-perret": {
