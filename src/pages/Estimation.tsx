@@ -30,7 +30,7 @@ const PAGE_URL = "https://www.emilio-immo.com/estimation";
 const faqs = [
   {
     q: "L'estimation est-elle vraiment gratuite et sans engagement ?",
-    a: "Oui. L'estimation en ligne est instantanée et 100 % gratuite. Si vous souhaitez un avis de valeur écrit signé par un de nos experts, nous nous déplaçons également sans frais ni obligation de mandat.",
+    a: "Oui. L'estimation en ligne est 100 % gratuite et sans engagement. Un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée. Si vous souhaitez un avis de valeur écrit signé par un de nos experts, nous nous déplaçons également sans frais ni obligation de mandat.",
   },
   {
     q: "Comment calculez-vous la valeur de mon appartement ?",
@@ -38,7 +38,7 @@ const faqs = [
   },
   {
     q: "Combien de temps prend l'estimation ?",
-    a: "L'estimation en ligne prend moins de 2 minutes. Pour un avis de valeur signé après visite, comptez 24 à 48h après notre passage.",
+    a: "Après réception de votre demande, un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée. Pour un avis de valeur signé après visite, comptez 24 à 48h après notre passage.",
   },
   {
     q: "Mes données sont-elles confidentielles ?",
@@ -68,7 +68,7 @@ const jsonLd = {
         areaServed: ["Paris 6e", "Paris 7e", "Paris 15e", "Paris 16e", "Boulogne-Billancourt", "Neuilly-sur-Seine", "Issy-les-Moulineaux", "Levallois-Perret"],
       },
       areaServed: "Paris & Hauts-de-Seine",
-      description: "Estimation immobilière gratuite et instantanée pour appartements à Paris et dans les Hauts-de-Seine. Méthode basée sur la base DVF officielle et l'expertise locale.",
+      description: "Estimation immobilière gratuite pour appartements à Paris et dans les Hauts-de-Seine. Méthode basée sur la base DVF officielle et l'expertise locale. Réponse d'un conseiller sous 24h.",
       offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
       url: PAGE_URL,
     },
@@ -95,7 +95,7 @@ const EstimationPage = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Estimation immobilière gratuite Paris & Hauts-de-Seine | Emilio Immobilier"
-        description="Estimation gratuite et instantanée de votre appartement à Paris et dans les Hauts-de-Seine. Méthode DVF + expertise locale. Sans engagement, résultat sous 24h."
+        description="Estimation gratuite de votre appartement à Paris et dans les Hauts-de-Seine. Méthode DVF + expertise locale. Sans engagement, réponse d'un conseiller sous 24h."
         canonical={PAGE_URL}
         jsonLd={jsonLd}
       />
@@ -122,11 +122,11 @@ const EstimationPage = () => {
             </div>
             <h1 className="font-display text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl text-primary-foreground leading-[1.1] mb-8">
               Estimation immobilière{" "}
-              <span className="italic text-accent whitespace-nowrap">gratuite & instantanée</span>
+              <span className="italic text-accent whitespace-nowrap">gratuite & personnalisée</span>
             </h1>
             <p className="font-body text-primary-foreground/80 text-base md:text-2xl leading-relaxed max-w-3xl mx-auto mb-10">
-              Découvrez en moins de 2 minutes la valeur de votre appartement à Paris ou dans les Hauts-de-Seine.
-              Méthode professionnelle basée sur les transactions notariées récentes et l'expertise terrain de notre agence.
+              Confiez-nous les caractéristiques de votre appartement à Paris ou dans les Hauts-de-Seine.
+              Un conseiller vous rappelle sous 24h avec une fourchette de prix basée sur les transactions notariées récentes et notre expertise terrain.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <EstimationPopup
@@ -311,7 +311,7 @@ const EstimationPage = () => {
             Lancez votre estimation maintenant
           </h2>
           <p className="font-body text-primary-foreground/75 text-base md:text-lg mb-9 max-w-xl mx-auto">
-            Moins de 2 minutes. Aucun engagement. Résultat affiché immédiatement, accompagné d'un avis de valeur sous 24h si vous le souhaitez.
+            Aucun engagement. Un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée, accompagnée d'un avis de valeur si vous le souhaitez.
           </p>
           <EstimationPopup
             trigger={
