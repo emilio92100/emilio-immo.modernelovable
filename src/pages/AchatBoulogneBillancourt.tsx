@@ -139,13 +139,13 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* MARCHÉ */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
+      <section className="py-24 md:py-36 bg-background">
+        <div className="container mx-auto px-5 md:px-6 max-w-5xl text-center">
           <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">Le marché</span>
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-6">
+          <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-10">
             Le marché immobilier à <span className="italic text-accent">Boulogne-Billancourt</span>
           </h2>
-          <div className="prose prose-lg max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
+          <div className="prose prose-lg max-w-3xl mx-auto font-body text-muted-foreground leading-relaxed space-y-6 text-left md:text-center">
             <p>
               Située aux portes de Paris dans les Hauts-de-Seine, <strong className="text-foreground">Boulogne-Billancourt</strong> est l'une des villes les plus recherchées d'Île-de-France pour l'achat d'un appartement. Avec plus de 120 000 habitants, la ville offre un cadre de vie haut de gamme, à mi-chemin entre dynamisme parisien et calme résidentiel.
             </p>
@@ -157,17 +157,17 @@ const AchatBoulogneBillancourt = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
             {[
               { icon: TrendingUp, val: "≈ 9 800 €/m²", label: "Prix moyen" },
               { icon: Building2, val: "120 000+", label: "Habitants" },
               { icon: Train, val: "4 lignes", label: "Métro & T2" },
               { icon: GraduationCap, val: "30+", label: "Écoles" },
             ].map((s) => (
-              <div key={s.label} className="bg-card border border-border rounded-xl p-4 text-center">
-                <s.icon className="w-5 h-5 text-accent mx-auto mb-2" />
-                <div className="font-display text-lg md:text-xl text-foreground">{s.val}</div>
-                <div className="font-body text-xs text-muted-foreground mt-1">{s.label}</div>
+              <div key={s.label} className="bg-card border border-border rounded-xl p-6 text-center">
+                <s.icon className="w-6 h-6 text-accent mx-auto mb-3" />
+                <div className="font-display text-xl md:text-2xl text-foreground">{s.val}</div>
+                <div className="font-body text-sm text-muted-foreground mt-2">{s.label}</div>
               </div>
             ))}
           </div>
