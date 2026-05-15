@@ -137,6 +137,7 @@ const PropertyDetail = () => {
         <SEOHead
           title="Bien introuvable — Émilio Immobilier"
           description="Ce bien n'est plus disponible. Découvrez nos autres biens à vendre à Paris et dans les Hauts-de-Seine."
+          noindex
         />
         <Navbar />
         <div className="pt-28 pb-20 text-center container mx-auto px-6">
@@ -180,26 +181,62 @@ const PropertyDetail = () => {
 
   return (
     <div className="min-h-screen">
-      <SEOHead
-        title={`${getDisplayTitle(property)} ${getDisplayCity(property)} ${property.surface ? property.surface + ' m² ' : ''}— Émilio Immobilier`.slice(0, 70)}
-        description={`${getDisplayTitle(property)} à ${getDisplayCity(property)}${property.surface ? ' — ' + property.surface + ' m²' : ''}${property.bedrooms ? ', ' + property.bedrooms + ' chambre' + (property.bedrooms > 1 ? 's' : '') : ''}. ${formatPrice(property.price)}. Émilio Immobilier, votre expert local.`.slice(0, 160)}
-        canonical={`https://www.emilio-immo.com/biens/${property.id}`}
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "Product",
-          name: `${getDisplayTitle(property)} — ${getDisplayCity(property)}`,
-          description: property.description?.slice(0, 300),
-          image: property.images?.slice(0, 3),
-          offers: {
-            "@type": "Offer",
-            price: property.price,
-            priceCurrency: "EUR",
-            availability: "https://schema.org/InStock",
-            url: `https://www.emilio-immo.com/biens/${property.id}`,
-          },
-          brand: { "@type": "Organization", name: "Émilio Immobilier" },
-        }}
-      />
+      {(() => {
+        const city = getDisplayCity(property);
+        const baseTitle = getDisplayTitle(property);
+        const surfaceStr = property.surface ? `${property.surface} m²` : "";
+        // SEO title: "Appartement 3 pièces 60m² — Boulogne-Billancourt | Emilio Immo"
+        const seoTitle = `${baseTitle}${surfaceStr ? " " + surfaceStr : ""} — ${city} | Emilio Immo`.slice(0, 70);
+        const bedStr = property.bedrooms ? `, ${property.bedrooms} chambre${property.bedrooms > 1 ? "s" : ""}` : "";
+        const seoDesc = `${baseTitle} à vendre à ${city}${surfaceStr ? " — " + surfaceStr : ""}${bedStr}. ${formatPrice(property.price)}. Découvrez ce bien chez Emilio Immo, votre expert immobilier local.`.slice(0, 160);
+        const url = `https://www.emilio-immo.com/biens/${property.id}`;
+        return (
+          <SEOHead
+            title={seoTitle}
+            description={seoDesc}
+            canonical={url}
+            jsonLd={{
+              "@context": "https://schema.org",
+              "@type": "RealEstateListing",
+              name: `${baseTitle} — ${city}`,
+              url,
+              description: property.description?.slice(0, 500),
+              image: property.images?.slice(0, 6),
+              datePosted: property.dateAdded,
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: city,
+                postalCode: property.postalCode,
+                addressCountry: "FR",
+              },
+              offers: {
+                "@type": "Offer",
+                price: property.price,
+                priceCurrency: "EUR",
+                availability: "https://schema.org/InStock",
+                url,
+              },
+              mainEntity: {
+                "@type": property.type === "Maison" ? "House" : "Apartment",
+                name: baseTitle,
+                numberOfRooms: property.rooms || undefined,
+                numberOfBedrooms: property.bedrooms || undefined,
+                floorSize: property.surface
+                  ? { "@type": "QuantitativeValue", value: property.surface, unitCode: "MTK" }
+                  : undefined,
+                yearBuilt: property.yearBuilt || undefined,
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: city,
+                  postalCode: property.postalCode,
+                  addressCountry: "FR",
+                },
+              },
+              broker: { "@type": "RealEstateAgent", name: "Emilio Immo", url: "https://www.emilio-immo.com" },
+            }}
+          />
+        );
+      })()}
       <Navbar />
 
       {/* Sticky top back button - appears on scroll */}
