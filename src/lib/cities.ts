@@ -45,7 +45,7 @@ const cities: Record<string, CityData> = {
       high: 10500,
       description: "9 000 à 10 500 €/m², avec des pics à 13 000 €/m² pour le haussmannien et l'Île Seguin.",
     },
-    metaTitle: "Achat appartement Boulogne-Billancourt (92100) — Emilio Immobilier",
+    metaTitle: "Achat appartement Boulogne-Billancourt (92100) | Prix m² "Achat appartement Boulogne-Billancourt (92100) — Emilio Immobilier" biens à vendre",
     metaDescription:
       "Achat d'appartement à Boulogne-Billancourt : prix au m², meilleurs quartiers, biens disponibles et accompagnement par notre agence locale.",
     heroIntro:
@@ -116,7 +116,7 @@ const cities: Record<string, CityData> = {
       high: 15000,
       description: "11 500 à 15 000 €/m², avec des records pour les hôtels particuliers et appartements vue Bois.",
     },
-    metaTitle: "Achat appartement Neuilly-sur-Seine (92200) — Emilio Immobilier",
+    metaTitle: "Achat appartement Neuilly-sur-Seine (92200) | Prix m² "Achat appartement Neuilly-sur-Seine (92200) — Emilio Immobilier" biens à vendre",
     metaDescription:
       "Acheter ou vendre un appartement à Neuilly-sur-Seine : prix au m², quartiers prisés, biens disponibles et accompagnement par notre agence locale.",
     heroIntro:
@@ -187,7 +187,7 @@ const cities: Record<string, CityData> = {
       high: 10500,
       description: "8 500 à 10 500 €/m², portée par les programmes récents du Fort et bords de Seine.",
     },
-    metaTitle: "Achat appartement Issy-les-Moulineaux (92130) — Emilio Immobilier",
+    metaTitle: "Achat appartement Issy-les-Moulineaux (92130) | Prix m² "Achat appartement Issy-les-Moulineaux (92130) — Emilio Immobilier" biens à vendre",
     metaDescription:
       "Acheter ou vendre un appartement à Issy-les-Moulineaux : prix au m², quartiers, programmes neufs et accompagnement par notre agence locale.",
     heroIntro:
@@ -258,7 +258,7 @@ const cities: Record<string, CityData> = {
       high: 11500,
       description: "9 000 à 11 500 €/m², portée par la proximité Paris 17e et les programmes récents.",
     },
-    metaTitle: "Achat appartement Levallois-Perret (92300) — Emilio Immobilier",
+    metaTitle: "Achat appartement Levallois-Perret (92300) | Prix m² "Achat appartement Levallois-Perret (92300) — Emilio Immobilier" biens à vendre",
     metaDescription:
       "Acheter ou vendre un appartement à Levallois-Perret : prix au m², meilleurs quartiers et accompagnement personnalisé par notre agence locale.",
     heroIntro:
@@ -329,7 +329,7 @@ const cities: Record<string, CityData> = {
       high: 14500,
       description: "11 000 à 14 500 €/m², avec des sommets pour Auteuil, Passy et les vues Bois.",
     },
-    metaTitle: "Achat appartement Paris 16e — Emilio Immobilier",
+    metaTitle: "Achat appartement Paris 16e (75016) | Prix m² "Achat appartement Paris 16e — Emilio Immobilier" biens à vendre",
     metaDescription:
       "Acheter ou vendre un appartement dans le 16ème arrondissement de Paris : prix au m², quartiers, biens disponibles et accompagnement.",
     heroIntro:
@@ -400,7 +400,7 @@ const cities: Record<string, CityData> = {
       high: 12500,
       description: "10 000 à 12 500 €/m², avec des pointes pour Beaugrenelle et Convention.",
     },
-    metaTitle: "Achat appartement Paris 15e — Emilio Immobilier",
+    metaTitle: "Achat appartement Paris 15e (75015) | Prix m² "Achat appartement Paris 15e — Emilio Immobilier" biens à vendre",
     metaDescription:
       "Acheter ou vendre un appartement dans le 15ème arrondissement de Paris : prix au m², meilleurs quartiers et accompagnement par notre agence.",
     heroIntro:
@@ -471,7 +471,7 @@ const cities: Record<string, CityData> = {
       high: 18500,
       description: "14 000 à 18 500 €/m², adresse rive gauche d'exception.",
     },
-    metaTitle: "Achat appartement Paris 7e — Emilio Immobilier",
+    metaTitle: "Achat appartement Paris 7e (75007) | Prix m² "Achat appartement Paris 7e — Emilio Immobilier" biens à vendre",
     metaDescription:
       "Acheter ou vendre un appartement dans le 7ème arrondissement de Paris : prix au m², quartiers prestigieux et accompagnement personnalisé.",
     heroIntro:
@@ -542,7 +542,7 @@ const cities: Record<string, CityData> = {
       high: 20000,
       description: "15 000 à 20 000 €/m², l'un des arrondissements les plus chers de France.",
     },
-    metaTitle: "Achat appartement Paris 6e — Emilio Immobilier",
+    metaTitle: "Achat appartement Paris 6e (75006) | Prix m² "Achat appartement Paris 6e — Emilio Immobilier" biens à vendre",
     metaDescription:
       "Acheter ou vendre un appartement dans le 6ème arrondissement de Paris : Saint-Germain, Odéon, Luxembourg. Estimation et accompagnement.",
     heroIntro:
