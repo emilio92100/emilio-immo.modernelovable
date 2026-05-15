@@ -188,8 +188,8 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
               {city.estimationCta}
             </h3>
             <p className="font-body text-primary-foreground/60 text-sm mb-6 max-w-xl mx-auto">
-              Estimation basée sur les dernières ventes réelles de votre quartier
-              (DVF — data.gouv.fr). 100 % gratuit, 0 spam.
+              Estimation experte basée sur les dernières transactions de votre quartier.
+              100 % gratuit, sans engagement.
             </p>
             <EstimationPopup
               defaultCity={city.name}
@@ -350,7 +350,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
             {city.estimationCta}
           </h2>
           <p className="font-body text-muted-foreground mb-8 max-w-xl mx-auto">
-            Estimation gratuite basée sur les dernières ventes réelles de votre quartier, puis appel
+            Estimation gratuite par notre équipe d'experts du marché local, puis appel
             d'un conseiller sous 24h pour affiner.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

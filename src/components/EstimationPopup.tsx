@@ -384,7 +384,7 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
             Estimer mon bien — gratuit & confidentiel
           </DialogTitle>
           <DialogDescription className="font-body text-sm text-primary-foreground/70 mt-1">
-            Estimation basée sur les dernières ventes réelles de votre quartier (DVF — data.gouv).
+            Estimation experte basée sur les dernières transactions du marché local.
           </DialogDescription>
         </div>
 
@@ -867,8 +867,8 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
                       )}
                     </motion.div>
                     <p className="font-body text-xs text-muted-foreground">
-                      Basé sur <strong className="text-foreground">{result.sample_size} ventes réelles</strong>{" "}
-                      du quartier (DVF — data.gouv.fr).
+                      Basé sur <strong className="text-foreground">{result.sample_size} transactions récentes</strong>{" "}
+                      analysées dans votre quartier.
                     </p>
                   </>
                 ) : (
