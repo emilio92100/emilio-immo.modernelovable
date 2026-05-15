@@ -59,8 +59,8 @@ const Director = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Notre Histoire — Émilio Immobilier | Alexandre, fondateur"
-        description="Découvrez l'histoire d'Émilio Immobilier, fondée en 2020 à Boulogne-Billancourt. Une approche humaine et experte de l'immobilier à Paris et Hauts-de-Seine."
+        title="Notre Histoire — Emilio Immobilier | Alexandre, fondateur"
+        description="Découvrez l'histoire d'Emilio Immobilier, fondée en 2020 à Boulogne-Billancourt. Une approche humaine et experte de l'immobilier à Paris et Hauts-de-Seine."
         canonical="https://www.emilio-immo.com/notre-histoire"
       />
       <Navbar />

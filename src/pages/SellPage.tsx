@@ -69,8 +69,8 @@ const SellPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Vendre votre bien — Émilio Immobilier | Paris & Hauts-de-Seine"
-        description="Vendez votre bien immobilier au meilleur prix avec Émilio Immobilier. Estimation gratuite, photos professionnelles, accompagnement complet de A à Z."
+        title="Vendre votre bien — Emilio Immobilier | Paris & Hauts-de-Seine"
+        description="Vendez votre bien immobilier au meilleur prix avec Emilio Immobilier. Estimation gratuite, photos professionnelles, accompagnement complet de A à Z."
         canonical="https://www.emilio-immo.com/vendre"
       />
       <Navbar />

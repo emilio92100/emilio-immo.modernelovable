@@ -794,7 +794,7 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
                     className="mt-0.5"
                   />
                   <span className="font-body text-xs text-foreground leading-relaxed">
-                    J'accepte qu'un conseiller Émilio Immobilier me recontacte pour affiner mon
+                    J'accepte qu'un conseiller Emilio Immobilier me recontacte pour affiner mon
                     estimation et discuter de mon projet de vente. *
                   </span>
                 </label>

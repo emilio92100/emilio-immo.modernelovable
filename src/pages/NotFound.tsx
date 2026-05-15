@@ -24,7 +24,7 @@ const NotFound = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
       <SEOHead
-        title="Page introuvable — Émilio Immobilier"
+        title="Page introuvable — Emilio Immobilier"
         description="La page que vous recherchez n'existe pas. Retrouvez nos biens immobiliers à vendre à Paris et dans les Hauts-de-Seine."
       />
       <div className="text-center">

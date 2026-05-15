@@ -135,7 +135,7 @@ const PropertyDetail = () => {
     return (
       <div className="min-h-screen">
         <SEOHead
-          title="Bien introuvable — Émilio Immobilier"
+          title="Bien introuvable — Emilio Immobilier"
           description="Ce bien n'est plus disponible. Découvrez nos autres biens à vendre à Paris et dans les Hauts-de-Seine."
           noindex
         />
