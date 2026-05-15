@@ -7,7 +7,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
-import EstimationForm from "@/components/EstimationForm";
+import EstimationPopup from "@/components/EstimationPopup";
 import PricingSection from "@/components/PricingSection";
 import SEOHead from "@/components/SEOHead";
 
@@ -95,7 +95,7 @@ const SellPage = () => {
               transparence et engagement. Chaque vente est unique, notre approche aussi.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-              <EstimationForm
+              <EstimationPopup
                 trigger={
                   <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 md:px-8 md:py-4 font-body font-semibold tracking-wide text-sm md:text-base rounded hover:brightness-110 transition-all">
                     Estimation gratuite <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
@@ -308,7 +308,7 @@ const SellPage = () => {
           <p className="font-body text-muted-foreground max-w-xl mx-auto mb-6 md:mb-8 text-sm md:text-base lg:text-lg">
             Commencez par une estimation gratuite et sans engagement.
           </p>
-          <EstimationForm
+          <EstimationPopup
             trigger={
               <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 md:px-10 md:py-4 font-body font-semibold tracking-wide text-sm md:text-base rounded hover:brightness-110 transition-all">
                 Demander une estimation gratuite <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
