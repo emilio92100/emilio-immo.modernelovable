@@ -134,6 +134,7 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   const [form, setForm] = useState<FormData>(initialForm(defaultCity, defaultPostalCode));
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<EstimateResult | null>(null);
+  const [loadingPhase, setLoadingPhase] = useState(0);
 
   // Address autocomplete
   type Suggestion = { label: string; name: string; postcode: string; city: string };
@@ -210,6 +211,12 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   const handleSubmit = async () => {
     if (!canSubmit) return;
     setSubmitting(true);
+    setLoadingPhase(0);
+    const startedAt = Date.now();
+    const phaseTimers: number[] = [];
+    phaseTimers.push(window.setTimeout(() => setLoadingPhase(1), 1800));
+    phaseTimers.push(window.setTimeout(() => setLoadingPhase(2), 4200));
+    phaseTimers.push(window.setTimeout(() => setLoadingPhase(3), 7000));
     try {
       // 1. Get DVF estimation
       let estimate: EstimateResult | null = null;
@@ -282,6 +289,12 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
       }
 
       setResult(estimate || { error: "no_data" });
+      // Ensure loader runs at least ~9s for a credible analysis feel
+      const elapsed = Date.now() - startedAt;
+      const minDuration = 9000;
+      if (elapsed < minDuration) {
+        await new Promise((r) => setTimeout(r, minDuration - elapsed));
+      }
       setStep(4);
     } catch {
       toast({
@@ -290,7 +303,9 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
         variant: "destructive",
       });
     } finally {
+      phaseTimers.forEach((t) => window.clearTimeout(t));
       setSubmitting(false);
+      setLoadingPhase(0);
     }
   };
 
