@@ -80,12 +80,12 @@ const documents = [
 // Typo tokens — used everywhere for consistency
 const T = {
   eyebrow: "font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase",
-  h2: "font-display text-3xl md:text-5xl text-foreground leading-tight",
-  h2Light: "font-display text-3xl md:text-5xl text-primary-foreground leading-tight",
-  h3: "font-display text-xl md:text-2xl text-foreground",
-  lead: "font-body text-lg md:text-xl text-muted-foreground leading-relaxed",
-  body: "font-body text-base md:text-lg text-muted-foreground leading-relaxed",
-  bodyLight: "font-body text-base md:text-lg text-primary-foreground/80 leading-relaxed",
+  h2: "font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15]",
+  h2Light: "font-display text-[1.75rem] sm:text-4xl md:text-5xl text-primary-foreground leading-[1.15]",
+  h3: "font-display text-lg md:text-2xl text-foreground",
+  lead: "font-body text-base md:text-xl text-muted-foreground leading-relaxed",
+  body: "font-body text-[15px] md:text-lg text-muted-foreground leading-relaxed",
+  bodyLight: "font-body text-[15px] md:text-lg text-primary-foreground/80 leading-relaxed",
 };
 
 const SellCityPageTemplate = ({ city, sell }: Props) => {
@@ -144,11 +144,11 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
                 Vendre · {city.postalLabel}
               </span>
             </div>
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-primary-foreground leading-[1.1] mb-8">
-              Vendre votre appartement à{" "}
-              <span className="block mt-2 italic text-accent">{city.name}</span>
+            <h1 className="font-display text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl text-primary-foreground leading-[1.1] mb-8">
+              Vendre votre appartement{" "}
+              <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
             </h1>
-            <p className="font-body text-primary-foreground/80 text-lg md:text-2xl leading-relaxed max-w-3xl mx-auto mb-10">
+            <p className="font-body text-primary-foreground/80 text-base md:text-2xl leading-relaxed max-w-3xl mx-auto mb-10">
               {sell.heroIntro}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -178,9 +178,9 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
           <div className="text-center mb-14">
             <span className={T.eyebrow}>Le marché local</span>
             <h2 className={`${T.h2} mt-4`}>
-              Combien vaut votre bien à <span className="italic text-accent">{city.name}</span> ?
+              Combien vaut votre bien <span className="italic text-accent whitespace-nowrap">à {city.name}</span> ?
             </h2>
-            <p className={`${T.lead} mt-6 max-w-2xl mx-auto`}>{city.pricePerSqm.description}</p>
+            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>{city.pricePerSqm.description}</p>
           </div>
 
           <div className="grid sm:grid-cols-3 gap-5 mb-12">
@@ -222,9 +222,9 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
           <div className="text-center mb-14">
             <span className={T.eyebrow}>Connaissance terrain</span>
             <h2 className={`${T.h2} mt-4`}>
-              Les quartiers porteurs de <span className="italic text-accent">{city.name}</span>
+              Les quartiers porteurs <span className="italic text-accent whitespace-nowrap">de {city.name}</span>
             </h2>
-            <p className={`${T.lead} mt-6 max-w-2xl mx-auto`}>
+            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>
               Chaque quartier a ses acheteurs, ses prix et son timing. Notre conseiller adapte la stratégie au vôtre.
             </p>
           </div>
@@ -249,7 +249,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
           <div className="text-center mb-14">
             <span className={T.eyebrow}>Délai moyen</span>
             <h2 className={`${T.h2} mt-4`}>
-              Combien de temps pour vendre à <span className="italic text-accent">{city.name}</span> ?
+              Combien de temps pour vendre <span className="italic text-accent whitespace-nowrap">à {city.name}</span> ?
             </h2>
           </div>
 
@@ -290,9 +290,9 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
           <div className="text-center mb-14">
             <span className={T.eyebrow}>Atouts à valoriser</span>
             <h2 className={`${T.h2} mt-4`}>
-              Pourquoi votre bien à {city.name} <span className="italic text-accent">se vend bien</span>
+              Pourquoi votre bien <span className="whitespace-nowrap">à {city.name}</span> <span className="italic text-accent whitespace-nowrap">se vend bien</span>
             </h2>
-            <p className={`${T.lead} mt-6 max-w-2xl mx-auto`}>
+            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>
               Nous mettons en avant les arguments concrets qui déclenchent la décision d'achat dans votre secteur.
             </p>
           </div>
@@ -314,11 +314,11 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
           <div className="text-center mb-14">
             <span className={T.eyebrow}>Notre méthode</span>
             <h2 className={`${T.h2} mt-4`}>
-              5 étapes pour vendre à <span className="italic text-accent">{city.name}</span>
+              5 étapes pour vendre <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
             {method.map((m, i) => (
               <motion.div
                 key={m.title}
@@ -326,14 +326,14 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.07 }}
                 viewport={{ once: true }}
-                className="bg-card border border-border rounded-2xl p-6 hover:border-accent/40 transition-colors"
+                className="bg-card border border-border rounded-2xl p-7 md:p-8 hover:border-accent/40 hover:shadow-lg transition-all flex flex-col"
               >
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="font-display text-base text-accent">0{i + 1}</span>
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="font-display text-lg text-accent">0{i + 1}</span>
                   <m.icon className="w-6 h-6 text-accent" />
                 </div>
-                <h3 className="font-display text-lg md:text-xl text-foreground mb-3">{m.title}</h3>
-                <p className="font-body text-base text-muted-foreground leading-relaxed">{m.desc}</p>
+                <h3 className="font-display text-xl text-foreground mb-3 leading-snug">{m.title}</h3>
+                <p className="font-body text-[15px] md:text-base text-muted-foreground leading-relaxed">{m.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -345,9 +345,9 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
         <div className="container mx-auto px-5 md:px-6 max-w-4xl text-center">
           <span className={T.eyebrow}>Pourquoi vendre maintenant</span>
           <h2 className={`${T.h2Light} mt-4 mb-8`}>
-            {city.name} en <span className="italic text-accent">2026</span>
+            <span className="whitespace-nowrap">{city.name}</span> en <span className="italic text-accent">2026</span>
           </h2>
-          <p className="font-body text-primary-foreground/85 text-lg md:text-2xl leading-relaxed">
+          <p className="font-body text-primary-foreground/85 text-base md:text-2xl leading-relaxed">
             {sell.marketAngle}
           </p>
         </div>
@@ -361,7 +361,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
             <h2 className={`${T.h2} mt-4`}>
               Documents à réunir <span className="italic text-accent">pour vendre</span>
             </h2>
-            <p className={`${T.lead} mt-6 max-w-2xl mx-auto`}>
+            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>
               Notre conseiller centralise et coordonne avec votre syndic et notaire. Vous n'avez rien à gérer seul.
             </p>
           </div>
@@ -385,7 +385,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
             <h2 className={`${T.h2} mt-4`}>
               Les 4 erreurs <span className="italic text-accent">à éviter</span>
             </h2>
-            <p className={`${T.lead} mt-6 max-w-2xl mx-auto`}>
+            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>
               Constatées sur des centaines de mandats. Anticipez-les pour vendre vite et au juste prix.
             </p>
           </div>
@@ -484,10 +484,10 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
       {/* FAQ */}
       <section className="py-24 md:py-32 bg-background">
         <div className="container mx-auto px-5 md:px-6 max-w-3xl">
-          <div className="mb-12">
+          <div className="text-center mb-12">
             <span className={T.eyebrow}>Questions de vendeurs</span>
             <h2 className={`${T.h2} mt-4`}>
-              Vendre à {city.name} : <span className="italic text-accent">vos questions</span>
+              <span className="whitespace-nowrap">Vendre à {city.name}</span> : <span className="italic text-accent whitespace-nowrap">vos questions</span>
             </h2>
           </div>
           <Accordion type="single" collapsible className="space-y-4">
@@ -528,9 +528,9 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
       <section className="py-24 md:py-32 bg-primary">
         <div className="container mx-auto px-5 md:px-6 max-w-3xl text-center">
           <h2 className={`${T.h2Light} mb-6`}>
-            Prêt à vendre votre bien à {city.name} ?
+            Prêt à vendre votre bien <span className="whitespace-nowrap">à {city.name}</span> ?
           </h2>
-          <p className="font-body text-primary-foreground/80 text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="font-body text-primary-foreground/80 text-base md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
             Estimation gratuite et confidentielle, puis appel d'un conseiller dédié sous 24h.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
