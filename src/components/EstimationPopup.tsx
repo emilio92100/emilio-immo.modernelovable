@@ -23,6 +23,7 @@ import {
   Send,
   Compass,
   TreePine,
+  X,
 } from "lucide-react";
 import {
   Dialog,
