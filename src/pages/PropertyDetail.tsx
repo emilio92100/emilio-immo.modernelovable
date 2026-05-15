@@ -185,10 +185,10 @@ const PropertyDetail = () => {
         const city = getDisplayCity(property);
         const baseTitle = getDisplayTitle(property);
         const surfaceStr = property.surface ? `${property.surface} m²` : "";
-        // SEO title: "Appartement 3 pièces 60m² — Boulogne-Billancourt | Emilio Immo"
-        const seoTitle = `${baseTitle}${surfaceStr ? " " + surfaceStr : ""} — ${city} | Emilio Immo`.slice(0, 70);
+        // SEO title: "Appartement 3 pièces 60m² — Boulogne-Billancourt | Emilio Immobilier"
+        const seoTitle = `${baseTitle}${surfaceStr ? " " + surfaceStr : ""} — ${city} | Emilio Immobilier`.slice(0, 75);
         const bedStr = property.bedrooms ? `, ${property.bedrooms} chambre${property.bedrooms > 1 ? "s" : ""}` : "";
-        const seoDesc = `${baseTitle} à vendre à ${city}${surfaceStr ? " — " + surfaceStr : ""}${bedStr}. ${formatPrice(property.price)}. Découvrez ce bien chez Emilio Immo, votre expert immobilier local.`.slice(0, 160);
+        const seoDesc = `${baseTitle} à vendre à ${city}${surfaceStr ? " — " + surfaceStr : ""}${bedStr}. ${formatPrice(property.price)}. Découvrez ce bien chez Emilio Immobilier, votre expert immobilier local.`.slice(0, 160);
         const url = `https://www.emilio-immo.com/biens/${property.id}`;
         return (
           <SEOHead
@@ -232,7 +232,21 @@ const PropertyDetail = () => {
                   addressCountry: "FR",
                 },
               },
-              broker: { "@type": "RealEstateAgent", name: "Emilio Immo", url: "https://www.emilio-immo.com" },
+              broker: {
+                "@type": "RealEstateAgent",
+                name: "Emilio Immobilier",
+                url: "https://www.emilio-immo.com",
+                telephone: "+33184801400",
+                priceRange: "€€€",
+                image: "https://www.emilio-immo.com/logo.png",
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: "10 Avenue Kléber",
+                  addressLocality: "Paris",
+                  postalCode: "75016",
+                  addressCountry: "FR",
+                },
+              },
             }}
           />
         );
