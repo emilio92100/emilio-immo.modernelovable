@@ -98,29 +98,29 @@ const AchatBoulogneBillancourt = () => {
       <Navbar />
 
       {/* HERO */}
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-primary overflow-hidden">
+      <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 bg-primary overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04]">
           <div className="absolute top-20 left-10 w-72 h-72 rounded-full border border-primary-foreground" />
           <div className="absolute bottom-10 right-20 w-96 h-96 rounded-full border border-primary-foreground" />
         </div>
-        <div className="container mx-auto px-5 md:px-6 relative">
+        <div className="container mx-auto px-5 md:px-6 relative text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="max-w-4xl"
+            className="max-w-4xl mx-auto"
           >
-            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-4 py-1.5 mb-6">
+            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-4 py-1.5 mb-8">
               <MapPin className="w-3.5 h-3.5 text-accent" />
               <span className="font-body text-accent text-xs font-semibold tracking-wide uppercase">Hauts-de-Seine · 92100</span>
             </div>
-            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-[1.1] mb-6">
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-[1.1] mb-8">
               Achat d'appartement à <span className="italic text-accent">Boulogne-Billancourt</span>
             </h1>
-            <p className="font-body text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-2xl mb-8">
+            <p className="font-body text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-10">
               Vous cherchez à acheter un appartement à Boulogne-Billancourt ? Notre agence vous accompagne dans toutes les étapes de votre projet : analyse du marché, sélection des meilleurs biens (visibles et off-market), visites, négociation et signature.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 to="/biens"
                 className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full font-body font-semibold text-sm hover:brightness-110 transition-all"
@@ -139,13 +139,13 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* MARCHÉ */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
+      <section className="py-24 md:py-36 bg-background">
+        <div className="container mx-auto px-5 md:px-6 max-w-5xl text-center">
           <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">Le marché</span>
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-6">
+          <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-10">
             Le marché immobilier à <span className="italic text-accent">Boulogne-Billancourt</span>
           </h2>
-          <div className="prose prose-lg max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
+          <div className="prose prose-lg max-w-3xl mx-auto font-body text-muted-foreground leading-relaxed space-y-6 text-left md:text-center">
             <p>
               Située aux portes de Paris dans les Hauts-de-Seine, <strong className="text-foreground">Boulogne-Billancourt</strong> est l'une des villes les plus recherchées d'Île-de-France pour l'achat d'un appartement. Avec plus de 120 000 habitants, la ville offre un cadre de vie haut de gamme, à mi-chemin entre dynamisme parisien et calme résidentiel.
             </p>
@@ -157,17 +157,17 @@ const AchatBoulogneBillancourt = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
             {[
               { icon: TrendingUp, val: "≈ 9 800 €/m²", label: "Prix moyen" },
               { icon: Building2, val: "120 000+", label: "Habitants" },
               { icon: Train, val: "4 lignes", label: "Métro & T2" },
               { icon: GraduationCap, val: "30+", label: "Écoles" },
             ].map((s) => (
-              <div key={s.label} className="bg-card border border-border rounded-xl p-4 text-center">
-                <s.icon className="w-5 h-5 text-accent mx-auto mb-2" />
-                <div className="font-display text-lg md:text-xl text-foreground">{s.val}</div>
-                <div className="font-body text-xs text-muted-foreground mt-1">{s.label}</div>
+              <div key={s.label} className="bg-card border border-border rounded-xl p-6 text-center">
+                <s.icon className="w-6 h-6 text-accent mx-auto mb-3" />
+                <div className="font-display text-xl md:text-2xl text-foreground">{s.val}</div>
+                <div className="font-body text-sm text-muted-foreground mt-2">{s.label}</div>
               </div>
             ))}
           </div>
@@ -175,7 +175,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* QUARTIERS */}
-      <section className="py-16 md:py-24 bg-secondary">
+      <section className="py-24 md:py-36 bg-secondary">
         <div className="container mx-auto px-5 md:px-6 max-w-6xl">
           <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">Les quartiers</span>
           <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-3">
@@ -203,7 +203,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* BIENS DISPO */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-24 md:py-36 bg-background">
         <div className="container mx-auto px-5 md:px-6 max-w-6xl">
           <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div>
@@ -243,7 +243,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* TRANSPORTS / ATOUTS */}
-      <section className="py-16 md:py-24 bg-primary">
+      <section className="py-24 md:py-36 bg-primary">
         <div className="container mx-auto px-5 md:px-6 max-w-5xl">
           <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">Cadre de vie</span>
           <h2 className="font-display text-2xl md:text-4xl text-primary-foreground mt-3 mb-10">
@@ -285,7 +285,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 md:py-24 bg-secondary">
+      <section className="py-24 md:py-36 bg-secondary">
         <div className="container mx-auto px-5 md:px-6 max-w-3xl">
           <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">Questions fréquentes</span>
           <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-10">
@@ -306,7 +306,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* CTA FINAL */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-24 md:py-36 bg-background">
         <div className="container mx-auto px-5 md:px-6 max-w-3xl text-center">
           <h2 className="font-display text-2xl md:text-4xl text-foreground mb-5">
             Prêt à acheter votre appartement à <span className="italic text-accent">Boulogne-Billancourt</span> ?
