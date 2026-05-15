@@ -338,6 +338,29 @@ const EstimationPage = () => {
       </section>
 
       <Footer />
+
+      {/* CTA flottant sticky — toujours visible au scroll */}
+      <div className="fixed bottom-4 left-0 right-0 z-40 px-4 pointer-events-none md:bottom-6">
+        <div className="container mx-auto flex justify-center md:justify-end">
+          <EstimationPopup
+            trigger={
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="pointer-events-auto inline-flex items-center gap-2 bg-accent text-accent-foreground pl-4 pr-5 py-3 rounded-full font-body font-semibold text-sm shadow-2xl shadow-accent/30 hover:brightness-110 transition-all"
+              >
+                <span className="flex w-7 h-7 rounded-full bg-white/25 items-center justify-center">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                </span>
+                Estimer mon bien
+              </motion.button>
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 };
