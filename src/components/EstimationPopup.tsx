@@ -929,6 +929,8 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
             )}
           </AnimatePresence>
         </div>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
