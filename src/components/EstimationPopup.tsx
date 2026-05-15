@@ -883,6 +883,11 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
                     className={`${inputClass} pl-10`}
                   />
                 </div>
+                {form.phone && !phoneValid && (
+                  <p className="font-body text-xs text-destructive -mt-1">
+                    Numéro invalide (10 chiffres minimum).
+                  </p>
+                )}
 
                 <div>
                   <p className="font-body text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-3">
