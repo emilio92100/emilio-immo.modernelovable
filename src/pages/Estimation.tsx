@@ -68,7 +68,7 @@ const jsonLd = {
         areaServed: ["Paris 6e", "Paris 7e", "Paris 15e", "Paris 16e", "Boulogne-Billancourt", "Neuilly-sur-Seine", "Issy-les-Moulineaux", "Levallois-Perret"],
       },
       areaServed: "Paris & Hauts-de-Seine",
-      description: "Estimation immobilière gratuite et instantanée pour appartements à Paris et dans les Hauts-de-Seine. Méthode basée sur la base DVF officielle et l'expertise locale.",
+      description: "Estimation immobilière gratuite pour appartements à Paris et dans les Hauts-de-Seine. Méthode basée sur la base DVF officielle et l'expertise locale. Réponse d'un conseiller sous 24h.",
       offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
       url: PAGE_URL,
     },
