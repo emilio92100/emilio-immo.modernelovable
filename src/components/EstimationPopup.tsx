@@ -30,6 +30,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
