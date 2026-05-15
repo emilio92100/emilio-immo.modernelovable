@@ -293,17 +293,22 @@ const AchatBoulogneBillancourt = () => {
           <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-10">
             Acheter à Boulogne-Billancourt : <span className="italic text-accent">vos questions</span>
           </h2>
-          <div className="space-y-4">
-            {faqs.map((f) => (
-              <details key={f.q} className="group bg-card border border-border rounded-xl p-5 cursor-pointer">
-                <summary className="font-display text-base md:text-lg text-foreground list-none flex justify-between items-center gap-4">
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs.map((f, i) => (
+              <AccordionItem
+                key={i}
+                value={`faq-${i}`}
+                className="bg-card border border-border rounded-xl px-6 overflow-hidden data-[state=open]:border-accent/30 transition-colors"
+              >
+                <AccordionTrigger className="font-display text-base md:text-lg text-foreground py-5 hover:no-underline gap-4 [&[data-state=open]>svg]:text-accent">
                   {f.q}
-                  <span className="text-accent text-2xl font-light shrink-0 group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="font-body text-sm text-muted-foreground leading-relaxed mt-3">{f.a}</p>
-              </details>
+                </AccordionTrigger>
+                <AccordionContent className="font-body text-sm text-muted-foreground leading-relaxed pb-5">
+                  {f.a}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
       </section>
 
