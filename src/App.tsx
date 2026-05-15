@@ -29,6 +29,7 @@ import VendreParis16 from "./pages/VendreParis16";
 import VendreParis15 from "./pages/VendreParis15";
 import VendreParis7 from "./pages/VendreParis7";
 import VendreParis6 from "./pages/VendreParis6";
+import Estimation from "./pages/Estimation";
 import NotFound from "./pages/NotFound";
 import NewFeaturePopup from "./components/NewFeaturePopup";
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/biens/:id" element={<PropertyDetail />} />
           <Route path="/notre-histoire" element={<Director />} />
           <Route path="/vendre" element={<SellPage />} />
+          <Route path="/estimation" element={<Estimation />} />
           <Route path="/mandat-recherche" element={<BuyerMandate />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/demandes" element={<AdminSubmissions />} />

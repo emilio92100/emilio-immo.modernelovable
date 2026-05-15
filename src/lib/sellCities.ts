@@ -16,7 +16,7 @@ export type SellCityData = {
 const sellCities: Record<string, SellCityData> = {
   "boulogne-billancourt": {
     slug: "boulogne-billancourt",
-    metaTitle: "Vendre appartement Boulogne-Billancourt (92100) — Emilio Immobilier",
+    metaTitle: "Estimation & vente appartement Boulogne-Billancourt (92100) | Prix m² 2026",
     metaDescription:
       "Vendre votre appartement à Boulogne-Billancourt : estimation gratuite, délai moyen, méthode off-market et accompagnement par notre agence locale.",
     heroIntro:
@@ -75,7 +75,7 @@ const sellCities: Record<string, SellCityData> = {
 
   "neuilly-sur-seine": {
     slug: "neuilly-sur-seine",
-    metaTitle: "Vendre appartement Neuilly-sur-Seine (92200) — Emilio Immobilier",
+    metaTitle: "Estimation & vente appartement Neuilly-sur-Seine (92200) | Prix m² 2026",
     metaDescription:
       "Vendre votre appartement à Neuilly-sur-Seine en toute confidentialité : estimation experte, vente off-market et réseau d'acheteurs internationaux qualifiés.",
     heroIntro:
@@ -134,7 +134,7 @@ const sellCities: Record<string, SellCityData> = {
 
   "issy-les-moulineaux": {
     slug: "issy-les-moulineaux",
-    metaTitle: "Vendre appartement Issy-les-Moulineaux (92130) — Emilio Immobilier",
+    metaTitle: "Estimation & vente appartement Issy-les-Moulineaux (92130) | Prix m² 2026",
     metaDescription:
       "Vendre votre appartement à Issy-les-Moulineaux : estimation gratuite, délai moyen 45 jours, accompagnement complet par notre agence locale.",
     heroIntro:
@@ -193,7 +193,7 @@ const sellCities: Record<string, SellCityData> = {
 
   "levallois-perret": {
     slug: "levallois-perret",
-    metaTitle: "Vendre appartement Levallois-Perret (92300) — Emilio Immobilier",
+    metaTitle: "Estimation & vente appartement Levallois-Perret (92300) | Prix m² 2026",
     metaDescription:
       "Vendre votre appartement à Levallois-Perret : estimation gratuite, marché ultra-liquide, accompagnement complet par notre agence locale.",
     heroIntro:
@@ -252,7 +252,7 @@ const sellCities: Record<string, SellCityData> = {
 
   "paris-16": {
     slug: "paris-16",
-    metaTitle: "Vendre appartement Paris 16e (75016) — Emilio Immobilier",
+    metaTitle: "Estimation & vente appartement Paris 16e (75016) | Prix m² 2026",
     metaDescription:
       "Vendre votre appartement dans le 16ème arrondissement de Paris : estimation experte, vente off-market et réseau d'acheteurs qualifiés.",
     heroIntro:
@@ -311,7 +311,7 @@ const sellCities: Record<string, SellCityData> = {
 
   "paris-15": {
     slug: "paris-15",
-    metaTitle: "Vendre appartement Paris 15e (75015) — Emilio Immobilier",
+    metaTitle: "Estimation & vente appartement Paris 15e (75015) | Prix m² 2026",
     metaDescription:
       "Vendre votre appartement dans le 15ème arrondissement de Paris : estimation experte, marché familial dynamique et accompagnement complet.",
     heroIntro:
@@ -370,7 +370,7 @@ const sellCities: Record<string, SellCityData> = {
 
   "paris-7": {
     slug: "paris-7",
-    metaTitle: "Vendre appartement Paris 7e (75007) — Emilio Immobilier",
+    metaTitle: "Estimation & vente appartement Paris 7e (75007) | Prix m² 2026",
     metaDescription:
       "Vendre votre appartement dans le 7ème arrondissement de Paris en toute confidentialité : estimation experte et réseau d'acheteurs internationaux.",
     heroIntro:
@@ -429,7 +429,7 @@ const sellCities: Record<string, SellCityData> = {
 
   "paris-6": {
     slug: "paris-6",
-    metaTitle: "Vendre appartement Paris 6e (75006) — Emilio Immobilier",
+    metaTitle: "Estimation & vente appartement Paris 6e (75006) | Prix m² 2026",
     metaDescription:
       "Vendre votre appartement dans le 6ème arrondissement de Paris en toute confidentialité : estimation experte et réseau d'acheteurs qualifiés.",
     heroIntro:
