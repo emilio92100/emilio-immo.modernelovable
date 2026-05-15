@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, TrendingUp, Train, GraduationCap, Trees, Building2, ArrowRight, CheckCircle2, Search, Phone } from "lucide-react";
+import { MapPin, TrendingUp, Train, GraduationCap, Trees, Building2, ArrowRight, CheckCircle2, Search, Phone, ChevronDown } from "lucide-react";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
