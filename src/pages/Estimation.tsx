@@ -30,7 +30,7 @@ const PAGE_URL = "https://www.emilio-immo.com/estimation";
 const faqs = [
   {
     q: "L'estimation est-elle vraiment gratuite et sans engagement ?",
-    a: "Oui. L'estimation en ligne est instantanée et 100 % gratuite. Si vous souhaitez un avis de valeur écrit signé par un de nos experts, nous nous déplaçons également sans frais ni obligation de mandat.",
+    a: "Oui. L'estimation en ligne est 100 % gratuite et sans engagement. Un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée. Si vous souhaitez un avis de valeur écrit signé par un de nos experts, nous nous déplaçons également sans frais ni obligation de mandat.",
   },
   {
     q: "Comment calculez-vous la valeur de mon appartement ?",
