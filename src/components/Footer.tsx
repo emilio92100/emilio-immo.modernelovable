@@ -5,7 +5,7 @@ import logo from "@/assets/logo.png";
 const Footer = () => (
   <footer className="bg-primary text-primary-foreground">
     <div className="container mx-auto px-6 py-16">
-      <div className="grid md:grid-cols-5 gap-10">
+      <div className="grid md:grid-cols-6 gap-10">
         <div className="md:col-span-1">
           <img src={logo} alt="Emilio" className="h-14 brightness-0 invert mb-4" />
           <p className="text-primary-foreground/70 text-sm font-body leading-relaxed">
@@ -38,12 +38,24 @@ const Footer = () => (
         <div>
           <h4 className="font-display text-lg mb-4">Nos secteurs</h4>
           <div className="flex flex-col gap-2">
-            <Link
-              to="/achat-appartement-boulogne-billancourt"
-              className="text-sm text-primary-foreground/70 hover:text-accent transition-colors font-body"
-            >
-              Achat appartement Boulogne-Billancourt
-            </Link>
+            {[
+              { label: "Boulogne-Billancourt", path: "/achat-appartement-boulogne-billancourt" },
+              { label: "Neuilly-sur-Seine", path: "/achat-appartement-neuilly-sur-seine" },
+              { label: "Levallois-Perret", path: "/achat-appartement-levallois-perret" },
+              { label: "Issy-les-Moulineaux", path: "/achat-appartement-issy-les-moulineaux" },
+              { label: "Paris 6e", path: "/achat-appartement-paris-6" },
+              { label: "Paris 7e", path: "/achat-appartement-paris-7" },
+              { label: "Paris 15e", path: "/achat-appartement-paris-15" },
+              { label: "Paris 16e", path: "/achat-appartement-paris-16" },
+            ].map((s) => (
+              <Link
+                key={s.path}
+                to={s.path}
+                className="text-sm text-primary-foreground/70 hover:text-accent transition-colors font-body"
+              >
+                {s.label}
+              </Link>
+            ))}
           </div>
         </div>
 
