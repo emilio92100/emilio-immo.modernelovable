@@ -108,7 +108,7 @@ const expositions = [
   { val: "Traversant", icon: Sparkles },
 ];
 
-const conditions = ["À rafraîchir", "Bon état", "Refait à neuf", "Neuf"];
+const conditions = ["À rafraîchir", "Bon état", "Très bon état", "Neuf"];
 const timelines = [
   "Par simple curiosité",
   "Projet d'ici 3 mois",
