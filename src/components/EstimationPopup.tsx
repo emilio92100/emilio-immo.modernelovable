@@ -200,11 +200,13 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   const canNextStep1 =
     !!form.property_type && !!form.rooms && !!form.surface && Number(form.surface) > 5;
   const canNextStep2 = !!form.address && !!form.postal_code && !!form.city;
+  const phoneDigits = form.phone.replace(/\D/g, "");
+  const phoneValid = phoneDigits.length >= 10;
   const canSubmit =
     !!form.first_name &&
     !!form.last_name &&
     !!form.email &&
-    !!form.phone &&
+    phoneValid &&
     !!form.timeline &&
     form.consent;
 
