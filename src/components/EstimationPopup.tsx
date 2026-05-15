@@ -108,7 +108,7 @@ const expositions = [
   { val: "Traversant", icon: Sparkles },
 ];
 
-const conditions = ["À rafraîchir", "Bon état", "Refait à neuf", "Neuf"];
+const conditions = ["À rafraîchir", "Bon état", "Très bon état", "Neuf"];
 const timelines = [
   "Par simple curiosité",
   "Projet d'ici 3 mois",
@@ -134,6 +134,7 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   const [form, setForm] = useState<FormData>(initialForm(defaultCity, defaultPostalCode));
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<EstimateResult | null>(null);
+  const [loadingPhase, setLoadingPhase] = useState(0);
 
   // Address autocomplete
   type Suggestion = { label: string; name: string; postcode: string; city: string };
@@ -210,6 +211,12 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   const handleSubmit = async () => {
     if (!canSubmit) return;
     setSubmitting(true);
+    setLoadingPhase(0);
+    const startedAt = Date.now();
+    const phaseTimers: number[] = [];
+    phaseTimers.push(window.setTimeout(() => setLoadingPhase(1), 1800));
+    phaseTimers.push(window.setTimeout(() => setLoadingPhase(2), 4200));
+    phaseTimers.push(window.setTimeout(() => setLoadingPhase(3), 7000));
     try {
       // 1. Get DVF estimation
       let estimate: EstimateResult | null = null;
@@ -282,6 +289,12 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
       }
 
       setResult(estimate || { error: "no_data" });
+      // Ensure loader runs at least ~9s for a credible analysis feel
+      const elapsed = Date.now() - startedAt;
+      const minDuration = 9000;
+      if (elapsed < minDuration) {
+        await new Promise((r) => setTimeout(r, minDuration - elapsed));
+      }
       setStep(4);
     } catch {
       toast({
@@ -290,7 +303,9 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
         variant: "destructive",
       });
     } finally {
+      phaseTimers.forEach((t) => window.clearTimeout(t));
       setSubmitting(false);
+      setLoadingPhase(0);
     }
   };
 
@@ -426,6 +441,83 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
 
             <div className="px-5 md:px-6 py-5">
           <AnimatePresence mode="wait">
+            {submitting && step === 3 && (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="py-8 space-y-7"
+              >
+                <div className="text-center space-y-2">
+                  <div className="inline-flex w-14 h-14 rounded-full bg-accent/15 items-center justify-center mb-2">
+                    <Loader2 className="w-7 h-7 text-accent animate-spin" />
+                  </div>
+                  <h3 className="font-display text-xl text-foreground">
+                    Analyse en cours
+                  </h3>
+                  <p className="font-body text-sm text-muted-foreground">
+                    Notre algorithme étudie votre bien — quelques secondes…
+                  </p>
+                </div>
+
+                {/* Progress bar */}
+                <div className="relative h-1.5 bg-muted rounded-full overflow-hidden max-w-sm mx-auto">
+                  <motion.div
+                    initial={{ width: "0%" }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 9, ease: "linear" }}
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent/80 to-accent rounded-full"
+                  />
+                </div>
+
+                {/* Animated steps */}
+                <div className="max-w-sm mx-auto space-y-3">
+                  {[
+                    { label: "Lecture des caractéristiques de votre bien", icon: Home },
+                    { label: "Analyse des ventes récentes du quartier", icon: MapPin },
+                    { label: "Comparaison avec les biens similaires", icon: Building2 },
+                    { label: "Calcul de la fourchette indicative", icon: TrendingUp },
+                  ].map((s, i) => {
+                    const done = loadingPhase > i;
+                    const active = loadingPhase === i;
+                    return (
+                      <motion.div
+                        key={s.label}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border transition-all ${
+                          active
+                            ? "border-accent/40 bg-accent/5"
+                            : done
+                            ? "border-border bg-card opacity-70"
+                            : "border-border/50 bg-transparent opacity-40"
+                        }`}
+                      >
+                        <div className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center ${
+                          done
+                            ? "bg-accent text-accent-foreground"
+                            : active
+                            ? "bg-accent/15 text-accent"
+                            : "bg-muted text-muted-foreground"
+                        }`}>
+                          {done ? (
+                            <CheckCircle2 className="w-4 h-4" />
+                          ) : active ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <s.icon className="w-3.5 h-3.5" />
+                          )}
+                        </div>
+                        <span className="font-body text-sm text-foreground flex-1">{s.label}</span>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+
             {step === 1 && (
               <motion.div
                 key="s1"
@@ -738,7 +830,7 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
               </motion.div>
             )}
 
-            {step === 3 && (
+            {step === 3 && !submitting && (
               <motion.div
                 key="s3"
                 initial={{ opacity: 0, x: 20 }}
@@ -897,11 +989,21 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
                     </p>
                   </>
                 ) : (
-                  <p className="font-body text-sm text-muted-foreground max-w-md mx-auto">
-                    Pas assez de ventes récentes dans la base publique pour ce code postal. Pas
-                    d'inquiétude : <strong className="text-foreground">notre conseiller vous
-                    rappellera sous 24h</strong> avec une estimation experte personnalisée.
-                  </p>
+                  <>
+                    <p className="font-body text-sm text-muted-foreground max-w-md mx-auto">
+                      Votre demande est bien enregistrée. Pour ce type de bien, une estimation
+                      précise nécessite l'œil d'un expert sur place — c'est pourquoi nous préférons
+                      vous rappeler avec une analyse réellement personnalisée plutôt qu'une
+                      fourchette générique.
+                    </p>
+                    <div className="bg-card border border-border rounded-xl p-4 max-w-md mx-auto">
+                      <p className="font-body text-xs text-muted-foreground leading-relaxed">
+                        Notre estimation prend en compte l'étage, l'exposition, la vue, l'état réel,
+                        le DPE, la copropriété et la dynamique micro-locale — autant de critères
+                        qu'aucun calculateur en ligne ne peut intégrer fidèlement.
+                      </p>
+                    </div>
+                  </>
                 )}
 
                 <div className="bg-accent/10 border border-accent/25 rounded-xl p-4 text-left">
