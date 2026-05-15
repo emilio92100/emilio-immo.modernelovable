@@ -5,9 +5,10 @@ interface SEOHeadProps {
   description: string;
   canonical?: string;
   jsonLd?: Record<string, unknown>;
+  noindex?: boolean;
 }
 
-const SEOHead = ({ title, description, canonical, jsonLd }: SEOHeadProps) => {
+const SEOHead = ({ title, description, canonical, jsonLd, noindex }: SEOHeadProps) => {
   useEffect(() => {
     document.title = title;
 
@@ -27,6 +28,19 @@ const SEOHead = ({ title, description, canonical, jsonLd }: SEOHeadProps) => {
     setMeta("og:description", description, true);
     setMeta("twitter:title", title);
     setMeta("twitter:description", description);
+
+    // Robots noindex (per-page) — for pages that should be removed from index (e.g. deleted listings)
+    let robots = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+    if (noindex) {
+      if (!robots) {
+        robots = document.createElement("meta");
+        robots.setAttribute("name", "robots");
+        document.head.appendChild(robots);
+      }
+      robots.setAttribute("content", "noindex, nofollow");
+    } else if (robots) {
+      robots.remove();
+    }
 
     // Canonical
     let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
@@ -55,8 +69,10 @@ const SEOHead = ({ title, description, canonical, jsonLd }: SEOHeadProps) => {
     return () => {
       const script = document.querySelector('script[data-seo-jsonld]');
       if (script) script.remove();
+      const r = document.querySelector('meta[name="robots"]');
+      if (r) r.remove();
     };
-  }, [title, description, canonical, jsonLd]);
+  }, [title, description, canonical, jsonLd, noindex]);
 
   return null;
 };
