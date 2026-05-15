@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X, Home } from "lucide-react";
+import { Menu, X, TrendingUp, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import logo from "@/assets/logo.png";
-import EstimationForm from "@/components/EstimationForm";
+import EstimationPopup from "@/components/EstimationPopup";
 
 const navItems = [
   { label: "Accueil", path: "/" },
@@ -41,21 +41,28 @@ const Navbar = () => {
 
         {/* CTA Estimer mon bien - animated */}
         <div className="hidden lg:block">
-          <EstimationForm
+          <EstimationPopup
             trigger={
               <motion.button
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.97 }}
                 animate={{
                   boxShadow: [
-                    "0 0 0 0 hsla(38, 55%, 55%, 0.4)",
-                    "0 0 0 8px hsla(38, 55%, 55%, 0)",
-                    "0 0 0 0 hsla(38, 55%, 55%, 0)",
+                    "0 0 0 0 hsla(38, 80%, 52%, 0.45)",
+                    "0 0 0 10px hsla(38, 80%, 52%, 0)",
+                    "0 0 0 0 hsla(38, 80%, 52%, 0)",
                   ],
                 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded font-body font-semibold text-sm tracking-wide hover:brightness-110 transition-all"
+                transition={{
+                  boxShadow: { duration: 2.2, repeat: Infinity, ease: "easeInOut" },
+                }}
+                className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-accent to-[hsl(32_85%_58%)] text-accent-foreground pl-4 pr-5 py-2.5 rounded-full font-body font-semibold text-sm tracking-wide shadow-md hover:shadow-lg hover:brightness-105 transition-all"
               >
-                <Home className="w-4 h-4" />
+                <span className="flex w-7 h-7 rounded-full bg-white/20 items-center justify-center">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                </span>
                 Estimer mon bien
+                <Sparkles className="w-3.5 h-3.5 opacity-80 group-hover:opacity-100 transition-opacity" />
               </motion.button>
             }
           />
@@ -87,10 +94,13 @@ const Navbar = () => {
                 {item.label}
               </Link>
             ))}
-            <EstimationForm
+            <EstimationPopup
               trigger={
-                <button className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded font-body font-semibold text-sm w-fit">
-                  <Home className="w-4 h-4" /> Estimer mon bien
+                <button className="inline-flex items-center gap-2 bg-gradient-to-r from-accent to-[hsl(32_85%_58%)] text-accent-foreground pl-4 pr-5 py-2.5 rounded-full font-body font-semibold text-sm shadow-md w-fit">
+                  <span className="flex w-6 h-6 rounded-full bg-white/20 items-center justify-center">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                  </span>
+                  Estimer mon bien
                 </button>
               }
             />
