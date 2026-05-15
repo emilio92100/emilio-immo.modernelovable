@@ -175,7 +175,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* QUARTIERS */}
-      <section className="py-16 md:py-24 bg-secondary">
+      <section className="py-24 md:py-36 bg-secondary">
         <div className="container mx-auto px-5 md:px-6 max-w-6xl">
           <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">Les quartiers</span>
           <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-3">
@@ -203,7 +203,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* BIENS DISPO */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-24 md:py-36 bg-background">
         <div className="container mx-auto px-5 md:px-6 max-w-6xl">
           <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div>
@@ -243,7 +243,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* TRANSPORTS / ATOUTS */}
-      <section className="py-16 md:py-24 bg-primary">
+      <section className="py-24 md:py-36 bg-primary">
         <div className="container mx-auto px-5 md:px-6 max-w-5xl">
           <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">Cadre de vie</span>
           <h2 className="font-display text-2xl md:text-4xl text-primary-foreground mt-3 mb-10">
@@ -285,7 +285,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 md:py-24 bg-secondary">
+      <section className="py-24 md:py-36 bg-secondary">
         <div className="container mx-auto px-5 md:px-6 max-w-3xl">
           <span className="font-body text-accent font-semibold text-xs tracking-[0.3em] uppercase">Questions fréquentes</span>
           <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-10">
@@ -306,7 +306,7 @@ const AchatBoulogneBillancourt = () => {
       </section>
 
       {/* CTA FINAL */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-24 md:py-36 bg-background">
         <div className="container mx-auto px-5 md:px-6 max-w-3xl text-center">
           <h2 className="font-display text-2xl md:text-4xl text-foreground mb-5">
             Prêt à acheter votre appartement à <span className="italic text-accent">Boulogne-Billancourt</span> ?
