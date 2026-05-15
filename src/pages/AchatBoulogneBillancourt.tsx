@@ -115,7 +115,8 @@ const AchatBoulogneBillancourt = () => {
               <span className="font-body text-accent text-xs font-semibold tracking-wide uppercase">Hauts-de-Seine · 92100</span>
             </div>
             <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-[1.1] mb-8">
-              Achat d'appartement à <span className="italic text-accent">Boulogne-Billancourt</span>
+              Achat d'appartement à{" "}
+              <span className="block mt-2 italic text-accent">Boulogne-Billancourt</span>
             </h1>
             <p className="font-body text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-10">
               Vous cherchez à acheter un appartement à Boulogne-Billancourt ? Notre agence vous accompagne dans toutes les étapes de votre projet : analyse du marché, sélection des meilleurs biens (visibles et off-market), visites, négociation et signature.
