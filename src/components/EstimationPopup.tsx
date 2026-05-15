@@ -200,11 +200,13 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   const canNextStep1 =
     !!form.property_type && !!form.rooms && !!form.surface && Number(form.surface) > 5;
   const canNextStep2 = !!form.address && !!form.postal_code && !!form.city;
+  const phoneDigits = form.phone.replace(/\D/g, "");
+  const phoneValid = phoneDigits.length >= 10;
   const canSubmit =
     !!form.first_name &&
     !!form.last_name &&
     !!form.email &&
-    !!form.phone &&
+    phoneValid &&
     !!form.timeline &&
     form.consent;
 
@@ -881,6 +883,11 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
                     className={`${inputClass} pl-10`}
                   />
                 </div>
+                {form.phone && !phoneValid && (
+                  <p className="font-body text-xs text-destructive -mt-1">
+                    Numéro invalide (10 chiffres minimum).
+                  </p>
+                )}
 
                 <div>
                   <p className="font-body text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-3">
