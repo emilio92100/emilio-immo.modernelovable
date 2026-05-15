@@ -137,6 +137,7 @@ const PropertyDetail = () => {
         <SEOHead
           title="Bien introuvable — Émilio Immobilier"
           description="Ce bien n'est plus disponible. Découvrez nos autres biens à vendre à Paris et dans les Hauts-de-Seine."
+          noindex
         />
         <Navbar />
         <div className="pt-28 pb-20 text-center container mx-auto px-6">
