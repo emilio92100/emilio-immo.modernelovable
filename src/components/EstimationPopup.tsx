@@ -293,26 +293,49 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   };
 
   // ---------- UI sub-components ----------
-  const StepDot = ({ n, label }: { n: number; label: string }) => (
-    <div className="flex items-center gap-2">
-      <div
-        className={`w-7 h-7 rounded-full flex items-center justify-center font-display text-sm transition-all ${
-          step >= n
-            ? "bg-accent text-accent-foreground"
-            : "bg-muted text-muted-foreground"
-        }`}
-      >
-        {step > n ? <CheckCircle2 className="w-4 h-4" /> : n}
+  const stepLabels = ["Le bien", "L'adresse", "Vos coordonnées"];
+  const StepperBar = () => {
+    const progress = ((step - 1) / 2) * 100;
+    return (
+      <div className="w-full">
+        <div className="flex items-center justify-between mb-3">
+          {stepLabels.map((label, i) => {
+            const n = (i + 1) as 1 | 2 | 3;
+            const active = step >= n;
+            const done = step > n;
+            return (
+              <div key={label} className="flex flex-col items-center gap-1.5 flex-1">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center font-display text-sm transition-all duration-300 ${
+                    active
+                      ? "bg-accent text-accent-foreground shadow-[0_0_0_4px_hsl(var(--accent)/0.18)]"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {done ? <CheckCircle2 className="w-4 h-4" /> : n}
+                </div>
+                <span
+                  className={`font-body text-[11px] tracking-wide uppercase transition-colors ${
+                    active ? "text-foreground font-semibold" : "text-muted-foreground"
+                  }`}
+                >
+                  {label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="relative h-1 bg-muted rounded-full overflow-hidden">
+          <motion.div
+            initial={false}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent/80 to-accent rounded-full"
+          />
+        </div>
       </div>
-      <span
-        className={`hidden md:inline font-body text-xs ${
-          step >= n ? "text-foreground font-semibold" : "text-muted-foreground"
-        }`}
-      >
-        {label}
-      </span>
-    </div>
-  );
+    );
+  };
 
   const ChoiceCard = ({
     icon: Icon,
@@ -377,29 +400,35 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 bg-background border-border">
-        <div className="bg-primary px-6 py-5">
-          <DialogTitle className="font-display text-xl text-primary-foreground flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-accent" />
-            Estimer mon bien — gratuit & confidentiel
-          </DialogTitle>
-          <DialogDescription className="font-body text-sm text-primary-foreground/70 mt-1">
-            Estimation experte basée sur les dernières transactions du marché local.
-          </DialogDescription>
+      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 bg-background border-border rounded-2xl shadow-2xl">
+        {/* Premium header */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-[hsl(215_55%_18%)] px-6 md:px-8 py-7">
+          <div aria-hidden className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-accent/15 blur-3xl" />
+          <div aria-hidden className="absolute -bottom-20 -left-10 w-48 h-48 rounded-full border border-primary-foreground/10" />
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-3 py-1 mb-3">
+              <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+              <span className="font-body text-accent text-[11px] font-semibold tracking-[0.2em] uppercase">
+                Gratuit · Confidentiel · Sous 24h
+              </span>
+            </div>
+            <DialogTitle className="font-display text-2xl md:text-3xl text-primary-foreground leading-tight">
+              Estimez votre bien <span className="italic text-accent">en quelques clics</span>
+            </DialogTitle>
+            <DialogDescription className="font-body text-sm md:text-base text-primary-foreground/70 mt-2 max-w-lg">
+              Analyse basée sur les dernières transactions de votre quartier, affinée par un conseiller dédié.
+            </DialogDescription>
+          </div>
         </div>
 
         {/* Stepper */}
         {step < 4 && (
-          <div className="px-6 py-4 border-b border-border flex items-center justify-between gap-2">
-            <StepDot n={1} label="Le bien" />
-            <div className="h-px flex-1 bg-border mx-1" />
-            <StepDot n={2} label="L'adresse" />
-            <div className="h-px flex-1 bg-border mx-1" />
-            <StepDot n={3} label="Vos coordonnées" />
+          <div className="px-6 md:px-8 pt-6 pb-2 bg-card/50 border-b border-border">
+            <StepperBar />
           </div>
         )}
 
-        <div className="px-6 py-5">
+        <div className="px-6 md:px-8 py-6">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div
