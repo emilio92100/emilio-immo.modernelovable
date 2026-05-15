@@ -299,37 +299,18 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
     const progress = ((step - 1) / 2) * 100;
     return (
       <div className="w-full">
-        <div className="flex items-center justify-between mb-3">
-          {stepLabels.map((label, i) => {
-            const n = (i + 1) as 1 | 2 | 3;
-            const active = step >= n;
-            const done = step > n;
-            return (
-              <div key={label} className="flex flex-col items-center gap-1.5 flex-1">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center font-display text-sm transition-all duration-300 ${
-                    active
-                      ? "bg-accent text-accent-foreground shadow-[0_0_0_4px_hsl(var(--accent)/0.18)]"
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {done ? <CheckCircle2 className="w-4 h-4" /> : n}
-                </div>
-                <span
-                  className={`font-body text-[11px] tracking-wide uppercase transition-colors ${
-                    active ? "text-foreground font-semibold" : "text-muted-foreground"
-                  }`}
-                >
-                  {label}
-                </span>
-              </div>
-            );
-          })}
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-body text-[11px] uppercase tracking-[0.14em] text-muted-foreground font-semibold">
+            Étape {step}/3
+          </span>
+          <span className="font-body text-[12px] text-foreground font-semibold">
+            {stepLabels[step - 1]}
+          </span>
         </div>
-        <div className="relative h-1 bg-muted rounded-full overflow-hidden">
+        <div className="relative h-1.5 bg-muted rounded-full overflow-hidden">
           <motion.div
             initial={false}
-            animate={{ width: `${progress}%` }}
+            animate={{ width: `${Math.max(progress, 4)}%` }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent/80 to-accent rounded-full"
           />
