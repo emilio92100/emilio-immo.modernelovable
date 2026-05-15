@@ -12,6 +12,7 @@ const STATIC_URLS = [
   { loc: "/vendre", changefreq: "monthly", priority: "0.8" },
   { loc: "/mandat-recherche", changefreq: "monthly", priority: "0.8" },
   { loc: "/notre-histoire", changefreq: "monthly", priority: "0.7" },
+  { loc: "/achat-appartement-boulogne-billancourt", changefreq: "weekly", priority: "0.9" },
   { loc: "/mentions-legales", changefreq: "yearly", priority: "0.3" },
 ];
 

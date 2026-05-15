@@ -13,6 +13,7 @@ import PropertyDetail from "./pages/PropertyDetail";
 import AdminSubmissions from "./pages/AdminSubmissions";
 import AdminLogin from "./pages/AdminLogin";
 import MentionsLegales from "./pages/MentionsLegales";
+import AchatBoulogneBillancourt from "./pages/AchatBoulogneBillancourt";
 import NotFound from "./pages/NotFound";
 import NewFeaturePopup from "./components/NewFeaturePopup";
 
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/demandes" element={<AdminSubmissions />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
+          <Route path="/achat-appartement-boulogne-billancourt" element={<AchatBoulogneBillancourt />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
