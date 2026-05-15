@@ -830,7 +830,7 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
               </motion.div>
             )}
 
-            {step === 3 && (
+            {step === 3 && !submitting && (
               <motion.div
                 key="s3"
                 initial={{ opacity: 0, x: 20 }}
