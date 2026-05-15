@@ -21,6 +21,14 @@ import AchatParis16 from "./pages/AchatParis16";
 import AchatParis15 from "./pages/AchatParis15";
 import AchatParis7 from "./pages/AchatParis7";
 import AchatParis6 from "./pages/AchatParis6";
+import VendreBoulogneBillancourt from "./pages/VendreBoulogneBillancourt";
+import VendreNeuillySurSeine from "./pages/VendreNeuillySurSeine";
+import VendreIssyLesMoulineaux from "./pages/VendreIssyLesMoulineaux";
+import VendreLevalloisPerret from "./pages/VendreLevalloisPerret";
+import VendreParis16 from "./pages/VendreParis16";
+import VendreParis15 from "./pages/VendreParis15";
+import VendreParis7 from "./pages/VendreParis7";
+import VendreParis6 from "./pages/VendreParis6";
 import NotFound from "./pages/NotFound";
 import NewFeaturePopup from "./components/NewFeaturePopup";
 
@@ -52,6 +60,14 @@ const App = () => (
           <Route path="/achat-appartement-paris-15" element={<AchatParis15 />} />
           <Route path="/achat-appartement-paris-7" element={<AchatParis7 />} />
           <Route path="/achat-appartement-paris-6" element={<AchatParis6 />} />
+          <Route path="/vendre-appartement-boulogne-billancourt" element={<VendreBoulogneBillancourt />} />
+          <Route path="/vendre-appartement-neuilly-sur-seine" element={<VendreNeuillySurSeine />} />
+          <Route path="/vendre-appartement-issy-les-moulineaux" element={<VendreIssyLesMoulineaux />} />
+          <Route path="/vendre-appartement-levallois-perret" element={<VendreLevalloisPerret />} />
+          <Route path="/vendre-appartement-paris-16" element={<VendreParis16 />} />
+          <Route path="/vendre-appartement-paris-15" element={<VendreParis15 />} />
+          <Route path="/vendre-appartement-paris-7" element={<VendreParis7 />} />
+          <Route path="/vendre-appartement-paris-6" element={<VendreParis6 />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
