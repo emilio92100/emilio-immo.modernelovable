@@ -122,11 +122,11 @@ const EstimationPage = () => {
             </div>
             <h1 className="font-display text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl text-primary-foreground leading-[1.1] mb-8">
               Estimation immobilière{" "}
-              <span className="italic text-accent whitespace-nowrap">gratuite & instantanée</span>
+              <span className="italic text-accent whitespace-nowrap">gratuite & personnalisée</span>
             </h1>
             <p className="font-body text-primary-foreground/80 text-base md:text-2xl leading-relaxed max-w-3xl mx-auto mb-10">
-              Découvrez en moins de 2 minutes la valeur de votre appartement à Paris ou dans les Hauts-de-Seine.
-              Méthode professionnelle basée sur les transactions notariées récentes et l'expertise terrain de notre agence.
+              Confiez-nous les caractéristiques de votre appartement à Paris ou dans les Hauts-de-Seine.
+              Un conseiller vous rappelle sous 24h avec une fourchette de prix basée sur les transactions notariées récentes et notre expertise terrain.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <EstimationPopup
