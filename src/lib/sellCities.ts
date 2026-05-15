@@ -7,6 +7,9 @@ export type SellCityData = {
   avgDelayUs: string; // délai avec notre agence
   profilAcheteurs: string;
   marketAngle: string; // pourquoi vendre maintenant
+  quartiersForts: { name: string; desc: string }[];
+  pointsForts: string[];
+  erreursAEviter: { title: string; desc: string }[];
   faqs: { q: string; a: string }[];
 };
 
@@ -24,6 +27,24 @@ const sellCities: Record<string, SellCityData> = {
       "Familles parisiennes en recherche de plus grand, cadres travaillant à Issy/La Défense, primo-accédants attirés par la ligne 9 et le futur Grand Paris Express.",
     marketAngle:
       "Boulogne-Billancourt reste l'une des villes les plus liquides du 92 : la demande dépasse encore l'offre sur les T2/T3 avec balcon, et le projet Île Seguin valorise l'ensemble de la ville sur 5 ans.",
+    quartiersForts: [
+      { name: "Centre-ville / Marché", desc: "Le secteur le plus liquide. Petits immeubles 1930, demande familiale forte, prix médian le plus élevé de la ville." },
+      { name: "Parchamp / Albert-Kahn", desc: "Quartier résidentiel calme, écoles recherchées, valorisation stable et acheteurs familles aisées." },
+      { name: "Île Seguin / Pont de Sèvres", desc: "Programmes neufs récents avec prestations premium. Forte demande des cadres tech et primo-accédants." },
+      { name: "Billancourt / Rives de Seine", desc: "Lofts et appartements rénovés, cible jeunes couples et investisseurs." },
+    ],
+    pointsForts: [
+      "Ligne 9 directe vers Paris (Champs-Élysées en 15 min)",
+      "Bassin scolaire reconnu (Bartholdi, Notre-Dame, Lycée Jacques Prévert)",
+      "Projet Île Seguin : musée, hôtel 5*, valorisation à 5 ans",
+      "Marché ultra-liquide sur les T2/T3 avec extérieur",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché 10% trop cher reste invisible aux acheteurs sérieux. Après 2 mois sans visite, vous serez contraint de baisser sous le prix de marché. La justesse du prix initial reste le levier n°1." },
+      { title: "Multiplier les agences en mandat simple", desc: "Diffuser le même bien sur 5 portails avec 5 prix légèrement différents donne une image négative. Un mandat exclusif bien piloté génère plus d'acheteurs qualifiés qu'une diffusion massive non maîtrisée." },
+      { title: "Négliger la mise en valeur", desc: "Photos médiocres, intérieur encombré, descriptif générique : –30% d'appels entrants. Un reportage photo professionnel et un home staging léger se rentabilisent en quelques jours sur le marché." },
+      { title: "Sous-estimer les diagnostics énergétiques", desc: "Un DPE F ou G fait fuir 40% des acheteurs depuis la loi Climat. Anticipez les travaux ou intégrez la décote dans votre stratégie de prix dès le départ." },
+    ],
     faqs: [
       {
         q: "Quels documents pour vendre un appartement à Boulogne-Billancourt ?",
@@ -65,6 +86,24 @@ const sellCities: Record<string, SellCityData> = {
       "Familles fortunées, professions libérales, expatriés et dirigeants. Beaucoup d'acheteurs internationaux et de family offices cherchent une adresse à Neuilly comme valeur refuge.",
     marketAngle:
       "Neuilly est un marché de connaisseurs où le bouche-à-oreille discret pèse plus que les portails. Les biens de qualité partent souvent avant publication grâce au réseau qualifié.",
+    quartiersForts: [
+      { name: "Sablons / Bois", desc: "Le plus prestigieux. Hôtels particuliers, immeubles haussmanniens d'exception, acheteurs internationaux." },
+      { name: "Pasteur / Mairie", desc: "Cœur résidentiel, immeubles 1930 de qualité, demande familles aisées." },
+      { name: "Bagatelle / Madrid", desc: "Calme absolu, proximité du Bois, biens patrimoniaux à forte valeur." },
+      { name: "Pont de Neuilly", desc: "Plus accessible, programmes récents, cible cadres La Défense." },
+    ],
+    pointsForts: [
+      "Adresse refuge pour acheteurs internationaux et family offices",
+      "Ligne 1 directe La Défense / Champs-Élysées / Louvre",
+      "Bassin scolaire d'exception (Pasteur, Sainte-Croix, Saint-Dominique)",
+      "Stabilité des prix même en phase de marché baissier",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché 10% trop cher reste invisible aux acheteurs sérieux. Après 2 mois sans visite, vous serez contraint de baisser sous le prix de marché. La justesse du prix initial reste le levier n°1." },
+      { title: "Multiplier les agences en mandat simple", desc: "Diffuser le même bien sur 5 portails avec 5 prix légèrement différents donne une image négative. Un mandat exclusif bien piloté génère plus d'acheteurs qualifiés qu'une diffusion massive non maîtrisée." },
+      { title: "Négliger la mise en valeur", desc: "Photos médiocres, intérieur encombré, descriptif générique : –30% d'appels entrants. Un reportage photo professionnel et un home staging léger se rentabilisent en quelques jours sur le marché." },
+      { title: "Sous-estimer les diagnostics énergétiques", desc: "Un DPE F ou G fait fuir 40% des acheteurs depuis la loi Climat. Anticipez les travaux ou intégrez la décote dans votre stratégie de prix dès le départ." },
+    ],
     faqs: [
       {
         q: "Pourquoi vendre off-market à Neuilly-sur-Seine ?",
@@ -106,6 +145,24 @@ const sellCities: Record<string, SellCityData> = {
       "Jeunes cadres tech (Microsoft, Bouygues, Cisco), familles primo-accédantes, et investisseurs anticipant la valorisation liée à la ligne 15 du Grand Paris Express.",
     marketAngle:
       "Issy bénéficie d'une demande exceptionnelle sur les 2/3 pièces récents. L'arrivée prochaine de la ligne 15 (Issy RER) crée une fenêtre de valorisation de 8 à 15 % sur 3 ans.",
+    quartiersForts: [
+      { name: "Val de Seine / Île Saint-Germain", desc: "Programmes neufs récents, vue Seine, demande cadres tech très forte." },
+      { name: "Centre-ville / Mairie", desc: "Petits immeubles charme, marché familial, écoles recherchées." },
+      { name: "Corentin Celton", desc: "Métro 12 directe Paris, demande primo-accédants et jeunes couples." },
+      { name: "Les Épinettes", desc: "Quartier calme résidentiel, valorisation soutenue par la future ligne 15." },
+    ],
+    pointsForts: [
+      "Tech hub majeur (Microsoft, Cisco, Bouygues, Orange)",
+      "Future ligne 15 du Grand Paris Express : valorisation 8-15% sur 3 ans",
+      "Bord de Seine et parcs (île Saint-Germain)",
+      "Demande structurelle des jeunes cadres CSP+",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché 10% trop cher reste invisible aux acheteurs sérieux. Après 2 mois sans visite, vous serez contraint de baisser sous le prix de marché. La justesse du prix initial reste le levier n°1." },
+      { title: "Multiplier les agences en mandat simple", desc: "Diffuser le même bien sur 5 portails avec 5 prix légèrement différents donne une image négative. Un mandat exclusif bien piloté génère plus d'acheteurs qualifiés qu'une diffusion massive non maîtrisée." },
+      { title: "Négliger la mise en valeur", desc: "Photos médiocres, intérieur encombré, descriptif générique : –30% d'appels entrants. Un reportage photo professionnel et un home staging léger se rentabilisent en quelques jours sur le marché." },
+      { title: "Sous-estimer les diagnostics énergétiques", desc: "Un DPE F ou G fait fuir 40% des acheteurs depuis la loi Climat. Anticipez les travaux ou intégrez la décote dans votre stratégie de prix dès le départ." },
+    ],
     faqs: [
       {
         q: "Faut-il vendre avant ou après l'arrivée de la ligne 15 ?",
@@ -147,6 +204,24 @@ const sellCities: Record<string, SellCityData> = {
       "Jeunes couples actifs travaillant à La Défense ou Paris 17e, cadres LVMH/Alstom, et investisseurs séduits par la liquidité du marché et la rentabilité locative.",
     marketAngle:
       "Levallois est l'un des marchés les plus liquides du 92 : à prix juste, un bien part en moins de 6 semaines. La proximité immédiate de Paris 17e et l'arrivée de la ligne 15 soutiennent la valorisation.",
+    quartiersForts: [
+      { name: "Centre / Mairie", desc: "Cœur commerçant, immeubles 1900, marché ultra-liquide." },
+      { name: "Anatole France", desc: "Calme résidentiel, demande familles, écoles privées recherchées." },
+      { name: "Front de Seine", desc: "Programmes récents, vue Seine, cible cadres La Défense." },
+      { name: "Louise Michel", desc: "Métro 3, demande jeunes couples et investisseurs locatifs." },
+    ],
+    pointsForts: [
+      "Densité d'emploi premium (LVMH, Alstom, La Défense limitrophe)",
+      "Marché parmi les plus liquides du 92",
+      "Ligne 3 directe Saint-Lazare / Opéra",
+      "Future ligne 15 (Pont de Levallois) : valorisation à venir",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché 10% trop cher reste invisible aux acheteurs sérieux. Après 2 mois sans visite, vous serez contraint de baisser sous le prix de marché. La justesse du prix initial reste le levier n°1." },
+      { title: "Multiplier les agences en mandat simple", desc: "Diffuser le même bien sur 5 portails avec 5 prix légèrement différents donne une image négative. Un mandat exclusif bien piloté génère plus d'acheteurs qualifiés qu'une diffusion massive non maîtrisée." },
+      { title: "Négliger la mise en valeur", desc: "Photos médiocres, intérieur encombré, descriptif générique : –30% d'appels entrants. Un reportage photo professionnel et un home staging léger se rentabilisent en quelques jours sur le marché." },
+      { title: "Sous-estimer les diagnostics énergétiques", desc: "Un DPE F ou G fait fuir 40% des acheteurs depuis la loi Climat. Anticipez les travaux ou intégrez la décote dans votre stratégie de prix dès le départ." },
+    ],
     faqs: [
       {
         q: "Pourquoi le marché est-il si rapide à Levallois ?",
@@ -188,6 +263,24 @@ const sellCities: Record<string, SellCityData> = {
       "Familles internationales, expatriés, investisseurs patrimoniaux français et étrangers, professions libérales. Le 16e est une valeur refuge pour les acheteurs internationaux.",
     marketAngle:
       "Le 16e reste l'un des arrondissements les plus stables du marché parisien. La rareté des biens haussmanniens d'exception (Auteuil, Passy, vue Bois) maintient une tension acheteur permanente.",
+    quartiersForts: [
+      { name: "Auteuil", desc: "Village dans la ville, immeubles haussmanniens et Art déco, marché familial premium." },
+      { name: "Passy / Trocadéro", desc: "Vue Tour Eiffel, hôtels particuliers, acheteurs internationaux." },
+      { name: "La Muette", desc: "Calme résidentiel, immeubles 1930 de prestige, demande familles patrimoniales." },
+      { name: "Chaillot / Étoile", desc: "Adresses iconiques, mix résidentiel et pied-à-terre internationaux." },
+    ],
+    pointsForts: [
+      "Valeur refuge pour acheteurs internationaux",
+      "Bois de Boulogne et qualité de vie reconnue",
+      "Bassin scolaire d'exception (Janson, Molière, La Fontaine, Jean-Baptiste Say)",
+      "Stabilité patrimoniale historique sur 20 ans",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché 10% trop cher reste invisible aux acheteurs sérieux. Après 2 mois sans visite, vous serez contraint de baisser sous le prix de marché. La justesse du prix initial reste le levier n°1." },
+      { title: "Multiplier les agences en mandat simple", desc: "Diffuser le même bien sur 5 portails avec 5 prix légèrement différents donne une image négative. Un mandat exclusif bien piloté génère plus d'acheteurs qualifiés qu'une diffusion massive non maîtrisée." },
+      { title: "Négliger la mise en valeur", desc: "Photos médiocres, intérieur encombré, descriptif générique : –30% d'appels entrants. Un reportage photo professionnel et un home staging léger se rentabilisent en quelques jours sur le marché." },
+      { title: "Sous-estimer les diagnostics énergétiques", desc: "Un DPE F ou G fait fuir 40% des acheteurs depuis la loi Climat. Anticipez les travaux ou intégrez la décote dans votre stratégie de prix dès le départ." },
+    ],
     faqs: [
       {
         q: "Pourquoi vendre off-market dans le 16e ?",
@@ -229,6 +322,24 @@ const sellCities: Record<string, SellCityData> = {
       "Familles parisiennes recherchant école + parc, jeunes couples primo-accédants, médecins/professions libérales (proximité Necker, Pasteur), investisseurs.",
     marketAngle:
       "Le 15e bénéficie d'une demande structurelle des familles parisiennes attirées par les écoles, les parcs (Citroën, Lenglen) et la qualité de vie. Les 3/4 pièces partent rapidement.",
+    quartiersForts: [
+      { name: "Commerce / Émile Zola", desc: "Cœur commerçant, demande familles très forte, marché ultra-liquide." },
+      { name: "Convention / Vaugirard", desc: "Calme résidentiel, écoles publiques recherchées, prix médian intéressant." },
+      { name: "Beaugrenelle / Front de Seine", desc: "Tours et immeubles récents, vue Seine, demande cadres et investisseurs." },
+      { name: "Necker / Pasteur", desc: "Demande médecins et professions libérales, valorisation stable." },
+    ],
+    pointsForts: [
+      "Plus grand arrondissement parisien, demande structurelle des familles",
+      "Parcs (André Citroën, Lenglen, Brassens)",
+      "Bassin scolaire reconnu et offre privée premium",
+      "Excellent maillage métro (M6, M8, M10, M12, RER C)",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché 10% trop cher reste invisible aux acheteurs sérieux. Après 2 mois sans visite, vous serez contraint de baisser sous le prix de marché. La justesse du prix initial reste le levier n°1." },
+      { title: "Multiplier les agences en mandat simple", desc: "Diffuser le même bien sur 5 portails avec 5 prix légèrement différents donne une image négative. Un mandat exclusif bien piloté génère plus d'acheteurs qualifiés qu'une diffusion massive non maîtrisée." },
+      { title: "Négliger la mise en valeur", desc: "Photos médiocres, intérieur encombré, descriptif générique : –30% d'appels entrants. Un reportage photo professionnel et un home staging léger se rentabilisent en quelques jours sur le marché." },
+      { title: "Sous-estimer les diagnostics énergétiques", desc: "Un DPE F ou G fait fuir 40% des acheteurs depuis la loi Climat. Anticipez les travaux ou intégrez la décote dans votre stratégie de prix dès le départ." },
+    ],
     faqs: [
       {
         q: "Quel est le profil acheteur dans le 15e ?",
@@ -270,6 +381,24 @@ const sellCities: Record<string, SellCityData> = {
       "Acheteurs internationaux (Moyen-Orient, USA, Asie), family offices, dirigeants français, ambassadeurs et professions libérales d'élite.",
     marketAngle:
       "Le 7e est un marché ultra-confidentiel et international. La part d'acheteurs étrangers dépasse 30 %. Les biens vue Tour Eiffel ou Faubourg Saint-Germain conservent une valorisation premium en toutes circonstances.",
+    quartiersForts: [
+      { name: "Faubourg Saint-Germain", desc: "Hôtels particuliers, immeubles classés, acheteurs internationaux et institutionnels." },
+      { name: "Tour Eiffel / Champ-de-Mars", desc: "Vues iconiques, demande premium internationale, prix au m² parmi les plus élevés de Paris." },
+      { name: "Invalides / École militaire", desc: "Immeubles haussmanniens d'exception, calme et prestige." },
+      { name: "Gros-Caillou", desc: "Village résidentiel, demande familles aisées et expatriés." },
+    ],
+    pointsForts: [
+      "Adresse parmi les plus demandées au monde",
+      "Plus de 30% d'acheteurs internationaux",
+      "Patrimoine architectural exceptionnel (immeubles classés)",
+      "Bassin scolaire d'élite (Victor Duruy, École alsacienne à proximité)",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché 10% trop cher reste invisible aux acheteurs sérieux. Après 2 mois sans visite, vous serez contraint de baisser sous le prix de marché. La justesse du prix initial reste le levier n°1." },
+      { title: "Multiplier les agences en mandat simple", desc: "Diffuser le même bien sur 5 portails avec 5 prix légèrement différents donne une image négative. Un mandat exclusif bien piloté génère plus d'acheteurs qualifiés qu'une diffusion massive non maîtrisée." },
+      { title: "Négliger la mise en valeur", desc: "Photos médiocres, intérieur encombré, descriptif générique : –30% d'appels entrants. Un reportage photo professionnel et un home staging léger se rentabilisent en quelques jours sur le marché." },
+      { title: "Sous-estimer les diagnostics énergétiques", desc: "Un DPE F ou G fait fuir 40% des acheteurs depuis la loi Climat. Anticipez les travaux ou intégrez la décote dans votre stratégie de prix dès le départ." },
+    ],
     faqs: [
       {
         q: "Pourquoi vendre off-market dans le 7e ?",
@@ -311,6 +440,24 @@ const sellCities: Record<string, SellCityData> = {
       "Acheteurs internationaux, family offices, intellectuels, professions libérales, familles patrimoniales françaises et étrangères.",
     marketAngle:
       "Le 6e est l'un des marchés les plus chers et les plus confidentiels de France. La rareté des biens (jardin du Luxembourg, immeubles classés) maintient une tension permanente, en particulier sur les vues Luxembourg et le carré Saint-Sulpice.",
+    quartiersForts: [
+      { name: "Saint-Germain-des-Prés", desc: "Adresse mythique, immeubles classés, acheteurs internationaux et intellectuels." },
+      { name: "Luxembourg / Odéon", desc: "Vues jardin du Luxembourg, valorisation premium, demande family offices." },
+      { name: "Saint-Sulpice", desc: "Carré ultra-confidentiel, biens d'exception, marché off-market dominant." },
+      { name: "Notre-Dame-des-Champs", desc: "Calme résidentiel, demande familles patrimoniales et professions libérales." },
+    ],
+    pointsForts: [
+      "Un des marchés les plus chers de France (jusqu'à 20 000 €/m² sur les vues Luxembourg)",
+      "Ultra-confidentiel : 70% des transactions premium en off-market",
+      "Patrimoine architectural classé",
+      "Bassin scolaire d'élite (Stanislas, Fénelon, Sainte-Geneviève)",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché 10% trop cher reste invisible aux acheteurs sérieux. Après 2 mois sans visite, vous serez contraint de baisser sous le prix de marché. La justesse du prix initial reste le levier n°1." },
+      { title: "Multiplier les agences en mandat simple", desc: "Diffuser le même bien sur 5 portails avec 5 prix légèrement différents donne une image négative. Un mandat exclusif bien piloté génère plus d'acheteurs qualifiés qu'une diffusion massive non maîtrisée." },
+      { title: "Négliger la mise en valeur", desc: "Photos médiocres, intérieur encombré, descriptif générique : –30% d'appels entrants. Un reportage photo professionnel et un home staging léger se rentabilisent en quelques jours sur le marché." },
+      { title: "Sous-estimer les diagnostics énergétiques", desc: "Un DPE F ou G fait fuir 40% des acheteurs depuis la loi Climat. Anticipez les travaux ou intégrez la décote dans votre stratégie de prix dès le départ." },
+    ],
     faqs: [
       {
         q: "Pourquoi vendre off-market dans le 6e ?",
