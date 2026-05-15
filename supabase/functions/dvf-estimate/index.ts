@@ -17,7 +17,7 @@ interface DvfRecord {
 }
 
 // Fetches up to N records from a few public DVF endpoints — first one that returns wins.
-async function fetchDvf(postal: string, type: string): Promise<DvfRecord[]> {
+async function fetchDvfByPostal(postal: string, type: string): Promise<DvfRecord[]> {
   // Source 1 : OpenDataSoft public dataset (dataset id "dvf")
   const ods = `https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/dvf/records?where=code_postal%3D%22${postal}%22%20AND%20type_local%3D%22${encodeURIComponent(
     type,
@@ -52,6 +52,40 @@ async function fetchDvf(postal: string, type: string): Promise<DvfRecord[]> {
   return [];
 }
 
+// Wider search: by department prefix (e.g. "75" for all of Paris) using a LIKE pattern.
+async function fetchDvfByPrefix(prefix: string, type: string): Promise<DvfRecord[]> {
+  const ods = `https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/dvf/records?where=startswith(code_postal%2C%22${prefix}%22)%20AND%20type_local%3D%22${encodeURIComponent(
+    type,
+  )}%22%20AND%20nature_mutation%3D%22Vente%22&limit=200&order_by=date_mutation%20DESC`;
+  try {
+    const r = await fetch(ods, { headers: { Accept: "application/json" } });
+    if (r.ok) {
+      const j = await r.json();
+      return (j.results || []).map((x: any) => ({
+        valeur_fonciere: Number(x.valeur_fonciere),
+        surface_reelle_bati: Number(x.surface_reelle_bati),
+        type_local: x.type_local,
+        code_postal: x.code_postal,
+        date_mutation: x.date_mutation,
+      })) as DvfRecord[];
+    }
+  } catch (_e) { /* ignore */ }
+  return [];
+}
+
+function computePrices(rows: DvfRecord[], cutoff: Date): number[] {
+  return rows
+    .filter(
+      (m) =>
+        (m.valeur_fonciere || 0) > 50000 &&
+        (m.surface_reelle_bati || 0) >= 10 &&
+        (m.surface_reelle_bati || 0) <= 500 &&
+        (!m.date_mutation || new Date(m.date_mutation) >= cutoff),
+    )
+    .map((m) => (m.valeur_fonciere || 0) / (m.surface_reelle_bati || 1))
+    .filter((p) => p > 1000 && p < 35000);
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -66,27 +100,39 @@ Deno.serve(async (req) => {
       });
     }
 
-    const rows = await fetchDvf(postal_code, property_type);
-
     const cutoff = new Date();
     cutoff.setFullYear(cutoff.getFullYear() - 4);
 
-    const prices = rows
-      .filter(
-        (m) =>
-          (m.valeur_fonciere || 0) > 50000 &&
-          (m.surface_reelle_bati || 0) >= 10 &&
-          (m.surface_reelle_bati || 0) <= 500 &&
-          (!m.date_mutation || new Date(m.date_mutation) >= cutoff),
-      )
-      .map((m) => (m.valeur_fonciere || 0) / (m.surface_reelle_bati || 1))
-      .filter((p) => p > 1000 && p < 35000);
+    // 1) Try exact postal code
+    let rows = await fetchDvfByPostal(postal_code, property_type);
+    let prices = computePrices(rows, cutoff);
+    let scope: "postal" | "district" | "department" = "postal";
+
+    // 2) Fallback: same arrondissement / district (4-digit prefix, e.g. "7501" → 75001-75009)
+    if (prices.length < 5 && postal_code.length >= 4) {
+      const r2 = await fetchDvfByPrefix(postal_code.substring(0, 4), property_type);
+      const p2 = computePrices(r2, cutoff);
+      if (p2.length > prices.length) {
+        prices = p2;
+        scope = "district";
+      }
+    }
+
+    // 3) Fallback: whole department (2-digit prefix, e.g. "75" → all Paris)
+    if (prices.length < 5 && postal_code.length >= 2) {
+      const r3 = await fetchDvfByPrefix(postal_code.substring(0, 2), property_type);
+      const p3 = computePrices(r3, cutoff);
+      if (p3.length > prices.length) {
+        prices = p3;
+        scope = "department";
+      }
+    }
 
     if (prices.length < 3) {
       return new Response(
         JSON.stringify({
           error: "not_enough_data",
-          message: "Pas assez de ventes récentes pour estimer ce code postal",
+          message: "Pas assez de ventes récentes pour estimer ce secteur",
           sample_size: prices.length,
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
@@ -103,6 +149,7 @@ Deno.serve(async (req) => {
       JSON.stringify({
         ok: true,
         sample_size: prices.length,
+        scope,
         price_per_sqm: {
           low: Math.round(p25),
           mid: Math.round(median),
