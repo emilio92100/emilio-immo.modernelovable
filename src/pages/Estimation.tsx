@@ -228,6 +228,20 @@ const EstimationPage = () => {
               </Link>
             ))}
           </div>
+
+          {/* CTA intermédiaire */}
+          <div className="mt-16 text-center">
+            <EstimationPopup
+              trigger={
+                <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-7 py-4 rounded-full font-body font-semibold text-base hover:brightness-110 transition-all shadow-md">
+                  <TrendingUp className="w-5 h-5" /> Estimer mon bien gratuitement
+                </button>
+              }
+            />
+            <p className="font-body text-muted-foreground text-xs mt-3">
+              Réponse d'un conseiller sous 24h · sans engagement
+            </p>
+          </div>
         </div>
       </section>
 
