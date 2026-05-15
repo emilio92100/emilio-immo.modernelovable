@@ -5,7 +5,7 @@ import logo from "@/assets/logo.png";
 const Footer = () => (
   <footer className="bg-primary text-primary-foreground">
     <div className="container mx-auto px-6 py-16">
-      <div className="grid md:grid-cols-4 gap-10">
+      <div className="grid md:grid-cols-5 gap-10">
         <div className="md:col-span-1">
           <img src={logo} alt="Emilio" className="h-14 brightness-0 invert mb-4" />
           <p className="text-primary-foreground/70 text-sm font-body leading-relaxed">
@@ -32,6 +32,18 @@ const Footer = () => (
                 {item.label}
               </Link>
             ))}
+          </div>
+        </div>
+
+        <div>
+          <h4 className="font-display text-lg mb-4">Nos secteurs</h4>
+          <div className="flex flex-col gap-2">
+            <Link
+              to="/achat-appartement-boulogne-billancourt"
+              className="text-sm text-primary-foreground/70 hover:text-accent transition-colors font-body"
+            >
+              Achat appartement Boulogne-Billancourt
+            </Link>
           </div>
         </div>
 
