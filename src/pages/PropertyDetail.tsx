@@ -197,42 +197,25 @@ const PropertyDetail = () => {
             canonical={url}
             jsonLd={{
               "@context": "https://schema.org",
-              "@type": "RealEstateListing",
+              "@type": property.type === "Maison" ? "House" : "Apartment",
               name: `${baseTitle} — ${city}`,
               url,
               description: property.description?.slice(0, 500),
               image: property.images?.slice(0, 6),
               datePosted: property.dateAdded,
+              numberOfRooms: property.rooms || undefined,
+              numberOfBedroomsTotal: property.bedrooms || undefined,
+              floorSize: property.surface
+                ? { "@type": "QuantitativeValue", value: property.surface, unitCode: "MTK" }
+                : undefined,
+              yearBuilt: property.yearBuilt || undefined,
               address: {
                 "@type": "PostalAddress",
                 addressLocality: city,
                 postalCode: property.postalCode,
                 addressCountry: "FR",
               },
-              offers: {
-                "@type": "Offer",
-                price: property.price,
-                priceCurrency: "EUR",
-                availability: "https://schema.org/InStock",
-                url,
-              },
-              mainEntity: {
-                "@type": property.type === "Maison" ? "House" : "Apartment",
-                name: baseTitle,
-                numberOfRooms: property.rooms || undefined,
-                numberOfBedrooms: property.bedrooms || undefined,
-                floorSize: property.surface
-                  ? { "@type": "QuantitativeValue", value: property.surface, unitCode: "MTK" }
-                  : undefined,
-                yearBuilt: property.yearBuilt || undefined,
-                address: {
-                  "@type": "PostalAddress",
-                  addressLocality: city,
-                  postalCode: property.postalCode,
-                  addressCountry: "FR",
-                },
-              },
-              broker: {
+              brokeredBy: {
                 "@type": "RealEstateAgent",
                 name: "Emilio Immobilier",
                 url: "https://www.emilio-immo.com",
