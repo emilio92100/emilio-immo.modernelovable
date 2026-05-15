@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, TrendingUp, Train, GraduationCap, Trees, Building2, ArrowRight, CheckCircle2, Search, Phone } from "lucide-react";
+import { MapPin, TrendingUp, Train, GraduationCap, Trees, Building2, ArrowRight, CheckCircle2, Search, Phone, ChevronDown } from "lucide-react";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
@@ -115,7 +116,8 @@ const AchatBoulogneBillancourt = () => {
               <span className="font-body text-accent text-xs font-semibold tracking-wide uppercase">Hauts-de-Seine · 92100</span>
             </div>
             <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-[1.1] mb-8">
-              Achat d'appartement à <span className="italic text-accent">Boulogne-Billancourt</span>
+              Achat d'appartement à{" "}
+              <span className="block mt-2 italic text-accent">Boulogne-Billancourt</span>
             </h1>
             <p className="font-body text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-10">
               Vous cherchez à acheter un appartement à Boulogne-Billancourt ? Notre agence vous accompagne dans toutes les étapes de votre projet : analyse du marché, sélection des meilleurs biens (visibles et off-market), visites, négociation et signature.
@@ -291,17 +293,22 @@ const AchatBoulogneBillancourt = () => {
           <h2 className="font-display text-2xl md:text-4xl text-foreground mt-3 mb-10">
             Acheter à Boulogne-Billancourt : <span className="italic text-accent">vos questions</span>
           </h2>
-          <div className="space-y-4">
-            {faqs.map((f) => (
-              <details key={f.q} className="group bg-card border border-border rounded-xl p-5 cursor-pointer">
-                <summary className="font-display text-base md:text-lg text-foreground list-none flex justify-between items-center gap-4">
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs.map((f, i) => (
+              <AccordionItem
+                key={i}
+                value={`faq-${i}`}
+                className="bg-card border border-border rounded-xl px-6 overflow-hidden data-[state=open]:border-accent/30 transition-colors"
+              >
+                <AccordionTrigger className="font-display text-base md:text-lg text-foreground py-5 hover:no-underline gap-4 [&[data-state=open]>svg]:text-accent">
                   {f.q}
-                  <span className="text-accent text-2xl font-light shrink-0 group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="font-body text-sm text-muted-foreground leading-relaxed mt-3">{f.a}</p>
-              </details>
+                </AccordionTrigger>
+                <AccordionContent className="font-body text-sm text-muted-foreground leading-relaxed pb-5">
+                  {f.a}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
       </section>
 
