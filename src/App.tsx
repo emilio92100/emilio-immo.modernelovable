@@ -30,6 +30,9 @@ import VendreParis15 from "./pages/VendreParis15";
 import VendreParis7 from "./pages/VendreParis7";
 import VendreParis6 from "./pages/VendreParis6";
 import Estimation from "./pages/Estimation";
+import GuideImmobilier from "./pages/GuideImmobilier";
+import GuideCategory from "./pages/GuideCategory";
+import GuideArticle from "./pages/GuideArticle";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -71,6 +74,10 @@ const App = () => (
           <Route path="/vendre-appartement-paris-15" element={<VendreParis15 />} />
           <Route path="/vendre-appartement-paris-7" element={<VendreParis7 />} />
           <Route path="/vendre-appartement-paris-6" element={<VendreParis6 />} />
+          {/* Guide Immobilier (blog) */}
+          <Route path="/guide-immobilier" element={<GuideImmobilier />} />
+          <Route path="/guide-immobilier/:category" element={<GuideCategory />} />
+          <Route path="/guide-immobilier/:category/:slug" element={<GuideArticle />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
