@@ -248,7 +248,7 @@ export const ARTICLES: Article[] = [
       "Prix au m² à Neuilly-sur-Seine en 2026, analyse détaillée par quartier : Saint-James, Sablonville, Pasteur, Bagatelle. Vision terrain d'un expert local.",
     excerpt:
       "Neuilly reste l'une des adresses les plus prisées d'Île-de-France. Mais le marché s'est nettement segmenté depuis 2023. Voici ce qu'on observe concrètement en 2026.",
-    readMinutes: 5,
+    readMinutes: 4,
     date: "2026-05-22",
     updated: "2026-07-01",
     keywords: [
@@ -511,7 +511,7 @@ export const ARTICLES: Article[] = [
       "Combien de temps faut-il vraiment pour vendre un appartement dans les Hauts-de-Seine en 2026 ? Délais réels par ville et par type de bien. Analyse d'expert.",
     excerpt:
       "La question qui revient en premier chez tous les vendeurs. Voici les délais réellement observés en 2026, ville par ville et typologie par typologie.",
-    readMinutes: 5,
+    readMinutes: 3,
     date: "2026-05-05",
     updated: "2026-07-01",
     keywords: [
@@ -778,7 +778,7 @@ export const ARTICLES: Article[] = [
       "Étage, exposition, DPE, copropriété, agencement : les 7 critères qui déterminent vraiment le prix de vente d'un appartement en 2026. Analyse concrète.",
     excerpt:
       "À surface et quartier identiques, deux appartements peuvent se vendre avec 20 % d'écart. Voici les 7 critères qui expliquent presque toute la différence.",
-    readMinutes: 5,
+    readMinutes: 4,
     date: "2026-05-27",
     updated: "2026-07-01",
     keywords: [
@@ -1036,7 +1036,7 @@ export const ARTICLES: Article[] = [
       "Vous achetez votre premier appartement à Paris Ouest ou dans le 92 ? Nos conseils concrets pour bien préparer votre dossier et sécuriser votre acquisition.",
     excerpt:
       "Acheter son premier appartement dans l'Ouest parisien en 2026 est redevenu possible. À condition de préparer sérieusement quelques points souvent négligés.",
-    readMinutes: 5,
+    readMinutes: 4,
     date: "2026-06-08",
     updated: "2026-07-01",
     keywords: [
@@ -1323,7 +1323,7 @@ export const ARTICLES: Article[] = [
       "Votre appartement est classé F ou G au DPE ? Voici l'impact réel sur votre prix de vente en 2026, les obligations et les solutions concrètes.",
     excerpt:
       "Le DPE est devenu, en 3 ans, un critère aussi déterminant que le prix au m². Voici ce que vous risquez vraiment avec un F ou un G — et comment limiter la casse.",
-    readMinutes: 5,
+    readMinutes: 3,
     date: "2026-05-01",
     updated: "2026-07-01",
     keywords: [
