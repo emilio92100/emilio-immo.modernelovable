@@ -11,6 +11,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { Property, mockProperties, fetchPropertiesFromFeed } from "@/lib/properties";
+import engagementsInterior from "@/assets/engagements-interior.jpg";
 
 
 const testimonials = [
