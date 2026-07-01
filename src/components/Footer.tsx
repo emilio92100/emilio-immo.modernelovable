@@ -112,7 +112,10 @@ const Footer = () => (
 
       <div className="border-t border-primary-foreground/20 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-primary-foreground/50 font-body">
         <span>© {new Date().getFullYear()} Emilio Immobilier. Tous droits réservés.</span>
-        <Link to="/mentions-legales" className="hover:text-accent transition-colors">Mentions légales</Link>
+        <div className="flex items-center gap-5">
+          <Link to="/guide-immobilier" className="hover:text-accent transition-colors">Guide Immobilier</Link>
+          <Link to="/mentions-legales" className="hover:text-accent transition-colors">Mentions légales</Link>
+        </div>
       </div>
     </div>
   </footer>
