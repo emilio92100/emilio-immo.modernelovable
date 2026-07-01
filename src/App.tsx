@@ -31,8 +31,6 @@ import VendreParis7 from "./pages/VendreParis7";
 import VendreParis6 from "./pages/VendreParis6";
 import Estimation from "./pages/Estimation";
 import NotFound from "./pages/NotFound";
-import NewFeaturePopup from "./components/NewFeaturePopup";
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -40,7 +38,6 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <NewFeaturePopup />
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
