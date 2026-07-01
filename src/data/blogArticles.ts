@@ -84,7 +84,7 @@ export const ARTICLES: Article[] = [
       "Prix au m² à Boulogne-Billancourt en 2026, quartier par quartier. Analyse détaillée du marché par un expert local. Chiffres actualisés et retours de terrain.",
     excerpt:
       "Boulogne n'est pas une ville homogène. Entre le Nord bourgeois et le Sud en pleine mutation, l'écart de prix peut dépasser 25 %. Voici ce que j'observe en 2026.",
-    readMinutes: 10,
+    readMinutes: 5,
     date: "2026-05-14",
     updated: "2026-07-01",
     keywords: [
@@ -248,7 +248,7 @@ export const ARTICLES: Article[] = [
       "Prix au m² à Neuilly-sur-Seine en 2026, analyse détaillée par quartier : Saint-James, Sablonville, Pasteur, Bagatelle. Vision terrain d'un expert local.",
     excerpt:
       "Neuilly reste l'une des adresses les plus prisées d'Île-de-France. Mais le marché s'est nettement segmenté depuis 2023. Voici ce qu'on observe concrètement en 2026.",
-    readMinutes: 9,
+    readMinutes: 4,
     date: "2026-05-22",
     updated: "2026-07-01",
     keywords: [
@@ -381,7 +381,7 @@ export const ARTICLES: Article[] = [
       "État du marché immobilier dans les Hauts-de-Seine en 2026 : prix, délais, dynamique par ville. Analyse d'un expert local basée sur les mandats du terrain.",
     excerpt:
       "Après deux années de correction, le marché des Hauts-de-Seine a trouvé son point d'équilibre. Voici ce que révèlent les chiffres et ce que j'observe sur le terrain.",
-    readMinutes: 9,
+    readMinutes: 5,
     date: "2026-04-30",
     updated: "2026-07-01",
     keywords: [
@@ -511,7 +511,7 @@ export const ARTICLES: Article[] = [
       "Combien de temps faut-il vraiment pour vendre un appartement dans les Hauts-de-Seine en 2026 ? Délais réels par ville et par type de bien. Analyse d'expert.",
     excerpt:
       "La question qui revient en premier chez tous les vendeurs. Voici les délais réellement observés en 2026, ville par ville et typologie par typologie.",
-    readMinutes: 8,
+    readMinutes: 3,
     date: "2026-05-05",
     updated: "2026-07-01",
     keywords: [
@@ -648,7 +648,7 @@ export const ARTICLES: Article[] = [
       "Vendre son appartement off-market : à qui s'adresse cette stratégie confidentielle, comment ça se déroule, et pourquoi elle sécurise souvent le prix.",
     excerpt:
       "Vendre sans annonce publique, sans photo sur Internet, sans passage sur les portails. C'est ce qu'on appelle l'off-market. Voici quand cette stratégie a vraiment du sens.",
-    readMinutes: 8,
+    readMinutes: 5,
     date: "2026-05-18",
     updated: "2026-07-01",
     keywords: [
@@ -778,7 +778,7 @@ export const ARTICLES: Article[] = [
       "Étage, exposition, DPE, copropriété, agencement : les 7 critères qui déterminent vraiment le prix de vente d'un appartement en 2026. Analyse concrète.",
     excerpt:
       "À surface et quartier identiques, deux appartements peuvent se vendre avec 20 % d'écart. Voici les 7 critères qui expliquent presque toute la différence.",
-    readMinutes: 9,
+    readMinutes: 4,
     date: "2026-05-27",
     updated: "2026-07-01",
     keywords: [
@@ -911,7 +911,7 @@ export const ARTICLES: Article[] = [
       "Boulogne-Billancourt ou Neuilly-sur-Seine : comparaison honnête pour choisir la bonne ville en 2026. Prix, cadre de vie, revente, écoles.",
     excerpt:
       "Deux villes voisines, deux marchés très différents. On m'oppose ces deux communes chaque semaine dans les entretiens d'acquéreurs. Voici comment je les compare vraiment.",
-    readMinutes: 9,
+    readMinutes: 5,
     date: "2026-06-02",
     updated: "2026-07-01",
     keywords: [
@@ -1036,7 +1036,7 @@ export const ARTICLES: Article[] = [
       "Vous achetez votre premier appartement à Paris Ouest ou dans le 92 ? Nos conseils concrets pour bien préparer votre dossier et sécuriser votre acquisition.",
     excerpt:
       "Acheter son premier appartement dans l'Ouest parisien en 2026 est redevenu possible. À condition de préparer sérieusement quelques points souvent négligés.",
-    readMinutes: 9,
+    readMinutes: 4,
     date: "2026-06-08",
     updated: "2026-07-01",
     keywords: [
@@ -1167,7 +1167,7 @@ export const ARTICLES: Article[] = [
       "Comment est calculée la plus-value immobilière en 2026 ? Abattements par durée de détention, cas d'exonération, exemples chiffrés. Guide complet.",
     excerpt:
       "La plus-value immobilière fait peur, souvent à tort. Voici comment elle se calcule réellement en 2026 et dans quels cas vous en êtes totalement exonéré.",
-    readMinutes: 10,
+    readMinutes: 5,
     date: "2026-04-22",
     updated: "2026-07-01",
     keywords: [
@@ -1323,7 +1323,7 @@ export const ARTICLES: Article[] = [
       "Votre appartement est classé F ou G au DPE ? Voici l'impact réel sur votre prix de vente en 2026, les obligations et les solutions concrètes.",
     excerpt:
       "Le DPE est devenu, en 3 ans, un critère aussi déterminant que le prix au m². Voici ce que vous risquez vraiment avec un F ou un G — et comment limiter la casse.",
-    readMinutes: 9,
+    readMinutes: 3,
     date: "2026-05-01",
     updated: "2026-07-01",
     keywords: [
