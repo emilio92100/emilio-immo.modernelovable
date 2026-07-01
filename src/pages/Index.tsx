@@ -184,92 +184,85 @@ const Index = () => {
         </div>
       </section>
 
-      {/* MANIFESTE — Nos engagements (typographique, sans image) */}
-      <section className="py-20 sm:py-32 bg-primary relative overflow-hidden">
-        {/* Filets d'or décoratifs — encadrement type carton d'invitation */}
-        <div className="pointer-events-none absolute inset-x-6 sm:inset-x-12 top-8 sm:top-14 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-6 sm:inset-x-12 bottom-8 sm:bottom-14 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
-        <div className="pointer-events-none absolute top-6 left-6 sm:top-12 sm:left-12 w-6 h-6 sm:w-8 sm:h-8 border-t border-l border-accent/50" />
-        <div className="pointer-events-none absolute top-6 right-6 sm:top-12 sm:right-12 w-6 h-6 sm:w-8 sm:h-8 border-t border-r border-accent/50" />
-        <div className="pointer-events-none absolute bottom-6 left-6 sm:bottom-12 sm:left-12 w-6 h-6 sm:w-8 sm:h-8 border-b border-l border-accent/50" />
-        <div className="pointer-events-none absolute bottom-6 right-6 sm:bottom-12 sm:right-12 w-6 h-6 sm:w-8 sm:h-8 border-b border-r border-accent/50" />
+      {/* NOS ENGAGEMENTS — Monolithes navy en mosaïque damier */}
+      <section className="py-20 sm:py-28 bg-background">
+        <div className="container mx-auto px-4 sm:px-6">
+          {/* En-tête */}
+          <div className="text-center mb-14 sm:mb-20">
+            <span className="font-body text-accent font-semibold text-xs sm:text-sm tracking-[0.25em] uppercase mb-4 block">
+              L'Excellence comme standard
+            </span>
+            <h2 className="font-display italic text-primary text-4xl sm:text-5xl lg:text-6xl mb-6">
+              Nos engagements
+            </h2>
+            <div className="w-24 h-px bg-accent mx-auto" />
+          </div>
 
-        <div className="container mx-auto px-6 sm:px-10 relative z-10">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+          {/* Grille — 6 monolithes en damier */}
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-primary/10 shadow-2xl">
+            {engagements.map((e, i) => {
+              const isDark = i % 2 === 0;
+              return (
+                <motion.div
+                  key={e.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  className={`group relative p-8 sm:p-10 lg:p-12 overflow-hidden transition-colors duration-500 border-accent/20 ${
+                    isDark
+                      ? "bg-primary hover:bg-primary/95"
+                      : "bg-white hover:bg-secondary/40"
+                  } ${i < engagements.length - 3 ? "border-b" : ""} ${
+                    (i + 1) % 3 !== 0 ? "lg:border-r" : ""
+                  } ${i % 2 === 0 ? "md:border-r lg:border-r-0" : ""} ${
+                    (i + 1) % 3 === 0 ? "lg:border-r-0" : "lg:border-r"
+                  }`}
+                >
+                  <div className="relative z-10">
+                    <span
+                      className={`font-display italic text-5xl sm:text-6xl transition-opacity duration-500 ${
+                        isDark
+                          ? "text-accent opacity-40 group-hover:opacity-100"
+                          : "text-primary opacity-20 group-hover:opacity-100"
+                      }`}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
 
-            {/* Colonne gauche — signature manifeste */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="lg:col-span-5 lg:pt-6"
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <span className="font-body text-accent font-semibold text-[10px] sm:text-xs tracking-[0.4em] uppercase">§ Manifeste</span>
-                <div className="h-px flex-1 max-w-[60px] bg-accent/40" />
-              </div>
-
-              <h2 className="font-display text-primary-foreground leading-[1.05] mb-8">
-                <span className="block text-4xl sm:text-5xl lg:text-6xl">L'immobilier,</span>
-                <span className="block text-4xl sm:text-5xl lg:text-6xl italic text-accent mt-1">un art de la</span>
-                <span className="block text-4xl sm:text-5xl lg:text-6xl">précision.</span>
-              </h2>
-
-              <p className="font-body text-primary-foreground/70 text-sm sm:text-base leading-[1.8] max-w-md mb-10">
-                Six convictions, jamais négociées. Elles guident chacun de nos gestes,
-                de la première visite à la signature — et bien au-delà.
-              </p>
-
-              <div className="flex items-end gap-6">
-                <div>
-                  <div className="font-display italic text-accent text-2xl leading-none">Emilio</div>
-                  <div className="font-body text-primary-foreground/50 text-[10px] tracking-[0.3em] uppercase mt-1">Fondateur</div>
-                </div>
-                <div className="flex-1 h-px bg-accent/30 mb-2" />
-              </div>
-            </motion.div>
-
-            {/* Colonne droite — index typographique */}
-            <div className="lg:col-span-7 relative">
-              <div className="hidden lg:block absolute -left-10 top-4 bottom-4 w-px bg-accent/20" />
-
-              <ul>
-                {engagements.map((e, i) => (
-                  <motion.li
-                    key={e.title}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.55, delay: i * 0.07 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    className="group border-b border-accent/15 last:border-b-0 py-6 sm:py-7 cursor-default"
-                  >
-                    <div className="flex items-baseline gap-4 sm:gap-6">
-                      {/* Puce dorée ultra-fine */}
-                      <span className="flex-shrink-0 font-display italic text-accent/60 text-xs sm:text-sm tracking-[0.2em] group-hover:text-accent transition-colors duration-500 pt-1">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-
-                      {/* Titre */}
-                      <h3 className="flex-shrink-0 font-display text-primary-foreground text-xl sm:text-2xl lg:text-[26px] leading-tight group-hover:text-accent transition-colors duration-500">
+                    <div className="flex items-center gap-3 mt-6 mb-4">
+                      <e.icon
+                        className={`w-5 h-5 flex-shrink-0 transition-colors duration-500 ${
+                          isDark
+                            ? "text-accent"
+                            : "text-primary group-hover:text-accent"
+                        }`}
+                      />
+                      <h3
+                        className={`font-display text-xl sm:text-2xl leading-tight ${
+                          isDark ? "text-primary-foreground" : "text-primary"
+                        }`}
+                      >
                         {e.title}
                       </h3>
-
-                      {/* Filet extensible */}
-                      <span className="hidden sm:block flex-1 h-px bg-accent/20 translate-y-[-4px] group-hover:bg-accent/60 transition-colors duration-500" />
-
-                      {/* Icône minimale bout de ligne */}
-                      <e.icon className="hidden sm:block flex-shrink-0 w-4 h-4 text-accent/50 group-hover:text-accent group-hover:rotate-12 transition-all duration-500" />
                     </div>
 
-                    {/* Description révélée */}
-                    <p className="font-body text-primary-foreground/60 text-sm sm:text-[15px] leading-relaxed mt-3 sm:mt-4 sm:pl-[calc(2rem+1.5rem)] max-w-2xl group-hover:text-primary-foreground/85 transition-colors duration-500">
+                    <p
+                      className={`font-body text-sm sm:text-[15px] leading-relaxed font-light ${
+                        isDark
+                          ? "text-primary-foreground/70"
+                          : "text-primary/70"
+                      }`}
+                    >
                       {e.description}
                     </p>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
+                  </div>
+
+                  {/* Filet doré animé en bas */}
+                  <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-accent transition-all duration-700 group-hover:w-full" />
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
