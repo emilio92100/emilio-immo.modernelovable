@@ -184,52 +184,83 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ENGAGEMENTS */}
-      <section className="py-14 sm:py-28 bg-background relative overflow-hidden">
-        {/* Subtle decorative background */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+      {/* MANIFESTE — Nos engagements */}
+      <section className="py-16 sm:py-28 bg-primary relative overflow-hidden">
+        {/* Editorial background : chiffre géant + halo doré */}
+        <div className="pointer-events-none absolute -top-24 -right-16 select-none opacity-[0.06]">
+          <span className="font-display text-[22rem] leading-none text-accent italic">06</span>
+        </div>
+        <div className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[80rem] h-[40rem] bg-accent/10 rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-10 sm:mb-20">
-            
-            <div className="inline-flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-              <div className="h-px w-8 sm:w-12 bg-accent" />
-              <span className="font-body text-accent font-semibold text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase">Ce qui nous définit</span>
-              <div className="h-px w-8 sm:w-12 bg-accent" />
-            </div>
-            <h2 className="font-display text-xl sm:text-3xl md:text-4xl text-foreground mb-3 sm:mb-5">
-              Nos <span className="text-accent italic">engagements</span>
-            </h2>
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-xs sm:text-base md:text-lg leading-relaxed">
-              Six valeurs essentielles au service de votre projet immobilier.
-            </p>
-          </motion.div>
-
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-            {engagements.map((e, i) =>
+        <div className="container mx-auto px-5 sm:px-6 relative z-10">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 max-w-6xl mx-auto">
+            {/* Colonne gauche — titre sticky */}
             <motion.div
-              key={e.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7 }}
               viewport={{ once: true }}
-               className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-4 sm:p-7 hover:shadow-xl hover:border-accent/40 hover:-translate-y-1 transition-all duration-500">
-              
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0 rounded-t-xl sm:rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                <div className="w-9 h-9 sm:w-12 sm:h-12 bg-accent/10 rounded-xl sm:rounded-xl flex items-center justify-center mb-3 sm:mb-5 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                  <e.icon className="w-4 h-4 sm:w-5 sm:h-5 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+              className="lg:col-span-5 lg:sticky lg:top-28 self-start"
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div className="h-px w-10 bg-accent" />
+                <span className="font-body text-accent font-semibold text-[11px] sm:text-xs tracking-[0.3em] uppercase">Manifeste</span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-primary-foreground leading-[1.05] mb-6">
+                Ce en quoi<br />
+                nous <span className="text-accent italic">croyons.</span>
+              </h2>
+              <p className="font-body text-primary-foreground/70 text-sm sm:text-base leading-relaxed max-w-md">
+                Six principes non-négociables qui guident chacune de nos décisions,
+                de la première rencontre à la remise des clés.
+              </p>
+              <div className="mt-8 hidden lg:flex items-center gap-4">
+                <div className="font-display text-accent italic text-6xl leading-none">6</div>
+                <div className="font-body text-primary-foreground/50 text-xs tracking-[0.25em] uppercase leading-snug">
+                  Convictions<br />qui font la différence
                 </div>
-                <h3 className="font-display text-sm sm:text-lg mb-1.5 sm:mb-3 text-foreground leading-tight">{e.title}</h3>
-                <p className="font-body text-muted-foreground text-[11px] sm:text-sm leading-relaxed">{e.description}</p>
-              </motion.div>
-            )}
+              </div>
+            </motion.div>
+
+            {/* Colonne droite — liste manifeste */}
+            <div className="lg:col-span-7 relative">
+              {/* Ligne verticale dorée */}
+              <div className="absolute left-[26px] sm:left-[34px] top-3 bottom-3 w-px bg-gradient-to-b from-accent/0 via-accent/40 to-accent/0" />
+
+              <ul className="space-y-8 sm:space-y-10">
+                {engagements.map((e, i) => (
+                  <motion.li
+                    key={e.title}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.06 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    className="group relative flex gap-4 sm:gap-6"
+                  >
+                    {/* Numéro + puce icône */}
+                    <div className="relative flex-shrink-0 flex flex-col items-center">
+                      <div className="w-[54px] h-[54px] sm:w-[70px] sm:h-[70px] rounded-full bg-primary border border-accent/30 flex items-center justify-center group-hover:border-accent group-hover:bg-accent transition-all duration-500 shadow-[0_0_0_6px_hsl(var(--primary))]">
+                        <e.icon className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
+                      </div>
+                      <span className="mt-2 font-display italic text-accent/60 text-xs sm:text-sm tracking-widest">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    {/* Contenu */}
+                    <div className="flex-1 pt-1 sm:pt-2">
+                      <h3 className="font-display text-lg sm:text-2xl text-primary-foreground mb-2 leading-tight group-hover:text-accent transition-colors duration-500">
+                        {e.title}
+                      </h3>
+                      <p className="font-body text-primary-foreground/65 text-sm sm:text-base leading-relaxed max-w-xl">
+                        {e.description}
+                      </p>
+                      <div className="mt-4 h-px w-12 bg-accent/40 group-hover:w-24 group-hover:bg-accent transition-all duration-500" />
+                    </div>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
