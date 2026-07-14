@@ -1,8 +1,5 @@
 import paris2Image1 from "@/assets/paris-2-fictif-1.jpg";
 import paris2Image2 from "@/assets/paris-2-fictif-2.jpg";
-import paris2Image3 from "@/assets/paris-2-fictif-3.jpg";
-import paris2Image4 from "@/assets/paris-2-fictif-4.jpg";
-import paris2Image5 from "@/assets/paris-2-fictif-5.jpg";
 
 export interface RoomDetail {
   type: string;
