@@ -1,4 +1,8 @@
-import paris2Image from "@/assets/paris-2-fictif.jpg";
+import paris2Image1 from "@/assets/paris-2-fictif-1.jpg";
+import paris2Image2 from "@/assets/paris-2-fictif-2.jpg";
+import paris2Image3 from "@/assets/paris-2-fictif-3.jpg";
+import paris2Image4 from "@/assets/paris-2-fictif-4.jpg";
+import paris2Image5 from "@/assets/paris-2-fictif-5.jpg";
 
 export interface RoomDetail {
   type: string;
@@ -58,7 +62,7 @@ export const mockProperties: Property[] = [
     bedrooms: 2,
     type: "Appartement",
     description: "Au cœur du 2ème arrondissement, à deux pas des passages couverts et du quartier Montorgueil, charmant appartement haussmannien traversant au 3ème étage avec ascenseur. Il se compose d'une entrée, d'un double séjour lumineux avec cheminée en marbre et parquet point de Hongrie, d'une cuisine séparée aménagée, de deux chambres calmes sur cour, d'une salle de bains et d'un wc séparé. Belles hauteurs sous plafond, moulures d'origine, exposition traversante Est/Ouest. Une cave complète ce bien. Idéal résidence principale ou pied-à-terre parisien.",
-    images: [paris2Image],
+    images: [paris2Image1, paris2Image2, paris2Image3, paris2Image4, paris2Image5],
     dateAdded: "2026-07-10",
     exclusive: true,
     energyClass: "D",
