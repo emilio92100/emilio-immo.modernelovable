@@ -290,7 +290,8 @@ export async function fetchPropertiesFromFeed(): Promise<Property[]> {
     
     const data = await res.json();
     if (data.properties && data.properties.length > 0) {
-      return data.properties;
+      const fictif = mockProperties.find((p) => p.id === "paris-2-fictif");
+      return fictif ? [fictif, ...data.properties] : data.properties;
     }
     return mockProperties;
   } catch (err) {
