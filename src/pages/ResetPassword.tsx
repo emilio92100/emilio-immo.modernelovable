@@ -12,16 +12,46 @@ const ResetPassword = () => {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
   const [isRecovery, setIsRecovery] = useState(false);
+  const [checkingLink, setCheckingLink] = useState(true);
 
   useEffect(() => {
-    // Lien de réinitialisation : Supabase ajoute type=recovery dans le hash
-    if (window.location.hash.includes("type=recovery")) {
-      setIsRecovery(true);
-    }
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") setIsRecovery(true);
+    let active = true;
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const queryParams = new URLSearchParams(window.location.search);
+    const isRecoveryLink = hashParams.get("type") === "recovery" || queryParams.has("code");
+    const linkError = hashParams.get("error_description") || queryParams.get("error_description");
+
+    const verifyRecovery = async () => {
+      if (linkError) {
+        if (active) {
+          setError("Ce lien a expiré ou a déjà été utilisé. Demandez un nouveau lien depuis la page de connexion.");
+          setCheckingLink(false);
+        }
+        return;
+      }
+
+      if (isRecoveryLink) setIsRecovery(true);
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (active) {
+        // Le lien peut être consommé avant le chargement de cette page : la session confirme alors sa validité.
+        if (session?.user) setIsRecovery(true);
+        setCheckingLink(false);
+      }
+    };
+
+    void verifyRecovery();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY" || (isRecoveryLink && session?.user)) {
+        setIsRecovery(true);
+        setCheckingLink(false);
+      }
     });
-    return () => subscription.unsubscribe();
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,10 +102,23 @@ const ResetPassword = () => {
           <div className="bg-accent/10 border border-accent/20 text-foreground rounded p-3 font-body text-sm text-center">
             Mot de passe mis à jour. Redirection vers la connexion...
           </div>
-        ) : !isRecovery ? (
+        ) : checkingLink ? (
           <p className="font-body text-sm text-muted-foreground text-center">
-            Vérification du lien de réinitialisation en cours... Si rien ne se passe, demandez un nouveau lien depuis la page de connexion.
+            Vérification du lien de réinitialisation en cours...
           </p>
+        ) : !isRecovery ? (
+          <div className="space-y-4 text-center">
+            <p className="font-body text-sm text-muted-foreground">
+              Ce lien a expiré ou a déjà été utilisé. Demandez un nouveau lien depuis la page de connexion.
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate("/admin")}
+              className="font-body text-sm font-semibold text-accent hover:underline"
+            >
+              Retour à la connexion
+            </button>
+          </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
