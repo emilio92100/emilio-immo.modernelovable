@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
@@ -14,6 +14,27 @@ const AdminLogin = () => {
 
   const [resetSent, setResetSent] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    const redirectAuthenticatedAdmin = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!active || !session) return;
+
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session.user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+
+      if (active && roleData) navigate("/admin/demandes", { replace: true });
+    };
+
+    void redirectAuthenticatedAdmin();
+    return () => { active = false; };
+  }, [navigate]);
 
   const handleForgotPassword = async () => {
     if (!email) {
