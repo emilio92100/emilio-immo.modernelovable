@@ -133,6 +133,9 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
   const [step, setStep] = useState<Step>(1);
   const [form, setForm] = useState<FormData>(initialForm(defaultCity, defaultPostalCode));
   const [submitting, setSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const formStartedAt = useRef(Date.now());
+
   const [result, setResult] = useState<EstimateResult | null>(null);
   const [loadingPhase, setLoadingPhase] = useState(0);
 
@@ -403,6 +406,17 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
       <DialogContent
         className="max-w-xl p-0 bg-transparent border-0 shadow-none gap-0 rounded-none [&>button]:hidden overflow-visible"
       >
+        <input
+          type="text"
+          name={honeypotFieldName}
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          style={honeypotStyle}
+        />
+
         <style>{`
           .estimation-scroll::-webkit-scrollbar { width: 6px; }
           .estimation-scroll::-webkit-scrollbar-track { background: transparent; }
