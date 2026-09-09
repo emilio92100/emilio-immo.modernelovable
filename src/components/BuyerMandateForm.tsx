@@ -81,6 +81,8 @@ const BuyerMandateForm = ({ trigger }: BuyerMandateFormProps) => {
 
       if (error) throw error;
 
+      markSubmitted();
+
       // Try to send email notification
       try {
         await supabase.functions.invoke("send-contact-email", {
@@ -90,9 +92,11 @@ const BuyerMandateForm = ({ trigger }: BuyerMandateFormProps) => {
         // Email is best-effort, don't block the submission
       }
 
-      setForm({ name: "", email: "", phone: "", budget: "", property_type: "", desired_location: "", desired_surface: "", timeline: "", message: "" });
+      setForm(emptyForm);
+      startedAt.current = Date.now();
       setOpen(false);
       setShowSuccess(true);
+
     } catch {
       toast({
         title: "Erreur",
