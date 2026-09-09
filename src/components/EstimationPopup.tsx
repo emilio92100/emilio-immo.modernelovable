@@ -217,7 +217,27 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
 
   const handleSubmit = async () => {
     if (!canSubmit) return;
+
+    const check = checkSubmission({
+      honeypot,
+      startedAt: formStartedAt.current,
+      name: `${form.first_name} ${form.last_name}`,
+      email: form.email,
+      phone: form.phone,
+      requirePhone: true,
+    });
+    if (!check.ok) {
+      if (check.silent) {
+        setResult({ error: "no_data" });
+        setStep(4);
+        return;
+      }
+      toast({ title: "Vérification", description: check.reason, variant: "destructive" });
+      return;
+    }
+
     setSubmitting(true);
+
     setLoadingPhase(0);
     const startedAt = Date.now();
     const phaseTimers: number[] = [];
