@@ -76,7 +76,7 @@ export type AntiBotInput = {
   requirePhone?: boolean;
 };
 
-export type AntiBotResult = { ok: true } | { ok: false; reason: string; silent: boolean };
+export type AntiBotResult = { ok: boolean; reason?: string; silent?: boolean };
 
 /**
  * Vérifie une soumission.
