@@ -12,6 +12,27 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [resetSent, setResetSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError("Saisissez votre email puis cliquez sur « Mot de passe oublié ».");
+      return;
+    }
+    setResetLoading(true);
+    setError("");
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setResetLoading(false);
+    if (resetError) {
+      setError(resetError.message);
+    } else {
+      setResetSent(true);
+    }
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -96,6 +117,19 @@ const AdminLogin = () => {
           >
             {loading ? "Connexion..." : "Se connecter"}
           </button>
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            disabled={resetLoading}
+            className="w-full text-center font-body text-xs text-muted-foreground hover:text-accent transition-colors disabled:opacity-50"
+          >
+            {resetLoading ? "Envoi en cours..." : "Mot de passe oublié ?"}
+          </button>
+          {resetSent && (
+            <div className="bg-accent/10 border border-accent/20 text-foreground rounded p-3 font-body text-sm">
+              Un email de réinitialisation vient d'être envoyé à {email}. Cliquez sur le lien reçu pour définir un nouveau mot de passe.
+            </div>
+          )}
         </form>
       </div>
     </div>
