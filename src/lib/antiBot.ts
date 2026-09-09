@@ -91,7 +91,13 @@ export function checkSubmission(input: AntiBotInput): AntiBotResult {
     return { ok: false, reason: "too_fast", silent: true };
   }
 
-  const last = Number(sessionStorage.getItem(RATE_LIMIT_KEY) || 0);
+  let last = 0;
+  try {
+    last = Number(sessionStorage.getItem(RATE_LIMIT_KEY) || 0);
+  } catch {
+    last = 0;
+  }
+
   if (last && Date.now() - last < RATE_LIMIT_MS) {
     return {
       ok: false,
