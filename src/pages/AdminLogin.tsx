@@ -43,8 +43,11 @@ const AdminLogin = () => {
     }
     setResetLoading(true);
     setError("");
+    const resetOrigin = window.location.hostname.endsWith("lovable.app")
+      ? window.location.origin
+      : "https://emilio-immo.lovable.app";
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${resetOrigin}/reset-password`,
     });
     setResetLoading(false);
     if (resetError) {
