@@ -47,9 +47,31 @@ const BuyerMandateStepperForm = () => {
   const next = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
+  const [honeypot, setHoneypot] = useState("");
+  const startedAt = useRef(Date.now());
+
   const handleSubmit = async () => {
+    const check = checkSubmission({
+      honeypot,
+      startedAt: startedAt.current,
+      name: form.name,
+      message: form.message,
+      email: form.email,
+      phone: form.phone,
+    });
+    if (!check.ok) {
+      if (check.silent) {
+        setShowSuccess(true);
+        setStep(0);
+        return;
+      }
+      toast({ title: "Vérification", description: check.reason, variant: "destructive" });
+      return;
+    }
+
     setLoading(true);
     try {
+
       const budget = form.budget_max || null;
       const { error } = await supabase.from("contact_submissions").insert({
         form_type: "mandat_recherche",
