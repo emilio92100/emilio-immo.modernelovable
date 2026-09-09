@@ -96,6 +96,10 @@ const BuyerMandateStepperForm = () => {
       });
       if (error) throw error;
 
+      markSubmitted();
+      startedAt.current = Date.now();
+
+
       try {
         await supabase.functions.invoke("send-contact-email", {
           body: { ...form, budget, form_type: "mandat_recherche" },
