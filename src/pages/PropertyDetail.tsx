@@ -520,14 +520,37 @@ const CallbackForm = ({ propertyRef, propertyTitle }: { propertyRef: string; pro
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const startedAt = useRef(Date.now());
 
   const inputClass =
     "w-full px-3 py-2.5 bg-background border border-border text-foreground placeholder:text-muted-foreground rounded font-body text-sm focus:outline-none focus:border-accent transition-colors";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const check = checkSubmission({
+      honeypot,
+      startedAt: startedAt.current,
+      name: `${form.firstName} ${form.lastName}`,
+      message: form.message,
+      email: form.email,
+      phone: form.phone,
+      requirePhone: true,
+    });
+    if (!check.ok) {
+      if (check.silent) {
+        setForm({ firstName: "", lastName: "", email: "", phone: "", message: "" });
+        setShowSuccess(true);
+        return;
+      }
+      window.alert(check.reason);
+      return;
+    }
+
     setLoading(true);
     try {
+
       const { error } = await supabase.from("contact_submissions").insert({
         form_type: "rappel_bien",
         name: `${form.firstName} ${form.lastName}`,
