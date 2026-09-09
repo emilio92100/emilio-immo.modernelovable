@@ -300,6 +300,10 @@ const EstimationPopup = ({ trigger, defaultCity, defaultPostalCode }: Estimation
       });
       if (dbError) throw dbError;
 
+      markSubmitted();
+      formStartedAt.current = Date.now();
+
+
       // 3. Notify (best-effort)
       try {
         await supabase.functions.invoke("send-contact-email", {
