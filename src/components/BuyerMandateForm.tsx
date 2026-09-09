@@ -127,6 +127,17 @@ const BuyerMandateForm = ({ trigger }: BuyerMandateFormProps) => {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-3 mt-2">
+          <input
+            type="text"
+            name={honeypotFieldName}
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={honeypotStyle}
+          />
+
           <div className="grid sm:grid-cols-2 gap-3">
             <input
               type="text"
