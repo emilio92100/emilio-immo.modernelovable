@@ -343,6 +343,17 @@ const BuyerMandateStepperForm = () => {
     <>
       <section className="py-20 bg-secondary">
         <div className="container mx-auto px-6">
+          <input
+            type="text"
+            name={honeypotFieldName}
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={honeypotStyle}
+          />
+
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-4xl text-foreground mb-3">Démarrez Votre Recherche</h2>
             <p className="font-body text-muted-foreground">Complétez le formulaire pour que nous puissions vous accompagner efficacement</p>
