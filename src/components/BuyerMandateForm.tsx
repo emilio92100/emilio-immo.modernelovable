@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Send, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SuccessPopup from "@/components/SuccessPopup";
+import { checkSubmission, honeypotFieldName, honeypotStyle, markSubmitted } from "@/lib/antiBot";
+
 import {
   Dialog,
   DialogContent,
@@ -33,11 +35,37 @@ const BuyerMandateForm = ({ trigger }: BuyerMandateFormProps) => {
     message: "",
   });
 
+  const [honeypot, setHoneypot] = useState("");
+  const startedAt = useRef(Date.now());
+
+  const emptyForm = { name: "", email: "", phone: "", budget: "", property_type: "", desired_location: "", desired_surface: "", timeline: "", message: "" };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const check = checkSubmission({
+      honeypot,
+      startedAt: startedAt.current,
+      name: form.name,
+      message: form.message,
+      email: form.email,
+      phone: form.phone,
+    });
+    if (!check.ok) {
+      if (check.silent) {
+        setForm(emptyForm);
+        setOpen(false);
+        setShowSuccess(true);
+        return;
+      }
+      toast({ title: "Vérification", description: check.reason, variant: "destructive" });
+      return;
+    }
+
     setLoading(true);
 
     try {
+
       const { error } = await supabase.from("contact_submissions").insert({
         form_type: "mandat_recherche",
         name: form.name,
