@@ -564,6 +564,10 @@ const CallbackForm = ({ propertyRef, propertyTitle }: { propertyRef: string; pro
       });
       if (error) throw error;
 
+      markSubmitted();
+      startedAt.current = Date.now();
+
+
       try {
         await supabase.functions.invoke("send-contact-email", {
           body: {
@@ -590,6 +594,17 @@ const CallbackForm = ({ propertyRef, propertyTitle }: { propertyRef: string; pro
       <div className="mt-6 pt-6 border-t border-border">
         <h4 className="font-display text-sm mb-3">Être rappelé pour ce bien</h4>
         <form onSubmit={handleSubmit} className="space-y-2.5">
+          <input
+            type="text"
+            name={honeypotFieldName}
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={honeypotStyle}
+          />
+
           <div className="grid grid-cols-2 gap-2">
             <input type="text" placeholder="Prénom *" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className={inputClass} />
             <input type="text" placeholder="Nom *" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className={inputClass} />
