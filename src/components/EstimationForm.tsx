@@ -96,9 +96,32 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
     setSuggestions([]);
   };
 
+  const emptyForm = { lastName: "", firstName: "", address: "", postalCode: "", city: "", phone: "", reason: "", surface: "", floor: "", bedrooms: "", message: "" };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const check = checkSubmission({
+      honeypot,
+      startedAt: startedAt.current,
+      name: `${form.firstName} ${form.lastName}`,
+      message: form.message,
+      phone: form.phone,
+      requirePhone: true,
+    });
+    if (!check.ok) {
+      if (check.silent) {
+        setForm(emptyForm);
+        setOpen(false);
+        setShowSuccess(true);
+        return;
+      }
+      toast({ title: "Vérification", description: check.reason, variant: "destructive" });
+      return;
+    }
+
     setLoading(true);
+
 
     try {
       const { error } = await supabase.from("contact_submissions").insert({
