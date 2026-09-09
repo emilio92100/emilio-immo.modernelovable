@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft, Send, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SuccessPopup from "@/components/SuccessPopup";
+import { checkSubmission, honeypotFieldName, honeypotStyle, markSubmitted } from "@/lib/antiBot";
+
 
 const STEPS = [
   { label: "Budget" },
@@ -45,9 +47,31 @@ const BuyerMandateStepperForm = () => {
   const next = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
+  const [honeypot, setHoneypot] = useState("");
+  const startedAt = useRef(Date.now());
+
   const handleSubmit = async () => {
+    const check = checkSubmission({
+      honeypot,
+      startedAt: startedAt.current,
+      name: form.name,
+      message: form.message,
+      email: form.email,
+      phone: form.phone,
+    });
+    if (!check.ok) {
+      if (check.silent) {
+        setShowSuccess(true);
+        setStep(0);
+        return;
+      }
+      toast({ title: "Vérification", description: check.reason, variant: "destructive" });
+      return;
+    }
+
     setLoading(true);
     try {
+
       const budget = form.budget_max || null;
       const { error } = await supabase.from("contact_submissions").insert({
         form_type: "mandat_recherche",
@@ -71,6 +95,10 @@ const BuyerMandateStepperForm = () => {
         ].filter(Boolean).join("\n") || null,
       });
       if (error) throw error;
+
+      markSubmitted();
+      startedAt.current = Date.now();
+
 
       try {
         await supabase.functions.invoke("send-contact-email", {
@@ -315,6 +343,17 @@ const BuyerMandateStepperForm = () => {
     <>
       <section className="py-20 bg-secondary">
         <div className="container mx-auto px-6">
+          <input
+            type="text"
+            name={honeypotFieldName}
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={honeypotStyle}
+          />
+
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-4xl text-foreground mb-3">Démarrez Votre Recherche</h2>
             <p className="font-body text-muted-foreground">Complétez le formulaire pour que nous puissions vous accompagner efficacement</p>

@@ -1,5 +1,7 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { checkSubmission, honeypotFieldName, honeypotStyle, markSubmitted } from "@/lib/antiBot";
+
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, MapPin, Maximize, BedDouble, Home, Calendar, Building, Thermometer,
@@ -520,14 +522,37 @@ const CallbackForm = ({ propertyRef, propertyTitle }: { propertyRef: string; pro
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const startedAt = useRef(Date.now());
 
   const inputClass =
     "w-full px-3 py-2.5 bg-background border border-border text-foreground placeholder:text-muted-foreground rounded font-body text-sm focus:outline-none focus:border-accent transition-colors";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const check = checkSubmission({
+      honeypot,
+      startedAt: startedAt.current,
+      name: `${form.firstName} ${form.lastName}`,
+      message: form.message,
+      email: form.email,
+      phone: form.phone,
+      requirePhone: true,
+    });
+    if (!check.ok) {
+      if (check.silent) {
+        setForm({ firstName: "", lastName: "", email: "", phone: "", message: "" });
+        setShowSuccess(true);
+        return;
+      }
+      window.alert(check.reason);
+      return;
+    }
+
     setLoading(true);
     try {
+
       const { error } = await supabase.from("contact_submissions").insert({
         form_type: "rappel_bien",
         name: `${form.firstName} ${form.lastName}`,
@@ -538,6 +563,10 @@ const CallbackForm = ({ propertyRef, propertyTitle }: { propertyRef: string; pro
         property_title: propertyTitle,
       });
       if (error) throw error;
+
+      markSubmitted();
+      startedAt.current = Date.now();
+
 
       try {
         await supabase.functions.invoke("send-contact-email", {
@@ -565,6 +594,17 @@ const CallbackForm = ({ propertyRef, propertyTitle }: { propertyRef: string; pro
       <div className="mt-6 pt-6 border-t border-border">
         <h4 className="font-display text-sm mb-3">Être rappelé pour ce bien</h4>
         <form onSubmit={handleSubmit} className="space-y-2.5">
+          <input
+            type="text"
+            name={honeypotFieldName}
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={honeypotStyle}
+          />
+
           <div className="grid grid-cols-2 gap-2">
             <input type="text" placeholder="Prénom *" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className={inputClass} />
             <input type="text" placeholder="Nom *" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className={inputClass} />
