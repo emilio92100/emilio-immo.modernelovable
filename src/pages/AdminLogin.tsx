@@ -117,6 +117,19 @@ const AdminLogin = () => {
           >
             {loading ? "Connexion..." : "Se connecter"}
           </button>
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            disabled={resetLoading}
+            className="w-full text-center font-body text-xs text-muted-foreground hover:text-accent transition-colors disabled:opacity-50"
+          >
+            {resetLoading ? "Envoi en cours..." : "Mot de passe oublié ?"}
+          </button>
+          {resetSent && (
+            <div className="bg-accent/10 border border-accent/20 text-foreground rounded p-3 font-body text-sm">
+              Un email de réinitialisation vient d'être envoyé à {email}. Cliquez sur le lien reçu pour définir un nouveau mot de passe.
+            </div>
+          )}
         </form>
       </div>
     </div>
