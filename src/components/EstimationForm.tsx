@@ -193,6 +193,17 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
           </DialogHeader>
 
           <form onSubmit={handleSubmit} className="space-y-3 mt-2">
+            <input
+              type="text"
+              name={honeypotFieldName}
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={honeypotStyle}
+            />
+
             {/* Required fields */}
             <div className="grid sm:grid-cols-2 gap-3">
               <input type="text" placeholder="Nom *" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className={inputClass} />
