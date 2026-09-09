@@ -1,17 +1,39 @@
-import { useState, useCallback } from "react";
+import { useState, useRef } from "react";
 import { Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SuccessPopup from "@/components/SuccessPopup";
+import { checkSubmission, honeypotFieldName, honeypotStyle, markSubmitted } from "@/lib/antiBot";
 
 const ContactForm = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const startedAt = useRef(Date.now());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const check = checkSubmission({
+      honeypot,
+      startedAt: startedAt.current,
+      name: form.name,
+      message: form.message,
+      email: form.email,
+      phone: form.phone,
+    });
+    if (!check.ok) {
+      if (check.silent) {
+        setForm({ name: "", email: "", phone: "", message: "" });
+        setShowSuccess(true);
+        return;
+      }
+      toast({ title: "Vérification", description: check.reason, variant: "destructive" });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -25,6 +47,8 @@ const ContactForm = () => {
 
       if (error) throw error;
 
+      markSubmitted();
+
       try {
         await supabase.functions.invoke("send-contact-email", {
           body: { ...form, form_type: "contact" },
@@ -34,6 +58,7 @@ const ContactForm = () => {
       }
 
       setForm({ name: "", email: "", phone: "", message: "" });
+      startedAt.current = Date.now();
       setShowSuccess(true);
     } catch {
       toast({ title: "Erreur", description: "Une erreur est survenue. Veuillez réessayer.", variant: "destructive" });
@@ -41,6 +66,7 @@ const ContactForm = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <section className="bg-primary py-20">
