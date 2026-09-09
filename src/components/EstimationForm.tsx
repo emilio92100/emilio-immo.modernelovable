@@ -143,6 +143,10 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
 
       if (error) throw error;
 
+      markSubmitted();
+      startedAt.current = Date.now();
+
+
       try {
         await supabase.functions.invoke("send-contact-email", {
           body: {
@@ -156,7 +160,7 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
         // best-effort
       }
 
-      setForm({ lastName: "", firstName: "", address: "", postalCode: "", city: "", phone: "", reason: "", surface: "", floor: "", bedrooms: "", message: "" });
+      setForm(emptyForm);
       setOpen(false);
       setShowSuccess(true);
     } catch {
