@@ -3,6 +3,8 @@ import { Send, Home, MapPin, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SuccessPopup from "@/components/SuccessPopup";
+import { checkSubmission, honeypotFieldName, honeypotStyle, markSubmitted } from "@/lib/antiBot";
+
 import {
   Dialog,
   DialogContent,
@@ -28,6 +30,9 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const startedAt = useRef(Date.now());
+
   const [form, setForm] = useState({
     lastName: "",
     firstName: "",
