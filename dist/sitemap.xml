@@ -1,41 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.emilio-immo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://www.emilio-immo.com/biens</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/estimation</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://www.emilio-immo.com/mandat-recherche</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/notre-histoire</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.emilio-immo.com/mentions-legales</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://www.emilio-immo.com/achat-appartement-boulogne-billancourt</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/achat-appartement-neuilly-sur-seine</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/achat-appartement-issy-les-moulineaux</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/achat-appartement-levallois-perret</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/achat-appartement-paris-16</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/achat-appartement-paris-15</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/achat-appartement-paris-7</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/achat-appartement-paris-6</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre-appartement-boulogne-billancourt</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre-appartement-neuilly-sur-seine</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre-appartement-issy-les-moulineaux</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre-appartement-levallois-perret</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre-appartement-paris-16</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre-appartement-paris-15</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre-appartement-paris-7</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/vendre-appartement-paris-6</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/prix-marche</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/vendre</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/acheter</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/fiscalite-juridique</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/prix-marche/prix-m2-boulogne-billancourt-2026</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/prix-marche/prix-m2-neuilly-sur-seine-2026</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/prix-marche/marche-immobilier-92-2026</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/vendre/combien-de-temps-vendre-appartement-92</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/vendre/vendre-off-market</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/vendre/7-criteres-prix-vente</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/acheter/boulogne-ou-neuilly-2026</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/acheter/primo-accedant-paris-ouest</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/fiscalite-juridique/plus-value-immobiliere-2026</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.emilio-immo.com/guide-immobilier/fiscalite-juridique/dpe-f-g-impact-prix</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-</urlset>
+<!-- Le plan du site pour Google : les pages du site (fixes), et les biens à vendre (mis à jour tout seul). -->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap><loc>https://www.emilio-immo.com/sitemap-pages.xml</loc></sitemap>
+  <sitemap><loc>https://www.emilio-immo.com/sitemap-biens.xml</loc></sitemap>
+</sitemapindex>
