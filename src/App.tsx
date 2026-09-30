@@ -10,9 +10,6 @@ import Director from "./pages/Director";
 import SellPage from "./pages/SellPage";
 import BuyerMandate from "./pages/BuyerMandate";
 import PropertyDetail from "./pages/PropertyDetail";
-import AdminSubmissions from "./pages/AdminSubmissions";
-import AdminLogin from "./pages/AdminLogin";
-import ResetPassword from "./pages/ResetPassword";
 import MentionsLegales from "./pages/MentionsLegales";
 import AchatBoulogneBillancourt from "./pages/AchatBoulogneBillancourt";
 import AchatNeuillySurSeine from "./pages/AchatNeuillySurSeine";
@@ -52,9 +49,9 @@ const App = () => (
           <Route path="/vendre" element={<SellPage />} />
           <Route path="/estimation" element={<Estimation />} />
           <Route path="/mandat-recherche" element={<BuyerMandate />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/admin/demandes" element={<AdminSubmissions />} />
+          {/* L'ancien espace admin (Lovable) : les demandes arrivent dans le CRM. */}
+          <Route path="/admin/*" element={<Navigate to="/" replace />} />
+          <Route path="/reset-password" element={<Navigate to="/" replace />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
           {/* Redirections des anciennes URLs (ancien prestataire) vers les pages actuelles */}
           <Route path="/detail/*" element={<Navigate to="/biens" replace />} />
