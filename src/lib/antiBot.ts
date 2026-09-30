@@ -1,17 +1,27 @@
 /**
  * Protection anti-robots pour les formulaires publics.
  *
- * 3 couches :
- *  1. Champ piège (honeypot) invisible pour les humains, souvent rempli par les bots.
- *  2. Temps de remplissage minimum (un bot poste en moins de 3 secondes).
- *  3. Heuristiques de contenu : texte aléatoire, téléphone non français, email jetable.
+ * Règle d'or : on ne jette JAMAIS une demande à cause de ce qu'elle contient.
+ * Un nom inhabituel (Schmitt, Schwartz, Nguyen, Kowalczyk…) est un client.
+ * Les demandes douteuses arrivent quand même dans le CRM, qui les repère,
+ * les range à part et n'envoie pas de mail pour elles : Alexandre fait le tri.
+ *
+ * Le site n'écarte que sur le COMPORTEMENT, jamais sur le contenu :
+ *  1. Champ piège, invisible pour les humains, qu'un robot remplit.
+ *     Son nom ne veut rien dire, pour que le remplissage automatique du
+ *     navigateur (nom, société, site…) ne le remplisse jamais à la place
+ *     d'un vrai visiteur.
+ *  2. Temps minimum : un robot poste en moins de 3 secondes.
+ *  3. Aucun vrai geste (clic, doigt, clavier) sur la page : un script qui
+ *     remplit et envoie le formulaire tout seul.
+ *  4. Anti-doublon : une demande toutes les 30 secondes (message affiché).
  */
 
 const MIN_FILL_MS = 3000;
 const RATE_LIMIT_KEY = "ei_last_submit";
 const RATE_LIMIT_MS = 30_000;
 
-export const honeypotFieldName = "company_website";
+export const honeypotFieldName = "ei_x7q";
 
 /** Styles pour cacher le champ piège sans utiliser display:none (détecté par les bots). */
 export const honeypotStyle: React.CSSProperties = {
@@ -23,42 +33,23 @@ export const honeypotStyle: React.CSSProperties = {
   pointerEvents: "none",
 };
 
-const VOWELS = /[aeiouyàâéèêëîïôöûü]/i;
-
-/** Détecte les chaînes générées aléatoirement (ex: "SJyjnmHmgjnCTrcqXYVl"). */
-export function looksRandom(value: string): boolean {
-  const cleaned = value.trim();
-  if (cleaned.length < 8) return false;
-
-  const words = cleaned.split(/\s+/).filter((w) => w.length >= 6);
-  if (words.length === 0) return false;
-
-  let suspicious = 0;
-  for (const word of words) {
-    const letters = word.replace(/[^a-zA-ZÀ-ÿ]/g, "");
-    if (letters.length < 6) continue;
-
-    const vowelCount = (letters.match(/[aeiouyàâéèêëîïôöûü]/gi) || []).length;
-    const vowelRatio = vowelCount / letters.length;
-
-    // Alternance de casse en milieu de mot (typique du charabia généré)
-    const caseSwitches = letters
-      .slice(1)
-      .split("")
-      .filter((c, i) => /[A-Z]/.test(c) !== /[A-Z]/.test(letters[i])).length;
-
-    if (!VOWELS.test(letters) || vowelRatio < 0.25 || caseSwitches >= 4) {
-      suspicious++;
-    }
+/* Un vrai geste sur la page : un clic, un doigt, une touche. Les événements
+   fabriqués par un script (element.click(), dispatchEvent) ne comptent pas. */
+let geste = false;
+if (typeof window !== "undefined") {
+  const vu = (e: Event) => {
+    if (e.isTrusted) geste = true;
+  };
+  for (const t of ["pointerdown", "mousedown", "touchstart", "keydown"]) {
+    window.addEventListener(t, vu, { capture: true, passive: true });
   }
-
-  return suspicious >= 1 && suspicious >= Math.ceil(words.length / 2);
 }
 
-/** Numéro français : 0X XX XX XX XX ou +33... */
-export function isValidFrenchPhone(phone: string): boolean {
-  const digits = phone.replace(/[\s.\-()]/g, "");
-  return /^(?:\+33|0033|0)[1-9]\d{8}$/.test(digits);
+/** Téléphone : français (06 12 34 56 78, +33…) ou étranger (+32…, 0044…). */
+export function isValidPhone(phone: string): boolean {
+  const digits = phone.replace(/[\s.\-()/]/g, "");
+  if (/^(?:\+33|0033|0)[1-9]\d{8}$/.test(digits)) return true;
+  return /^(?:\+|00)[1-9]\d{6,14}$/.test(digits);
 }
 
 export function isValidEmail(email: string): boolean {
@@ -68,11 +59,13 @@ export function isValidEmail(email: string): boolean {
 export type AntiBotInput = {
   honeypot: string;
   startedAt: number;
+  /* Gardés pour les formulaires qui les passent : ils ne servent plus à
+     écarter une demande (voir la règle d'or en haut). */
   name?: string;
   message?: string;
   phone?: string;
   email?: string;
-  /** Le téléphone est-il obligatoire et doit-il être français ? */
+  /** Le téléphone est-il obligatoire ? */
   requirePhone?: boolean;
 };
 
@@ -80,7 +73,8 @@ export type AntiBotResult = { ok: boolean; reason?: string; silent?: boolean };
 
 /**
  * Vérifie une soumission.
- * `silent: true` = comportement de bot avéré : on fait semblant de réussir sans rien enregistrer.
+ * `silent: true` = comportement de robot avéré : on fait semblant de réussir sans rien enregistrer.
+ * `silent: false` = une faute de saisie : le visiteur voit le message et corrige.
  */
 export function checkSubmission(input: AntiBotInput): AntiBotResult {
   if (input.honeypot && input.honeypot.trim() !== "") {
@@ -89,6 +83,10 @@ export function checkSubmission(input: AntiBotInput): AntiBotResult {
 
   if (Date.now() - input.startedAt < MIN_FILL_MS) {
     return { ok: false, reason: "too_fast", silent: true };
+  }
+
+  if (typeof window !== "undefined" && !geste) {
+    return { ok: false, reason: "no_gesture", silent: true };
   }
 
   let last = 0;
@@ -111,21 +109,13 @@ export function checkSubmission(input: AntiBotInput): AntiBotResult {
   }
 
   if (input.phone !== undefined && (input.requirePhone || input.phone.trim() !== "")) {
-    if (!isValidFrenchPhone(input.phone)) {
+    if (!isValidPhone(input.phone)) {
       return {
         ok: false,
-        reason: "Merci d'indiquer un numéro de téléphone français valide (ex. 06 12 34 56 78).",
+        reason: "Merci d'indiquer un numéro de téléphone valide (ex. 06 12 34 56 78, ou +32 4 12 34 56 78).",
         silent: false,
       };
     }
-  }
-
-  if (input.name && looksRandom(input.name)) {
-    return { ok: false, reason: "spam_name", silent: true };
-  }
-
-  if (input.message && looksRandom(input.message)) {
-    return { ok: false, reason: "spam_message", silent: true };
   }
 
   return { ok: true };
