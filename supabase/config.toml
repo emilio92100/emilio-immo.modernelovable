@@ -1,4 +1,15 @@
-project_id = "utklognamydlzpftwdcg"
+# Projet Supabase du CRM « Emilio chasseur immo » (depuis le 30 septembre 2026,
+# à la place de Lovable Cloud). Les quatre fonctions sont appelées sans jeton.
+project_id = "eutxmrdcykztjdyydmuo"
 
 [functions.sitemap]
+verify_jwt = false
+
+[functions.fetch-properties]
+verify_jwt = false
+
+[functions.dvf-estimate]
+verify_jwt = false
+
+[functions.send-contact-email]
 verify_jwt = false
