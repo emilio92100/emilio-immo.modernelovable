@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/sitemap.xml",
+      "source": "/sitemap-biens.xml",
       "destination": "https://eutxmrdcykztjdyydmuo.supabase.co/functions/v1/sitemap"
     },
     { "source": "/(.*)", "destination": "/index.html" }

@@ -4,7 +4,7 @@ import { checkSubmission, honeypotFieldName, honeypotStyle, markSubmitted } from
 
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeft, MapPin, Maximize, BedDouble, Home, Calendar, Building, Thermometer,
+  ArrowLeft, ArrowRight, MapPin, Maximize, BedDouble, Home, Calendar, Building, Thermometer,
   Car, ChevronLeft, ChevronRight, Phone, Mail, Compass, DoorOpen, ShieldCheck, Star, CheckCircle, Send, X,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -15,6 +15,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import DPEBadge from "@/components/DPEBadge";
 import SuccessPopup from "@/components/SuccessPopup";
+import PropertyCard from "@/components/PropertyCard";
 import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed, RoomDetail } from "@/lib/properties";
 
 /* ---------- Room Details Popup Block ---------- */
@@ -110,12 +111,20 @@ const PropertyDetail = () => {
     mockProperties.find((p) => p.id === id)
   );
   const [loading, setLoading] = useState(true);
+  // Les derniers biens en vente, montrés quand celui-ci n'existe plus (vendu ou retiré).
+  const [autres, setAutres] = useState<Property[]>([]);
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   useEffect(() => {
     fetchPropertiesFromFeed().then((data) => {
       const found = data.find((p) => p.id === id);
       if (found) setProperty(found);
+      setAutres(
+        data
+          .filter((p) => p.id !== id)
+          .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+          .slice(0, 3),
+      );
       setLoading(false);
     });
   }, [id]);
@@ -142,11 +151,40 @@ const PropertyDetail = () => {
           noindex
         />
         <Navbar />
-        <div className="pt-28 pb-20 text-center container mx-auto px-6">
-          <h1 className="font-display text-3xl mb-4">Bien introuvable</h1>
-          <Link to="/biens" className="text-accent hover:underline font-body">
-            ← Retour aux biens
-          </Link>
+        <div className="pt-28 pb-20 container mx-auto px-6">
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Bien vendu ou retiré</span>
+            <h1 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">Ce bien n'est plus disponible</h1>
+            <div className="w-16 h-0.5 bg-accent mx-auto mb-5" />
+            <p className="font-body text-muted-foreground">
+              {autres.length > 0
+                ? "Il a peut-être déjà trouvé preneur. Voici nos derniers biens à vendre, qui pourraient vous plaire."
+                : "Il a peut-être déjà trouvé preneur. Découvrez nos autres biens à vendre."}
+            </p>
+          </div>
+
+          {autres.length > 0 && (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {autres.map((p, i) => (
+                <PropertyCard key={p.id} property={p} index={i} />
+              ))}
+            </div>
+          )}
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              to="/biens"
+              className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full font-body font-semibold text-sm hover:brightness-110 transition-all"
+            >
+              Voir tous nos biens <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/mandat-recherche"
+              className="inline-flex items-center gap-2 border border-border text-foreground px-6 py-3 rounded-full font-body font-medium text-sm hover:bg-secondary transition-all"
+            >
+              Confier ma recherche
+            </Link>
+          </div>
         </div>
         <Footer />
       </div>
