@@ -24,7 +24,7 @@ export const ArticleCard = ({ a, dark, big }: { a: Article; dark?: boolean; big?
       )}
     >
       <span className={cn("inline-flex h-7 items-center self-start rounded-full px-3 text-[12px] font-extrabold uppercase tracking-[0.12em]", dark ? "bg-white/10 text-brand-orange-soft" : "bg-brand-tint text-brand")}>{cat?.label}</span>
-      <h3 className={cn("m-0 font-display font-medium leading-tight text-balance", big ? "text-[28px] md:text-[34px]" : "text-[22px]", dark ? "text-white" : "text-brand-ink group-hover:text-brand")}>{a.title}</h3>
+      <h3 className={cn("m-0 font-display font-medium leading-tight text-balance", big ? "text-[19.5px] sm:text-[23px] sm:text-[28px] md:text-[34px]" : "text-[19px] sm:text-[22px]", dark ? "text-white" : "text-brand-ink group-hover:text-brand")}>{a.title}</h3>
       <p className={cn("m-0 text-[15px] leading-relaxed text-pretty", big ? "line-clamp-4" : "line-clamp-3", dark ? "text-brand-bt" : "text-brand-txt")}>{a.excerpt}</p>
       <div className={cn("mt-auto flex items-center justify-between gap-3 border-t pt-4 text-[13px] font-semibold", dark ? "border-white/15 text-brand-bt" : "border-brand-line2 text-brand-mut")}>
         <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> <time dateTime={a.updated || a.date}>{formatDate(a.updated || a.date)}</time> · {a.readMinutes} min</span>

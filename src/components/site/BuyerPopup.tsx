@@ -15,6 +15,7 @@ import { ArrowRight, Bell, CalendarDays, Heart, Lock, Sparkles, Star, X } from "
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { PhoneScreen } from "@/components/site/PhoneScreen";
+import { Souligne } from "@/components/site/ui";
 import bien1 from "@/assets/refonte/espace-bien-1.webp";
 import bien2 from "@/assets/refonte/espace-bien-2.webp";
 
@@ -232,19 +233,18 @@ const Nouveau = ({ petit }: { petit?: boolean }) => (
 );
 
 const Titre = ({ variante }: { variante: Variante }) => {
-  const trait = <span aria-hidden className="absolute -left-0.5 -right-1 bottom-0.5 -z-10 h-[0.32em] rounded-full bg-[#FAD3A0]" />;
   const etoile = <sup className="ml-0.5 text-[0.5em] text-brand-orange">*</sup>;
   if (variante === "bien")
     return (
       <>
         <span className="mb-1 block text-[0.56em] tracking-[-0.02em] text-brand">Ce bien vous plaît ?</span>
-        Recevez les prochains comme lui <span className="relative z-0 whitespace-nowrap">en premier{trait}</span>
+        Recevez les prochains comme lui <Souligne>en premier</Souligne>
         {etoile}
       </>
     );
   return (
     <>
-      Un espace rien que pour <span className="relative z-0 whitespace-nowrap">votre recherche{trait}</span>
+      Un espace rien que pour <Souligne>votre recherche</Souligne>
       {etoile}
     </>
   );

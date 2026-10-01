@@ -50,6 +50,16 @@ export const Em = ({ children, dark, wrap }: { children: ReactNode; dark?: boole
   <em className={cn("font-normal italic", dark ? "text-brand-orange-soft" : "text-brand-orange-lt", !wrap && "whitespace-nowrap")}>{children}</em>
 );
 
+/** Le trait bleu Emilio sous un mot : le même partout sur le site (accueil, nos biens, fenêtres…). */
+export const Souligne = ({ children, className }: { children: ReactNode; className?: string }) => (
+  <span className={cn("relative z-0 whitespace-nowrap", className)}>
+    {children}
+    <svg aria-hidden viewBox="0 0 300 22" preserveAspectRatio="none" className="pointer-events-none absolute -left-[0.04em] top-full -mt-[0.15em] h-[0.29em] w-[calc(100%-0.02em)] overflow-visible">
+      <path d="M4 15 C 70 6, 170 3, 296 9" fill="none" stroke="#22497D" strokeWidth="7" strokeLinecap="round" pathLength={1} className="trait-dessine" />
+    </svg>
+  </span>
+);
+
 export const Filet = ({ center }: { center?: boolean }) => (
   <span aria-hidden className={cn("block h-[2px] w-14 bg-brand-orange", center && "mx-auto")} />
 );
@@ -72,19 +82,19 @@ export const SectionHead = ({
   className?: string;
   as?: "h1" | "h2";
 }) => (
-  <div className={cn("flex max-w-[720px] flex-col gap-4", center && "mx-auto items-center text-center", className)}>
+  <div className={cn("flex max-w-[720px] flex-col gap-3 sm:gap-4", center && "mx-auto items-center text-center", className)}>
     {eyebrow && <Eyebrow dark={dark} center={center}>{eyebrow}</Eyebrow>}
     <Tag
       className={cn(
         "m-0 font-display font-medium leading-[1.14] tracking-[-0.01em] text-balance",
-        Tag === "h1" ? "text-[clamp(34px,4vw,54px)] leading-[1.06]" : "text-[clamp(28px,2.7vw,40px)]",
+        Tag === "h1" ? "text-[29px] sm:text-[clamp(34px,4vw,54px)] leading-[1.06]" : "text-[24px] sm:text-[clamp(28px,2.7vw,40px)]",
         dark ? "text-white" : "text-brand-ink",
       )}
     >
       {title}
     </Tag>
     <Filet center={center} />
-    {lead && <p className={cn("m-0 max-w-[640px] text-[16.5px] leading-relaxed text-pretty", dark ? "text-brand-bt" : "text-brand-txt")}>{lead}</p>}
+    {lead && <p className={cn("m-0 max-w-[640px] text-[15px] leading-relaxed text-pretty sm:text-[16.5px]", dark ? "text-brand-bt" : "text-brand-txt")}>{lead}</p>}
   </div>
 );
 
@@ -170,7 +180,7 @@ export const TrustRow = ({ dark, className }: { dark?: boolean; className?: stri
       ["10+ ans", "de métier"],
     ].map(([a, b]) => (
       <div key={a} className="flex flex-col leading-tight">
-        <span className={cn("font-display text-2xl", dark ? "text-white" : "text-brand-ink")}>{a}</span>
+        <span className={cn("font-display text-[20px] sm:text-2xl", dark ? "text-white" : "text-brand-ink")}>{a}</span>
         <span className={cn("text-[13px] font-semibold", dark ? "text-brand-bt" : "text-brand-mut")}>{b}</span>
       </div>
     ))}
@@ -181,7 +191,7 @@ export const TrustRow = ({ dark, className }: { dark?: boolean; className?: stri
 export const Checks = ({ items, dark, className }: { items: ReactNode[]; dark?: boolean; className?: string }) => (
   <ul className={cn("m-0 flex list-none flex-col gap-2.5 p-0", className)}>
     {items.map((it, i) => (
-      <li key={i} className={cn("flex items-start gap-2.5 text-[15.5px] leading-normal", dark ? "text-brand-bt" : "text-brand-txt")}>
+      <li key={i} className={cn("flex items-start gap-2.5 text-[14.5px] leading-normal sm:text-[15.5px]", dark ? "text-brand-bt" : "text-brand-txt")}>
         <svg viewBox="0 0 24 24" aria-hidden className={cn("mt-0.5 h-[18px] w-[18px] flex-none fill-none stroke-[2.4]", dark ? "stroke-brand-orange" : "stroke-brand-orange-text")} strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 6 9 17l-5-5" />
         </svg>
