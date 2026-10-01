@@ -2,7 +2,7 @@
    - villes et arrondissements tapés librement, avec les suggestions de la Base Adresse Nationale ;
    - curseurs pour le budget et la surface. */
 import { useEffect, useRef, useState } from "react";
-import { Loader2, MapPin, Plus, X } from "lucide-react";
+import { Check, Loader2, MapPin, Plus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /* ── Villes ── */
@@ -13,8 +13,8 @@ const nomVille = (name: string) =>
     .replace(/^(Lyon|Marseille) (\d+)(?:er|e) Arrondissement$/i, (_, v, n) => `${v} ${n}${n === "1" ? "er" : "e"}`);
 
 const SOURCES = [
-  (q: string) => `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(q)}&type=municipality&autocomplete=1&limit=7`,
-  (q: string) => `https://data.geopf.fr/geocodage/search?q=${encodeURIComponent(q)}&index=address&type=municipality&autocomplete=1&limit=7`,
+  (q: string) => `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(q)}&type=municipality&autocomplete=1&limit=7&lat=48.8566&lon=2.3522`,
+  (q: string) => `https://data.geopf.fr/geocodage/search?q=${encodeURIComponent(q)}&index=address&type=municipality&autocomplete=1&limit=7&lat=48.8566&lon=2.3522`,
 ];
 
 type Feature = { properties: { name?: string; label?: string; postcode?: string; context?: string } };
@@ -145,6 +145,12 @@ export const CityPicker = ({ value, onChange, placeholder = "Une ville, un arron
         />
         {loading && <Loader2 className="h-4 w-4 flex-none animate-spin text-brand-mut" />}
       </div>
+      {value.length > 0 && (
+        <span className="mt-2 flex items-center gap-1.5 text-[13px] font-semibold text-[#2E7D5B]">
+          <Check className="h-4 w-4" strokeWidth={2.6} />
+          {value.length === 1 ? "1 ville choisie" : `${value.length} villes choisies`} : tapez-en une autre pour l’ajouter.
+        </span>
+      )}
       {open && items.length > 0 && (
         <ul role="listbox" className="absolute left-0 right-0 top-[calc(100%+6px)] z-30 m-0 max-h-[290px] list-none overflow-y-auto rounded-2xl border border-brand-line bg-white p-1.5 shadow-[0_24px_50px_-20px_rgba(19,36,61,0.45)]" style={{ animation: "fade-up .18s ease both" }}>
           {items.map((v, k) => (
