@@ -127,6 +127,7 @@
 }
 @keyframes bp-tile { 0%, 25%, 100% { background-color: #E8EFF8; color: #22497D; } 4%, 21% { background-color: #E68B23; color: #13243D; } }
 @keyframes trait-dessine { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes feuille-monte { from { transform: translateY(100%); } to { transform: none; } }
 @keyframes em-drift { 0% { transform: scale(1.015) translateX(0); } 100% { transform: scale(1.045) translateX(-0.8%); } }
 
 @layer utilities {
