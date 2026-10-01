@@ -11,7 +11,7 @@ import SEOHead, { SITE_URL } from "@/components/SEOHead";
 import DPEBadge from "@/components/DPEBadge";
 import PropertyCard, { displayCity, displayTitle } from "@/components/PropertyCard";
 import { cn } from "@/lib/utils";
-import { Property, fetchPropertiesFromFeed, formatPrice, mockProperties } from "@/lib/properties";
+import { Property, fetchPropertiesFromFeed, formatPrice, formatSurface, mockProperties } from "@/lib/properties";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { Btn, Container, Crumbs, Em, FRAME_SHADOW, MAIL, SectionHead, TEL, TEL_HREF } from "@/components/site/ui";
 
@@ -182,17 +182,17 @@ const PropertyDetail = () => {
   const titre = displayTitle(p);
   const ville = displayCity(p);
   const url = `${SITE_URL}/biens/${p.id}`;
-  const surf = p.surface ? `${p.surface} m²` : "";
+  const surf = p.surface ? formatSurface(p.surface) : "";
   const seoTitle = `${titre}${surf ? ` ${surf}` : ""} à vendre, ${ville} | Emilio Immobilier`;
   const seoDesc = `${titre} à vendre à ${ville}${surf ? `, ${surf}` : ""}${p.bedrooms ? `, ${p.bedrooms} chambre${p.bedrooms > 1 ? "s" : ""}` : ""} : ${formatPrice(p.price)}. Photos, plan, DPE et visite avec Emilio Immobilier.`.slice(0, 160);
   const avantages = plus(p);
   const demande = (objet: "Visiter un bien" | "Autre", message: string) => openContact({ objet, message, propertyRef: p.id, propertyTitle: `${titre}, ${ville}` });
 
   const specs = [
-    p.surface > 0 && { icon: Maximize, l: "Surface", v: `${p.surface} m²` },
+    p.surface > 0 && { icon: Maximize, l: "Surface", v: formatSurface(p.surface) },
     p.rooms > 0 && { icon: Home, l: "Pièces", v: `${p.rooms}` },
     p.bedrooms > 0 && { icon: BedDouble, l: "Chambres", v: `${p.bedrooms}` },
-    p.floor !== undefined && p.floor !== null && { icon: Building, l: "Étage", v: p.floor === 0 ? "Rez-de-chaussée" : p.totalFloors ? `${p.floor} sur ${p.totalFloors}` : `${p.floor}` },
+    !/maison/i.test(p.type) && p.floor !== undefined && p.floor !== null && { icon: Building, l: "Étage", v: p.floor === 0 ? "Rez-de-chaussée" : p.totalFloors ? `${p.floor} sur ${p.totalFloors}` : `${p.floor}` },
     p.yearBuilt && p.yearBuilt > 0 && { icon: CalendarDays, l: "Construction", v: `${p.yearBuilt}` },
     p.heating && { icon: Thermometer, l: "Chauffage", v: p.heating },
   ].filter(Boolean) as { icon: typeof Home; l: string; v: string }[];
@@ -300,7 +300,7 @@ const PropertyDetail = () => {
                           <tr key={k} className="border-t border-brand-line2">
                             <td className="py-2.5 text-brand-mut">{r.level ? `Étage ${r.level}` : "—"}</td>
                             <td className="py-2.5 font-semibold text-brand-ink">{r.type}</td>
-                            <td className="py-2.5 text-right text-brand-ink">{r.surface > 0 ? `${r.surface} m²` : "—"}</td>
+                            <td className="py-2.5 text-right text-brand-ink">{r.surface > 0 ? formatSurface(r.surface) : "—"}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -330,7 +330,7 @@ const PropertyDetail = () => {
                   <span className="text-[13px] text-brand-mut">
                     Prix frais d’agence inclus · <Link to="/honoraires" className="font-semibold text-brand underline underline-offset-2">consulter nos tarifs</Link>
                   </span>
-                  {(p.charges || p.taxeFonciere) && (
+                  {!!(p.charges || p.taxeFonciere) && (
                     <span className="pt-1 text-[13.5px] text-brand-txt">
                       {p.charges ? `Charges : ${formatPrice(p.charges)} par an` : ""}
                       {p.charges && p.taxeFonciere ? " · " : ""}
