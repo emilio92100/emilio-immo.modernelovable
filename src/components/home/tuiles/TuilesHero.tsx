@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, CalendarDays, Home, KeyRound, LineChart, MapPin, Search, UserRound, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
+import { Souligne } from "@/components/site/ui";
 import { Choix, type Option } from "@/components/home/tuiles/Choix";
 import panorama from "@/assets/refonte/paris-vue-ciel.webp";
 
@@ -139,13 +140,7 @@ const TuilesHero = () => (
         <h1 className="fx-fade m-0 mb-3.5 mt-4 text-[42px] font-extrabold leading-[1.02] tracking-[-0.035em] text-brand-ink md:mb-5 md:mt-[22px] md:text-[76px]">
           <span className="sr-only">Agence immobilière à Paris et dans les Hauts-de-Seine : </span>
           Votre projet immobilier,{" "}
-          <span className="relative z-0 whitespace-nowrap">
-            simplement.
-            {/* Le trait bleu Emilio, qui se dessine à l’arrivée */}
-            <svg aria-hidden viewBox="0 0 300 22" preserveAspectRatio="none" className="absolute -left-1 right-2 top-full -mt-1.5 h-[13px] w-[calc(100%-4px)] overflow-visible md:-mt-2.5 md:h-[20px]">
-              <path d="M4 15 C 70 6, 170 3, 296 9" fill="none" stroke="#22497D" strokeWidth="7" strokeLinecap="round" pathLength={1} className="trait-dessine" />
-            </svg>
-          </span>
+          <Souligne>simplement.</Souligne>
         </h1>
         <p className="fx-fade m-0 max-w-[600px] text-base font-medium leading-[1.55] text-[#33445B] md:text-[19px]">
           Vendre, acheter, faire estimer : une équipe qui vous répond, vous conseille et vous tient au courant à chaque étape.
