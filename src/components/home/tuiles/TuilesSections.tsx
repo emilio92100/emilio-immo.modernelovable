@@ -1,14 +1,17 @@
 /* ═══ Accueil « Tuiles » : les sections sous les biens ═══════════════════════
    Discrétion · Ce que nous faisons pour vous · Comment ça se passe · Nos secteurs · Avis · Appel final. */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
-  ArrowRight, BadgeCheck, CalendarDays, ChartLine, Check, EyeOff, FileText, Home, KeyRound, LineChart, Lock, MapPin, MessageSquare, Phone, Handshake, Search, ShieldCheck, Sparkles, Star, UserRound,
+  ArrowRight, BadgeCheck, CalendarDays, Camera, Check, EyeOff, FileText, Home, KeyRound, LineChart, Lock, MessageSquare, Phone, Handshake, Search, ShieldCheck, Star, UserRound,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { TEL, TEL_HREF } from "@/components/site/ui";
 import { AVIS, AVIS_GOOGLE_URL } from "@/data/avis";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { CARTE_H, CARTE_W, ETIQUETTES, HDS_AUTRES, HDS_SECTEURS, PARIS_AUTRES, PARIS_SECTEURS, SEINE } from "@/data/secteursCarte";
 import salon from "@/assets/refonte/salon-haussmannien.webp";
 import facade from "@/assets/refonte/paris-facade-eiffel.webp";
 import toits from "@/assets/refonte/paris-toits.webp";
@@ -110,14 +113,17 @@ const SERVICES = [
 export const Services = () => {
   const { openEstimation } = useSiteModals();
   return (
-    <section id="services" className={cn(W, "pt-[72px] md:pt-24")}>
-      <div className="relative overflow-hidden rounded-[32px] bg-brand-sky px-[18px] pb-[22px] pt-8 md:rounded-[40px] md:px-[52px] md:pb-[52px] md:pt-[56px]">
-        <span aria-hidden className="absolute -right-[120px] -top-[150px] h-[380px] w-[380px] rounded-full border-[54px] border-brand/[0.05]" />
-        <div className="relative flex flex-wrap items-end justify-between gap-6 px-1 md:px-0">
+    <section id="services" className="relative mt-[72px] overflow-hidden bg-brand text-white md:mt-24">
+      <span aria-hidden className="absolute -left-[140px] -top-[160px] h-[420px] w-[420px] rounded-full border-[60px] border-white/[0.04]" />
+      <span aria-hidden className="absolute -bottom-[180px] -right-[120px] h-[460px] w-[460px] rounded-full border-[64px] border-white/[0.04]" />
+      <div className={cn(W, "relative pb-14 pt-14 md:pb-[88px] md:pt-[88px]")}>
+        <div className="relative flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-[780px]">
-            <span className="mb-6 grid h-[60px] w-[60px] place-items-center rounded-[20px] bg-brand text-white"><Handshake className="h-[26px] w-[26px]" /></span>
-            <h2 className={H2}>Ce que nous faisons pour vous</h2>
-            <p className={SUB}>Un seul interlocuteur, qui connaît votre dossier, du premier rendez-vous à la remise des clés.</p>
+            <span className="mb-[18px] inline-flex items-center gap-3 text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-soft">
+              <span aria-hidden className="block h-[1.5px] w-8 bg-brand-orange" /> Nos services
+            </span>
+            <h2 className={cn(H2, "text-white")}>Ce que nous faisons pour vous</h2>
+            <p className={cn(SUB, "text-brand-bt")}>Un seul interlocuteur, qui connaît votre dossier, du premier rendez-vous à la remise des clés.</p>
           </div>
           <span className="anim-float inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white pl-1.5 pr-[18px] text-[14.5px] font-bold text-brand-ink shadow-[0_18px_36px_-18px_rgba(19,36,61,0.55)]">
             <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-[#E6F4EC] text-[#2E7D5B]"><BadgeCheck className="h-4 w-4" /></span>
@@ -136,7 +142,7 @@ export const Services = () => {
                 </span>
                 <span className="flex flex-1 flex-col px-2.5 pb-2 pt-5 md:px-3">
                   <span className="flex items-center gap-3">
-                    <span className="grid h-11 w-11 flex-none place-items-center rounded-[14px] bg-brand-sky text-brand">{c.icon}</span>
+                    <span className="grid h-11 w-11 flex-none place-items-center rounded-[14px] bg-brand text-brand-orange">{c.icon}</span>
                     <span className="text-[26px] font-extrabold tracking-[-0.035em] text-brand-ink">{c.t}</span>
                   </span>
                   <span className="mt-3 text-[15px] font-medium leading-relaxed text-brand-mut">{c.d}</span>
@@ -152,7 +158,7 @@ export const Services = () => {
                 </span>
               </>
             );
-            const carte = "group flex flex-col rounded-[28px] bg-white p-3 text-left shadow-[0_30px_60px_-44px_rgba(19,36,61,0.6)] transition-transform duration-300 hover:-translate-y-1 md:rounded-[30px]";
+            const carte = "group flex flex-col rounded-[28px] bg-white p-3 text-left shadow-[0_40px_70px_-40px_rgba(8,20,40,0.8)] transition-transform duration-300 hover:-translate-y-1 md:rounded-[30px]";
             return c.to ? (
               <Link key={c.t} to={c.to} className={carte}>{contenu}</Link>
             ) : (
@@ -160,9 +166,8 @@ export const Services = () => {
             );
           })}
         </div>
-        <Link to="/acheter#espace" className="relative mt-3.5 flex flex-col items-start gap-4 overflow-hidden rounded-[26px] bg-brand p-6 text-white transition hover:brightness-110 md:mt-5 md:flex-row md:items-center md:gap-6 md:rounded-[28px] md:px-7 md:py-6">
-          <span aria-hidden className="absolute -bottom-16 -right-12 h-36 w-36 rounded-full bg-brand-orange/90 md:-right-14 md:-top-20 md:bottom-auto md:h-40 md:w-40" />
-          <span className="relative grid h-[54px] w-[54px] flex-none place-items-center rounded-[18px] bg-white/[0.12]"><UserRound className="h-6 w-6" /></span>
+        <Link to="/acheter#espace" className="relative mt-3.5 flex flex-col items-start gap-4 overflow-hidden rounded-[26px] bg-white/[0.08] p-6 text-white ring-1 ring-white/15 transition hover:bg-white/[0.12] md:mt-5 md:flex-row md:items-center md:gap-6 md:rounded-[28px] md:px-7 md:py-6">
+                    <span className="relative grid h-[54px] w-[54px] flex-none place-items-center rounded-[18px] bg-white/[0.12]"><UserRound className="h-6 w-6" /></span>
           <span className="relative flex min-w-0 flex-1 flex-col">
             <b className="text-[19px] font-extrabold tracking-[-0.02em]">Votre espace client</b>
             <span className="mt-0.5 text-[15px] font-medium text-white/80">Visites, comptes rendus, offres, documents : tout votre projet au même endroit.</span>
@@ -174,87 +179,155 @@ export const Services = () => {
           </span>
           <span className="relative hidden h-11 w-11 flex-none place-items-center rounded-full bg-white text-brand-ink md:grid"><ArrowRight className="h-5 w-5" /></span>
         </Link>
-        <p className="relative m-0 mt-4 px-1 text-[12.5px] text-brand-mut">* Dans le cadre d’un mandat de recherche.</p>
+        <p className="relative m-0 mt-4 text-[12.5px] text-brand-bt">* Dans le cadre d’un mandat de recherche.</p>
       </div>
     </section>
   );
 };
 
-/* ── Comment ça se passe : la vague ── */
+/* ── Comment ça se passe : une ligne qui avance d’étape en étape ── */
 const ETAPES = {
   vends: {
     label: "Je vends",
     icon: <Home className="h-4 w-4" />,
     steps: [
-      { icon: <ChartLine className="h-[30px] w-[30px]" />, t: "Estimation offerte", d: "Nous visitons votre bien et vous remettons un avis de valeur clair, appuyé sur les ventes du quartier." },
-      { icon: <Sparkles className="h-[30px] w-[30px]" />, t: "Mise en valeur", d: "Photos soignées, visite virtuelle, annonce travaillée : votre bien se montre sous son meilleur jour." },
-      { icon: <MessageSquare className="h-[30px] w-[30px]" />, t: "Visites et offres", d: "Des visites avec des acquéreurs sérieux, un compte rendu après chacune, et la négociation à vos côtés." },
-      { icon: <KeyRound className="h-[30px] w-[30px]" />, t: "Jusqu’aux clés", d: "Compromis, suivi avec le notaire, remise des clés : nous restons là jusqu’au bout." },
+      { icon: LineChart, t: "Estimation offerte", d: "Nous visitons votre bien et vous remettons un avis de valeur clair, appuyé sur les ventes du quartier." },
+      { icon: Camera, t: "Mise en valeur", d: "Photos soignées, visite virtuelle, annonce travaillée : votre bien se montre sous son meilleur jour." },
+      { icon: MessageSquare, t: "Visites et offres", d: "Des visites avec des acquéreurs sérieux, un compte rendu après chacune, et la négociation à vos côtés." },
+      { icon: KeyRound, t: "Jusqu’aux clés", d: "Compromis, suivi avec le notaire, remise des clés : nous restons là jusqu’au bout." },
     ],
   },
   achete: {
     label: "J’achète",
     icon: <KeyRound className="h-4 w-4" />,
     steps: [
-      { icon: <UserRound className="h-[30px] w-[30px]" />, t: "Votre projet", d: "Budget, quartiers, critères : nous faisons le point ensemble, sans rien laisser au hasard." },
-      { icon: <Search className="h-[30px] w-[30px]" />, t: "La recherche", d: "Nous cherchons pour vous, y compris parmi des biens qui ne sont pas en ligne, grâce à notre réseau." },
-      { icon: <FileText className="h-[30px] w-[30px]" />, t: "Visites et dossier", d: "Nous visitons, étudions le dossier et la copropriété, et vous disons franchement ce que nous en pensons." },
-      { icon: <KeyRound className="h-[30px] w-[30px]" />, t: "Négociation et signature", d: "Nous négocions à vos côtés, puis vous accompagnons jusqu’à la signature chez le notaire." },
+      { icon: UserRound, t: "Votre projet", d: "Budget, quartiers, critères : nous faisons le point ensemble, sans rien laisser au hasard." },
+      { icon: Search, t: "La recherche", d: "Nous cherchons pour vous, y compris parmi des biens qui ne sont pas en ligne, grâce à notre réseau." },
+      { icon: FileText, t: "Visites et dossier", d: "Nous visitons, étudions le dossier et la copropriété, et vous disons franchement ce que nous en pensons." },
+      { icon: Handshake, t: "Négociation et signature", d: "Nous négocions à vos côtés, puis vous accompagnons jusqu’à la signature chez le notaire." },
     ],
   },
 };
+type Parcours = keyof typeof ETAPES;
 
 export const Etapes = () => {
-  const [tab, setTab] = useState<keyof typeof ETAPES>("vends");
+  const reduit = useReducedMotion();
+  const [tab, setTab] = useState<Parcours>("vends");
+  const [actif, setActif] = useState(0);
+  const [pause, setPause] = useState(false);
   const steps = ETAPES[tab].steps;
+
+  /* La ligne avance seule d’une étape à l’autre ; elle s’arrête quand on survole ou qu’on choisit une étape. */
+  useEffect(() => {
+    if (reduit || pause) return;
+    const t = window.setInterval(() => setActif((a) => (a + 1) % 4), 2800);
+    return () => window.clearInterval(t);
+  }, [reduit, pause, tab]);
+
+  const changer = (k: Parcours) => {
+    if (k === tab) return;
+    setTab(k);
+    setActif(0);
+  };
+  const choisir = (i: number) => {
+    setActif(i);
+    setPause(true);
+  };
+
   return (
     <section id="etapes" className={cn(W, "pt-[72px] md:pt-24")}>
-      <div className="rounded-[32px] bg-brand-sky px-[18px] pb-[26px] pt-[30px] md:rounded-[40px] md:px-[52px] md:pb-11 md:pt-[52px]">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <h2 className={H2}>Comment ça se passe</h2>
-            <p className={SUB}>Quatre étapes, avec un seul interlocuteur du début à la fin.</p>
-          </div>
-          <div role="tablist" aria-label="Votre projet" className="flex w-full gap-1 rounded-[18px] bg-white p-1 md:w-auto">
-            {(Object.keys(ETAPES) as (keyof typeof ETAPES)[]).map((k) => (
-              <button
-                key={k}
-                type="button"
-                role="tab"
-                aria-selected={tab === k}
-                onClick={() => setTab(k)}
-                className={cn("inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-[14px] px-5 text-[14.5px] font-bold transition md:flex-none", tab === k ? "bg-brand text-white" : "text-brand-mut hover:text-brand-ink")}
-              >
-                <span className="hidden md:inline">{ETAPES[k].icon}</span>
-                {ETAPES[k].label}
-              </button>
-            ))}
-          </div>
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <h2 className={H2}>Comment ça se passe</h2>
+          <p className={SUB}>Quatre étapes, avec un seul interlocuteur du début à la fin.</p>
         </div>
-        <ol key={tab} className="fx-fade relative m-0 mt-[26px] grid list-none grid-cols-1 gap-[18px] p-0 md:mt-10 md:grid-cols-4 md:gap-6">
-          <svg aria-hidden viewBox="0 0 1000 150" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-0 hidden h-[150px] w-full md:block">
-            <path d="M117 50 C 240 50, 250 114, 372 114 S 505 50, 628 50 S 760 114, 883 114" fill="none" stroke="#9FB6D6" strokeWidth={2.5} strokeDasharray="7 9" vectorEffect="non-scaling-stroke" />
-          </svg>
-          {steps.map((s, i) => (
-            <li key={s.t} className={cn("relative flex flex-row items-start gap-4 text-left md:flex-col md:items-center md:gap-0 md:text-center", i % 2 === 0 ? "md:pt-2" : "md:pt-[72px]")}>
-              <span className="relative grid h-[60px] w-[60px] flex-none place-items-center rounded-full bg-white text-brand shadow-[0_18px_36px_-20px_rgba(19,36,61,0.45)] md:mb-5 md:h-[84px] md:w-[84px]">
-                <span className="scale-[0.8] md:scale-100">{s.icon}</span>
-                <span className={cn("absolute -right-1.5 -top-1.5 grid h-6 w-6 place-items-center rounded-full text-[11.5px] font-extrabold md:h-[30px] md:w-[30px] md:text-[13px]", i === steps.length - 1 ? "bg-brand-orange text-brand-ink" : "bg-brand-ink text-white")}>{i + 1}</span>
-              </span>
-              <span className="flex flex-col">
-                <span className="mb-2 mt-1.5 text-xl font-extrabold tracking-[-0.02em] text-brand-ink md:mt-0">{s.t}</span>
-                <span className="max-w-[250px] text-[15px] font-medium leading-[1.58] text-brand-mut max-md:max-w-none md:mx-auto">{s.d}</span>
-              </span>
-            </li>
+        <div role="tablist" aria-label="Votre projet" className="relative flex w-full gap-1 rounded-[18px] bg-brand-surf p-1 md:w-auto">
+          {(Object.keys(ETAPES) as Parcours[]).map((k) => (
+            <button
+              key={k}
+              type="button"
+              role="tab"
+              aria-selected={tab === k}
+              onClick={() => changer(k)}
+              className={cn("relative inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-[14px] px-5 text-[14.5px] font-bold transition-colors duration-300 md:flex-none", tab === k ? "text-white" : "text-brand-mut hover:text-brand-ink")}
+            >
+              {tab === k && <motion.span layoutId="etapes-onglet" className="absolute inset-0 rounded-[14px] bg-brand" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+              <span className="relative inline-flex items-center gap-2">{ETAPES[k].icon}{ETAPES[k].label}</span>
+            </button>
           ))}
-        </ol>
+        </div>
+      </div>
+
+      <div className="relative mt-8 md:mt-12" onMouseEnter={() => setPause(true)} onMouseLeave={() => setPause(false)}>
+        {/* La ligne : grise, et sa partie déjà parcourue en orange */}
+        <span aria-hidden className="absolute left-[12.5%] right-[12.5%] top-[38px] hidden h-[3px] rounded-full bg-[#E3E9F1] md:block" />
+        <motion.span
+          aria-hidden
+          className="absolute left-[12.5%] top-[38px] hidden h-[3px] rounded-full bg-brand-orange md:block"
+          animate={{ width: `${(actif / 3) * 75}%` }}
+          transition={{ duration: reduit ? 0 : 0.7, ease: [0.2, 0.7, 0.2, 1] }}
+        />
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.ol
+            key={tab}
+            className="relative m-0 grid list-none grid-cols-1 gap-7 p-0 md:grid-cols-4 md:gap-6"
+            initial="cache"
+            animate="vu"
+            exit="parti"
+            variants={{ cache: {}, vu: { transition: { staggerChildren: 0.08 } }, parti: { transition: { staggerChildren: 0.04 } } }}
+          >
+            {steps.map((st, i) => {
+              const Icon = st.icon;
+              const fait = i < actif;
+              const ici = i === actif;
+              return (
+                <motion.li
+                  key={st.t}
+                  variants={{ cache: { opacity: 0, y: 16 }, vu: { opacity: 1, y: 0 }, parti: { opacity: 0, y: -10 } }}
+                  transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
+                  className="relative flex flex-row items-start gap-4 md:flex-col md:items-center md:gap-0 md:text-center"
+                >
+                  {i < steps.length - 1 && (
+                    <span aria-hidden className={cn("absolute -bottom-7 left-[28.5px] top-[66px] w-[3px] rounded-full transition-colors duration-700 md:hidden", i < actif ? "bg-brand-orange" : "bg-[#E3E9F1]")} />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => choisir(i)}
+                    aria-label={`Étape ${i + 1} : ${st.t}`}
+                    aria-current={ici ? "step" : undefined}
+                    className={cn(
+                      "relative grid h-[60px] w-[60px] flex-none place-items-center rounded-full transition-all duration-500 md:mb-5 md:h-[78px] md:w-[78px]",
+                      ici ? "scale-110 bg-brand text-white shadow-[0_0_0_8px_rgba(34,73,125,0.12),0_18px_36px_-16px_rgba(34,73,125,0.8)]"
+                        : fait ? "bg-brand-sky text-brand" : "bg-white text-brand-mut shadow-[0_0_0_1.5px_#DCE3EC]",
+                    )}
+                  >
+                    <Icon className="h-6 w-6 md:h-7 md:w-7" />
+                    <span className={cn("absolute -right-1 -top-1 grid h-6 w-6 place-items-center rounded-full text-[11.5px] font-extrabold transition-colors duration-500 md:h-7 md:w-7 md:text-[12.5px]", ici || fait ? "bg-brand-orange text-brand-ink" : "bg-brand-surf text-brand-mut")}>
+                      {fait ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : i + 1}
+                    </span>
+                  </button>
+                  <span className={cn("flex flex-col rounded-[22px] transition-all duration-500 md:px-4 md:py-4", ici ? "md:bg-brand-sky" : "")}>
+                    <span className={cn("mb-1.5 mt-2 text-xl font-extrabold tracking-[-0.02em] transition-colors duration-500 md:mt-0", ici ? "text-brand" : "text-brand-ink")}>{st.t}</span>
+                    <span className="max-w-[260px] text-[15px] font-medium leading-[1.58] text-brand-mut max-md:max-w-none md:mx-auto">{st.d}</span>
+                  </span>
+                </motion.li>
+              );
+            })}
+          </motion.ol>
+        </AnimatePresence>
       </div>
     </section>
   );
 };
 
-/* ── Nos secteurs : tout Paris, tout le 92, et l’Île-de-France sur demande ── */
-const SPEC_PARIS: Record<number, string> = { 6: "/achat-appartement-paris-6", 7: "/achat-appartement-paris-7", 15: "/achat-appartement-paris-15", 16: "/achat-appartement-paris-16", 17: "/achat-appartement-paris-17" };
+/* ── Nos secteurs : la carte de Paris et des Hauts-de-Seine ── */
+const PARIS_PREF = [
+  ["Paris 6e", "/achat-appartement-paris-6"],
+  ["Paris 7e", "/achat-appartement-paris-7"],
+  ["Paris 15e", "/achat-appartement-paris-15"],
+  ["Paris 16e", "/achat-appartement-paris-16"],
+  ["Paris 17e", "/achat-appartement-paris-17"],
+];
 const HDS = [
   ["Boulogne-Billancourt", "/achat-appartement-boulogne-billancourt"],
   ["Issy-les-Moulineaux", "/achat-appartement-issy-les-moulineaux"],
@@ -264,86 +337,98 @@ const HDS = [
   ["Garches", "/achat-appartement-garches"],
   ["Clamart", "/achat-appartement-clamart"],
 ];
-const HDS_AUSSI = ["Meudon", "Sèvres", "Vanves", "Montrouge", "Malakoff", "Suresnes", "Rueil-Malmaison", "Puteaux", "Courbevoie", "Asnières-sur-Seine"];
-const arr = (n: number) => (n === 1 ? "1er" : `${n}e`);
-const versBiens = (v: string) => `/biens?ville=${encodeURIComponent(v)}`;
+const COURT: Record<string, string> = {
+  "Boulogne-Billancourt": "Boulogne", "Issy-les-Moulineaux": "Issy", "Neuilly-sur-Seine": "Neuilly", "Levallois-Perret": "Levallois",
+  "Saint-Cloud": "Saint-Cloud", Garches: "Garches", Clamart: "Clamart",
+};
+const DECALE: Record<string, [number, number]> = { "7e": [-1.2, -2.2], "6e": [1, 1], "15e": [-0.5, 1.2], "16e": [-2, 0], "Boulogne-Billancourt": [0.8, 0], "Issy-les-Moulineaux": [1.5, -1], Garches: [-4.5, -1.5], "Saint-Cloud": [-3, 6] };
+const DECALE_MOBILE: Record<string, [number, number]> = { "Saint-Cloud": [-5.5, 8.5], "Boulogne-Billancourt": [3, -2], Garches: [-5.5, -2] };
 
-const Legende = () => (
-  <span className="mt-auto flex flex-wrap gap-x-5 gap-y-1.5 text-[13px] font-semibold text-brand-mut">
-    <span className="inline-flex items-center gap-2"><span className="h-3.5 w-3.5 rounded-full bg-brand" />Nos quartiers de prédilection</span>
-    <span className="inline-flex items-center gap-2"><span className="h-3.5 w-3.5 rounded-full border-[1.5px] border-[#C5D3E5] bg-white" />Nous y intervenons aussi</span>
-  </span>
-);
+const Carte = () => {
+  const petit = useIsMobile();
+  return (
+    <div className="relative w-full overflow-hidden rounded-[24px] bg-brand-sky" style={{ aspectRatio: `${CARTE_W} / ${CARTE_H}` }}>
+      <svg viewBox={`0 0 ${CARTE_W} ${CARTE_H}`} role="img" aria-label="Carte de nos secteurs à Paris et dans les Hauts-de-Seine" className="absolute inset-0 block h-full w-full">
+        <path d={HDS_AUTRES} fill="#F7F9FC" stroke="#D6DFEA" strokeWidth={1.4} />
+        <path d={PARIS_AUTRES} fill="#FFFFFF" stroke="#D6DFEA" strokeWidth={1.2} />
+        {Object.entries(HDS_SECTEURS).map(([k, d]) => <path key={k} d={d} className="secteur-zone" fill="#F9DDB7" stroke="#E68B23" strokeWidth={1.6} />)}
+        {Object.entries(PARIS_SECTEURS).map(([k, d]) => <path key={k} d={d} className="secteur-zone secteur-paris" fill="#22497D" stroke="#1B3D6B" strokeWidth={1.4} />)}
+        <path d={SEINE} fill="none" stroke="#8EBBE5" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" opacity={0.95} />
+      </svg>
+      {Object.entries(ETIQUETTES).map(([k, [x, y]]) => {
+        const [dx, dy] = (petit && DECALE_MOBILE[k]) || DECALE[k] || [0, 0];
+        const paris = /^\d+e$/.test(k);
+        return (
+          <span
+            key={k}
+            className={cn(
+              "pointer-events-none absolute z-[2] inline-flex -translate-x-1/2 -translate-y-1/2 items-center whitespace-nowrap rounded-full font-extrabold shadow-[0_6px_14px_-8px_rgba(19,36,61,0.6)]",
+              petit ? "h-[18px] px-[7px] text-[9.5px]" : "h-[26px] px-2.5 text-[12.5px]",
+              paris ? "bg-white text-brand" : "bg-white text-brand-ink ring-1 ring-brand-orange/70",
+            )}
+            style={{ left: `${x + dx}%`, top: `${y + dy}%` }}
+          >
+            {paris ? k : COURT[k] || k}
+          </span>
+        );
+      })}
+      <span className="pointer-events-none absolute left-[86%] top-[33%] -translate-x-1/2 -translate-y-1/2 text-xs font-extrabold tracking-[0.3em] text-brand/45">PARIS</span>
+      <span className="pointer-events-none absolute left-[22%] top-[82%] -translate-x-1/2 -translate-y-1/2 text-center text-[11px] font-extrabold leading-relaxed tracking-[0.24em] text-brand/40">HAUTS-<br />DE-SEINE</span>
+    </div>
+  );
+};
 
 export const Secteurs = () => {
   const { openContact } = useSiteModals();
   return (
-    <section id="secteurs" className={cn(W, "pt-[72px] md:pt-24")}>
-      <h2 className={H2}>Nos secteurs</h2>
-      <p className={cn(SUB, "max-w-[860px]")}>
-        Partout dans Paris et dans les Hauts-de-Seine, et ailleurs en Île-de-France sur demande. Nos quartiers de prédilection, nous les connaissons par cœur : leurs prix, leurs copropriétés, leurs écoles et leurs transports.
-      </p>
-      <div className="mt-[26px] grid grid-cols-1 gap-3.5 md:mt-10 md:grid-cols-2 md:gap-5">
-        <div className="flex flex-col gap-5 rounded-[28px] bg-brand-sky p-[22px] md:rounded-[32px] md:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="m-0 flex items-center gap-3 text-[26px] font-extrabold tracking-[-0.03em] text-brand-ink">
-              <span className="grid h-11 w-11 place-items-center rounded-[14px] bg-white text-brand"><MapPin className="h-5 w-5" /></span> Paris
-            </h3>
-            <span className="inline-flex h-8 items-center rounded-full bg-white px-3 text-[13px] font-bold text-brand">Les 20 arrondissements</span>
+    <section id="secteurs" className="mt-[72px] bg-brand-surf md:mt-24">
+      <div className={cn(W, "grid grid-cols-1 items-center gap-x-16 gap-y-8 py-14 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:py-[88px]")}>
+        <div className="flex min-w-0 flex-col gap-6">
+          <div>
+            <span className="mb-[18px] inline-flex items-center gap-3 text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">
+              <span aria-hidden className="block h-[1.5px] w-8 bg-brand-orange" /> Nos secteurs
+            </span>
+            <h2 className={H2}>Tout Paris, et l’Ouest parisien par cœur</h2>
+            <p className={SUB}>
+              Nous intervenons partout à Paris et dans les Hauts-de-Seine. Nos quartiers de prédilection, nous les connaissons rue par rue : leurs prix, leurs copropriétés, leurs écoles et leurs transports.
+            </p>
           </div>
-          <div className="grid grid-cols-5 gap-1.5 md:gap-2">
-            {Array.from({ length: 20 }, (_, i) => i + 1).map((n) => {
-              const spec = SPEC_PARIS[n];
-              return (
-                <Link
-                  key={n}
-                  to={spec || versBiens(`Paris ${arr(n)}`)}
-                  aria-label={`Paris ${arr(n)}`}
-                  className={cn(
-                    "grid h-11 place-items-center rounded-[14px] text-[14.5px] font-extrabold transition hover:-translate-y-px md:h-[54px] md:text-[15.5px]",
-                    spec ? "bg-brand text-white shadow-[0_8px_18px_-10px_rgba(34,73,125,0.8)]" : "bg-white text-brand-ink hover:bg-brand-surf",
-                  )}
-                >
-                  {arr(n)}
-                </Link>
-              );
-            })}
+          <div className="flex flex-col gap-2.5">
+            <span className="text-xs font-extrabold uppercase tracking-[0.1em] text-brand">Paris</span>
+            <div className="flex flex-wrap gap-2">
+              {PARIS_PREF.map(([n, to]) => (
+                <Link key={n} to={to} className="inline-flex h-11 items-center rounded-[14px] bg-brand px-4 text-[14.5px] font-bold text-white transition hover:-translate-y-px">{n}</Link>
+              ))}
+            </div>
           </div>
-          <Legende />
+          <div className="flex flex-col gap-2.5">
+            <span className="text-xs font-extrabold uppercase tracking-[0.1em] text-brand-orange-text">Hauts-de-Seine</span>
+            <div className="flex flex-wrap gap-2">
+              {HDS.map(([n, to]) => (
+                <Link key={n} to={to} className="inline-flex h-11 items-center rounded-[14px] bg-white px-4 text-[14.5px] font-bold text-brand-ink ring-1 ring-brand-orange/60 transition hover:-translate-y-px hover:bg-[#FFF4E6]">{n}</Link>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col items-start gap-4 rounded-[24px] bg-white p-5 sm:flex-row sm:items-center sm:justify-between">
+            <span className="flex flex-col">
+              <b className="text-[17px] font-extrabold text-brand-ink">Votre ville n’y est pas ?</b>
+              <span className="text-[14.5px] font-medium text-brand-mut">Ailleurs à Paris, en Île-de-France ou plus loin : parlons-en.</span>
+            </span>
+            <button type="button" onClick={() => openContact({ objet: "Autre", message: "Bonjour, mon projet se situe à : " })} className={cn(BTN, "h-12 flex-none bg-brand-orange text-brand-ink")}>
+              Nous contacter <ArrowRight className="h-[18px] w-[18px]" />
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-5 rounded-[28px] bg-brand-surf p-[22px] md:rounded-[32px] md:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="m-0 flex items-center gap-3 text-[26px] font-extrabold tracking-[-0.03em] text-brand-ink">
-              <span className="grid h-11 w-11 place-items-center rounded-[14px] bg-white text-brand"><Home className="h-5 w-5" /></span> Hauts-de-Seine
-            </h3>
-            <span className="inline-flex h-8 items-center rounded-full bg-white px-3 text-[13px] font-bold text-brand">Tout le département</span>
+        <div className="min-w-0">
+          <div className="rounded-[32px] bg-white p-3 shadow-[0_40px_80px_-50px_rgba(19,36,61,0.6)]">
+            <Carte />
+            <div className="flex flex-wrap gap-x-5 gap-y-2 px-2 pb-1 pt-3.5 text-[13px] font-semibold text-brand-mut">
+              <span className="inline-flex items-center gap-2"><span className="h-4 w-4 rounded-[5px] bg-brand" />Paris, nos quartiers de prédilection</span>
+              <span className="inline-flex items-center gap-2"><span className="h-4 w-4 rounded-[5px] bg-[#F9DDB7] ring-1 ring-brand-orange" />Hauts-de-Seine, nos villes de prédilection</span>
+              <span className="inline-flex items-center gap-2"><span className="h-4 w-4 rounded-[5px] bg-white ring-1 ring-[#D6DFEA]" />Nous y intervenons aussi</span>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-1.5 md:gap-2">
-            {HDS.map(([n, to]) => (
-              <Link key={n} to={to} className="inline-flex h-11 items-center rounded-[14px] bg-brand px-3.5 text-[14px] font-bold text-white shadow-[0_8px_18px_-10px_rgba(34,73,125,0.8)] transition hover:-translate-y-px md:h-12 md:px-4 md:text-[14.5px]">
-                {n}
-              </Link>
-            ))}
-            {HDS_AUSSI.map((n) => (
-              <Link key={n} to={versBiens(n)} className="inline-flex h-11 items-center rounded-[14px] bg-white px-3.5 text-[14px] font-semibold text-brand-ink transition hover:bg-brand-sky md:h-12 md:px-4 md:text-[14.5px]">
-                {n}
-              </Link>
-            ))}
-            <span className="inline-flex h-11 items-center px-1 text-[13.5px] font-semibold text-brand-mut md:h-12">et les autres communes du 92</span>
-          </div>
-          <Legende />
         </div>
-      </div>
-      <div className="relative mt-3.5 flex flex-col items-start gap-5 overflow-hidden rounded-[28px] bg-brand-ink p-6 text-white md:mt-5 md:flex-row md:items-center md:justify-between md:rounded-[32px] md:px-9 md:py-8">
-        <span aria-hidden className="absolute -bottom-20 -right-10 h-48 w-48 rounded-full bg-brand-orange md:-top-24 md:bottom-auto md:right-[22%]" />
-        <span aria-hidden className="absolute -left-16 -top-24 h-56 w-56 rounded-full border-[40px] border-white/5" />
-        <span className="relative flex flex-col gap-1.5">
-          <b className="text-[24px] font-extrabold tracking-[-0.03em] md:text-[28px]">Ailleurs en Île-de-France, ou plus loin ?</b>
-          <span className="text-[15.5px] font-medium text-white/80">Yvelines, Val-de-Marne, Essonne… Dites-nous où se trouve votre projet, nous vous répondons vite.</span>
-        </span>
-        <button type="button" onClick={() => openContact({ objet: "Autre", message: "Bonjour, mon projet se situe à : " })} className={cn(BTN, "relative bg-brand-orange text-brand-ink")}>
-          Parlons-en <ArrowRight className="h-[18px] w-[18px]" />
-        </button>
       </div>
     </section>
   );
@@ -393,12 +478,12 @@ export const AppelFinal = () => {
   const { openEstimation } = useSiteModals();
   return (
     <section className={cn(W, "pt-[72px] md:pt-24")}>
-      <div className="relative flex flex-col items-stretch justify-between gap-10 overflow-hidden rounded-[32px] bg-brand-ink px-[26px] py-10 text-white md:flex-row md:items-center md:rounded-[40px] md:p-16">
+      <div className="relative flex flex-col items-stretch justify-between gap-10 overflow-hidden rounded-[32px] bg-brand px-[26px] py-10 text-white md:flex-row md:items-center md:rounded-[40px] md:p-16">
         <span aria-hidden className="absolute -bottom-40 -left-[90px] h-[360px] w-[360px] rounded-full border-[50px] border-white/5" />
         <span aria-hidden className="absolute -right-10 -top-10 h-[120px] w-[120px] rounded-full bg-brand-orange/90 md:right-[300px] md:-top-[60px] md:h-40 md:w-40" />
         <div className="relative z-[1]">
           <h2 className="m-0 text-[36px] font-extrabold leading-[1.05] tracking-[-0.035em] md:text-[52px]">Un projet ? Parlons-en.</h2>
-          <p className="m-0 mt-3 text-[17px] text-white/75">Un premier échange suffit pour faire le point, sans engagement.</p>
+          <p className="m-0 mt-3 text-[17px] text-brand-bt">Un premier échange suffit pour faire le point, sans engagement.</p>
         </div>
         <div className="relative z-[1] flex flex-col gap-3 md:flex-row">
           <button type="button" onClick={() => openEstimation()} className={cn(BTN, "bg-brand-orange text-brand-ink")}>Estimer mon bien <ArrowRight className="h-[18px] w-[18px]" /></button>
