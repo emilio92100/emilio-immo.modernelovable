@@ -132,7 +132,6 @@ export const QuickViewPopup = ({ property, open, onClose }: { property: Property
                   Demander une visite
                 </button>
               </div>
-              <Link to="/honoraires" className="text-[13.5px] font-semibold text-brand-mut underline">Honoraires : consulter nos tarifs</Link>
             </div>
           </motion.div>
         </motion.div>
