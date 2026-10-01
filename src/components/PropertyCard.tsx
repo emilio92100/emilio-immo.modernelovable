@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, BedDouble, Eye, LayoutGrid, MapPin, Maximize, X } from "lucide-react";
-import { Property, formatPrice } from "@/lib/properties";
+import { Property, formatPrice, formatSurface } from "@/lib/properties";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { FRAME_SHADOW } from "@/components/site/ui";
@@ -46,7 +46,7 @@ const perM2 = (p: Property) => (p.surface > 0 ? `${new Intl.NumberFormat("fr-FR"
 export const QuickViewPopup = ({ property, open, onClose }: { property: Property; open: boolean; onClose: () => void }) => {
   const { openContact } = useSiteModals();
   const specs = [
-    { icon: <Maximize className="h-[18px] w-[18px]" />, v: `${property.surface} m²`, l: "surface" },
+    { icon: <Maximize className="h-[18px] w-[18px]" />, v: formatSurface(property.surface), l: "surface" },
     property.rooms > 0 && { icon: <LayoutGrid className="h-[18px] w-[18px]" />, v: String(property.rooms), l: "pièces" },
     property.bedrooms > 0 && { icon: <BedDouble className="h-[18px] w-[18px]" />, v: String(property.bedrooms), l: "chambres" },
   ].filter(Boolean) as { icon: JSX.Element; v: string; l: string }[];
@@ -173,7 +173,7 @@ const PropertyCard = ({ property, index = 0, className, imgClassName }: Property
           <span className="text-base font-bold leading-snug text-brand-ink">{displayTitle(property)}</span>
           <span className="inline-flex items-center gap-1.5 text-sm text-brand-mut"><MapPin className="h-[15px] w-[15px] text-brand-orange-text" />{displayCity(property)} · {property.postalCode}</span>
           <div className="mt-auto flex flex-wrap items-center gap-x-3.5 gap-y-2 border-t border-brand-line2 pt-3 text-sm text-brand-mut">
-            <span className="inline-flex items-center gap-1.5"><Maximize className="h-3.5 w-3.5 text-brand-orange-text" /> {property.surface} m²</span>
+            <span className="inline-flex items-center gap-1.5"><Maximize className="h-3.5 w-3.5 text-brand-orange-text" /> {formatSurface(property.surface)}</span>
             {property.rooms > 0 && <span className="inline-flex items-center gap-1.5"><LayoutGrid className="h-3.5 w-3.5 text-brand-orange-text" /> {property.rooms} p.</span>}
             {property.bedrooms > 0 && <span className="inline-flex items-center gap-1.5"><BedDouble className="h-3.5 w-3.5 text-brand-orange-text" /> {property.bedrooms} ch.</span>}
           </div>
