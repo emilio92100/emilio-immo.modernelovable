@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { ScrollToTop } from "./components/ScrollToTop";
 import { SiteModalsProvider } from "./components/site/SiteModals";
 import { PageFx } from "./components/site/PageFx";
+import BuyerPopup from "./components/site/BuyerPopup";
 import Acheter from "./pages/Acheter";
 import Honoraires from "./pages/Honoraires";
 import Index from "./pages/Index";
@@ -44,6 +45,8 @@ export const AppRoutes = () => {
   <SiteModalsProvider>
     <ScrollToTop />
     <PageFx />
+    {/* La fenêtre « Vos futurs biens, dans votre poche » (règles dans le fichier) */}
+    <BuyerPopup />
     {/* Clé = adresse : chaque page s'affiche avec sa transition, même entre deux pages du même modèle. */}
     <Routes location={location} key={location.pathname}>
       <Route path="/" element={<Index />} />

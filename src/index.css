@@ -120,6 +120,12 @@
 @keyframes ec-tap { 0%, 62% { transform: scale(.5); opacity: 0; } 70% { opacity: .75; } 100% { transform: scale(1.9); opacity: 0; } }
 @keyframes ec-pin { 0% { opacity: 0; transform: translate(-50%, -30%) scale(.6); } 8%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 88%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.8); } }
 @keyframes em-swipe { 0%, 100% { transform: translateX(0) rotate(0); } 40% { transform: translateX(-6px) rotate(-8deg); } 70% { transform: translateX(4px) rotate(4deg); } }
+/* Fenêtre acheteurs : les atouts autour du téléphone s’allument l’un après l’autre (4 × 3 s) */
+@keyframes bp-lit {
+  0%, 25%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230,139,35,0), 0 18px 34px -20px rgba(5,14,30,.6); }
+  4%, 21% { transform: scale(1.05); box-shadow: 0 0 0 2.5px #E68B23, 0 22px 40px -18px rgba(5,14,30,.65); }
+}
+@keyframes bp-tile { 0%, 25%, 100% { background-color: #E8EFF8; color: #22497D; } 4%, 21% { background-color: #E68B23; color: #13243D; } }
 @keyframes em-drift { 0% { transform: scale(1.015) translateX(0); } 100% { transform: scale(1.045) translateX(-0.8%); } }
 
 @layer utilities {
@@ -141,6 +147,8 @@
   .anim-pin { animation: ec-pin 9s ease-in-out infinite both; }
   .anim-drift { animation: em-drift 22s ease-in-out infinite alternate; }
   .anim-swipe { animation: em-swipe 1.8s ease-in-out infinite; }
+  .anim-lit { box-shadow: 0 18px 34px -20px rgba(5,14,30,.6); animation: bp-lit 12s ease-in-out infinite both; }
+  .anim-lit-tile { background-color: #E8EFF8; color: #22497D; animation: bp-tile 12s ease-in-out infinite both; }
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
   .no-scrollbar { scrollbar-width: none; }
@@ -149,7 +157,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .anim-spin-90, .anim-spin-90-r, .anim-spin-60, .anim-spin-60-r, .anim-spin-16, .anim-float, .anim-blink, .anim-glow,
-  .anim-phone, .anim-bob-a, .anim-bob-b, .anim-bob-c, .anim-highlight, .anim-notif, .anim-tap, .anim-pin, .anim-drift, .anim-swipe { animation: none !important; }
+  .anim-phone, .anim-bob-a, .anim-bob-b, .anim-bob-c, .anim-highlight, .anim-notif, .anim-tap, .anim-pin, .anim-drift, .anim-swipe, .anim-lit, .anim-lit-tile { animation: none !important; }
 }
 
 /* Carte des secteurs : survol des zones */
