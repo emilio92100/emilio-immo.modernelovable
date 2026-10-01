@@ -1,5 +1,6 @@
 /* Page « Acheter » (refonte 2026) : le chasseur, l'espace client, le formulaire en 3 temps. */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Building2, CalendarDays, CheckCircle2, FileText, Handshake, Heart, Home, KeyRound, Lock, MapPin, MessageCircle, Phone, Search, Sparkles, Users, Plus, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -257,11 +258,39 @@ const B_MAX = BUDGET_STEPS.length - 1;
 const bIdx = (v: number) => Math.max(0, BUDGET_STEPS.indexOf(v));
 const fmtBudget = (v: number, last: boolean) => (last ? "5 M€ et +" : euros(v));
 const fmtSurface = (v: number) => (v ? `${v} m² minimum` : "Peu importe");
-const AIDE = ["Choisissez un type de bien pour continuer.", "Ajoutez au moins une ville pour continuer.", "Remplissez vos coordonnées et cochez la case pour envoyer."];
+/* Le formulaire en pages : sur ordinateur 3 pages, sur téléphone 7 petites pages qui tiennent
+   chacune sur l’écran (pas besoin de faire défiler), avec « Suivant ». Les 3 temps restent les mêmes. */
+type Bloc = "type" | "usage" | "quand" | "ou" | "budget" | "piecesSurface" | "pieces" | "surface" | "atouts" | "coord" | "mot" | "espace" | "consent";
+const PAGES_ORDI: Bloc[][] = [["type", "usage", "quand"], ["ou", "budget", "piecesSurface", "atouts"], ["coord", "mot", "espace", "consent"]];
+const PAGES_MOBILE: Bloc[][] = [["type", "usage"], ["quand", "pieces"], ["ou"], ["budget", "surface"], ["atouts"], ["coord"], ["mot", "espace", "consent"]];
+const TEMPS = (page: Bloc[]) => (page.some((b) => ["coord", "mot", "consent"].includes(b)) ? 3 : page.some((b) => ["ou", "budget", "surface", "piecesSurface", "atouts"].includes(b)) ? 2 : 1);
+const AIDE: Partial<Record<Bloc, string>> = {
+  type: "Choisissez un type de bien pour continuer.",
+  ou: "Ajoutez au moins une ville pour continuer.",
+  coord: "Remplissez vos coordonnées pour continuer.",
+  consent: "Cochez la case pour envoyer.",
+};
+
+/** Téléphone (moins de 640 px de large) */
+const useMobile = () => {
+  const [m, setM] = useState(false);
+  useEffect(() => {
+    const q = window.matchMedia("(max-width: 639px)");
+    const f = () => setM(q.matches);
+    f();
+    q.addEventListener("change", f);
+    return () => q.removeEventListener("change", f);
+  }, []);
+  return m;
+};
 
 const Recherche = () => {
   const { toast } = useToast();
-  const [step, setStep] = useState(1);
+  const mobile = useMobile();
+  const pages = mobile ? PAGES_MOBILE : PAGES_ORDI;
+  const [page, setPage] = useState(0);
+  const [fini, setFini] = useState(false);
+  const [sens, setSens] = useState(1);
   const [type, setType] = useState("");
   const [usage, setUsage] = useState("Résidence principale");
   const [quand, setQuand] = useState("");
@@ -277,13 +306,47 @@ const Recherche = () => {
   const [sending, setSending] = useState(false);
   const startedAt = useRef(Date.now());
   const ref = useRef<HTMLDivElement>(null);
+  const carte = useRef<HTMLDivElement>(null);
+
+  /* On passe du téléphone à l’ordinateur (ou l’inverse) : on reste sur la même question. */
+  const premier = useRef<Bloc>("type");
+  useEffect(() => {
+    const i = pages.findIndex((p) => p.includes(premier.current));
+    setPage(Math.max(0, i));
+  }, [pages]);
+  useEffect(() => {
+    premier.current = pages[page]?.[0] ?? "type";
+  }, [page, pages]);
+
+  /* Sur téléphone, quand le formulaire occupe l’écran, la barre « Appeler / Estimer » s’efface. */
+  useEffect(() => {
+    if (!mobile || !carte.current) return;
+    const o = new IntersectionObserver(([e]) => document.body.classList.toggle("formulaire-plein", e.intersectionRatio > 0.35), { threshold: [0, 0.35, 0.6] });
+    o.observe(carte.current);
+    return () => {
+      o.disconnect();
+      document.body.classList.remove("formulaire-plein");
+    };
+  }, [mobile]);
 
   const budget = `${euros(BUDGET_STEPS[bLo])} – ${bHi === B_MAX ? "5 000 000 € et plus" : euros(BUDGET_STEPS[bHi])}`;
-  const ok = [!!type, secteurs.length > 0, !!(c.prenom.trim() && c.nom.trim() && c.tel.trim() && c.email.trim() && consent)][step - 1];
+  const valide: Partial<Record<Bloc, boolean>> = {
+    type: !!type,
+    ou: secteurs.length > 0,
+    coord: !!(c.prenom.trim() && c.nom.trim() && c.tel.trim() && c.email.trim()),
+    consent,
+  };
+  const courante = pages[page] || pages[0];
+  const bloque = courante.find((b) => valide[b] === false);
+  const ok = !bloque;
+  const derniere = page === pages.length - 1;
+  const temps = TEMPS(courante);
   const go = (n: number) => {
-    setStep(n);
+    setSens(n > page ? 1 : -1);
+    setPage(n);
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+  const setStep = (n: number) => n === 4 && (setFini(true), ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
 
   const send = async () => {
     if (!ok || sending) return;
@@ -322,7 +385,7 @@ const Recherche = () => {
       try {
         await supabase.functions.invoke("send-contact-email", { body: { form_type: "mandat_recherche", name, email: c.email, phone: c.tel, budget, message } });
       } catch { /* le CRM relit la table */ }
-      go(4);
+      setStep(4);
     } catch {
       toast({ title: "Erreur", description: `L’envoi n’a pas abouti. Réessayez, ou appelez-nous au ${TEL}.`, variant: "destructive" });
     } finally {
@@ -346,92 +409,141 @@ const Recherche = () => {
   );
 
   const labels = ["Votre projet", "Où et combien", "Vos coordonnées"];
+  const bloc = (b: Bloc) => {
+    switch (b) {
+      case "type":
+        return (
+          <Group key={b} title="Quel type de bien ?">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{TYPES.map((t) => <Tile key={t.k} icon={t.icon} label={t.k} on={type === t.k} onClick={() => setType(t.k)} />)}</div>
+          </Group>
+        );
+      case "usage":
+        return <Group key={b} title="C’est pour…"><Pills options={["Résidence principale", "Investissement", "Pied-à-terre"] as const} value={[usage as never]} onToggle={(v) => setUsage(v)} /></Group>;
+      case "quand":
+        return <Group key={b} title="Pour quand ?" optional><Pills options={["Dès que possible", "D’ici 6 mois", "Je prends le temps"] as const} value={[quand as never]} onToggle={(v) => setQuand(quand === v ? "" : v)} /></Group>;
+      case "ou":
+        return (
+          <Group key={b} title="Où cherchez-vous ?" hint="Tapez une ville ou un arrondissement, puis choisissez-le. Vous pouvez en ajouter plusieurs.">
+            <CityPicker value={secteurs} onChange={setSecteurs} />
+          </Group>
+        );
+      case "budget":
+        return (
+          <Group key={b} title="Votre budget" hint="Honoraires compris. Faites glisser les deux ronds.">
+            <div className="rounded-2xl border border-brand-line bg-brand-pale px-4 pb-3 pt-4">
+              <RangeDual steps={BUDGET_STEPS} lo={bLo} hi={bHi} onChange={(x, y) => { setBLo(x); setBHi(y); }} format={fmtBudget} labels={["Budget minimum", "Budget maximum"]} />
+            </div>
+          </Group>
+        );
+      case "pieces":
+        return <Group key={b} title="Nombre de pièces" optional><Segmented options={["1", "2", "3", "4", "5 +"] as const} value={pieces as never} onChange={(v) => setPieces(toggleIn(pieces, v))} /></Group>;
+      case "surface":
+        return (
+          <Group key={b} title="Surface" optional>
+            <div className="rounded-2xl border border-brand-line bg-brand-pale px-4 pb-1.5 pt-3"><RangeOne min={0} max={300} step={5} value={surface} onChange={setSurface} format={fmtSurface} label="Surface minimum" /></div>
+          </Group>
+        );
+      case "piecesSurface":
+        return <div key={b} className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4">{bloc("pieces")}{bloc("surface")}</div>;
+      case "atouts":
+        return <Group key={b} title="Ce qui compte pour vous" optional><Pills options={ATOUTS} value={atouts as never} onToggle={(v) => setAtouts(toggleIn(atouts, v))} size="sm" /></Group>;
+      case "coord":
+        return (
+          <div key={b} className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            <Field label="Prénom" placeholder="Votre prénom" autoComplete="given-name" value={c.prenom} onChange={(e) => setC({ ...c, prenom: e.target.value })} />
+            <Field label="Nom" placeholder="Votre nom" autoComplete="family-name" value={c.nom} onChange={(e) => setC({ ...c, nom: e.target.value })} />
+            <Field label="Téléphone" type="tel" inputMode="tel" autoComplete="tel" placeholder="06 12 34 56 78" value={c.tel} onChange={(e) => setC({ ...c, tel: e.target.value })} />
+            <Field label="E-mail" type="email" inputMode="email" autoComplete="email" placeholder="vous@exemple.fr" value={c.email} onChange={(e) => setC({ ...c, email: e.target.value })} />
+          </div>
+        );
+      case "mot":
+        return <Field key={b} area label="Un mot sur votre projet (facultatif)" placeholder="Étage élevé, proche d’une école, pas de travaux…" value={c.mot} onChange={((e: React.ChangeEvent<HTMLTextAreaElement>) => setC({ ...c, mot: e.target.value })) as never} />;
+      case "espace":
+        return (
+          <div key={b} className="flex items-center gap-3 rounded-[14px] border border-brand-line bg-brand-pale px-4 py-3.5">
+            <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-brand text-white"><Sparkles className="h-[19px] w-[19px]" /></span>
+            <span className="min-w-0 text-sm leading-normal text-brand-txt"><strong className="text-brand-ink">Votre espace client vous attend</strong> : vous recevez votre lien personnel par e-mail.</span>
+          </div>
+        );
+      case "consent":
+        return (
+          <div key={b}>
+            <input type="text" name={honeypotFieldName} tabIndex={-1} autoComplete="off" aria-hidden style={honeypotStyle} value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+            <Consent checked={consent} onChange={setConsent}>J’accepte qu’Emilio Immobilier utilise ces informations pour ma recherche.</Consent>
+          </div>
+        );
+    }
+  };
+
   return (
     <section id="recherche" className="bg-brand">
-      <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-10 py-14 md:py-[100px] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.25fr)]">
+      <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-10 pt-14 sm:pb-14 md:py-[100px] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.25fr)]">
         {left}
-        <div ref={ref} className="relative min-w-0 scroll-mt-28 lg:mt-6">
-          <div className="relative flex min-h-[540px] min-w-0 flex-col gap-[22px] rounded-[26px] bg-white p-[18px] shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:p-[34px]">
-            <h3 className="m-0 font-display text-[25px] font-medium text-brand-ink md:text-[28px]">Votre recherche, <Em>en 3 temps</Em></h3>
-            <div className="hidden sm:block"><Steps labels={labels} current={step} /></div>
-            <div className="sm:hidden"><Steps labels={labels} current={step} compact /></div>
-            <div key={step} className="fx-fade flex min-w-0 flex-1 flex-col gap-6">
-              {step === 1 && (
-                <>
-                  <Group title="Quel type de bien ?">
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{TYPES.map((t) => <Tile key={t.k} icon={t.icon} label={t.k} on={type === t.k} onClick={() => setType(t.k)} />)}</div>
-                  </Group>
-                  <Group title="C’est pour…"><Pills options={["Résidence principale", "Investissement", "Pied-à-terre"] as const} value={[usage as never]} onToggle={(v) => setUsage(v)} /></Group>
-                  <Group title="Pour quand ?" optional><Pills options={["Dès que possible", "D’ici 6 mois", "Je prends le temps"] as const} value={[quand as never]} onToggle={(v) => setQuand(quand === v ? "" : v)} /></Group>
-                </>
-              )}
-              {step === 2 && (
-                <>
-                  <Group title="Où cherchez-vous ?" hint="Tapez une ville ou un arrondissement, puis choisissez-le. Vous pouvez en ajouter plusieurs.">
-                    <CityPicker value={secteurs} onChange={setSecteurs} />
-                  </Group>
-                  <Group title="Votre budget" hint="Honoraires compris. Faites glisser les deux ronds.">
-                    <div className="rounded-2xl border border-brand-line bg-brand-pale px-4 pb-3 pt-4">
-                      <RangeDual steps={BUDGET_STEPS} lo={bLo} hi={bHi} onChange={(a, b) => { setBLo(a); setBHi(b); }} format={fmtBudget} labels={["Budget minimum", "Budget maximum"]} />
-                    </div>
-                  </Group>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4">
-                    <Group title="Nombre de pièces" optional><Segmented options={["1", "2", "3", "4", "5 +"] as const} value={pieces as never} onChange={(v) => setPieces(toggleIn(pieces, v))} /></Group>
-                    <Group title="Surface" optional>
-                      <div className="rounded-2xl border border-brand-line bg-brand-pale px-4 pb-1.5 pt-3"><RangeOne min={0} max={300} step={5} value={surface} onChange={setSurface} format={fmtSurface} label="Surface minimum" /></div>
-                    </Group>
-                  </div>
-                  <Group title="Ce qui compte pour vous" optional><Pills options={ATOUTS} value={atouts as never} onToggle={(v) => setAtouts(toggleIn(atouts, v))} size="sm" /></Group>
-                </>
-              )}
-              {step === 3 && (
-                <>
-                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-                    <Field label="Prénom" placeholder="Votre prénom" autoComplete="given-name" value={c.prenom} onChange={(e) => setC({ ...c, prenom: e.target.value })} />
-                    <Field label="Nom" placeholder="Votre nom" autoComplete="family-name" value={c.nom} onChange={(e) => setC({ ...c, nom: e.target.value })} />
-                    <Field label="Téléphone" type="tel" inputMode="tel" autoComplete="tel" placeholder="06 12 34 56 78" value={c.tel} onChange={(e) => setC({ ...c, tel: e.target.value })} />
-                    <Field label="E-mail" type="email" inputMode="email" autoComplete="email" placeholder="vous@exemple.fr" value={c.email} onChange={(e) => setC({ ...c, email: e.target.value })} />
-                    <Field area className="sm:col-span-2" label="Un mot sur votre projet (facultatif)" placeholder="Étage élevé, proche d’une école, pas de travaux…" value={c.mot} onChange={((e: React.ChangeEvent<HTMLTextAreaElement>) => setC({ ...c, mot: e.target.value })) as never} />
-                  </div>
-                  <div className="flex items-center gap-3 rounded-[14px] border border-brand-line bg-brand-pale px-4 py-3.5">
-                    <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-brand text-white"><Sparkles className="h-[19px] w-[19px]" /></span>
-                    <span className="min-w-0 text-sm leading-normal text-brand-txt"><strong className="text-brand-ink">Votre espace client vous attend</strong> : vous recevez votre lien personnel par e-mail.</span>
-                  </div>
-                  <input type="text" name={honeypotFieldName} tabIndex={-1} autoComplete="off" aria-hidden style={honeypotStyle} value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
-                  <Consent checked={consent} onChange={setConsent}>J’accepte qu’Emilio Immobilier utilise ces informations pour ma recherche.</Consent>
-                </>
-              )}
-              {step === 4 && (
-                <div className="flex flex-col items-center gap-3.5 px-2.5 pb-1.5 pt-[18px] text-center">
-                  <CheckCircle2 className="h-16 w-16 text-[#2E9A66]" strokeWidth={1.6} />
-                  <h4 className="m-0 mt-1.5 font-display text-[28px] font-medium text-brand-ink">C’est noté{c.prenom.trim() ? `, merci ${c.prenom.trim()}` : ""}</h4>
-                  <p className="m-0 max-w-[440px] text-[15.5px] leading-relaxed text-brand-txt">Alexandre ou un membre de l’équipe vous appelle pour en parler. Ensuite, votre lien personnel arrive par e-mail : il ouvre votre espace client.</p>
-                  <div className="flex flex-wrap justify-center gap-2.5 pt-1.5">
-                    <Btn href="#espace" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Découvrir l’espace client</Btn>
-                    <Btn to="/" variant="outline">Retour à l’accueil</Btn>
+        {/* Sur téléphone, le formulaire prend toute la largeur et toute la hauteur de l’écran */}
+        <div ref={ref} className="relative -mx-5 min-w-0 scroll-mt-[72px] sm:mx-0 sm:scroll-mt-28 lg:mt-6">
+          <div
+            ref={carte}
+            className="relative flex min-h-[calc(100svh-72px)] min-w-0 flex-col gap-[18px] rounded-t-[28px] bg-white px-[18px] pb-[max(16px,env(safe-area-inset-bottom))] pt-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:min-h-[540px] sm:gap-[22px] sm:rounded-[26px] sm:p-[34px]"
+          >
+            <h3 className="m-0 font-display text-[24px] font-medium text-brand-ink md:text-[28px]">Votre recherche, <Em>en 3 temps</Em></h3>
+            {!fini && (
+              <>
+                <div className="hidden sm:block"><Steps labels={labels} current={temps} /></div>
+                <div className="flex flex-col gap-2.5 sm:hidden">
+                  <Steps labels={labels} current={temps} compact />
+                  <div aria-hidden className="flex gap-1">
+                    {pages.map((_, i) => <span key={i} className={cn("h-1 flex-1 rounded-full transition-colors duration-300", i <= page ? "bg-brand-orange" : "bg-brand-line")} />)}
                   </div>
                 </div>
-              )}
+              </>
+            )}
+            <div className="relative flex min-w-0 flex-1 flex-col">
+              <AnimatePresence mode="wait" initial={false} custom={sens}>
+                <motion.div
+                  key={fini ? "fini" : `${mobile ? "m" : "o"}${page}`}
+                  custom={sens}
+                  variants={{ in: (d: number) => ({ opacity: 0, x: d * 36 }), on: { opacity: 1, x: 0 }, out: (d: number) => ({ opacity: 0, x: d * -36 }) }}
+                  initial="in"
+                  animate="on"
+                  exit="out"
+                  transition={{ duration: 0.24, ease: [0.22, 0.8, 0.24, 1] }}
+                  className="flex min-w-0 flex-1 flex-col gap-6"
+                >
+                  {fini ? (
+                    <div className="flex flex-col items-center gap-3.5 px-2.5 pb-1.5 pt-[18px] text-center">
+                      <CheckCircle2 className="h-16 w-16 text-[#2E9A66]" strokeWidth={1.6} />
+                      <h4 className="m-0 mt-1.5 font-display text-[28px] font-medium text-brand-ink">C’est noté{c.prenom.trim() ? `, merci ${c.prenom.trim()}` : ""}</h4>
+                      <p className="m-0 max-w-[440px] text-[15.5px] leading-relaxed text-brand-txt">Alexandre ou un membre de l’équipe vous appelle pour en parler. Ensuite, votre lien personnel arrive par e-mail : il ouvre votre espace client.</p>
+                      <div className="flex flex-wrap justify-center gap-2.5 pt-1.5">
+                        <Btn href="#espace" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Découvrir l’espace client</Btn>
+                        <Btn to="/" variant="outline">Retour à l’accueil</Btn>
+                      </div>
+                    </div>
+                  ) : (
+                    courante.map(bloc)
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
-            {step < 4 && (
-              <div className="flex flex-col gap-2.5 border-t border-brand-line2 pt-[18px]">
+            {!fini && (
+              <div className="flex flex-col gap-2.5 border-t border-brand-line2 pt-4 sm:pt-[18px]">
                 <div className="flex min-w-0 items-center gap-2.5">
-                  {step > 1 && (
-                    <button type="button" aria-label="Retour" onClick={() => go(step - 1)} className="inline-flex h-[54px] w-[54px] flex-none items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-line text-[15.5px] font-bold text-brand-ink hover:bg-brand-pale sm:w-auto sm:px-[18px]">
+                  {page > 0 && (
+                    <button type="button" aria-label="Retour" onClick={() => go(page - 1)} className="inline-flex h-[54px] w-[54px] flex-none items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-line text-[15.5px] font-bold text-brand-ink hover:bg-brand-pale sm:w-auto sm:px-[18px]">
                       <ArrowLeft className="h-[18px] w-[18px]" /> <span className="hidden sm:inline">Retour</span>
                     </button>
                   )}
-                  <span className="hidden text-sm text-brand-mut sm:inline">Étape {step} sur 3</span>
+                  <span className="hidden text-sm text-brand-mut sm:inline">Étape {temps} sur 3</span>
                   <button
                     type="button"
                     disabled={!ok || sending}
-                    onClick={() => (step === 3 ? send() : go(step + 1))}
-                    className="ml-auto inline-flex h-[54px] min-w-0 flex-1 items-center justify-center gap-2.5 rounded-xl bg-brand-orange px-4 text-[15.5px] sm:text-[16px] font-extrabold text-brand-ink transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45 sm:flex-none sm:px-7"
+                    onClick={() => (derniere ? send() : go(page + 1))}
+                    className="ml-auto inline-flex h-[54px] min-w-0 flex-1 items-center justify-center gap-2.5 rounded-xl bg-brand-orange px-4 text-[15.5px] font-extrabold text-brand-ink transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45 sm:flex-none sm:px-7 sm:text-[16px]"
                   >
-                    <span className="truncate">{step === 3 ? (sending ? "Envoi…" : "Envoyer ma recherche") : "Continuer"}</span> <ArrowRight className={cn("h-[18px] w-[18px] flex-none", step === 3 && "hidden sm:block")} />
+                    <span className="truncate">{derniere ? (sending ? "Envoi…" : "Envoyer ma recherche") : "Suivant"}</span> <ArrowRight className={cn("h-[18px] w-[18px] flex-none", derniere && "hidden sm:block")} />
                   </button>
                 </div>
-                {!ok && <span className="text-[13px] text-brand-mut sm:text-right">{AIDE[step - 1]}</span>}
+                {bloque && AIDE[bloque] && <span className="text-[13px] text-brand-mut sm:text-right">{AIDE[bloque]}</span>}
               </div>
             )}
           </div>
