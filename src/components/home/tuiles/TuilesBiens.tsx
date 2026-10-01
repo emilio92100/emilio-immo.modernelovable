@@ -83,7 +83,7 @@ const Alerte = () => (
     <span aria-hidden className="absolute -right-[70px] -top-[70px] h-[220px] w-[220px] rounded-full border-[34px] border-white/[0.07]" />
     <span className="relative flex flex-col">
       <span className="grid h-[52px] w-[52px] place-items-center rounded-2xl bg-white/[0.12]"><Bell className="h-6 w-6" /></span>
-      <span className="mb-2.5 mt-[22px] text-[26px] font-extrabold leading-[1.15] tracking-[-0.03em]">Soyez prévenu en premier</span>
+      <span className="mb-2.5 mt-[22px] text-[22px] font-extrabold leading-[1.15] tracking-[-0.03em] md:text-[26px]">Soyez prévenu en premier</span>
       <span className="text-[15px] leading-[1.55] text-white/80">Les nouveaux biens dès leur arrivée, parfois avant leur mise en ligne.</span>
     </span>
     <span className="relative mt-7 inline-flex h-[52px] items-center gap-2.5 self-start rounded-2xl bg-brand-orange px-6 text-[15px] font-bold text-brand-ink">
@@ -184,11 +184,11 @@ const TuilesBiens = () => {
   const pas = (d: number) => rail.current?.scrollBy({ left: d * 360, behavior: "smooth" });
 
   return (
-    <section id="biens" className="mx-auto w-full max-w-[1320px] px-4 pt-[72px] md:px-10 md:pt-[110px]">
+    <section id="biens" className="mx-auto w-full max-w-[1320px] px-4 pt-14 md:px-10 md:pt-[110px]">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
-          <h2 className="m-0 text-[36px] font-extrabold leading-[1.04] tracking-[-0.035em] text-brand-ink md:text-[52px]">Nos biens du moment</h2>
-          <p className="m-0 mt-3 text-[15.5px] font-medium leading-relaxed text-brand-mut md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, avec les vraies photos.</p>
+          <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-brand-ink md:text-[52px] md:leading-[1.04] md:tracking-[-0.035em]">Nos biens du moment</h2>
+          <p className="m-0 mt-2.5 text-[14.5px] font-medium leading-relaxed text-brand-mut md:mt-3 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, avec les vraies photos.</p>
         </div>
         <div className="flex w-full min-w-0 items-center gap-2.5 md:w-auto">
           <div role="group" aria-label="Filtrer les biens" className="no-scrollbar -mx-4 flex flex-1 gap-2 overflow-x-auto px-4 md:mx-0 md:flex-none md:px-0">

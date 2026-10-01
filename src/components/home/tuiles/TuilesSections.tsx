@@ -1,10 +1,10 @@
 /* ═══ Accueil « Tuiles » : les sections sous les biens ═══════════════════════
    Discrétion · Ce que nous faisons pour vous · Comment ça se passe · Nos secteurs · Avis · Appel final. */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
-  ArrowRight, BadgeCheck, CalendarDays, Camera, Check, EyeOff, FileText, Home, KeyRound, LineChart, Lock, MessageSquare, Phone, Handshake, Search, ShieldCheck, Star, UserRound,
+  ArrowRight, BadgeCheck, ChevronDown, CalendarDays, Camera, Check, EyeOff, FileText, Home, KeyRound, LineChart, Lock, MessageSquare, Phone, Handshake, Search, ShieldCheck, Star, UserRound,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
@@ -18,9 +18,9 @@ import toits from "@/assets/refonte/paris-toits.webp";
 import rue from "@/assets/refonte/paris-rue-eiffel.webp";
 
 const W = "mx-auto w-full max-w-[1320px] px-4 md:px-10";
-const H2 = "m-0 text-[36px] font-extrabold leading-[1.04] tracking-[-0.035em] text-brand-ink md:text-[52px]";
-const SUB = "m-0 mt-3 text-[15.5px] font-medium leading-relaxed text-brand-mut md:text-[17px]";
-const BTN = "inline-flex h-[52px] items-center justify-center gap-2.5 whitespace-nowrap rounded-2xl px-6 text-[15px] font-bold transition hover:-translate-y-px";
+const H2 = "m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-brand-ink md:text-[52px] md:leading-[1.04] md:tracking-[-0.035em]";
+const SUB = "m-0 mt-2.5 text-[14.5px] font-medium leading-relaxed text-brand-mut md:mt-3 md:text-[17px]";
+const BTN = "inline-flex h-12 items-center justify-center gap-2.5 whitespace-nowrap rounded-2xl px-6 text-[14.5px] font-bold transition hover:-translate-y-px md:h-[52px] md:text-[15px]";
 
 /* ── Vendez votre bien en toute discrétion ── */
 const POINTS = [
@@ -32,13 +32,13 @@ const POINTS = [
 export const Discretion = () => {
   const { openContact } = useSiteModals();
   return (
-    <section id="discretion" className={cn(W, "pt-[72px] md:pt-24")}>
+    <section id="discretion" className={cn(W, "pt-14 md:pt-24")}>
       <div className="relative grid grid-cols-1 items-center gap-10 overflow-hidden rounded-[32px] bg-brand-sky px-[22px] pb-12 pt-8 md:grid-cols-[1.05fr_0.95fr] md:gap-14 md:rounded-[40px] md:p-[60px]">
         <span aria-hidden className="absolute -bottom-40 -left-[120px] h-[380px] w-[380px] rounded-full border-[54px] border-brand/[0.05]" />
         <div className="relative z-[1]">
           <span className="mb-6 grid h-[60px] w-[60px] place-items-center rounded-[20px] bg-brand text-white"><Lock className="h-[26px] w-[26px]" /></span>
-          <h2 className="m-0 mb-4 text-[34px] font-extrabold leading-[1.04] tracking-[-0.035em] text-brand-ink md:text-[50px]">Vendez votre bien en toute discrétion.</h2>
-          <p className="m-0 mb-[26px] max-w-[540px] text-base font-medium leading-[1.62] text-brand-mut md:text-[17px]">
+          <h2 className="m-0 mb-3 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-brand-ink md:mb-4 md:text-[50px] md:leading-[1.04] md:tracking-[-0.035em]">Vendez votre bien en toute discrétion.</h2>
+          <p className="m-0 mb-5 max-w-[540px] text-[14.5px] font-medium leading-[1.6] text-brand-mut md:mb-[26px] md:text-[17px]">
             Pas d’annonce en ligne, pas de photos publiques : nous présentons votre bien uniquement à des acquéreurs que nous connaissons, dont le financement est vérifié.
           </p>
           <ul className="m-0 mb-[30px] flex list-none flex-col gap-3 p-0">
@@ -68,7 +68,7 @@ export const Discretion = () => {
             </div>
             <figcaption className="flex items-center justify-between gap-2.5 px-2 pb-1.5 pt-4">
               <span className="flex flex-col">
-                <b className="text-[17px] font-extrabold text-brand-ink">Appartement familial</b>
+                <b className="text-[15.5px] font-extrabold text-brand-ink md:text-[17px]">Appartement familial</b>
                 <span className="text-[13.5px] font-semibold text-brand-mut">Présenté à des acquéreurs vérifiés</span>
               </span>
               <span className="inline-flex h-[22px] items-center rounded-full bg-brand-surf px-2.5 text-[11px] font-extrabold uppercase tracking-[0.05em] text-brand">Exemple</span>
@@ -116,7 +116,7 @@ export const Services = () => {
     <section id="services" className="relative mt-[72px] overflow-hidden bg-brand text-white md:mt-24">
       <span aria-hidden className="absolute -left-[140px] -top-[160px] h-[420px] w-[420px] rounded-full border-[60px] border-white/[0.04]" />
       <span aria-hidden className="absolute -bottom-[180px] -right-[120px] h-[460px] w-[460px] rounded-full border-[64px] border-white/[0.04]" />
-      <div className={cn(W, "relative pb-14 pt-14 md:pb-[88px] md:pt-[88px]")}>
+      <div className={cn(W, "relative pb-11 pt-11 md:pb-[88px] md:pt-[88px]")}>
         <div className="relative flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-[780px]">
             <span className="mb-[18px] inline-flex items-center gap-3 text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-soft">
@@ -143,9 +143,9 @@ export const Services = () => {
                 <span className="flex flex-1 flex-col px-2.5 pb-2 pt-5 md:px-3">
                   <span className="flex items-center gap-3">
                     <span className="grid h-11 w-11 flex-none place-items-center rounded-[14px] bg-brand text-brand-orange">{c.icon}</span>
-                    <span className="text-[26px] font-extrabold tracking-[-0.035em] text-brand-ink">{c.t}</span>
+                    <span className="text-[21px] font-extrabold tracking-[-0.03em] text-brand-ink md:text-[26px] md:tracking-[-0.035em]">{c.t}</span>
                   </span>
-                  <span className="mt-3 text-[15px] font-medium leading-relaxed text-brand-mut">{c.d}</span>
+                  <span className="mt-2 text-[14px] font-medium leading-relaxed text-brand-mut md:mt-3 md:text-[15px]">{c.d}</span>
                   <span className="mb-6 mt-4 flex flex-col gap-2.5">
                     {c.pts.map((pt) => (
                       <span key={pt} className="flex items-start gap-2.5 text-[14.5px] font-semibold leading-snug text-brand-ink">
@@ -169,8 +169,8 @@ export const Services = () => {
         <Link to="/acheter#espace" className="relative mt-3.5 flex flex-col items-start gap-4 overflow-hidden rounded-[26px] bg-white/[0.08] p-6 text-white ring-1 ring-white/15 transition hover:bg-white/[0.12] md:mt-5 md:flex-row md:items-center md:gap-6 md:rounded-[28px] md:px-7 md:py-6">
                     <span className="relative grid h-[54px] w-[54px] flex-none place-items-center rounded-[18px] bg-white/[0.12]"><UserRound className="h-6 w-6" /></span>
           <span className="relative flex min-w-0 flex-1 flex-col">
-            <b className="text-[19px] font-extrabold tracking-[-0.02em]">Votre espace client</b>
-            <span className="mt-0.5 text-[15px] font-medium text-white/80">Visites, comptes rendus, offres, documents : tout votre projet au même endroit.</span>
+            <b className="text-[16.5px] font-extrabold tracking-[-0.02em] md:text-[19px]">Votre espace client</b>
+            <span className="mt-0.5 text-[13.5px] font-medium text-white/80 md:text-[15px]">Visites, comptes rendus, offres, documents : tout votre projet au même endroit.</span>
           </span>
           <span className="relative flex flex-wrap gap-2 md:flex-nowrap">
             {[[<CalendarDays key="a" className="h-[15px] w-[15px]" />, "Visites"], [<MessageSquare key="b" className="h-[15px] w-[15px]" />, "Comptes rendus"], [<FileText key="c" className="h-[15px] w-[15px]" />, "Documents"]].map(([i, t]) => (
@@ -235,7 +235,7 @@ export const Etapes = () => {
   };
 
   return (
-    <section id="etapes" className={cn(W, "pt-[72px] md:pt-24")}>
+    <section id="etapes" className={cn(W, "pt-14 md:pt-24")}>
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
           <h2 className={H2}>Comment ça se passe</h2>
@@ -307,8 +307,8 @@ export const Etapes = () => {
                     </span>
                   </button>
                   <span className={cn("flex flex-col rounded-[22px] transition-all duration-500 md:px-4 md:py-4", ici ? "md:bg-brand-sky" : "")}>
-                    <span className={cn("mb-1.5 mt-2 text-xl font-extrabold tracking-[-0.02em] transition-colors duration-500 md:mt-0", ici ? "text-brand" : "text-brand-ink")}>{st.t}</span>
-                    <span className="max-w-[260px] text-[15px] font-medium leading-[1.58] text-brand-mut max-md:max-w-none md:mx-auto">{st.d}</span>
+                    <span className={cn("mb-1 mt-1.5 text-[17px] font-extrabold tracking-[-0.02em] transition-colors duration-500 md:mb-1.5 md:mt-0 md:text-xl", ici ? "text-brand" : "text-brand-ink")}>{st.t}</span>
+                    <span className="max-w-[260px] text-[14px] font-medium leading-[1.55] text-brand-mut max-md:max-w-none md:mx-auto md:text-[15px]">{st.d}</span>
                   </span>
                 </motion.li>
               );
@@ -382,7 +382,7 @@ export const Secteurs = () => {
   const { openContact } = useSiteModals();
   return (
     <section id="secteurs" className="mt-[72px] bg-brand-surf md:mt-24">
-      <div className={cn(W, "grid grid-cols-1 items-center gap-x-16 gap-y-8 py-14 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:py-[88px]")}>
+      <div className={cn(W, "grid grid-cols-1 items-center gap-x-16 gap-y-7 py-11 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:py-[88px]")}>
         <div className="flex min-w-0 flex-col gap-6">
           <div>
             <span className="mb-[18px] inline-flex items-center gap-3 text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">
@@ -411,7 +411,7 @@ export const Secteurs = () => {
           </div>
           <div className="flex flex-col items-start gap-4 rounded-[24px] bg-white p-5 sm:flex-row sm:items-center sm:justify-between">
             <span className="flex flex-col">
-              <b className="text-[17px] font-extrabold text-brand-ink">Votre ville n’y est pas ?</b>
+              <b className="text-[15.5px] font-extrabold text-brand-ink md:text-[17px]">Votre ville n’y est pas ?</b>
               <span className="text-[14.5px] font-medium text-brand-mut">Ailleurs à Paris, en Île-de-France ou plus loin : parlons-en.</span>
             </span>
             <button type="button" onClick={() => openContact({ objet: "Autre", message: "Bonjour, mon projet se situe à : " })} className={cn(BTN, "h-12 flex-none bg-brand-orange text-brand-ink")}>
@@ -434,35 +434,64 @@ export const Secteurs = () => {
   );
 };
 
-/* ── Avis (vrais avis Google) ── */
+/* ── Avis (vrais avis Google) : quelques lignes, « Lire la suite » pour tout voir ── */
+const CarteAvis = ({ a }: { a: (typeof AVIS)[number] }) => {
+  const [ouvert, setOuvert] = useState(false);
+  const [long, setLong] = useState(false);
+  const texte = useRef<HTMLParagraphElement>(null);
+  /* Le bouton n’apparaît que si l’avis est vraiment coupé */
+  useEffect(() => {
+    const mesurer = () => {
+      const el = texte.current;
+      if (el && !ouvert) setLong(el.scrollHeight > el.clientHeight + 2);
+    };
+    mesurer();
+    window.addEventListener("resize", mesurer);
+    return () => window.removeEventListener("resize", mesurer);
+  }, [ouvert]);
+  return (
+    <motion.article
+      layout
+      transition={{ duration: 0.3, ease: [0.22, 0.8, 0.24, 1] }}
+      className="flex w-[290px] flex-none snap-start flex-col gap-3.5 rounded-[24px] border-[1.5px] border-[#E2E8F0] bg-white p-5 md:w-auto md:gap-[18px] md:rounded-[30px] md:p-[30px]"
+    >
+      <motion.div layout="position" className="flex items-center justify-between">
+        <Etoiles size={15} />
+        <span className="inline-flex h-6 items-center rounded-full bg-brand-surf px-2.5 text-[11.5px] font-bold text-brand-mut">Avis Google</span>
+      </motion.div>
+      <motion.div layout="position">
+        <p ref={texte} className={cn("m-0 text-[14.5px] font-medium leading-[1.6] text-[#33445B] md:text-base md:leading-[1.62]", !ouvert && "line-clamp-4 md:line-clamp-5")}>« {a.texte} »</p>
+        {(long || ouvert) && (
+          <button type="button" onClick={() => setOuvert(!ouvert)} aria-expanded={ouvert} className="mt-2 inline-flex min-h-[36px] items-center gap-1 text-[14px] font-bold text-brand">
+            {ouvert ? "Réduire" : "Lire la suite"}
+            <ChevronDown className={cn("h-4 w-4 transition-transform duration-300", ouvert && "rotate-180")} />
+          </button>
+        )}
+      </motion.div>
+      <motion.div layout="position" className="mt-auto flex items-center gap-3 border-t border-[#E2E8F0] pt-3.5 md:pt-4">
+        <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-sky font-extrabold text-brand">{a.nom[0]}</span>
+        <span className="flex flex-col">
+          <b className="text-[14.5px] font-extrabold text-brand-ink md:text-[15px]">{a.nom}</b>
+          <span className="text-[13px] font-semibold text-brand-mut md:text-[13.5px]">{a.projet}</span>
+        </span>
+      </motion.div>
+    </motion.article>
+  );
+};
+
 export const Avis = () => (
-  <section id="avis" className={cn(W, "pt-[72px] md:pt-24")}>
-    <div className="flex flex-wrap items-end justify-between gap-6">
+  <section id="avis" className={cn(W, "pt-14 md:pt-24")}>
+    <div className="flex flex-wrap items-end justify-between gap-5 md:gap-6">
       <div>
         <h2 className={H2}>Ils nous ont fait confiance</h2>
         <p className={SUB}>Les avis de nos clients, tels qu’ils les ont laissés sur Google.</p>
       </div>
-      <a href={AVIS_GOOGLE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 items-center gap-2.5 rounded-full border-[1.5px] border-[#E2E8F0] bg-white px-[18px] text-sm font-bold text-brand-ink transition hover:border-brand-ink/40">
-        <Etoiles size={15} /> Lire tous les avis sur Google <ArrowRight className="h-4 w-4" />
+      <a href={AVIS_GOOGLE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 items-center gap-2.5 rounded-full border-[1.5px] border-[#E2E8F0] bg-white px-4 text-[13.5px] font-bold text-brand-ink transition hover:border-brand-ink/40 md:h-12 md:px-[18px] md:text-sm">
+        <Etoiles size={14} /> Lire tous les avis sur Google <ArrowRight className="h-4 w-4" />
       </a>
     </div>
-    <div className="no-scrollbar -mx-4 mt-[26px] flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1.5 md:mx-0 md:mt-9 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:p-0">
-      {AVIS.map((a) => (
-        <article key={a.nom} className="flex w-[300px] flex-none snap-start flex-col gap-[18px] rounded-[26px] border-[1.5px] border-[#E2E8F0] bg-white p-6 md:w-auto md:rounded-[30px] md:p-[30px]">
-          <div className="flex items-center justify-between">
-            <Etoiles size={17} />
-            <span className="inline-flex h-[26px] items-center rounded-full bg-brand-surf px-2.5 text-xs font-bold text-brand-mut">Avis Google</span>
-          </div>
-          <p className="m-0 text-base font-medium leading-[1.62] text-[#33445B]">« {a.texte} »</p>
-          <div className="mt-auto flex items-center gap-3 border-t border-[#E2E8F0] pt-4">
-            <span className="grid h-[42px] w-[42px] place-items-center rounded-full bg-brand-sky font-extrabold text-brand">{a.nom[0]}</span>
-            <span className="flex flex-col">
-              <b className="text-[15px] font-extrabold text-brand-ink">{a.nom}</b>
-              <span className="text-[13.5px] font-semibold text-brand-mut">{a.projet}</span>
-            </span>
-          </div>
-        </article>
-      ))}
+    <div className="no-scrollbar -mx-4 mt-5 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-4 pb-1.5 md:mx-0 md:mt-9 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:p-0">
+      {AVIS.map((a) => <CarteAvis key={a.nom} a={a} />)}
     </div>
   </section>
 );
@@ -477,13 +506,13 @@ const Etoiles = ({ size }: { size: number }) => (
 export const AppelFinal = () => {
   const { openEstimation } = useSiteModals();
   return (
-    <section className={cn(W, "pt-[72px] md:pt-24")}>
-      <div className="relative flex flex-col items-stretch justify-between gap-10 overflow-hidden rounded-[32px] bg-brand px-[26px] py-10 text-white md:flex-row md:items-center md:rounded-[40px] md:p-16">
+    <section className={cn(W, "pt-14 md:pt-24")}>
+      <div className="relative flex flex-col items-stretch justify-between gap-7 overflow-hidden rounded-[28px] bg-brand px-[22px] py-8 text-white md:flex-row md:items-center md:gap-10 md:rounded-[40px] md:p-16">
         <span aria-hidden className="absolute -bottom-40 -left-[90px] h-[360px] w-[360px] rounded-full border-[50px] border-white/5" />
         <span aria-hidden className="absolute -right-10 -top-10 h-[120px] w-[120px] rounded-full bg-brand-orange/90 md:right-[300px] md:-top-[60px] md:h-40 md:w-40" />
         <div className="relative z-[1]">
-          <h2 className="m-0 text-[36px] font-extrabold leading-[1.05] tracking-[-0.035em] md:text-[52px]">Un projet ? Parlons-en.</h2>
-          <p className="m-0 mt-3 text-[17px] text-brand-bt">Un premier échange suffit pour faire le point, sans engagement.</p>
+          <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] md:text-[52px] md:leading-[1.05] md:tracking-[-0.035em]">Un projet ? Parlons-en.</h2>
+          <p className="m-0 mt-2.5 text-[14.5px] text-brand-bt md:mt-3 md:text-[17px]">Un premier échange suffit pour faire le point, sans engagement.</p>
         </div>
         <div className="relative z-[1] flex flex-col gap-3 md:flex-row">
           <button type="button" onClick={() => openEstimation()} className={cn(BTN, "bg-brand-orange text-brand-ink")}>Estimer mon bien <ArrowRight className="h-[18px] w-[18px]" /></button>
