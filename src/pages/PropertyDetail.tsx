@@ -325,7 +325,7 @@ const PropertyDetail = () => {
                   </span>
                   {p.surface > 0 && <span className="text-[14.5px] text-brand-mut">soit {nf.format(Math.round(p.price / p.surface))} €/m²</span>}
                   <span className="text-[13px] text-brand-mut">
-                    Prix frais d’agence inclus · <Link to="/honoraires" className="font-semibold text-brand underline underline-offset-2">consulter nos tarifs</Link>
+                    Prix frais d’agence inclus
                   </span>
                   {!!(p.charges || p.taxeFonciere) && (
                     <span className="pt-1 text-[13.5px] text-brand-txt">
