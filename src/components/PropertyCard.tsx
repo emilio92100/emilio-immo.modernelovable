@@ -1,6 +1,6 @@
 /* Carte d'un bien (refonte 2026) : carte encadrée, survol « Vue rapide / Détail ».
    Sur téléphone, les deux boutons restent visibles sur la photo. */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, BedDouble, Eye, LayoutGrid, MapPin, Maximize, X } from "lucide-react";
@@ -8,6 +8,7 @@ import { Property, formatPrice, formatSurface } from "@/lib/properties";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { FRAME_SHADOW } from "@/components/site/ui";
+import { Portal, Slider, useLockScroll } from "@/components/site/Slider";
 
 interface PropertyCardProps {
   property: Property;
@@ -45,12 +46,25 @@ const perM2 = (p: Property) => (p.surface > 0 ? `${new Intl.NumberFormat("fr-FR"
 /* ── Vue rapide ── */
 export const QuickViewPopup = ({ property, open, onClose }: { property: Property; open: boolean; onClose: () => void }) => {
   const { openContact } = useSiteModals();
+  const [photo, setPhoto] = useState(0);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  useLockScroll(open);
+  useEffect(() => {
+    if (!open) return;
+    setPhoto(0);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && closeRef.current();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+  const imgs = property.images.length ? property.images : [];
   const specs = [
     { icon: <Maximize className="h-[18px] w-[18px]" />, v: formatSurface(property.surface), l: "surface" },
     property.rooms > 0 && { icon: <LayoutGrid className="h-[18px] w-[18px]" />, v: String(property.rooms), l: "pièces" },
     property.bedrooms > 0 && { icon: <BedDouble className="h-[18px] w-[18px]" />, v: String(property.bedrooms), l: "chambres" },
   ].filter(Boolean) as { icon: JSX.Element; v: string; l: string }[];
   return (
+    <Portal>
     <AnimatePresence>
       {open && (
         <motion.div
@@ -76,9 +90,10 @@ export const QuickViewPopup = ({ property, open, onClose }: { property: Property
               <X className="h-[18px] w-[18px]" strokeWidth={2.4} />
             </button>
             <div className="relative h-[240px] overflow-hidden rounded-2xl bg-brand-tint md:h-[440px]">
-              <img src={property.images[0]} alt={displayTitle(property)} className="h-full w-full object-cover" />
-              <span className="absolute left-3 top-3 inline-flex h-[30px] items-center rounded-full bg-white px-3 text-[13px] font-bold text-brand-ink">{property.type}</span>
-              {property.exclusive && <span className="absolute left-3 top-12 inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
+              <Slider images={imgs} index={photo} onIndex={setPhoto} alt={(k) => `${displayTitle(property)}, photo ${k + 1}`} className="absolute inset-0" keys arrowSize="sm" />
+              {imgs.length > 1 && <span className="pointer-events-none absolute bottom-3 left-3 z-[2] inline-flex h-[28px] items-center rounded-lg bg-[rgba(19,36,61,0.82)] px-2.5 text-[12.5px] font-semibold text-white">{photo + 1} / {imgs.length}</span>}
+              <span className="pointer-events-none absolute left-3 top-3 z-[2] inline-flex h-[30px] items-center rounded-full bg-white px-3 text-[13px] font-bold text-brand-ink">{property.type}</span>
+              {property.exclusive && <span className="pointer-events-none absolute left-3 top-12 z-[2] inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
             </div>
             <div className="flex min-w-0 flex-col gap-3.5 px-2 pb-2 pt-[18px] md:px-[30px] md:pb-6 md:pt-[34px]">
               <span className="text-xs font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Vue rapide</span>
@@ -123,6 +138,7 @@ export const QuickViewPopup = ({ property, open, onClose }: { property: Property
         </motion.div>
       )}
     </AnimatePresence>
+    </Portal>
   );
 };
 

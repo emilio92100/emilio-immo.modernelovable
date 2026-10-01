@@ -62,7 +62,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
               <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Acheter", to: "/acheter" }, { label: city.name }]} />
               <Eyebrow>{city.postalLabel}</Eyebrow>
               <h1 className="m-0 font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
-                Achat et vente d’appartement <Em>{aVille(city)}</Em>
+                Achat et vente d’appartement <Em wrap>{aVille(city)}</Em>
               </h1>
               <p className="m-0 max-w-[580px] text-lg leading-relaxed text-brand-txt text-pretty">{city.heroIntro}</p>
               <div className="flex flex-wrap gap-3 pt-1">
@@ -83,7 +83,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
         <section className="bg-white">
           <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-10 py-14 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:py-[96px]">
             <div className="flex min-w-0 flex-col gap-6">
-              <SectionHead eyebrow="Le marché" title={<>Le marché immobilier <Em>{aVille(city)}</Em></>} />
+              <SectionHead eyebrow="Le marché" title={<>Le marché immobilier <Em wrap>{aVille(city)}</Em></>} />
               <div className="flex max-w-[680px] flex-col gap-5 text-[17px] leading-relaxed text-brand-txt text-pretty">
                 {city.marketParagraphs.map((p, i) => <p key={i} className="m-0">{md(p)}</p>)}
               </div>
@@ -100,7 +100,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
         {/* Les quartiers */}
         <section className="bg-brand-pale">
           <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
-            <SectionHead eyebrow="Les quartiers" title={<>Où acheter <Em>{aVille(city)}</Em>{"\u00a0"}?</>} lead="Chaque quartier a son identité, ses prix et ses acheteurs. Voici nos repères pour vous aider à cibler." />
+            <SectionHead eyebrow="Les quartiers" title={<>Où acheter <Em wrap>{aVille(city)}</Em>{"\u00a0"}?</>} lead="Chaque quartier a son identité, ses prix et ses acheteurs. Voici nos repères pour vous aider à cibler." />
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {city.quartiers.map((q, i) => (
                 <article key={q.name} className={cn("flex flex-col gap-3 rounded-[20px] bg-white p-6 transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
@@ -117,7 +117,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
         <section id="biens" className="bg-white">
           <Container className="flex flex-col gap-9 py-14 md:py-[96px]">
             <div className="flex flex-wrap items-end justify-between gap-6">
-              <SectionHead eyebrow="À vendre" title={<>Nos biens <Em>{aVille(city)}</Em></>} />
+              <SectionHead eyebrow="À vendre" title={<>Nos biens <Em wrap>{aVille(city)}</Em></>} />
               <TextLink to="/biens">Voir tous nos biens</TextLink>
             </div>
             {!properties ? (
