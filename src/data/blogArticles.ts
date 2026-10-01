@@ -85,8 +85,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Boulogne n'est pas une ville homogène. Entre le Nord bourgeois et le Sud en pleine mutation, l'écart de prix peut dépasser 25 %. Voici ce que j'observe en 2026.",
     readMinutes: 5,
-    date: "2026-05-14",
-    updated: "2026-07-01",
+    date: "2026-08-06",
     keywords: [
       "prix m2 boulogne billancourt",
       "prix immobilier boulogne 2026",
@@ -249,8 +248,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Neuilly reste l'une des adresses les plus prisées d'Île-de-France. Mais le marché s'est nettement segmenté depuis 2023. Voici ce qu'on observe concrètement en 2026.",
     readMinutes: 4,
-    date: "2026-05-22",
-    updated: "2026-07-01",
+    date: "2026-08-27",
     keywords: [
       "prix m2 neuilly sur seine",
       "prix immobilier neuilly 2026",
@@ -382,8 +380,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Après deux années de correction, le marché des Hauts-de-Seine a trouvé son point d'équilibre. Voici ce que révèlent les chiffres et ce que j'observe sur le terrain.",
     readMinutes: 5,
-    date: "2026-04-30",
-    updated: "2026-07-01",
+    date: "2026-07-09",
     keywords: [
       "marché immobilier 92",
       "immobilier hauts de seine 2026",
@@ -512,8 +509,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "La question qui revient en premier chez tous les vendeurs. Voici les délais réellement observés en 2026, ville par ville et typologie par typologie.",
     readMinutes: 3,
-    date: "2026-05-05",
-    updated: "2026-07-01",
+    date: "2026-07-28",
     keywords: [
       "délai vente appartement 92",
       "combien de temps pour vendre",
@@ -649,8 +645,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Vendre sans annonce publique, sans photo sur Internet, sans passage sur les portails. C'est ce qu'on appelle l'off-market. Voici quand cette stratégie a vraiment du sens.",
     readMinutes: 5,
-    date: "2026-05-18",
-    updated: "2026-07-01",
+    date: "2026-08-18",
     keywords: [
       "vendre off market",
       "vente confidentielle immobilier",
@@ -779,8 +774,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "À surface et quartier identiques, deux appartements peuvent se vendre avec 20 % d'écart. Voici les 7 critères qui expliquent presque toute la différence.",
     readMinutes: 4,
-    date: "2026-05-27",
-    updated: "2026-07-01",
+    date: "2026-09-04",
     keywords: [
       "critères prix vente appartement",
       "quoi valorise un appartement",
@@ -912,8 +906,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Deux villes voisines, deux marchés très différents. On m'oppose ces deux communes chaque semaine dans les entretiens d'acquéreurs. Voici comment je les compare vraiment.",
     readMinutes: 5,
-    date: "2026-06-02",
-    updated: "2026-07-01",
+    date: "2026-09-15",
     keywords: [
       "boulogne ou neuilly",
       "vivre boulogne neuilly",
@@ -1037,8 +1030,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Acheter son premier appartement dans l'Ouest parisien en 2026 est redevenu possible. À condition de préparer sérieusement quelques points souvent négligés.",
     readMinutes: 4,
-    date: "2026-06-08",
-    updated: "2026-07-01",
+    date: "2026-09-24",
     keywords: [
       "primo accédant paris ouest",
       "premier achat immobilier boulogne",
@@ -1168,8 +1160,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "La plus-value immobilière fait peur, souvent à tort. Voici comment elle se calcule réellement en 2026 et dans quels cas vous en êtes totalement exonéré.",
     readMinutes: 5,
-    date: "2026-04-22",
-    updated: "2026-07-01",
+    date: "2026-07-02",
     keywords: [
       "plus value immobilière 2026",
       "calcul plus value immobilière",
@@ -1324,8 +1315,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Le DPE est devenu, en 3 ans, un critère aussi déterminant que le prix au m². Voici ce que vous risquez vraiment avec un F ou un G — et comment limiter la casse.",
     readMinutes: 3,
-    date: "2026-05-01",
-    updated: "2026-07-01",
+    date: "2026-07-16",
     keywords: [
       "dpe f g impact prix",
       "décote dpe f g",
