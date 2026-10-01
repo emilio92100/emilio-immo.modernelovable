@@ -75,7 +75,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
               <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Vendre", to: "/vendre" }, { label: city.name }]} />
               <Eyebrow>Vendre · {city.postalLabel}</Eyebrow>
               <h1 className="m-0 font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
-                Vendre votre appartement <Em>{aVille(city)}</Em>
+                Vendre votre appartement <Em wrap>{aVille(city)}</Em>
               </h1>
               <p className="m-0 max-w-[580px] text-lg leading-relaxed text-brand-txt text-pretty">{sell.heroIntro}</p>
               <div className="pt-1"><EstimerCard city={ville} postalCode={city.postalCodes[0]} placeholder={`Adresse de votre bien ${aVille(city)}`} /></div>
@@ -110,7 +110,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
         {/* Délais et acheteurs */}
         <section className="bg-brand-pale">
           <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
-            <SectionHead eyebrow="Délais et acheteurs" title={<>Combien de temps pour vendre <Em>{aVille(city)}</Em>{"\u00a0"}?</>} />
+            <SectionHead eyebrow="Délais et acheteurs" title={<>Combien de temps pour vendre <Em wrap>{aVille(city)}</Em>{"\u00a0"}?</>} />
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
               <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-tint text-brand"><Clock className="h-5 w-5" /></span>
@@ -146,7 +146,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
         {/* Méthode */}
         <section className="bg-brand-pale">
           <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
-            <SectionHead eyebrow="Notre méthode" title={<>Cinq étapes pour vendre <Em>{aVille(city)}</Em></>} />
+            <SectionHead eyebrow="Notre méthode" title={<>Cinq étapes pour vendre <Em wrap>{aVille(city)}</Em></>} />
             <ol className="m-0 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:grid-cols-5">
               {METHODE.map((m, i) => (
                 <li key={m.title} className={cn("flex flex-col gap-3.5 rounded-[20px] bg-white p-6", FRAME_SHADOW)}>

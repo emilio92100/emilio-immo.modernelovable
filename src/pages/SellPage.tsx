@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { cn } from "@/lib/utils";
 import { Confidential } from "@/components/home/HomeSections";
+import OrbitHero from "@/components/home/OrbitHero";
 import { FaqSection, faqJsonLd } from "@/components/site/Faq";
 import { EstimerCard } from "@/components/site/EstimerCard";
 import { Checks, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF, TextLink } from "@/components/site/ui";
@@ -27,15 +28,16 @@ const SUIVI: { st: "done" | "now" | "todo"; t: string }[] = [
   { st: "todo", t: "Remise des clés" },
 ];
 
+/* Deuxième bloc : la vente suivie de près (l’orbite des recherches est en haut de page). */
 const Hero = () => (
   <section className="bg-brand-pale">
-    <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 pb-14 pt-6 md:pb-[80px] md:pt-10">
+    <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 py-14 md:py-[88px]">
       <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[22px]">
         <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Vendre" }]} />
-        <Eyebrow>Vendre avec Emilio</Eyebrow>
-        <h1 className="m-0 font-display text-[clamp(36px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+        <Eyebrow>Votre vente, suivie de près</Eyebrow>
+        <h2 className="m-0 font-display text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.08] tracking-[-0.015em] text-brand-ink text-balance">
           Vendre votre bien <Em wrap>en toute sérénité</Em>
-        </h1>
+        </h2>
         <p className="m-0 max-w-[560px] text-lg leading-relaxed text-brand-txt text-pretty">
           De l’estimation à la remise des clés, un interlocuteur dédié prépare votre vente, la suit de près et vous explique chaque étape.
         </p>
@@ -199,6 +201,7 @@ const SellPage = () => (
     />
     <Navbar />
     <main>
+      <OrbitHero vendre />
       <Hero />
       <Engagements />
       <Processus />

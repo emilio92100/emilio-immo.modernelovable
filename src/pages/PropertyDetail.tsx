@@ -1,8 +1,8 @@
 /* Fiche d'un bien (refonte 2026). Les demandes passent par la fenêtre « Demande d'informations » (CRM). */
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
-  ArrowLeft, ArrowRight, BedDouble, Building, CalendarDays, Camera, ChevronLeft, ChevronRight, Expand, Home, LayoutGrid,
+  ArrowLeft, ArrowRight, BedDouble, Building, CalendarDays, Camera, ChevronLeft, Expand, Home, LayoutGrid,
   Mail, MapPin, Maximize, MessageCircle, Phone, Search, Star, Thermometer, X,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -13,6 +13,7 @@ import PropertyCard, { displayCity, displayTitle } from "@/components/PropertyCa
 import { cn } from "@/lib/utils";
 import { Property, fetchPropertiesFromFeed, formatPrice, formatSurface, mockProperties } from "@/lib/properties";
 import { useSiteModals } from "@/components/site/SiteModals";
+import { Portal, Slider, useLockScroll } from "@/components/site/Slider";
 import { Btn, Container, Crumbs, Em, FRAME_SHADOW, MAIL, SectionHead, TEL, TEL_HREF } from "@/components/site/ui";
 
 const nf = new Intl.NumberFormat("fr-FR");
@@ -31,46 +32,31 @@ const plus = (p: Property) => {
   return out;
 };
 
-/* ── Galerie + plein écran ── */
+/* ── Galerie + plein écran : flèches, clavier, glisser au doigt ── */
 const Galerie = ({ p }: { p: Property }) => {
   const imgs = p.images.length ? p.images : [];
   const [i, setI] = useState(0);
   const [plein, setPlein] = useState(false);
   const n = imgs.length;
-  const go = useCallback((d: number) => setI((c) => (c + d + n) % n), [n]);
+  useLockScroll(plein);
 
   useEffect(() => {
     if (!plein) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setPlein(false);
-      if (e.key === "ArrowRight") go(1);
-      if (e.key === "ArrowLeft") go(-1);
-    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setPlein(false);
     window.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [plein, go]);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [plein]);
 
   if (!n) return <div className="h-[300px] rounded-[22px] bg-brand-tint md:h-[520px]" />;
   const alt = `${displayTitle(p)} à vendre, ${displayCity(p)}`;
+  const altK = (k: number) => `${alt}, photo ${k + 1}`;
   return (
     <>
       <div className="grid grid-cols-1 gap-2.5 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="relative h-[280px] overflow-hidden rounded-[22px] bg-brand-tint sm:h-[380px] md:h-[520px]">
-          <button type="button" onClick={() => setPlein(true)} className="block h-full w-full" aria-label="Agrandir la photo">
-            <img src={imgs[i]} alt={`${alt}, photo ${i + 1}`} className="h-full w-full object-cover" />
-          </button>
-          {n > 1 && (
-            <>
-              <button type="button" aria-label="Photo précédente" onClick={() => go(-1)} className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-brand-ink shadow-md hover:bg-white"><ChevronLeft className="h-5 w-5" /></button>
-              <button type="button" aria-label="Photo suivante" onClick={() => go(1)} className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-brand-ink shadow-md hover:bg-white"><ChevronRight className="h-5 w-5" /></button>
-            </>
-          )}
-          <span className="absolute bottom-3.5 left-3.5 inline-flex h-[34px] items-center gap-2 rounded-lg bg-[rgba(19,36,61,0.82)] px-3 text-[13px] font-semibold text-white"><Camera className="h-[15px] w-[15px]" /> {i + 1} / {n}</span>
-          <button type="button" onClick={() => setPlein(true)} className="absolute bottom-3.5 right-3.5 inline-flex h-[34px] items-center gap-2 rounded-lg bg-white px-3 text-[13px] font-bold text-brand-ink shadow-md"><Expand className="h-[15px] w-[15px]" /> Plein écran</button>
+          <Slider images={imgs} index={i} onIndex={setI} alt={altK} onTap={() => setPlein(true)} keys={!plein} className="absolute inset-0" />
+          <span className="pointer-events-none absolute bottom-3.5 left-3.5 z-[2] inline-flex h-[34px] items-center gap-2 rounded-lg bg-[rgba(19,36,61,0.82)] px-3 text-[13px] font-semibold text-white"><Camera className="h-[15px] w-[15px]" /> {i + 1} / {n}</span>
+          <button type="button" onClick={() => setPlein(true)} className="absolute bottom-3.5 right-3.5 z-[2] inline-flex h-[34px] items-center gap-2 rounded-lg bg-white px-3 text-[13px] font-bold text-brand-ink shadow-md"><Expand className="h-[15px] w-[15px]" /> Plein écran</button>
         </div>
         {n > 1 && (
           <div className="hidden grid-rows-2 gap-2.5 md:grid">
@@ -96,13 +82,24 @@ const Galerie = ({ p }: { p: Property }) => {
         </div>
       )}
       {plein && (
-        <div role="dialog" aria-modal="true" aria-label="Photos du bien" className="fixed inset-0 z-[100] flex items-center justify-center bg-[rgba(10,18,32,0.96)]" onClick={() => setPlein(false)}>
-          <button type="button" aria-label="Fermer" onClick={() => setPlein(false)} className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"><X className="h-6 w-6" /></button>
-          {n > 1 && <button type="button" aria-label="Photo précédente" onClick={(e) => { e.stopPropagation(); go(-1); }} className="absolute left-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"><ChevronLeft className="h-6 w-6" /></button>}
-          <img src={imgs[i]} alt={`${alt}, photo ${i + 1}`} onClick={(e) => e.stopPropagation()} className="max-h-[86vh] max-w-[94vw] rounded-lg object-contain" />
-          {n > 1 && <button type="button" aria-label="Photo suivante" onClick={(e) => { e.stopPropagation(); go(1); }} className="absolute right-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"><ChevronRight className="h-6 w-6" /></button>}
-          <span className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white">{i + 1} / {n}</span>
-        </div>
+        <Portal>
+          <div role="dialog" aria-modal="true" aria-label="Photos du bien" className="fixed inset-0 z-[100] flex flex-col bg-[rgba(10,18,32,0.97)]" style={{ animation: "fade-in .25s ease both" }}>
+            <div className="flex items-center justify-between px-4 pb-2 pt-[max(14px,env(safe-area-inset-top))] text-white">
+              <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold">{i + 1} / {n}</span>
+              <button type="button" aria-label="Fermer" onClick={() => setPlein(false)} className="grid h-11 w-11 place-items-center rounded-full bg-white/10 hover:bg-white/20"><X className="h-6 w-6" /></button>
+            </div>
+            <Slider images={imgs} index={i} onIndex={setI} alt={altK} fit="contain" arrows="dark" keys className="min-h-0 flex-1" imgClassName="p-2 sm:p-6" />
+            {n > 1 && (
+              <div className="no-scrollbar flex justify-start gap-2 overflow-x-auto px-4 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 sm:justify-center">
+                {imgs.map((src, k) => (
+                  <button key={k} type="button" aria-label={`Photo ${k + 1}`} onClick={() => setI(k)} className={cn("h-12 w-16 flex-none overflow-hidden rounded-md border-2 transition", k === i ? "border-brand-orange" : "border-transparent opacity-50 hover:opacity-100")}>
+                    <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </Portal>
       )}
     </>
   );

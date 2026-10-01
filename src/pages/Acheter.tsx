@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Btn, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF, TextLink, TrustRow } from "@/components/site/ui";
 import { Consent, Field, Group, Pills, Segmented, Steps, Tile, toggleIn } from "@/components/site/form";
+import { BUDGET_STEPS, CityPicker, RangeDual, RangeOne, euros } from "@/components/site/SearchControls";
 import rueEiffel from "@/assets/refonte/paris-rue-eiffel.webp";
 import alexandre from "@/assets/refonte/alexandre-detoure.webp";
 
@@ -44,7 +45,7 @@ const Hero = () => (
                 <span className="block h-[50px] w-[50px] flex-none overflow-hidden rounded-full bg-brand-tint"><img src={alexandre} alt="" className="block h-[74px] w-[50px] object-cover object-top" /></span>
                 <span className="flex flex-col leading-snug">
                   <span className="text-[15px] font-extrabold text-brand-ink">Alexandre et son équipe cherchent pour vous</span>
-                  <span className="text-[13.5px] text-brand-mut">Paris 6e, 7e, 15e, 16e, 17e et Hauts-de-Seine</span>
+                  <span className="text-[13.5px] text-brand-mut">À Paris, dans les Hauts-de-Seine et au-delà</span>
                 </span>
               </div>
             </div>
@@ -308,9 +309,12 @@ const TYPES = [
   { k: "Immeuble", icon: <Building2 className="h-[22px] w-[22px]" /> },
   { k: "Autre", icon: <Plus className="h-[22px] w-[22px]" /> },
 ];
-const SECTEURS = ["Paris 6e", "Paris 7e", "Paris 15e", "Paris 16e", "Paris 17e", "Boulogne", "Issy", "Neuilly", "Levallois", "Saint-Cloud", "Garches", "Clamart", "Ailleurs dans le 92"] as const;
 const ATOUTS = ["Balcon ou terrasse", "Ascenseur", "Parking", "Calme", "Lumineux", "Proche des écoles", "Sans travaux"] as const;
-const BUDGETS = ["Moins de 500 000 €", "500 000 – 800 000 €", "800 000 – 1 200 000 €", "1 200 000 – 2 000 000 €", "Plus de 2 000 000 €"] as const;
+const B_MAX = BUDGET_STEPS.length - 1;
+const bIdx = (v: number) => Math.max(0, BUDGET_STEPS.indexOf(v));
+const fmtBudget = (v: number, last: boolean) => (last ? "5 M€ et +" : euros(v));
+const fmtSurface = (v: number) => (v ? `${v} m² minimum` : "Peu importe");
+const AIDE = ["Choisissez un type de bien pour continuer.", "Ajoutez au moins une ville pour continuer.", "Remplissez vos coordonnées et cochez la case pour envoyer."];
 
 const Recherche = () => {
   const { toast } = useToast();
@@ -320,8 +324,9 @@ const Recherche = () => {
   const [quand, setQuand] = useState("");
   const [secteurs, setSecteurs] = useState<string[]>([]);
   const [pieces, setPieces] = useState<string[]>([]);
-  const [surface, setSurface] = useState("");
-  const [budget, setBudget] = useState("");
+  const [surface, setSurface] = useState(0);
+  const [bLo, setBLo] = useState(bIdx(500_000));
+  const [bHi, setBHi] = useState(bIdx(1_200_000));
   const [atouts, setAtouts] = useState<string[]>([]);
   const [c, setC] = useState({ prenom: "", nom: "", tel: "", email: "", mot: "" });
   const [consent, setConsent] = useState(false);
@@ -330,7 +335,8 @@ const Recherche = () => {
   const startedAt = useRef(Date.now());
   const ref = useRef<HTMLDivElement>(null);
 
-  const ok = [!!type, secteurs.length > 0 && !!budget, !!(c.prenom.trim() && c.nom.trim() && c.tel.trim() && c.email.trim() && consent)][step - 1];
+  const budget = `${euros(BUDGET_STEPS[bLo])} – ${bHi === B_MAX ? "5 000 000 € et plus" : euros(BUDGET_STEPS[bHi])}`;
+  const ok = [!!type, secteurs.length > 0, !!(c.prenom.trim() && c.nom.trim() && c.tel.trim() && c.email.trim() && consent)][step - 1];
   const go = (n: number) => {
     setStep(n);
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -349,7 +355,9 @@ const Recherche = () => {
     const message = [
       `Usage : ${usage}`,
       quand && `Délai : ${quand}`,
+      `Budget : ${budget}`,
       pieces.length && `Pièces : ${pieces.join(", ")}`,
+      surface && `Surface minimum : ${surface} m²`,
       atouts.length && `Priorités : ${atouts.join(", ")}`,
       c.mot.trim() && `Message : ${c.mot.trim()}`,
     ].filter(Boolean).join("\n");
@@ -362,7 +370,7 @@ const Recherche = () => {
         budget,
         property_type: type,
         desired_location: secteurs.join(", "),
-        desired_surface: surface || null,
+        desired_surface: surface ? String(surface) : null,
         timeline: quand || null,
         message,
       });
@@ -379,7 +387,6 @@ const Recherche = () => {
     }
   };
 
-
   const left = (
     <div className="flex min-w-0 flex-col gap-7 lg:pt-10">
       <SectionHead dark eyebrow="Confier ma recherche" title={<>Dites-nous ce que <Em dark>vous cherchez</Em></>} lead="Trois petites étapes pour commencer. On vous rappelle pour en parler." />
@@ -395,33 +402,42 @@ const Recherche = () => {
     </div>
   );
 
+  const labels = ["Votre projet", "Où et combien", "Vos coordonnées"];
   return (
     <section id="recherche" className="bg-brand">
       <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-10 py-14 md:py-[100px] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.25fr)]">
         {left}
         <div ref={ref} className="relative min-w-0 scroll-mt-28 lg:mt-6">
-          <div className="relative flex min-h-[540px] flex-col gap-[22px] rounded-[26px] bg-white p-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:p-[34px]">
-            <h3 className="m-0 font-display text-[26px] font-medium text-brand-ink md:text-[28px]">Votre recherche, <Em>en 3 temps</Em></h3>
-            <div className="hidden sm:block"><Steps labels={["Votre projet", "Vos critères", "Vos coordonnées"]} current={step} /></div>
-            <div className="sm:hidden"><Steps labels={["Votre projet", "Vos critères", "Vos coordonnées"]} current={step} compact /></div>
-            <div key={step} className="fx-fade flex flex-1 flex-col gap-[22px]">
+          <div className="relative flex min-h-[540px] min-w-0 flex-col gap-[22px] rounded-[26px] bg-white p-[18px] shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:p-[34px]">
+            <h3 className="m-0 font-display text-[25px] font-medium text-brand-ink md:text-[28px]">Votre recherche, <Em>en 3 temps</Em></h3>
+            <div className="hidden sm:block"><Steps labels={labels} current={step} /></div>
+            <div className="sm:hidden"><Steps labels={labels} current={step} compact /></div>
+            <div key={step} className="fx-fade flex min-w-0 flex-1 flex-col gap-6">
               {step === 1 && (
                 <>
                   <Group title="Quel type de bien ?">
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{TYPES.map((t) => <Tile key={t.k} icon={t.icon} label={t.k} on={type === t.k} onClick={() => setType(t.k)} />)}</div>
                   </Group>
-                  <Group title="Pour y vivre ou pour louer ?"><Segmented options={["Résidence principale", "Investissement", "Pied-à-terre"] as const} value={[usage as never]} onChange={(v) => setUsage(v)} /></Group>
+                  <Group title="C’est pour…"><Pills options={["Résidence principale", "Investissement", "Pied-à-terre"] as const} value={[usage as never]} onToggle={(v) => setUsage(v)} /></Group>
                   <Group title="Pour quand ?" optional><Pills options={["Dès que possible", "D’ici 6 mois", "Je prends le temps"] as const} value={[quand as never]} onToggle={(v) => setQuand(quand === v ? "" : v)} /></Group>
                 </>
               )}
               {step === 2 && (
                 <>
-                  <Group title="Où cherchez-vous ?" hint="Plusieurs choix possibles."><Pills options={SECTEURS} value={secteurs as never} onToggle={(v) => setSecteurs(toggleIn(secteurs, v))} icon={<MapPin className="h-[15px] w-[15px]" />} size="sm" /></Group>
-                  <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+                  <Group title="Où cherchez-vous ?" hint="Tapez une ville ou un arrondissement, puis choisissez-le. Vous pouvez en ajouter plusieurs.">
+                    <CityPicker value={secteurs} onChange={setSecteurs} />
+                  </Group>
+                  <Group title="Votre budget" hint="Honoraires compris. Faites glisser les deux ronds.">
+                    <div className="rounded-2xl border border-brand-line bg-brand-pale px-4 pb-3 pt-4">
+                      <RangeDual steps={BUDGET_STEPS} lo={bLo} hi={bHi} onChange={(a, b) => { setBLo(a); setBHi(b); }} format={fmtBudget} labels={["Budget minimum", "Budget maximum"]} />
+                    </div>
+                  </Group>
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4">
                     <Group title="Nombre de pièces" optional><Segmented options={["1", "2", "3", "4", "5 +"] as const} value={pieces as never} onChange={(v) => setPieces(toggleIn(pieces, v))} /></Group>
-                    <Group title="Surface minimum" optional><Field label="Surface" inputMode="numeric" placeholder="Ex. 70" suffix="m²" value={surface} onChange={(e) => setSurface(e.target.value.replace(/[^\d]/g, ""))} /></Group>
+                    <Group title="Surface" optional>
+                      <div className="rounded-2xl border border-brand-line bg-brand-pale px-4 pb-1.5 pt-3"><RangeOne min={0} max={300} step={5} value={surface} onChange={setSurface} format={fmtSurface} label="Surface minimum" /></div>
+                    </Group>
                   </div>
-                  <Group title="Votre budget total" hint="Honoraires compris."><Pills options={BUDGETS} value={[budget as never]} onToggle={(v) => setBudget(v)} size="sm" /></Group>
                   <Group title="Ce qui compte pour vous" optional><Pills options={ATOUTS} value={atouts as never} onToggle={(v) => setAtouts(toggleIn(atouts, v))} size="sm" /></Group>
                 </>
               )}
@@ -432,11 +448,11 @@ const Recherche = () => {
                     <Field label="Nom" placeholder="Votre nom" autoComplete="family-name" value={c.nom} onChange={(e) => setC({ ...c, nom: e.target.value })} />
                     <Field label="Téléphone" type="tel" inputMode="tel" autoComplete="tel" placeholder="06 12 34 56 78" value={c.tel} onChange={(e) => setC({ ...c, tel: e.target.value })} />
                     <Field label="E-mail" type="email" inputMode="email" autoComplete="email" placeholder="vous@exemple.fr" value={c.email} onChange={(e) => setC({ ...c, email: e.target.value })} />
-                    <Field area className="sm:col-span-2" label="Un mot sur votre projet" placeholder="Étage élevé, proche d’une école, pas de travaux…" value={c.mot} onChange={((e: React.ChangeEvent<HTMLTextAreaElement>) => setC({ ...c, mot: e.target.value })) as never} />
+                    <Field area className="sm:col-span-2" label="Un mot sur votre projet (facultatif)" placeholder="Étage élevé, proche d’une école, pas de travaux…" value={c.mot} onChange={((e: React.ChangeEvent<HTMLTextAreaElement>) => setC({ ...c, mot: e.target.value })) as never} />
                   </div>
                   <div className="flex items-center gap-3 rounded-[14px] border border-brand-line bg-brand-pale px-4 py-3.5">
                     <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-brand text-white"><Sparkles className="h-[19px] w-[19px]" /></span>
-                    <span className="text-sm leading-normal text-brand-txt"><strong className="text-brand-ink">Votre espace client vous attend</strong> : vous recevez votre lien personnel par e-mail.</span>
+                    <span className="min-w-0 text-sm leading-normal text-brand-txt"><strong className="text-brand-ink">Votre espace client vous attend</strong> : vous recevez votre lien personnel par e-mail.</span>
                   </div>
                   <input type="text" name={honeypotFieldName} tabIndex={-1} autoComplete="off" aria-hidden style={honeypotStyle} value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
                   <Consent checked={consent} onChange={setConsent}>J’accepte qu’Emilio Immobilier utilise ces informations pour ma recherche.</Consent>
@@ -455,23 +471,24 @@ const Recherche = () => {
               )}
             </div>
             {step < 4 && (
-              <div className="flex items-center justify-between gap-3 border-t border-brand-line2 pt-[18px]">
-                <span className="text-sm text-brand-mut">Étape {step} sur 3</span>
-                <div className="flex gap-2.5">
+              <div className="flex flex-col gap-2.5 border-t border-brand-line2 pt-[18px]">
+                <div className="flex min-w-0 items-center gap-2.5">
                   {step > 1 && (
-                    <button type="button" onClick={() => go(step - 1)} className="inline-flex h-[52px] items-center gap-2 rounded-xl border-[1.5px] border-brand-line px-[18px] text-[15.5px] font-bold text-brand-ink hover:bg-brand-pale">
-                      <ArrowLeft className="h-[18px] w-[18px]" /> Retour
+                    <button type="button" aria-label="Retour" onClick={() => go(step - 1)} className="inline-flex h-[54px] w-[54px] flex-none items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-line text-[15.5px] font-bold text-brand-ink hover:bg-brand-pale sm:w-auto sm:px-[18px]">
+                      <ArrowLeft className="h-[18px] w-[18px]" /> <span className="hidden sm:inline">Retour</span>
                     </button>
                   )}
+                  <span className="hidden text-sm text-brand-mut sm:inline">Étape {step} sur 3</span>
                   <button
                     type="button"
                     disabled={!ok || sending}
                     onClick={() => (step === 3 ? send() : go(step + 1))}
-                    className="inline-flex h-[52px] items-center gap-2.5 whitespace-nowrap rounded-xl bg-brand-orange px-6 text-[15.5px] font-extrabold text-brand-ink transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45"
+                    className="ml-auto inline-flex h-[54px] min-w-0 flex-1 items-center justify-center gap-2.5 rounded-xl bg-brand-orange px-4 text-[15.5px] sm:text-[16px] font-extrabold text-brand-ink transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45 sm:flex-none sm:px-7"
                   >
-                    {step === 3 ? (sending ? "Envoi…" : "Envoyer ma recherche") : "Suivant"} <ArrowRight className="h-[18px] w-[18px]" />
+                    <span className="truncate">{step === 3 ? (sending ? "Envoi…" : "Envoyer ma recherche") : "Continuer"}</span> <ArrowRight className={cn("h-[18px] w-[18px] flex-none", step === 3 && "hidden sm:block")} />
                   </button>
                 </div>
+                {!ok && <span className="text-[13px] text-brand-mut sm:text-right">{AIDE[step - 1]}</span>}
               </div>
             )}
           </div>
