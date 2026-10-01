@@ -1,7 +1,7 @@
 /* Page « Vendre » (refonte 2026) : sans honoraires (ils sont sur la page « Nos honoraires »). */
 import type { ReactNode } from "react";
 import {
-  BarChart3, Camera, Check, ClipboardCheck, Euro, Handshake, Key,
+  BarChart3, Camera, Check, ClipboardCheck, Handshake, Key,
   Megaphone, MessageCircle, Target, UserRound,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -11,8 +11,7 @@ import { cn } from "@/lib/utils";
 import { Confidential } from "@/components/home/HomeSections";
 import OrbitHero from "@/components/home/OrbitHero";
 import { FaqSection, faqJsonLd } from "@/components/site/Faq";
-import { EstimerCard } from "@/components/site/EstimerCard";
-import { Checks, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF, TextLink } from "@/components/site/ui";
+import { Checks, Container, Em, Eyebrow, FRAME_SHADOW, SectionHead, TextLink } from "@/components/site/ui";
 import toits from "@/assets/refonte/paris-toits.webp";
 import sejour from "@/assets/refonte/clamart-sejour.webp";
 import terrasse from "@/assets/refonte/clamart-terrasse.webp";
@@ -28,23 +27,35 @@ const SUIVI: { st: "done" | "now" | "todo"; t: string }[] = [
   { st: "todo", t: "Remise des clés" },
 ];
 
-/* Deuxième bloc : la vente suivie de près (l’orbite des recherches est en haut de page). */
+/* Deuxième bloc : nos engagements et le suivi de la vente (l’estimation est dans l’orbite, en haut de page). */
+const ENGAGEMENTS = [
+  { icon: <UserRound className="h-[21px] w-[21px]" />, t: "Un interlocuteur dédié", d: "Alexandre ou un membre de l’équipe suit votre vente du début à la fin, joignable 7 j/7." },
+  { icon: <MessageCircle className="h-[21px] w-[21px]" />, t: "Des nouvelles régulières", d: "Un compte-rendu après chaque visite et un point chaque semaine." },
+  { icon: <Target className="h-[21px] w-[21px]" />, t: "Un plan d’action clair", d: "Vous savez dès le début comment votre bien sera présenté et diffusé." },
+];
 const Hero = () => (
   <section className="bg-brand-pale">
     <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 py-14 md:py-[88px]">
       <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[22px]">
-        <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Vendre" }]} />
-        <Eyebrow>Votre vente, suivie de près</Eyebrow>
+        <Eyebrow>Nos engagements</Eyebrow>
         <h2 className="m-0 font-display text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.08] tracking-[-0.015em] text-brand-ink text-balance">
           Vendre votre bien <Em wrap>en toute sérénité</Em>
         </h2>
         <p className="m-0 max-w-[560px] text-lg leading-relaxed text-brand-txt text-pretty">
           De l’estimation à la remise des clés, un interlocuteur dédié prépare votre vente, la suit de près et vous explique chaque étape.
         </p>
-        <div className="pt-1"><EstimerCard /></div>
-        <span className="text-[14.5px] text-brand-mut">
-          Vous préférez en parler ? <a href={TEL_HREF} className="inline-flex min-h-[44px] items-center font-bold text-brand">{TEL}</a>
-        </span>
+        <ul className="m-0 flex list-none flex-col gap-2.5 p-0 pt-1">
+          {ENGAGEMENTS.map((e) => (
+            <li key={e.t} className={cn("flex items-start gap-3.5 rounded-2xl bg-white px-4 py-3.5", FRAME_SHADOW)}>
+              <span className="grid h-11 w-11 flex-none place-items-center rounded-xl bg-brand-tint text-brand">{e.icon}</span>
+              <span className="flex flex-col gap-0.5">
+                <span className="text-[16px] font-extrabold text-brand-ink">{e.t}</span>
+                <span className="text-[14.5px] leading-normal text-brand-txt">{e.d}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div><TextLink onClick={() => document.getElementById("processus")?.scrollIntoView({ behavior: "smooth", block: "start" })}>Voir les six étapes de la vente</TextLink></div>
       </div>
       <div className="min-w-0 flex-[1_1_440px]">
         <div className="relative mx-4 mb-4">
@@ -79,32 +90,6 @@ const Hero = () => (
     </Container>
   </section>
 );
-
-/* ── Engagements ── */
-const Engagements = () => {
-  const data = [
-    { icon: <Euro className="h-[23px] w-[23px]" />, t: "Des honoraires transparents", d: "Annoncés dès le départ, sans frais cachés." },
-    { icon: <UserRound className="h-[23px] w-[23px]" />, t: "Un interlocuteur dédié", d: "Alexandre ou un membre de l’équipe suit votre vente du début à la fin, joignable 7 j/7." },
-    { icon: <MessageCircle className="h-[23px] w-[23px]" />, t: "Des nouvelles régulières", d: "Un compte-rendu après chaque visite et un point chaque semaine." },
-    { icon: <Target className="h-[23px] w-[23px]" />, t: "Un plan d’action clair", d: "Vous savez dès le début comment votre bien sera présenté et diffusé." },
-  ];
-  return (
-    <section className="bg-white">
-      <Container className="flex flex-col gap-11 py-14 md:py-[96px]">
-        <SectionHead center eyebrow="Nos engagements" title={<>Quatre engagements, <Em>dès le départ</Em></>} className="max-w-[760px]" />
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {data.map((e) => (
-            <div key={e.t} className={cn("flex flex-col gap-3.5 rounded-[20px] bg-white px-6 py-[26px] transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
-              <span className="grid h-[50px] w-[50px] place-items-center rounded-xl bg-brand-tint text-brand">{e.icon}</span>
-              <span className="font-display text-[22px] leading-tight text-brand-ink">{e.t}</span>
-              <span className="text-[15.5px] leading-relaxed text-brand-txt text-pretty">{e.d}</span>
-            </div>
-          ))}
-        </div>
-      </Container>
-    </section>
-  );
-};
 
 /* ── Le processus ── */
 const Processus = () => {
@@ -203,7 +188,6 @@ const SellPage = () => (
     <main>
       <OrbitHero vendre />
       <Hero />
-      <Engagements />
       <Processus />
       <MiseEnValeur />
       <Confidential />
