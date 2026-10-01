@@ -17,6 +17,7 @@ const FILTRES = [
 ];
 
 const nf = new Intl.NumberFormat("fr-FR");
+const MAX = 8;
 
 const Carte = ({ p, actif, onVue }: { p: Property; actif: boolean; onVue: () => void }) => {
   const plus = featureBadges(p)[0];
@@ -91,6 +92,20 @@ const Alerte = () => (
   </Link>
 );
 
+const Encore = ({ n }: { n: number }) => (
+  <Link
+    to="/biens"
+    data-carte
+    className="flex w-[78vw] max-w-[300px] flex-none snap-center flex-col items-start justify-end gap-3 rounded-3xl bg-brand-sky p-[30px] text-brand-ink transition hover:bg-brand-tint md:min-h-[372px] md:w-[300px] md:snap-start"
+  >
+    <span className="text-[56px] font-extrabold leading-none tracking-[-0.04em] text-brand">+{n}</span>
+    <span className="text-[22px] font-extrabold leading-tight tracking-[-0.03em]">biens à découvrir</span>
+    <span className="mt-3 inline-flex h-[52px] items-center gap-2.5 rounded-2xl bg-brand px-6 text-[15px] font-bold text-white">
+      Voir tous nos biens <ArrowRight className="h-[18px] w-[18px]" />
+    </span>
+  </Link>
+);
+
 const TuilesBiens = () => {
   const biens = useBiens();
   const [filtre, setFiltre] = useState("tous");
@@ -100,8 +115,10 @@ const TuilesBiens = () => {
   const rail = useRef<HTMLDivElement>(null);
 
   const dispo = useMemo(() => FILTRES.map((f) => ({ ...f, n: (biens || []).filter(f.test).length })).filter((f) => f.k === "tous" || f.n > 0), [biens]);
-  const liste = useMemo(() => (biens || []).filter((FILTRES.find((f) => f.k === filtre) || FILTRES[0]).test), [biens, filtre]);
-  const total = liste.length + 1;
+  const tous = useMemo(() => (biens || []).filter((FILTRES.find((f) => f.k === filtre) || FILTRES[0]).test), [biens, filtre]);
+  /* Huit biens au plus sur l’accueil : le reste est sur la page Nos biens. */
+  const liste = tous.slice(0, MAX);
+  const total = liste.length + (tous.length > MAX ? 2 : 1);
 
   /* Carte la plus proche du centre = carte active. */
   const mesure = useCallback(() => {
@@ -216,6 +233,7 @@ const TuilesBiens = () => {
             className="fx-fade no-scrollbar -mx-4 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[8vw] pb-4 pt-1 md:-mx-10 md:mt-9 md:gap-5 md:px-10 md:pb-6 md:[scroll-padding-inline:40px]"
           >
             {liste.map((p, i) => <Carte key={p.id} p={p} actif={actif === i} onVue={() => setVue(p)} />)}
+            {tous.length > MAX && <Encore n={tous.length - MAX} />}
             <Alerte />
           </div>
 
@@ -226,7 +244,7 @@ const TuilesBiens = () => {
             </span>
             <div className="flex flex-1 gap-1.5">
               {Array.from({ length: total }).map((_, i) => (
-                <button key={i} type="button" onClick={() => aller(i)} aria-label={i < liste.length ? `Bien ${i + 1}` : "Créer une alerte"} className="flex h-11 flex-1 items-center">
+                <button key={i} type="button" onClick={() => aller(i)} aria-label={i < liste.length ? `Bien ${i + 1}` : i === total - 1 ? "Créer une alerte" : "Voir tous nos biens"} className="flex h-11 flex-1 items-center">
                   <span className={cn("block h-1.5 w-full rounded-full transition-colors duration-300", i === actif ? "bg-brand" : i < actif ? "bg-brand/35" : "bg-[#D8E1EC]")} />
                 </button>
               ))}
@@ -240,7 +258,7 @@ const TuilesBiens = () => {
 
           <div className="mt-6 flex justify-center md:mt-4 md:justify-start">
             <Link to="/biens" className="inline-flex h-[52px] items-center gap-2.5 rounded-2xl bg-brand-surf px-6 text-[15px] font-bold text-brand-ink transition hover:bg-brand-sky">
-              Voir tous nos biens <ArrowRight className="h-[18px] w-[18px]" />
+              {(biens?.length || 0) > MAX ? `Voir nos ${biens?.length} biens` : "Voir tous nos biens"} <ArrowRight className="h-[18px] w-[18px]" />
             </Link>
           </div>
         </>
