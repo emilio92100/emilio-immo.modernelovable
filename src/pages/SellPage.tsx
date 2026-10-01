@@ -38,10 +38,10 @@ const Hero = () => (
     <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 py-14 md:py-[88px]">
       <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[22px]">
         <Eyebrow>Nos engagements</Eyebrow>
-        <h2 className="m-0 font-display text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.08] tracking-[-0.015em] text-brand-ink text-balance">
+        <h2 className="m-0 font-display text-[27px] sm:text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.08] tracking-[-0.015em] text-brand-ink text-balance">
           Vendre votre bien <Em wrap>en toute sérénité</Em>
         </h2>
-        <p className="m-0 max-w-[560px] text-lg leading-relaxed text-brand-txt text-pretty">
+        <p className="m-0 max-w-[560px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">
           De l’estimation à la remise des clés, un interlocuteur dédié prépare votre vente, la suit de près et vous explique chaque étape.
         </p>
         <ul className="m-0 flex list-none flex-col gap-2.5 p-0 pt-1">
@@ -103,19 +103,19 @@ const Processus = () => {
   ];
   return (
     <section id="processus" className="bg-brand-pale">
-      <Container className="flex flex-col gap-11 py-14 md:py-[96px]">
+      <Container className="flex flex-col gap-8 py-12 sm:gap-11 md:py-[96px]">
         <SectionHead eyebrow="Le processus" title={<>Six étapes, <Em>jusqu’aux clés</Em></>} lead="Chaque étape est expliquée avant d’être lancée. Vous savez toujours où en est votre vente, et ce qui vient ensuite." />
-        <ol className="m-0 grid list-none grid-cols-1 gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
+        <ol className="m-0 grid list-none grid-cols-1 gap-3.5 p-0 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
           {steps.map((s, i) => (
-            <li key={s.t} className={cn("flex flex-col gap-4 rounded-[20px] bg-white px-[26px] pb-7 pt-[26px]", FRAME_SHADOW)}>
+            <li key={s.t} className={cn("flex flex-col gap-3 rounded-[20px] bg-white px-5 pb-5 pt-5 sm:gap-4 sm:px-[26px] sm:pb-7 sm:pt-[26px]", FRAME_SHADOW)}>
               <div className="flex items-center justify-between">
                 <span className="flex items-baseline gap-2.5">
-                  <span className="font-display text-[44px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
+                  <span className="font-display text-[32px] sm:text-[44px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
                   <span className="text-[12.5px] font-bold uppercase tracking-[0.16em] text-brand-mut">Étape</span>
                 </span>
-                <span className="grid h-[46px] w-[46px] place-items-center rounded-xl bg-brand-tint text-brand">{s.icon}</span>
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-tint text-brand sm:h-[46px] sm:w-[46px]">{s.icon}</span>
               </div>
-              <h3 className="m-0 font-display text-2xl font-medium leading-tight text-brand-ink text-balance">{s.t}</h3>
+              <h3 className="m-0 font-display text-[20px] sm:text-2xl font-medium leading-tight text-brand-ink text-balance">{s.t}</h3>
               <div className="h-px bg-brand-line2" />
               <Checks items={s.items} />
             </li>

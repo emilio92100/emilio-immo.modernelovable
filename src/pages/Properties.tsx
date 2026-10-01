@@ -11,7 +11,7 @@ import SEOHead, { SITE_URL } from "@/components/SEOHead";
 import { cn } from "@/lib/utils";
 import { Property, fetchPropertiesFromFeed, formatPrice, mockProperties } from "@/lib/properties";
 import { cityList } from "@/lib/cities";
-import { TEL, TEL_HREF } from "@/components/site/ui";
+import { Souligne, TEL, TEL_HREF } from "@/components/site/ui";
 import { Choix, type Option } from "@/components/home/tuiles/Choix";
 
 const nf = new Intl.NumberFormat("fr-FR");
@@ -124,6 +124,8 @@ const Properties = () => {
   const [pieces, setPieces] = useState("");
   const [budget, setBudget] = useState("");
   const [plus, setPlus] = useState(false);
+  /* Le panneau des filtres coupe ce qui dépasse seulement pendant qu’il s’ouvre (sinon les menus seraient cachés) */
+  const [plusOuvert, setPlusOuvert] = useState(false);
   const [chambres, setChambres] = useState("");
   const [etage, setEtage] = useState("any");
   const [balcon, setBalcon] = useState(false);
@@ -322,7 +324,9 @@ const Properties = () => {
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: reduit ? 0 : 0.3, ease: [0.22, 0.8, 0.24, 1] }}
-                  className="overflow-hidden"
+                  onAnimationStart={() => setPlusOuvert(false)}
+                  onAnimationComplete={() => setPlusOuvert(plus)}
+                  className={cn("relative z-[5]", plusOuvert ? "overflow-visible" : "overflow-hidden")}
                 >
                   <div className="mt-2 flex flex-col gap-2 rounded-[22px] bg-[#F8FAFC] p-2 md:flex-row md:items-center md:gap-3 md:p-2.5">
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:w-[560px] md:flex-none">
@@ -446,10 +450,7 @@ const Properties = () => {
               </span>
               <h2 className="m-0 text-[30px] font-extrabold leading-[1.08] tracking-[-0.03em] text-brand-ink md:text-[42px]">
                 Vous ne voyez qu’une partie{" "}
-                <span className="relative z-0 whitespace-nowrap">
-                  de nos biens
-                  <span aria-hidden className="absolute -left-0.5 -right-1 bottom-0.5 -z-10 h-[0.3em] rounded-full bg-[#BFD1EA]" />
-                </span>
+                <Souligne>de nos biens</Souligne>
               </h2>
               <p className="m-0 max-w-[560px] text-base font-medium leading-[1.55] text-[#33445B] md:text-[17px]">
                 Certains propriétaires préfèrent vendre sans annonce. Ces biens sont présentés uniquement aux acheteurs qui nous ont confié leur recherche.

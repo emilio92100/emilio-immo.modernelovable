@@ -1,7 +1,7 @@
 /* Page « Acheter » (refonte 2026) : le chasseur, l'espace client, le formulaire en 3 temps. */
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Building2, CalendarDays, CheckCircle2, FileText, Handshake, Heart, Home, KeyRound, Lock, MapPin, MessageCircle, Phone, Search, Sparkles, Users, Plus, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpDown, Building2, Car, Fence, Leaf, School, Sofa, Sun, Umbrella, CalendarDays, CheckCircle2, FileText, Handshake, Heart, Home, KeyRound, Lock, MapPin, MessageCircle, Phone, Search, Sparkles, Users, Plus, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -24,10 +24,10 @@ const Hero = () => (
     <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 py-14 md:py-[88px]">
       <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[22px]">
         <Eyebrow>Votre chasseur immobilier</Eyebrow>
-        <h2 className="m-0 font-display text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.06] tracking-[-0.015em] text-brand-ink text-balance">
+        <h2 className="m-0 font-display text-[27px] sm:text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.06] tracking-[-0.015em] text-brand-ink text-balance">
           Un chasseur qui cherche pour vous, <Em wrap>et reste de votre côté</Em>
         </h2>
-        <p className="m-0 max-w-[560px] text-lg leading-relaxed text-brand-txt text-pretty">
+        <p className="m-0 max-w-[560px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">
           Vous nous dites ce que vous cherchez. On cherche partout, y compris là où les biens ne sont pas affichés, on vérifie chaque dossier et on négocie pour vous, jusqu’à la signature.
         </p>
         <div className="flex flex-wrap gap-3 pt-1">
@@ -67,18 +67,18 @@ const Pourquoi = () => {
   ];
   return (
     <section className="bg-brand-pale">
-      <Container className="flex flex-col gap-11 py-14 md:py-[100px]">
+      <Container className="flex flex-col gap-8 py-12 sm:gap-11 md:py-[100px]">
         <SectionHead center eyebrow="Pourquoi un chasseur" title={<>Quelqu’un qui travaille <Em>pour l’acheteur</Em></>} lead="Une agence classique travaille pour le vendeur. Avec un mandat de recherche, on travaille pour vous." className="max-w-[760px]" />
-        <div className="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-[22px] lg:grid-cols-4">
           {why.map((w, n) => (
-            <article key={w.t} className={cn("flex flex-col rounded-[22px] bg-white p-2.5 transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
-              <div className="flex items-center justify-between rounded-2xl bg-brand-pale p-[22px]">
-                <span className="grid h-[54px] w-[54px] place-items-center rounded-2xl bg-brand text-white">{w.icon}</span>
-                <span className="font-display text-[44px] italic leading-[0.8] text-brand-orange-lt">0{n + 1}</span>
+            <article key={w.t} className={cn("flex items-start gap-3.5 rounded-[20px] bg-white p-4 transition-transform duration-300 hover:-translate-y-1 sm:flex-col sm:items-stretch sm:gap-0 sm:rounded-[22px] sm:p-2.5", FRAME_SHADOW)}>
+              <div className="flex flex-none items-center justify-between sm:rounded-2xl sm:bg-brand-pale sm:p-[22px]">
+                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand text-white sm:h-[54px] sm:w-[54px] sm:rounded-2xl">{w.icon}</span>
+                <span className="hidden font-display text-[44px] italic leading-[0.8] text-brand-orange-lt sm:inline">0{n + 1}</span>
               </div>
-              <div className="flex flex-col gap-2.5 px-[18px] pb-[18px] pt-5">
-                <h3 className="m-0 font-display text-2xl font-medium leading-tight text-brand-ink">{w.t}</h3>
-                <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt text-pretty">{w.d}</p>
+              <div className="flex min-w-0 flex-col gap-1 sm:gap-2.5 sm:px-[18px] sm:pb-[18px] sm:pt-5">
+                <h3 className="m-0 font-display text-[19px] font-medium leading-tight text-brand-ink sm:text-2xl">{w.t}</h3>
+                <p className="m-0 text-[14px] leading-relaxed text-brand-txt text-pretty sm:text-[15.5px]">{w.d}</p>
               </div>
             </article>
           ))}
@@ -169,7 +169,8 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
           lead="Dès que vous nous confiez votre recherche, vous recevez votre lien personnel. Vous y retrouvez tous les biens qu’on sélectionne pour vous, sur ordinateur comme sur téléphone."
           className="max-w-[800px]"
         />
-        <div className="flex flex-wrap justify-center gap-3">
+        {/* Sur ordinateur, les boutons tout de suite ; sur téléphone, après le téléphone et ses atouts */}
+        <div className="hidden flex-wrap justify-center gap-3 sm:flex">
           <Btn href="#recherche" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
           <Btn href={TEL_HREF} variant="outline" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
         </div>
@@ -210,6 +211,10 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
             <span key={t as string} className="inline-flex h-[42px] items-center gap-2 rounded-full border border-brand-line bg-white px-4 text-[14.5px] font-bold text-brand-ink"><span className="text-brand-orange-text">{ic}</span>{t}</span>
           ))}
         </div>
+        <div className="flex flex-col gap-2.5 sm:hidden">
+          <Btn href="#recherche" full icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
+          <Btn href={TEL_HREF} full variant="outline" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
+        </div>
       </Container>
     </section>
   );
@@ -227,17 +232,19 @@ const Etapes = () => {
   ];
   return (
     <section className="bg-white">
-      <Container className="flex flex-col gap-9 py-14 md:py-[84px]">
+      <Container className="flex flex-col gap-7 py-12 sm:gap-9 md:py-[84px]">
         <SectionHead center eyebrow="Comment ça se passe" title={<>Votre recherche, <Em>étape par étape</Em></>} />
-        <ol className="m-0 grid list-none grid-cols-1 gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
+        <ol className="m-0 grid list-none grid-cols-1 gap-3 p-0 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
           {steps.map((s, i) => (
-            <li key={s.t} className={cn("flex flex-col gap-3 rounded-[18px] bg-white p-5", FRAME_SHADOW)}>
-              <div className="flex items-center justify-between">
-                <span className={cn("grid h-11 w-11 place-items-center rounded-full", i === 0 ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{s.icon}</span>
-                <span className="font-display text-[26px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
+            <li key={s.t} className={cn("flex items-start gap-3.5 rounded-[18px] bg-white p-4 sm:flex-col sm:items-stretch sm:gap-3 sm:p-5", FRAME_SHADOW)}>
+              <div className="flex flex-none items-center justify-between">
+                <span className={cn("grid h-10 w-10 place-items-center rounded-full sm:h-11 sm:w-11", i === 0 ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{s.icon}</span>
+                <span className="hidden font-display text-[26px] italic leading-none text-brand-orange-lt sm:inline">0{i + 1}</span>
               </div>
-              <span className="text-[16px] font-extrabold text-brand-ink">{s.t}</span>
-              <span className="text-[14.5px] leading-normal text-brand-txt">{s.d}</span>
+              <div className="flex min-w-0 flex-col gap-1 sm:gap-3">
+                <span className="text-[15px] font-extrabold text-brand-ink sm:text-[16px]"><span className="mr-1.5 font-display italic text-brand-orange-lt sm:hidden">0{i + 1}</span>{s.t}</span>
+                <span className="text-[13.5px] leading-normal text-brand-txt sm:text-[14.5px]">{s.d}</span>
+              </div>
             </li>
           ))}
         </ol>
@@ -253,20 +260,35 @@ const TYPES = [
   { k: "Immeuble", icon: <Building2 className="h-[22px] w-[22px]" /> },
   { k: "Autre", icon: <Plus className="h-[22px] w-[22px]" /> },
 ];
-const ATOUTS = ["Balcon ou terrasse", "Ascenseur", "Parking", "Calme", "Lumineux", "Proche des écoles", "Sans travaux"] as const;
+/* Ce qui compte pour l’acheteur : au moins un choix, chacun avec son icône */
+const ATOUTS: { t: string; icon: JSX.Element }[] = [
+  { t: "Balcon", icon: <Fence className="h-[18px] w-[18px]" /> },
+  { t: "Terrasse", icon: <Umbrella className="h-[18px] w-[18px]" /> },
+  { t: "Ascenseur", icon: <ArrowUpDown className="h-[18px] w-[18px]" /> },
+  { t: "Parking", icon: <Car className="h-[18px] w-[18px]" /> },
+  { t: "Calme", icon: <Leaf className="h-[18px] w-[18px]" /> },
+  { t: "Lumineux", icon: <Sun className="h-[18px] w-[18px]" /> },
+  { t: "Proche des écoles", icon: <School className="h-[18px] w-[18px]" /> },
+  { t: "Sans travaux", icon: <Sofa className="h-[18px] w-[18px]" /> },
+];
 const B_MAX = BUDGET_STEPS.length - 1;
 const bIdx = (v: number) => Math.max(0, BUDGET_STEPS.indexOf(v));
 const fmtBudget = (v: number, last: boolean) => (last ? "5 M€ et +" : euros(v));
-const fmtSurface = (v: number) => (v ? `${v} m² minimum` : "Peu importe");
+const fmtSurface = (v: number) => (v ? `${v} m² minimum` : "Faites glisser");
 /* Le formulaire en pages : sur ordinateur 3 pages, sur téléphone 7 petites pages qui tiennent
    chacune sur l’écran (pas besoin de faire défiler), avec « Suivant ». Les 3 temps restent les mêmes. */
-type Bloc = "type" | "usage" | "quand" | "ou" | "budget" | "piecesSurface" | "pieces" | "surface" | "atouts" | "coord" | "mot" | "espace" | "consent";
-const PAGES_ORDI: Bloc[][] = [["type", "usage", "quand"], ["ou", "budget", "piecesSurface", "atouts"], ["coord", "mot", "espace", "consent"]];
-const PAGES_MOBILE: Bloc[][] = [["type", "usage"], ["quand", "pieces"], ["ou"], ["budget", "surface"], ["atouts"], ["coord"], ["mot", "espace", "consent"]];
-const TEMPS = (page: Bloc[]) => (page.some((b) => ["coord", "mot", "consent"].includes(b)) ? 3 : page.some((b) => ["ou", "budget", "surface", "piecesSurface", "atouts"].includes(b)) ? 2 : 1);
+type Bloc = "type" | "usage" | "quand" | "ou" | "budget" | "piecesChambres" | "pieces" | "chambres" | "surface" | "atouts" | "coord" | "mot" | "espace" | "consent";
+const PAGES_ORDI: Bloc[][] = [["type", "usage", "quand", "piecesChambres"], ["ou", "budget", "surface", "atouts"], ["coord", "mot", "espace", "consent"]];
+const PAGES_MOBILE: Bloc[][] = [["type", "usage"], ["quand", "pieces", "chambres"], ["ou"], ["budget", "surface"], ["atouts"], ["coord"], ["mot", "espace", "consent"]];
+const TEMPS = (page: Bloc[]) => (page.some((b) => ["coord", "mot", "consent"].includes(b)) ? 3 : page.some((b) => ["ou", "budget", "surface", "atouts"].includes(b)) ? 2 : 1);
 const AIDE: Partial<Record<Bloc, string>> = {
   type: "Choisissez un type de bien pour continuer.",
+  pieces: "Choisissez le nombre de pièces.",
+  chambres: "Choisissez le nombre de chambres minimum.",
+  piecesChambres: "Choisissez le nombre de pièces et de chambres.",
   ou: "Ajoutez au moins une ville pour continuer.",
+  surface: "Indiquez la surface minimum.",
+  atouts: "Choisissez au moins un critère.",
   coord: "Remplissez vos coordonnées pour continuer.",
   consent: "Cochez la case pour envoyer.",
 };
@@ -295,7 +317,8 @@ const Recherche = () => {
   const [usage, setUsage] = useState("Résidence principale");
   const [quand, setQuand] = useState("");
   const [secteurs, setSecteurs] = useState<string[]>([]);
-  const [pieces, setPieces] = useState<string[]>([]);
+  const [pieces, setPieces] = useState("");
+  const [chambres, setChambres] = useState("");
   const [surface, setSurface] = useState(0);
   const [bLo, setBLo] = useState(bIdx(500_000));
   const [bHi, setBHi] = useState(bIdx(1_200_000));
@@ -332,7 +355,12 @@ const Recherche = () => {
   const budget = `${euros(BUDGET_STEPS[bLo])} – ${bHi === B_MAX ? "5 000 000 € et plus" : euros(BUDGET_STEPS[bHi])}`;
   const valide: Partial<Record<Bloc, boolean>> = {
     type: !!type,
+    pieces: !!pieces,
+    chambres: !!chambres,
+    piecesChambres: !!pieces && !!chambres,
     ou: secteurs.length > 0,
+    surface: surface > 0,
+    atouts: atouts.length > 0,
     coord: !!(c.prenom.trim() && c.nom.trim() && c.tel.trim() && c.email.trim()),
     consent,
   };
@@ -362,7 +390,8 @@ const Recherche = () => {
       `Usage : ${usage}`,
       quand && `Délai : ${quand}`,
       `Budget : ${budget}`,
-      pieces.length && `Pièces : ${pieces.join(", ")}`,
+      pieces && `Pièces : ${pieces}`,
+      chambres && `Chambres minimum : ${chambres}`,
       surface && `Surface minimum : ${surface} m²`,
       atouts.length && `Priorités : ${atouts.join(", ")}`,
       c.mot.trim() && `Message : ${c.mot.trim()}`,
@@ -436,17 +465,42 @@ const Recherche = () => {
           </Group>
         );
       case "pieces":
-        return <Group key={b} title="Nombre de pièces" optional><Segmented options={["1", "2", "3", "4", "5 +"] as const} value={pieces as never} onChange={(v) => setPieces(toggleIn(pieces, v))} /></Group>;
+        return <Group key={b} title="Nombre de pièces"><Segmented options={["1", "2", "3", "4", "5 +"] as const} value={[pieces as never]} onChange={(v) => setPieces(v)} /></Group>;
+      case "chambres":
+        return <Group key={b} title="Chambres minimum"><Segmented options={["0", "1", "2", "3", "4 +"] as const} value={[chambres as never]} onChange={(v) => setChambres(v)} /></Group>;
       case "surface":
         return (
-          <Group key={b} title="Surface" optional>
+          <Group key={b} title="Surface minimum" hint="Faites glisser le rond pour indiquer la surface.">
             <div className="rounded-2xl border border-brand-line bg-brand-pale px-4 pb-1.5 pt-3"><RangeOne min={0} max={300} step={5} value={surface} onChange={setSurface} format={fmtSurface} label="Surface minimum" /></div>
           </Group>
         );
-      case "piecesSurface":
-        return <div key={b} className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4">{bloc("pieces")}{bloc("surface")}</div>;
+      case "piecesChambres":
+        return <div key={b} className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4">{bloc("pieces")}{bloc("chambres")}</div>;
       case "atouts":
-        return <Group key={b} title="Ce qui compte pour vous" optional><Pills options={ATOUTS} value={atouts as never} onToggle={(v) => setAtouts(toggleIn(atouts, v))} size="sm" /></Group>;
+        return (
+          <Group key={b} title="Ce qui compte pour vous" hint="Choisissez au moins un critère.">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {ATOUTS.map((x) => {
+                const on = atouts.includes(x.t);
+                return (
+                  <button
+                    key={x.t}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => setAtouts(toggleIn(atouts, x.t))}
+                    className={cn(
+                      "flex min-h-[52px] min-w-0 items-center gap-2.5 rounded-[14px] border-[1.5px] px-2.5 py-2 text-left text-[13.5px] font-bold leading-tight transition sm:text-[14px]",
+                      on ? "border-brand bg-brand text-white" : "border-brand-line bg-white text-brand-ink hover:border-brand/40",
+                    )}
+                  >
+                    <span className={cn("grid h-8 w-8 flex-none place-items-center rounded-[10px] transition", on ? "bg-white/15 text-brand-orange" : "bg-brand-pale text-brand")}>{x.icon}</span>
+                    <span className="min-w-0">{x.t}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </Group>
+        );
       case "coord":
         return (
           <div key={b} className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
@@ -485,7 +539,7 @@ const Recherche = () => {
             ref={carte}
             className="relative flex min-h-[calc(100svh-72px)] min-w-0 flex-col gap-[18px] rounded-t-[28px] bg-white px-[18px] pb-[max(16px,env(safe-area-inset-bottom))] pt-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:min-h-[540px] sm:gap-[22px] sm:rounded-[26px] sm:p-[34px]"
           >
-            <h3 className="m-0 font-display text-[24px] font-medium text-brand-ink md:text-[28px]">Votre recherche, <Em>en 3 temps</Em></h3>
+            <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-medium text-brand-ink md:text-[28px]">Votre recherche, <Em>en 3 temps</Em></h3>
             {!fini && (
               <>
                 <div className="hidden sm:block"><Steps labels={labels} current={temps} /></div>
@@ -512,7 +566,7 @@ const Recherche = () => {
                   {fini ? (
                     <div className="flex flex-col items-center gap-3.5 px-2.5 pb-1.5 pt-[18px] text-center">
                       <CheckCircle2 className="h-16 w-16 text-[#2E9A66]" strokeWidth={1.6} />
-                      <h4 className="m-0 mt-1.5 font-display text-[28px] font-medium text-brand-ink">C’est noté{c.prenom.trim() ? `, merci ${c.prenom.trim()}` : ""}</h4>
+                      <h4 className="m-0 mt-1.5 font-display text-[19.5px] sm:text-[23px] sm:text-[28px] font-medium text-brand-ink">C’est noté{c.prenom.trim() ? `, merci ${c.prenom.trim()}` : ""}</h4>
                       <p className="m-0 max-w-[440px] text-[15.5px] leading-relaxed text-brand-txt">Alexandre ou un membre de l’équipe vous appelle pour en parler. Ensuite, votre lien personnel arrive par e-mail : il ouvre votre espace client.</p>
                       <div className="flex flex-wrap justify-center gap-2.5 pt-1.5">
                         <Btn href="#espace" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Découvrir l’espace client</Btn>

@@ -48,8 +48,8 @@ const GuideCategory = () => {
           <Container className="flex flex-col gap-[22px] pb-12 pt-6 md:pb-[72px] md:pt-10">
             <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Guide immobilier", to: "/guide-immobilier" }, { label: cat.label }]} />
             <Eyebrow>{cat.short}</Eyebrow>
-            <h1 className="m-0 max-w-[900px] font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">{cat.label}</h1>
-            <p className="m-0 max-w-[700px] text-lg leading-relaxed text-brand-txt text-pretty">{cat.description}</p>
+            <h1 className="m-0 max-w-[900px] font-display text-[29px] sm:text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">{cat.label}</h1>
+            <p className="m-0 max-w-[700px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">{cat.description}</p>
             <div className="flex flex-wrap gap-2 pt-1">
               {CATEGORIES.filter((c) => c.slug !== cat.slug).map((c) => (
                 <Link key={c.slug} to={`/guide-immobilier/${c.slug}`} className="inline-flex min-h-[42px] items-center rounded-full border border-brand-line bg-white px-4 text-[14.5px] font-semibold text-brand-ink transition hover:border-brand-orange hover:bg-[#FFF1DF]">{c.label}</Link>

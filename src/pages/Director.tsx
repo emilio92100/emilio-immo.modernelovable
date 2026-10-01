@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
-import { Btn, Container, Crumbs, Em, Eyebrow, Filet, FRAME_SHADOW, SectionHead } from "@/components/site/ui";
+import { Btn, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead } from "@/components/site/ui";
 import alexandre from "@/assets/refonte/alexandre-detoure.webp";
 import seine from "@/assets/refonte/paris-seine.webp";
 
@@ -18,6 +18,23 @@ const Ctas = ({ estimate = "blue" }: { estimate?: "blue" | "orange" }) => {
     </div>
   );
 };
+
+/** Le portrait d’Alexandre (plus compact sur téléphone) */
+const Portrait = ({ petit }: { petit?: boolean }) => (
+  <div className={cn("relative mb-4", petit ? "mx-3" : "mx-4")}>
+          <span aria-hidden className="absolute -bottom-4 -right-4 h-[58%] w-[64%] rounded-[28px] bg-brand-orange" />
+          <div className={cn("relative rounded-[26px] bg-white p-3", FRAME_SHADOW)}>
+            <div className={cn("relative overflow-hidden rounded-[18px]", petit ? "h-[270px]" : "h-[300px] md:h-[400px]")} style={{ background: "linear-gradient(180deg, #EAF0F7 0%, #DCE6F2 100%)" }}>
+              <span aria-hidden className="absolute left-1/2 top-[34px] block aspect-square w-[72%] max-w-[300px] -translate-x-1/2 rounded-full border-[1.5px] border-brand-orange opacity-60" />
+              <img src={alexandre} alt="Alexandre, fondateur et directeur d’Emilio Immobilier" className="absolute bottom-0 left-1/2 block h-[94%] w-auto max-w-none -translate-x-1/2" />
+              <div className={cn("absolute bottom-4 left-4 flex flex-col rounded-xl bg-white px-3.5 py-2.5", FRAME_SHADOW)}>
+                <span className="text-[15px] font-extrabold text-brand-ink">Alexandre</span>
+                <span className="text-[13px] text-brand-mut">Fondateur et directeur</span>
+              </div>
+            </div>
+          </div>
+        </div>
+);
 
 /* ── Haut de page : portrait, titre, citation ── */
 const Hero = () => (
@@ -35,11 +52,12 @@ const Hero = () => (
             Offrir à mes clients le service que j’aurais aimé recevoir moi-même.
             <span aria-hidden className="ml-0.5 text-[1.3em] leading-[0] text-brand-orange">”</span>
           </blockquote>
-          <figcaption className="flex items-center gap-3">
-            <Filet />
-            <span className="text-[15px] font-bold text-brand-ink">Alexandre, fondateur et directeur</span>
-          </figcaption>
+          <figcaption className="sr-only">Alexandre, fondateur et directeur</figcaption>
         </figure>
+        {/* Téléphone et tablette : le portrait tout de suite, avant l’histoire */}
+        <div className="mx-auto w-full max-w-[440px] lg:hidden">
+          <Portrait petit />
+        </div>
         <p className="m-0 max-w-[560px] text-[15.5px] leading-relaxed text-brand-txt text-pretty md:text-base">
           Emilio a été créée en septembre 2020 à Boulogne-Billancourt par Alexandre, après plusieurs années passées dans différentes agences, des réseaux généralistes à l’immobilier de prestige.
         </p>
@@ -48,20 +66,9 @@ const Hero = () => (
         </p>
         <Ctas />
       </div>
-      <div className="mx-auto w-full min-w-0 max-w-[440px] flex-[1_1_360px]">
-        <div className="relative mx-4 mb-4">
-          <span aria-hidden className="absolute -bottom-4 -right-4 h-[58%] w-[64%] rounded-[28px] bg-brand-orange" />
-          <div className={cn("relative rounded-[26px] bg-white p-3", FRAME_SHADOW)}>
-            <div className="relative h-[300px] overflow-hidden rounded-[18px] md:h-[400px]" style={{ background: "linear-gradient(180deg, #EAF0F7 0%, #DCE6F2 100%)" }}>
-              <span aria-hidden className="absolute left-1/2 top-[34px] block aspect-square w-[72%] max-w-[300px] -translate-x-1/2 rounded-full border-[1.5px] border-brand-orange opacity-60" />
-              <img src={alexandre} alt="Alexandre, fondateur et directeur d’Emilio Immobilier" className="absolute bottom-0 left-1/2 block h-[94%] w-auto max-w-none -translate-x-1/2" />
-              <div className={cn("absolute bottom-4 left-4 flex flex-col rounded-xl bg-white px-3.5 py-2.5", FRAME_SHADOW)}>
-                <span className="text-[15px] font-extrabold text-brand-ink">Alexandre</span>
-                <span className="text-[13px] text-brand-mut">Fondateur et directeur</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Ordinateur : le portrait à droite */}
+      <div className="mx-auto hidden w-full min-w-0 max-w-[440px] flex-[1_1_360px] lg:block">
+        <Portrait />
       </div>
     </Container>
   </section>
