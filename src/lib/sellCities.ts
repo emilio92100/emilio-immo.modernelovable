@@ -485,6 +485,225 @@ const sellCities: Record<string, SellCityData> = {
       },
     ],
   },
+  "paris-17": {
+    slug: "paris-17",
+    metaTitle: "Estimation & vente appartement Paris 17e (75017) | Prix m² 2026",
+    metaDescription:
+      "Vendre votre appartement dans le 17e : estimation gratuite, prix au m² par quartier, délai de vente et accompagnement par Emilio Immobilier jusqu'à la signature.",
+    heroIntro:
+      "Vendre votre appartement dans le 17e au juste prix, sans perdre de temps. Nous connaissons les écarts de prix d'un quartier à l'autre, et nous présentons d'abord votre bien aux acheteurs que nous suivons déjà.",
+    avgDelayCity: "≈ 50 jours",
+    avgDelayUs: "",
+    profilAcheteurs:
+      "Des familles qui cherchent un grand appartement près des écoles, des jeunes couples attirés par les Batignolles, des cadres qui travaillent à l'ouest de Paris ou à La Défense, et des investisseurs sur les petites surfaces près du métro.",
+    marketAngle:
+      "Le marché du 17e est stable en 2026, en légère hausse sur un an. Les biens bien placés et au bon prix trouvent preneur rapidement, surtout les appartements familiaux avec ascenseur. Les biens surévalués, eux, restent en vitrine.",
+    quartiersForts: [
+      { name: "Plaine Monceau – Ternes", desc: "Les prix les plus hauts de l'arrondissement : haussmannien, grands appartements, acheteurs exigeants sur l'état et les prestations." },
+      { name: "Batignolles", desc: "Très demandé par les jeunes couples et les familles : les biens avec du cachet partent vite." },
+      { name: "Clichy-Batignolles", desc: "Immeubles récents autour du parc, terrasses et ligne 14 : une clientèle de cadres et de familles." },
+      { name: "Épinettes – Guy Môquet", desc: "Des prix plus accessibles qui attirent primo-accédants et investisseurs." },
+    ],
+    pointsForts: [
+      "Une desserte renforcée : ligne 14, RER E à Porte Maillot, tramway T3b",
+      "Le parc Martin-Luther-King et le square des Batignolles",
+      "Des lycées réputés, dont Carnot et Honoré-de-Balzac",
+      "Des rues commerçantes et des marchés : Lévis, Poncelet, Batignolles",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché trop cher reçoit peu de visites, puis finit par baisser, souvent en dessous du prix qu'il aurait pu obtenir au départ. Le bon prix initial reste le premier levier." },
+      { title: "Multiplier les agences et les prix", desc: "Le même bien affiché par plusieurs agences, à des prix différents, inquiète les acheteurs. Mieux vaut une diffusion maîtrisée et un seul interlocuteur." },
+      { title: "Négliger la présentation", desc: "Photos sombres, pièces encombrées, annonce trop courte : les acheteurs passent au bien suivant. Des photos professionnelles et un peu de rangement changent tout." },
+      { title: "Oublier le DPE", desc: "Un DPE F ou G pèse sur le prix et inquiète les acheteurs depuis la loi Climat. Mieux vaut l'anticiper : travaux ciblés ou prix ajusté dès le départ." },
+    ],
+    faqs: [
+      {
+        q: "Combien vaut mon appartement dans le 17e ?",
+        a: "Autour de 10 000 €/m² en moyenne en 2026, mais l'écart est grand : plus de 10 500 €/m² en Plaine Monceau et aux Ternes, moins de 9 000 €/m² aux Épinettes. L'étage, l'ascenseur, l'extérieur et l'état comptent beaucoup : seule une visite permet un prix précis.",
+      },
+      {
+        q: "Combien de temps faut-il pour vendre dans le 17e ?",
+        a: "Autour de 50 jours en moyenne en 2026 pour trouver un acheteur. Comptez ensuite 2,5 à 3 mois entre le compromis et la signature chez le notaire.",
+      },
+      {
+        q: "Quels biens se vendent le mieux dans le 17e ?",
+        a: "Les appartements familiaux avec ascenseur, les biens avec un extérieur et les appartements de caractère aux Batignolles. Les petites surfaces près du métro intéressent aussi les investisseurs.",
+      },
+      {
+        q: "Quels documents réunir pour vendre dans le 17e ?",
+        a: "Titre de propriété, diagnostics (DPE, plomb, amiante, électricité, gaz, ERP, surface Carrez) et, en copropriété, règlement, procès-verbaux des 3 dernières assemblées générales, pré-état daté et derniers appels de fonds. Nous vous aidons à tout réunir avec le syndic.",
+      },
+      {
+        q: "Quelle fiscalité sur la plus-value ?",
+        a: "La vente de votre résidence principale est exonérée. Pour une résidence secondaire ou un investissement, la plus-value est imposée à 19 % plus 17,2 % de prélèvements sociaux, avec un abattement selon la durée de détention : exonération d'impôt après 22 ans et de prélèvements sociaux après 30 ans.",
+      },
+    ],
+  },
+
+  "saint-cloud": {
+    slug: "saint-cloud",
+    metaTitle: "Estimation & vente appartement Saint-Cloud (92210) | Prix m² 2026",
+    metaDescription:
+      "Vendre votre appartement ou votre maison à Saint-Cloud : estimation gratuite, prix au m² par quartier, délai de vente et accompagnement par Emilio Immobilier.",
+    heroIntro:
+      "Vendre votre bien à Saint-Cloud au juste prix. De Montretout aux Coteaux, nous savons ce que cherchent les acheteurs de la ville, et nous leur présentons votre bien en premier.",
+    avgDelayCity: "≈ 60 jours",
+    avgDelayUs: "",
+    profilAcheteurs:
+      "Surtout des familles et des cadres, qui travaillent à La Défense ou à Paris et cherchent de l'espace, de bonnes écoles et de la verdure. Quelques investisseurs sur les petites surfaces proches des gares.",
+    marketAngle:
+      "Après la baisse de 2024 et 2025, le marché de Saint-Cloud s'est stabilisé. Les acheteurs sont là, mais attentifs au prix : un bien bien estimé dès le départ se vend, un bien trop cher attend. Montretout a mieux résisté que le reste de la ville.",
+    quartiersForts: [
+      { name: "Montretout – Coutureau", desc: "Le secteur le plus recherché, maisons et grands appartements : le mieux tenu en prix." },
+      { name: "Centre", desc: "Proche de la gare et des commerces, très demandé par les familles qui veulent tout faire à pied." },
+      { name: "Coteaux – Bords de Seine", desc: "La vue sur la Seine et le tramway T2 : un vrai argument de vente." },
+      { name: "Pasteur – Magenta et Val d'Or", desc: "Calmes et familiaux, appréciés des actifs qui travaillent à La Défense." },
+    ],
+    pointsForts: [
+      "Le domaine national de Saint-Cloud à deux pas",
+      "Les gares L et U et le tramway T2 : La Défense et Paris rapidement",
+      "Des écoles et lycées recherchés, dont l'American School of Paris",
+      "Une gare de la ligne 15 Ouest prévue vers 2031",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché trop cher reçoit peu de visites, puis finit par baisser, souvent en dessous du prix qu'il aurait pu obtenir au départ. Le bon prix initial reste le premier levier." },
+      { title: "Multiplier les agences et les prix", desc: "Le même bien affiché par plusieurs agences, à des prix différents, inquiète les acheteurs. Mieux vaut une diffusion maîtrisée et un seul interlocuteur." },
+      { title: "Négliger la présentation", desc: "Photos sombres, pièces encombrées, annonce trop courte : les acheteurs passent au bien suivant. Des photos professionnelles et un peu de rangement changent tout." },
+      { title: "Oublier le DPE", desc: "Un DPE F ou G pèse sur le prix et inquiète les acheteurs depuis la loi Climat. Mieux vaut l'anticiper : travaux ciblés ou prix ajusté dès le départ." },
+    ],
+    faqs: [
+      {
+        q: "Combien vaut mon bien à Saint-Cloud ?",
+        a: "Autour de 6 500 €/m² pour un appartement et 8 400 €/m² pour une maison en moyenne en 2026, avec des écarts selon le quartier, la vue, l'étage et l'état. Une visite permet de vous donner un prix précis.",
+      },
+      {
+        q: "Combien de temps faut-il pour vendre à Saint-Cloud ?",
+        a: "Autour de 60 jours en moyenne en 2026 pour trouver un acheteur. Comptez ensuite 2,5 à 3 mois entre le compromis et la signature chez le notaire.",
+      },
+      {
+        q: "Vendre une maison à Saint-Cloud : qu'est-ce qui change ?",
+        a: "Les maisons sont rares, donc recherchées, mais leur prix dépend beaucoup du terrain, de la vue et des travaux. Nous les présentons d'abord aux familles qui nous ont confié leur recherche, avec des photos et un dossier soignés.",
+      },
+      {
+        q: "Quels documents réunir pour vendre à Saint-Cloud ?",
+        a: "Titre de propriété, diagnostics (DPE, plomb, amiante, électricité, gaz, ERP, surface Carrez) et, en copropriété, règlement, procès-verbaux des 3 dernières assemblées générales, pré-état daté et derniers appels de fonds. Nous vous aidons à tout réunir avec le syndic.",
+      },
+      {
+        q: "Quelle fiscalité sur la plus-value ?",
+        a: "La vente de votre résidence principale est exonérée. Pour une résidence secondaire ou un investissement, la plus-value est imposée à 19 % plus 17,2 % de prélèvements sociaux, avec un abattement selon la durée de détention : exonération d'impôt après 22 ans et de prélèvements sociaux après 30 ans.",
+      },
+    ],
+  },
+
+  garches: {
+    slug: "garches",
+    metaTitle: "Estimation & vente appartement Garches (92380) | Prix m² 2026",
+    metaDescription:
+      "Vendre votre appartement ou votre maison à Garches : estimation gratuite, prix au m² par quartier, délai de vente et accompagnement par Emilio Immobilier.",
+    heroIntro:
+      "Vendre votre bien à Garches au bon prix, dans un marché qui demande de la justesse. Nous préparons la vente avec vous et la présentons d'abord aux familles que nous suivons.",
+    avgDelayCity: "≈ 65 jours",
+    avgDelayUs: "",
+    profilAcheteurs:
+      "Surtout des familles, souvent déjà installées dans l'Ouest parisien, qui cherchent une maison avec jardin ou un grand appartement au calme. Aussi des primo-accédants et quelques investisseurs.",
+    marketAngle:
+      "Le marché de Garches a corrigé après la forte hausse de 2019 à 2022, surtout pour les maisons. Les acheteurs sont présents mais négocient : un prix juste dès la mise en vente, des photos soignées et un dossier complet font la différence.",
+    quartiersForts: [
+      { name: "Mairie – Centre", desc: "Commerces, écoles et gare à pied : les appartements y partent le plus vite." },
+      { name: "Petit Garches", desc: "Villas et jardins très recherchés par les familles." },
+      { name: "Porte Jaune", desc: "Peu de biens à vendre, donc une vraie attente des acheteurs." },
+      { name: "Côte Saint-Louis", desc: "Calme et résidentiel, proche du centre." },
+    ],
+    pointsForts: [
+      "Des maisons avec jardin, rares si près de Paris",
+      "Le golf, le bois de Saint-Cucufa et le domaine de Saint-Cloud",
+      "La ligne L jusqu'à Saint-Lazare",
+      "Une commune calme et familiale",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché trop cher reçoit peu de visites, puis finit par baisser, souvent en dessous du prix qu'il aurait pu obtenir au départ. Le bon prix initial reste le premier levier." },
+      { title: "Multiplier les agences et les prix", desc: "Le même bien affiché par plusieurs agences, à des prix différents, inquiète les acheteurs. Mieux vaut une diffusion maîtrisée et un seul interlocuteur." },
+      { title: "Négliger la présentation", desc: "Photos sombres, pièces encombrées, annonce trop courte : les acheteurs passent au bien suivant. Des photos professionnelles et un peu de rangement changent tout." },
+      { title: "Oublier le DPE", desc: "Un DPE F ou G pèse sur le prix et inquiète les acheteurs depuis la loi Climat. Mieux vaut l'anticiper : travaux ciblés ou prix ajusté dès le départ." },
+    ],
+    faqs: [
+      {
+        q: "Combien vaut mon bien à Garches ?",
+        a: "Autour de 5 800 €/m² pour un appartement et 7 350 €/m² pour une maison en moyenne en 2026. Pour une maison, le terrain, l'exposition et les travaux à prévoir changent beaucoup le prix : une visite est indispensable.",
+      },
+      {
+        q: "Combien de temps faut-il pour vendre à Garches ?",
+        a: "Autour de 65 jours en moyenne en 2026 pour trouver un acheteur. Comptez ensuite 2,5 à 3 mois entre le compromis et la signature chez le notaire.",
+      },
+      {
+        q: "Faut-il baisser son prix après la baisse de 2025 ?",
+        a: "Il faut surtout partir du bon prix, celui du marché d'aujourd'hui et non de 2022. Un bien juste au départ attire plus de visites et se négocie moins qu'un bien qui baisse après plusieurs semaines.",
+      },
+      {
+        q: "Quels documents réunir pour vendre à Garches ?",
+        a: "Titre de propriété, diagnostics (DPE, plomb, amiante, électricité, gaz, ERP, surface Carrez) et, en copropriété, règlement, procès-verbaux des 3 dernières assemblées générales, pré-état daté et derniers appels de fonds. Nous vous aidons à tout réunir avec le syndic.",
+      },
+      {
+        q: "Quelle fiscalité sur la plus-value ?",
+        a: "La vente de votre résidence principale est exonérée. Pour une résidence secondaire ou un investissement, la plus-value est imposée à 19 % plus 17,2 % de prélèvements sociaux, avec un abattement selon la durée de détention : exonération d'impôt après 22 ans et de prélèvements sociaux après 30 ans.",
+      },
+    ],
+  },
+
+  clamart: {
+    slug: "clamart",
+    metaTitle: "Estimation & vente appartement Clamart (92140) | Prix m² 2026",
+    metaDescription:
+      "Vendre votre appartement ou votre maison à Clamart : estimation gratuite, prix au m² par quartier, effet de la ligne 15, délai de vente et accompagnement par Emilio Immobilier.",
+    heroIntro:
+      "Vendre votre bien à Clamart au juste prix, dans un marché en hausse. Nous connaissons les écarts entre la Gare, Percy, le centre et le Petit-Clamart, et nous présentons votre bien d'abord à nos acheteurs.",
+    avgDelayCity: "≈ 60 jours",
+    avgDelayUs: "",
+    profilAcheteurs:
+      "Des familles et des primo-accédants, souvent parisiens, qui cherchent plus d'espace pour un budget plus doux, et des investisseurs attirés par la future ligne 15.",
+    marketAngle:
+      "Clamart fait partie des marchés en hausse en 2026. La ligne 15 Sud, attendue à l'automne 2027, attire déjà des acheteurs autour de la gare. Un bon moment pour vendre, à condition de partir d'un prix juste.",
+    quartiersForts: [
+      { name: "La Gare", desc: "Ligne N et future ligne 15 : le quartier le plus suivi par les acheteurs." },
+      { name: "Percy", desc: "Parmi les prix les plus hauts de la ville, une clientèle de familles." },
+      { name: "Centre-ville", desc: "Commerces et marché : les appartements familiaux s'y vendent bien." },
+      { name: "Jardin Parisien – Panorama", desc: "Maisons d'un côté, immeubles récents de l'autre, avec le tramway T10." },
+    ],
+    pointsForts: [
+      "La ligne 15 Sud attendue à la gare de Clamart à l'automne 2027",
+      "Montparnasse en 7 minutes environ par la ligne N",
+      "La forêt de Meudon et le bois de Clamart",
+      "Un centre-ville commerçant avec son marché",
+    ],
+    erreursAEviter: [
+      { title: "Surévaluer pour « tester » le marché", desc: "Un bien affiché trop cher reçoit peu de visites, puis finit par baisser, souvent en dessous du prix qu'il aurait pu obtenir au départ. Le bon prix initial reste le premier levier." },
+      { title: "Multiplier les agences et les prix", desc: "Le même bien affiché par plusieurs agences, à des prix différents, inquiète les acheteurs. Mieux vaut une diffusion maîtrisée et un seul interlocuteur." },
+      { title: "Négliger la présentation", desc: "Photos sombres, pièces encombrées, annonce trop courte : les acheteurs passent au bien suivant. Des photos professionnelles et un peu de rangement changent tout." },
+      { title: "Oublier le DPE", desc: "Un DPE F ou G pèse sur le prix et inquiète les acheteurs depuis la loi Climat. Mieux vaut l'anticiper : travaux ciblés ou prix ajusté dès le départ." },
+    ],
+    faqs: [
+      {
+        q: "Combien vaut mon bien à Clamart ?",
+        a: "Autour de 5 600 €/m² pour un appartement en moyenne en 2026 : plus de 6 000 €/m² près de la gare et à Percy, moins de 5 000 €/m² au Petit-Clamart. Les maisons tournent autour de 6 250 €/m².",
+      },
+      {
+        q: "Combien de temps faut-il pour vendre à Clamart ?",
+        a: "Autour de 60 jours en moyenne en 2026 pour trouver un acheteur. Comptez ensuite 2,5 à 3 mois entre le compromis et la signature chez le notaire.",
+      },
+      {
+        q: "La ligne 15 fait-elle monter les prix à Clamart ?",
+        a: "Elle rend les quartiers proches de la gare plus attractifs, et les acheteurs l'anticipent déjà. L'effet dépend de la distance à la gare et du bien lui-même : nous en tenons compte dans l'estimation.",
+      },
+      {
+        q: "Quels documents réunir pour vendre à Clamart ?",
+        a: "Titre de propriété, diagnostics (DPE, plomb, amiante, électricité, gaz, ERP, surface Carrez) et, en copropriété, règlement, procès-verbaux des 3 dernières assemblées générales, pré-état daté et derniers appels de fonds. Nous vous aidons à tout réunir avec le syndic.",
+      },
+      {
+        q: "Quelle fiscalité sur la plus-value ?",
+        a: "La vente de votre résidence principale est exonérée. Pour une résidence secondaire ou un investissement, la plus-value est imposée à 19 % plus 17,2 % de prélèvements sociaux, avec un abattement selon la durée de détention : exonération d'impôt après 22 ans et de prélèvements sociaux après 30 ans.",
+      },
+    ],
+  },
 };
 
 export const getSellCityData = (slug: string): SellCityData | null => sellCities[slug] || null;
