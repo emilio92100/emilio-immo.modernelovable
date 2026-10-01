@@ -1,559 +1,265 @@
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+/* Pages « vendre-appartement-… » (refonte 2026) : même adresse, même contenu, nouvelle présentation.
+   Pas d'honoraires ici : ils sont sur la page « Nos honoraires ». */
 import {
-  MapPin,
-  TrendingUp,
-  Clock,
-  ShieldCheck,
-  Users,
-  Camera,
-  Network,
-  Handshake,
-  Sparkles,
-  ArrowRight,
-  Phone,
-  CheckCircle2,
-  AlertTriangle,
-  FileText,
-  Home,
-  Calculator,
+  AlertTriangle, ArrowRight, Calculator, Camera, CheckCircle2, Clock, FileText, Handshake, Home, LineChart, Network,
+  Phone, ShieldCheck, Sparkles, TrendingUp, Users,
 } from "lucide-react";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
-import EstimationPopup from "@/components/EstimationPopup";
+import { cn } from "@/lib/utils";
 import type { CityData } from "@/lib/cities";
 import type { SellCityData } from "@/lib/sellCities";
+import { useSiteModals } from "@/components/site/SiteModals";
+import { Btn, Checks, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF } from "@/components/site/ui";
+import { EstimerCard } from "@/components/site/EstimerCard";
+import { FaqSection, faqJsonLd } from "@/components/site/Faq";
+import { AutresSecteurs, PrixCard, SITE, agentLd, aVille } from "@/components/site/CityParts";
 
 type Props = { city: CityData; sell: SellCityData };
 
-const method = [
-  {
-    icon: TrendingUp,
-    title: "Estimation experte",
-    desc: "Analyse fine de votre bien et du marché local par un conseiller dédié. Rendu sous 24h, gratuit et sans engagement.",
-  },
-  {
-    icon: Camera,
-    title: "Mise en valeur premium",
-    desc: "Reportage photo professionnel, plans 2D, visite virtuelle si pertinent et dossier de présentation soigné en français et anglais.",
-  },
-  {
-    icon: Network,
-    title: "Diffusion off-market ciblée",
-    desc: "Activation prioritaire de notre vivier d'acheteurs déjà qualifiés avant toute mise en ligne publique.",
-  },
-  {
-    icon: Users,
-    title: "Visites qualifiées uniquement",
-    desc: "Aucun curieux. Chaque visiteur est filtré : capacité de financement vérifiée et projet sérieux validé en amont.",
-  },
-  {
-    icon: Handshake,
-    title: "Négociation et signature",
-    desc: "Accompagnement de A à Z : compromis, levée des conditions, suivi notarial jusqu'à la remise des clés.",
-  },
+const METHODE = [
+  { icon: TrendingUp, title: "Estimation", desc: "Analyse de votre bien et des ventes récentes du quartier, sur place. Gratuite et sans engagement." },
+  { icon: Camera, title: "Mise en valeur", desc: "Reportage photo professionnel, plans, visite virtuelle si elle a du sens, annonce soignée." },
+  { icon: Network, title: "Nos acheteurs d’abord", desc: "Nous présentons d’abord votre bien aux acheteurs déjà suivis par l’agence, avant toute mise en ligne." },
+  { icon: Users, title: "Des visites utiles", desc: "Chaque visiteur est vérifié : projet sérieux et financement contrôlé en amont." },
+  { icon: Handshake, title: "Négociation et signature", desc: "Compromis, conditions suspensives, notaire : on vous accompagne jusqu’à la remise des clés." },
 ];
 
-const documents = [
+const DOCUMENTS = [
   "Titre de propriété",
-  "3 derniers procès-verbaux d'assemblée générale",
+  "3 derniers procès-verbaux d’assemblée générale",
   "Règlement de copropriété et état descriptif de division",
   "Pré-état daté (à demander au syndic)",
-  "Carnet d'entretien de l'immeuble",
-  "Diagnostic de Performance Énergétique (DPE)",
+  "Carnet d’entretien de l’immeuble",
+  "Diagnostic de performance énergétique (DPE)",
   "Diagnostic plomb (immeubles construits avant 1949)",
-  "Diagnostic amiante (avant 1997)",
-  "Diagnostic électricité et gaz (installations > 15 ans)",
-  "État des Risques et Pollutions (ERP)",
-  "Mesurage Loi Carrez",
+  "Diagnostic amiante (permis de construire avant 1997)",
+  "Diagnostics électricité et gaz (installations de plus de 15 ans)",
+  "État des risques et pollutions (ERP)",
+  "Mesurage loi Carrez",
   "Dernier appel de fonds et taxe foncière",
 ];
 
-// Typo tokens — used everywhere for consistency
-const T = {
-  eyebrow: "font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase",
-  h2: "font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15]",
-  h2Light: "font-display text-[1.75rem] sm:text-4xl md:text-5xl text-primary-foreground leading-[1.15]",
-  h3: "font-display text-lg md:text-2xl text-foreground",
-  lead: "font-body text-base md:text-xl text-muted-foreground leading-relaxed",
-  body: "font-body text-[15px] md:text-lg text-muted-foreground leading-relaxed",
-  bodyLight: "font-body text-[15px] md:text-lg text-primary-foreground/80 leading-relaxed",
-};
-
 const SellCityPageTemplate = ({ city, sell }: Props) => {
-  const PAGE_URL = `https://www.emilio-immo.com/vendre-appartement-${city.slug}`;
+  const { openEstimation, openContact } = useSiteModals();
+  const url = `${SITE}/vendre-appartement-${city.slug}`;
+  const ville = city.name.startsWith("Paris") ? "Paris" : city.name;
+  const estimer = () => openEstimation({ city: ville, postalCode: city.postalCodes[0] });
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "RealEstateAgent",
-        name: "Emilio Immobilier",
-        url: PAGE_URL,
-        areaServed: { "@type": "Place", name: city.name },
-        telephone: "+33184801400",
-      },
+      agentLd(city, url),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.emilio-immo.com/" },
-          { "@type": "ListItem", position: 2, name: "Vendre", item: "https://www.emilio-immo.com/vendre" },
-          { "@type": "ListItem", position: 3, name: `Vendre ${city.name}`, item: PAGE_URL },
+          { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE}/` },
+          { "@type": "ListItem", position: 2, name: "Vendre", item: `${SITE}/vendre` },
+          { "@type": "ListItem", position: 3, name: `Vendre un appartement ${aVille(city)}`, item: url },
         ],
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: sell.faqs.map((f) => ({
-          "@type": "Question",
-          name: f.q,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
-        })),
-      },
+      faqJsonLd(sell.faqs),
     ],
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <SEOHead title={sell.metaTitle} description={sell.metaDescription} canonical={PAGE_URL} jsonLd={jsonLd} />
+    <div className="min-h-screen bg-white">
+      <SEOHead title={sell.metaTitle} description={sell.metaDescription} canonical={url} jsonLd={jsonLd} />
       <Navbar />
-
-      {/* HERO */}
-      <section className="relative pt-32 pb-24 md:pt-44 md:pb-36 bg-primary overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.04]">
-          <div className="absolute top-20 left-10 w-72 h-72 rounded-full border border-primary-foreground" />
-          <div className="absolute bottom-10 right-20 w-96 h-96 rounded-full border border-primary-foreground" />
-        </div>
-        <div className="container mx-auto px-5 md:px-6 relative text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-4 py-2 mb-8">
-              <MapPin className="w-4 h-4 text-accent" />
-              <span className="font-body text-accent text-sm font-semibold tracking-wide uppercase">
-                Vendre · {city.postalLabel}
+      <main>
+        {/* Haut de page */}
+        <section className="bg-brand-pale">
+          <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 pb-14 pt-6 md:pb-[80px] md:pt-10">
+            <div className="flex min-w-0 flex-[1_1_540px] flex-col gap-[22px]">
+              <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Vendre", to: "/vendre" }, { label: city.name }]} />
+              <Eyebrow>Vendre · {city.postalLabel}</Eyebrow>
+              <h1 className="m-0 font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+                Vendre votre appartement <Em>{aVille(city)}</Em>
+              </h1>
+              <p className="m-0 max-w-[580px] text-lg leading-relaxed text-brand-txt text-pretty">{sell.heroIntro}</p>
+              <div className="pt-1"><EstimerCard city={ville} postalCode={city.postalCodes[0]} placeholder={`Adresse de votre bien ${aVille(city)}`} /></div>
+              <span className="text-[14.5px] text-brand-mut">
+                Vous préférez en parler ? <a href={TEL_HREF} className="inline-flex min-h-[44px] items-center font-bold text-brand">{TEL}</a>
               </span>
             </div>
-            <h1 className="font-display text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl text-primary-foreground leading-[1.1] mb-8">
-              Vendre votre appartement{" "}
-              <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
-            </h1>
-            <p className="font-body text-primary-foreground/80 text-base md:text-2xl leading-relaxed max-w-3xl mx-auto mb-10">
-              {sell.heroIntro}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <EstimationPopup
-                defaultCity={city.name}
-                defaultPostalCode={city.postalCodes[0]}
-                trigger={
-                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-7 py-4 rounded-full font-body font-semibold text-base hover:brightness-110 transition-all">
-                    <TrendingUp className="w-5 h-5" /> Estimer mon bien gratuitement
-                  </button>
-                }
-              />
-              <a
-                href="tel:+33184801400"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/25 text-primary-foreground px-7 py-4 rounded-full font-body font-medium text-base hover:bg-primary-foreground/5 transition-all"
-              >
-                <Phone className="w-5 h-5" /> Parler à un conseiller
-              </a>
+            <div className="min-w-0 flex-[1_1_440px]">
+              <PrixCard city={city} relief="blue" stats={false} />
             </div>
-          </motion.div>
-        </div>
-      </section>
+          </Container>
+        </section>
 
-      {/* PRIX AU M² */}
-      <section className="py-24 md:py-32 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <div className="text-center mb-14">
-            <span className={T.eyebrow}>Le marché local</span>
-            <h2 className={`${T.h2} mt-4`}>
-              Combien vaut votre bien <span className="italic text-accent whitespace-nowrap">à {city.name}</span> ?
-            </h2>
-            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>{city.pricePerSqm.description}</p>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-5 mb-12">
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <div className="font-body text-sm uppercase tracking-wide text-muted-foreground mb-3">Entrée de gamme</div>
-              <div className="font-display text-3xl md:text-4xl text-foreground">≈ {city.pricePerSqm.low.toLocaleString("fr-FR")} €/m²</div>
+        {/* Quartiers porteurs */}
+        <section className="bg-white">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead eyebrow="Connaissance du terrain" title={<>Les quartiers porteurs <Em>{city.name.startsWith("Paris") ? `du ${city.name.replace("Paris ", "")}` : `de ${city.name}`}</Em></>} lead="Chaque quartier a ses acheteurs, ses prix et son rythme. La stratégie de vente s’adapte au vôtre." />
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              {sell.quartiersForts.map((q) => (
+                <article key={q.name} className={cn("flex gap-4 rounded-[20px] bg-white p-6", FRAME_SHADOW)}>
+                  <span className="grid h-11 w-11 flex-none place-items-center rounded-xl bg-brand-tint text-brand"><Home className="h-5 w-5" /></span>
+                  <div className="flex flex-col gap-1.5">
+                    <h3 className="m-0 font-display text-[22px] font-medium leading-tight text-brand-ink">{q.name}</h3>
+                    <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt text-pretty">{q.desc}</p>
+                  </div>
+                </article>
+              ))}
             </div>
-            <div className="bg-primary border border-accent/30 rounded-2xl p-8 text-center">
-              <div className="font-body text-sm uppercase tracking-wide text-accent mb-3">Prix médian</div>
-              <div className="font-display text-3xl md:text-4xl text-primary-foreground">≈ {city.pricePerSqm.mid.toLocaleString("fr-FR")} €/m²</div>
+          </Container>
+        </section>
+
+        {/* Délais et acheteurs */}
+        <section className="bg-brand-pale">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead eyebrow="Délais et acheteurs" title={<>Combien de temps pour vendre <Em>{aVille(city)}</Em>{"\u00a0"}?</>} />
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+              <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
+                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-tint text-brand"><Clock className="h-5 w-5" /></span>
+                <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Délai moyen du marché</span>
+                <span className="font-display text-[44px] leading-none text-brand-ink">{sell.avgDelayCity}</span>
+                <p className="m-0 text-[15px] leading-relaxed text-brand-txt">Observé {aVille(city)}, entre la mise en vente et l’accord avec un acheteur.</p>
+              </div>
+              <div className="flex flex-col gap-3 rounded-[22px] bg-brand p-7 text-brand-bt">
+                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Sparkles className="h-5 w-5" /></span>
+                <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-soft">Pour aller plus vite</span>
+                <span className="font-display text-[26px] leading-tight text-white">Le bon prix dès le départ, et nos acheteurs en premier</span>
+                <p className="m-0 text-[15px] leading-relaxed">Un prix juste attire les acheteurs sérieux dès la première semaine. Et votre bien est d’abord présenté aux acheteurs que nous suivons déjà.</p>
+              </div>
+              <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
+                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-tint text-brand"><Users className="h-5 w-5" /></span>
+                <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Qui achète {aVille(city)}</span>
+                <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt text-pretty">{sell.profilAcheteurs}</p>
+              </div>
             </div>
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <div className="font-body text-sm uppercase tracking-wide text-muted-foreground mb-3">Premium</div>
-              <div className="font-display text-3xl md:text-4xl text-foreground">≈ {city.pricePerSqm.high.toLocaleString("fr-FR")} €/m²</div>
+          </Container>
+        </section>
+
+        {/* Points forts */}
+        <section className="bg-white">
+          <Container className="grid grid-cols-1 items-center gap-x-16 gap-y-10 py-14 md:grid-cols-2 md:py-[96px]">
+            <SectionHead eyebrow="Atouts à valoriser" title={<>Pourquoi votre bien {aVille(city)} <Em>se vend bien</Em></>} lead="Les arguments concrets qui font décider les acheteurs dans votre secteur, et que nous mettons en avant." />
+            <div className={cn("rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
+              <Checks items={sell.pointsForts} />
             </div>
-          </div>
+          </Container>
+        </section>
 
-          <div className="bg-secondary border border-border rounded-2xl p-10 text-center">
-            <p className={`${T.body} mb-6 max-w-2xl mx-auto`}>
-              Une estimation précise dépend de l'étage, l'exposition, l'extérieur, l'état général, les vues
-              et la qualité de la copropriété. Recevez un rendu personnalisé sous 24h, gratuit et sans engagement.
-            </p>
-            <EstimationPopup
-              defaultCity={city.name}
-              defaultPostalCode={city.postalCodes[0]}
-              trigger={
-                <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-7 py-4 rounded-full font-body font-semibold text-base hover:brightness-110 transition-all">
-                  <TrendingUp className="w-5 h-5" /> Recevoir mon estimation
-                </button>
-              }
-            />
-          </div>
-        </div>
-      </section>
+        {/* Méthode */}
+        <section className="bg-brand-pale">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead eyebrow="Notre méthode" title={<>Cinq étapes pour vendre <Em>{aVille(city)}</Em></>} />
+            <ol className="m-0 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:grid-cols-5">
+              {METHODE.map((m, i) => (
+                <li key={m.title} className={cn("flex flex-col gap-3.5 rounded-[20px] bg-white p-6", FRAME_SHADOW)}>
+                  <div className="flex items-center justify-between">
+                    <span className="font-display text-[36px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-tint text-brand"><m.icon className="h-5 w-5" /></span>
+                  </div>
+                  <h3 className="m-0 font-display text-[21px] font-medium leading-tight text-brand-ink">{m.title}</h3>
+                  <p className="m-0 text-[15px] leading-relaxed text-brand-txt text-pretty">{m.desc}</p>
+                </li>
+              ))}
+            </ol>
+          </Container>
+        </section>
 
-      {/* QUARTIERS */}
-      <section className="py-24 md:py-32 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-6xl">
-          <div className="text-center mb-14">
-            <span className={T.eyebrow}>Connaissance terrain</span>
-            <h2 className={`${T.h2} mt-4`}>
-              Les quartiers porteurs <span className="italic text-accent whitespace-nowrap">de {city.name}</span>
-            </h2>
-            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>
-              Chaque quartier a ses acheteurs, ses prix et son timing. Notre conseiller adapte la stratégie au vôtre.
-            </p>
-          </div>
+        {/* Le marché en ce moment */}
+        <section className="bg-brand">
+          <Container className="grid grid-cols-1 items-center gap-x-16 gap-y-8 py-14 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:py-[88px]">
+            <div className="flex flex-col gap-5">
+              <Eyebrow dark>Pourquoi vendre maintenant</Eyebrow>
+              <h2 className="m-0 font-display text-[clamp(30px,3.1vw,44px)] font-medium leading-[1.14] text-white">{city.name} <Em dark>en 2026</Em></h2>
+              <p className="m-0 text-[17.5px] leading-relaxed text-brand-bt text-pretty">{sell.marketAngle}</p>
+            </div>
+            <div className="flex flex-col gap-3 rounded-[22px] bg-white p-6 md:p-7">
+              <span className="font-display text-[24px] leading-tight text-brand-ink">Combien vaut votre bien ?</span>
+              <p className="m-0 text-[15px] leading-relaxed text-brand-txt">Une première fourchette tout de suite, puis l’avis de valeur d’un membre de l’équipe, sur place.</p>
+              <Btn onClick={estimer} iconLeft={<LineChart className="h-[18px] w-[18px]" />} full>Estimer mon bien</Btn>
+            </div>
+          </Container>
+        </section>
 
-          <div className="grid md:grid-cols-2 gap-5">
-            {sell.quartiersForts.map((q) => (
-              <div key={q.name} className="bg-card border border-border rounded-2xl p-7 hover:border-accent/40 transition-colors">
-                <div className="flex items-center gap-2 mb-3">
-                  <Home className="w-5 h-5 text-accent" />
-                  <h3 className={T.h3}>{q.name}</h3>
+        {/* Documents et erreurs */}
+        <section className="bg-white">
+          <Container className="grid grid-cols-1 items-start gap-x-14 gap-y-12 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:py-[96px]">
+            <div className="flex flex-col gap-7">
+              <SectionHead eyebrow="Préparer son dossier" title={<>Les documents <Em>à réunir</Em></>} lead="Nous centralisons tout et faisons le lien avec votre syndic et votre notaire." />
+              <ul className={cn("m-0 grid list-none grid-cols-1 gap-2 rounded-[22px] bg-white p-5 sm:grid-cols-2", FRAME_SHADOW)}>
+                {DOCUMENTS.map((d) => (
+                  <li key={d} className="flex items-start gap-2.5 rounded-xl bg-brand-pale px-3.5 py-3 text-[14.5px] leading-snug text-brand-ink">
+                    <FileText className="mt-0.5 h-4 w-4 flex-none text-brand-orange-text" /> {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-col gap-7">
+              <SectionHead eyebrow="Pièges classiques" title={<>Les erreurs <Em>à éviter</Em></>} lead="Celles que l’on rencontre le plus souvent. Les anticiper, c’est vendre plus vite et au juste prix." />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {sell.erreursAEviter.map((e, i) => (
+                  <article key={e.title} className="flex flex-col gap-2.5 rounded-[20px] border border-brand-line bg-white p-5">
+                    <span className="inline-flex items-center gap-2 text-[12.5px] font-extrabold uppercase tracking-[0.14em] text-brand-orange-text"><AlertTriangle className="h-4 w-4" /> Erreur 0{i + 1}</span>
+                    <h3 className="m-0 font-display text-[20px] font-medium leading-tight text-brand-ink">{e.title}</h3>
+                    <p className="m-0 text-[14.5px] leading-relaxed text-brand-txt text-pretty">{e.desc}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* Fiscalité */}
+        <section className="bg-brand-pale">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead eyebrow="Aspect fiscal" title={<>La fiscalité <Em>de la vente</Em></>} />
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
+                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand text-white"><Calculator className="h-5 w-5" /></span>
+                <h3 className="m-0 font-display text-[24px] font-medium text-brand-ink">Résidence principale</h3>
+                <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Exonération totale de la plus-value, sans condition de durée de détention. C’est le cas de la plupart des ventes que nous accompagnons.</p>
+              </div>
+              <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
+                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Calculator className="h-5 w-5" /></span>
+                <h3 className="m-0 font-display text-[24px] font-medium text-brand-ink">Résidence secondaire ou investissement</h3>
+                <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Plus-value soumise à l’impôt sur le revenu (19 %) et aux prélèvements sociaux (17,2 %), avec un abattement selon la durée de détention.</p>
+                <Checks items={["Exonération d’impôt sur le revenu après 22 ans de détention", "Exonération de prélèvements sociaux après 30 ans", "Surtaxe de 2 à 6 % au-delà de 50 000 € de plus-value imposable"]} />
+                <p className="m-0 text-[14px] italic text-brand-mut">Si votre situation le demande, nous vous orientons vers un notaire.</p>
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* Engagements */}
+        <section className="bg-white">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead center eyebrow="Nos engagements" title={<>Pourquoi nous confier <Em>votre vente</Em></>} />
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {[
+                { icon: ShieldCheck, t: "Des honoraires clairs", d: "Présentés dès le premier rendez-vous, sans frais cachés." },
+                { icon: Network, t: "Nos acheteurs d’abord", d: "Votre bien est présenté aux acheteurs suivis par l’agence, et peut se vendre sans annonce si vous le souhaitez." },
+                { icon: Users, t: "Un interlocuteur dédié", d: "Alexandre ou un membre de l’équipe, de l’estimation à la remise des clés, joignable 7 j/7." },
+              ].map((b) => (
+                <div key={b.t} className={cn("flex flex-col gap-3 rounded-[20px] bg-white p-7", FRAME_SHADOW)}>
+                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-tint text-brand"><b.icon className="h-5 w-5" /></span>
+                  <h3 className="m-0 font-display text-[23px] font-medium text-brand-ink">{b.t}</h3>
+                  <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">{b.d}</p>
                 </div>
-                <p className={T.body}>{q.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* DÉLAI + PROFIL ACHETEURS */}
-      <section className="py-24 md:py-32 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <div className="text-center mb-14">
-            <span className={T.eyebrow}>Délai moyen</span>
-            <h2 className={`${T.h2} mt-4`}>
-              Combien de temps pour vendre <span className="italic text-accent whitespace-nowrap">à {city.name}</span> ?
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-10">
-            <div className="bg-card border border-border rounded-2xl p-10">
-              <Clock className="w-8 h-8 text-muted-foreground mb-4" />
-              <div className="font-body text-sm uppercase tracking-wide text-muted-foreground mb-2">Marché local</div>
-              <div className="font-display text-4xl md:text-5xl text-foreground mb-3">{sell.avgDelayCity}</div>
-              <p className={T.body}>
-                Délai moyen observé sur le marché à {city.name}, du mandat à la signature de l'acte authentique.
-              </p>
+              ))}
             </div>
-            <div className="bg-primary border border-accent/30 rounded-2xl p-10">
-              <Sparkles className="w-8 h-8 text-accent mb-4" />
-              <div className="font-body text-sm uppercase tracking-wide text-accent mb-2">Avec Emilio Immobilier</div>
-              <div className="font-display text-4xl md:text-5xl text-primary-foreground mb-3">{sell.avgDelayUs}</div>
-              <p className={T.bodyLight}>
-                Notre vivier d'acheteurs qualifiés permet une mise en relation prioritaire, avant toute diffusion publique.
-              </p>
+            <div className="flex flex-wrap justify-center gap-2.5">
+              {["Estimation gratuite", "Sans engagement", "Vente discrète possible", "Réponse sous 24 h"].map((b) => (
+                <span key={b} className="inline-flex h-10 items-center gap-2 rounded-full border border-brand-line bg-brand-pale px-4 text-[14.5px] font-semibold text-brand-ink"><CheckCircle2 className="h-4 w-4 text-brand-orange-text" /> {b}</span>
+              ))}
             </div>
-          </div>
-
-          <div className="bg-secondary border border-border rounded-2xl p-10">
-            <div className="flex items-start gap-5">
-              <Users className="w-7 h-7 text-accent shrink-0 mt-1" />
-              <div>
-                <h3 className={`${T.h3} mb-3`}>Profil de nos acheteurs à {city.name}</h3>
-                <p className={T.body}>{sell.profilAcheteurs}</p>
-              </div>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Btn onClick={estimer} iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
+              <Btn variant="outline" onClick={() => openContact({ objet: "Vendre", message: `Je souhaite vendre mon appartement ${aVille(city)}.` })} icon={<ArrowRight className="h-[18px] w-[18px]" />}>Prendre rendez-vous</Btn>
+              <Btn variant="outline" href={TEL_HREF} iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
             </div>
-          </div>
-        </div>
-      </section>
+          </Container>
+        </section>
 
-      {/* POINTS FORTS */}
-      <section className="py-24 md:py-32 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <div className="text-center mb-14">
-            <span className={T.eyebrow}>Atouts à valoriser</span>
-            <h2 className={`${T.h2} mt-4`}>
-              Pourquoi votre bien <span className="whitespace-nowrap">à {city.name}</span> <span className="italic text-accent whitespace-nowrap">se vend bien</span>
-            </h2>
-            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>
-              Nous mettons en avant les arguments concrets qui déclenchent la décision d'achat dans votre secteur.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            {sell.pointsForts.map((p) => (
-              <div key={p} className="flex items-start gap-4 bg-card border border-border rounded-xl p-6">
-                <CheckCircle2 className="w-6 h-6 text-accent shrink-0 mt-0.5" />
-                <p className="font-body text-base md:text-lg text-foreground leading-relaxed">{p}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MÉTHODE */}
-      <section className="py-24 md:py-32 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-6xl">
-          <div className="text-center mb-14">
-            <span className={T.eyebrow}>Notre méthode</span>
-            <h2 className={`${T.h2} mt-4`}>
-              5 étapes pour vendre <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {method.map((m, i) => (
-              <motion.div
-                key={m.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.07 }}
-                viewport={{ once: true }}
-                className="bg-card border border-border rounded-2xl p-7 md:p-8 hover:border-accent/40 hover:shadow-lg transition-all flex flex-col"
-              >
-                <div className="flex items-center gap-3 mb-5">
-                  <span className="font-display text-lg text-accent">0{i + 1}</span>
-                  <m.icon className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="font-display text-xl text-foreground mb-3 leading-snug">{m.title}</h3>
-                <p className="font-body text-[15px] md:text-base text-muted-foreground leading-relaxed">{m.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MARCHÉ + ANGLE */}
-      <section className="py-24 md:py-32 bg-primary">
-        <div className="container mx-auto px-5 md:px-6 max-w-4xl text-center">
-          <span className={T.eyebrow}>Pourquoi vendre maintenant</span>
-          <h2 className={`${T.h2Light} mt-4 mb-8`}>
-            <span className="whitespace-nowrap">{city.name}</span> en <span className="italic text-accent">2026</span>
-          </h2>
-          <p className="font-body text-primary-foreground/85 text-base md:text-2xl leading-relaxed">
-            {sell.marketAngle}
-          </p>
-        </div>
-      </section>
-
-      {/* DOCUMENTS */}
-      <section className="py-24 md:py-32 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <div className="text-center mb-14">
-            <span className={T.eyebrow}>Préparer son dossier</span>
-            <h2 className={`${T.h2} mt-4`}>
-              Documents à réunir <span className="italic text-accent">pour vendre</span>
-            </h2>
-            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>
-              Notre conseiller centralise et coordonne avec votre syndic et notaire. Vous n'avez rien à gérer seul.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-3">
-            {documents.map((d) => (
-              <div key={d} className="flex items-start gap-3 bg-secondary border border-border rounded-xl p-5">
-                <FileText className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-                <p className="font-body text-base text-foreground leading-relaxed">{d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ERREURS À ÉVITER */}
-      <section className="py-24 md:py-32 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <div className="text-center mb-14">
-            <span className={T.eyebrow}>Pièges classiques</span>
-            <h2 className={`${T.h2} mt-4`}>
-              Les 4 erreurs <span className="italic text-accent">à éviter</span>
-            </h2>
-            <p className={`${T.lead} mt-6 max-w-3xl mx-auto`}>
-              Constatées sur des centaines de mandats. Anticipez-les pour vendre vite et au juste prix.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-5">
-            {sell.erreursAEviter.map((e, i) => (
-              <div key={e.title} className="bg-card border border-border rounded-2xl p-7">
-                <div className="flex items-center gap-3 mb-4">
-                  <AlertTriangle className="w-6 h-6 text-accent" />
-                  <span className="font-display text-base text-accent">Erreur 0{i + 1}</span>
-                </div>
-                <h3 className={`${T.h3} mb-3`}>{e.title}</h3>
-                <p className={T.body}>{e.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FISCALITÉ */}
-      <section className="py-24 md:py-32 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-4xl">
-          <div className="text-center mb-12">
-            <span className={T.eyebrow}>Aspect fiscal</span>
-            <h2 className={`${T.h2} mt-4`}>
-              Fiscalité de la <span className="italic text-accent">vente</span>
-            </h2>
-          </div>
-
-          <div className="bg-secondary border border-border rounded-2xl p-8 md:p-12">
-            <div className="flex items-start gap-5 mb-8">
-              <Calculator className="w-8 h-8 text-accent shrink-0 mt-1" />
-              <div>
-                <h3 className={`${T.h3} mb-3`}>Résidence principale</h3>
-                <p className={T.body}>
-                  Exonération totale de la plus-value, sans condition de durée de détention.
-                  C'est le régime le plus favorable et il concerne la majorité des ventes que nous accompagnons.
-                </p>
-              </div>
-            </div>
-
-            <div className="border-t border-border pt-8 flex items-start gap-5">
-              <Calculator className="w-8 h-8 text-accent shrink-0 mt-1" />
-              <div>
-                <h3 className={`${T.h3} mb-3`}>Résidence secondaire ou investissement</h3>
-                <p className={`${T.body} mb-3`}>
-                  Plus-value soumise à l'impôt sur le revenu (19 %) et aux prélèvements sociaux (17,2 %),
-                  avec un abattement progressif selon la durée de détention.
-                </p>
-                <ul className={`${T.body} space-y-2 list-disc pl-5`}>
-                  <li>Exonération d'impôt sur le revenu après 22 ans de détention</li>
-                  <li>Exonération de prélèvements sociaux après 30 ans</li>
-                  <li>Surtaxe de 2 à 6 % au-delà de 50 000 € de plus-value imposable</li>
-                </ul>
-                <p className={`${T.body} mt-4 italic`}>
-                  Notre conseiller vous oriente vers un notaire fiscaliste si votre situation le justifie.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* RÉASSURANCE */}
-      <section className="py-24 md:py-32 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <div className="text-center mb-14">
-            <span className={T.eyebrow}>Nos engagements</span>
-            <h2 className={`${T.h2} mt-4`}>Pourquoi nous confier votre vente</h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-5">
-            {[
-              { icon: ShieldCheck, title: "Honoraires transparents", desc: "Tarifs clairs présentés dès le premier rendez-vous, sans frais cachés ni mauvaise surprise." },
-              { icon: Network, title: "Réseau off-market", desc: "Vivier d'acheteurs qualifiés activé avant toute diffusion publique pour préserver votre confidentialité." },
-              { icon: Sparkles, title: "Conseiller dédié", desc: "Un seul interlocuteur de l'estimation à la remise des clés, joignable 7j/7." },
-            ].map((b) => (
-              <div key={b.title} className="bg-card border border-border rounded-2xl p-7">
-                <b.icon className="w-7 h-7 text-accent mb-4" />
-                <h3 className={`${T.h3} mb-3`}>{b.title}</h3>
-                <p className={T.body}>{b.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
-            {["Estimation gratuite", "Sans engagement", "Confidentialité absolue", "Réponse sous 24h"].map((b) => (
-              <span key={b} className="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 font-body text-base text-foreground">
-                <CheckCircle2 className="w-4 h-4 text-accent" /> {b}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-24 md:py-32 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-3xl">
-          <div className="text-center mb-12">
-            <span className={T.eyebrow}>Questions de vendeurs</span>
-            <h2 className={`${T.h2} mt-4`}>
-              <span className="whitespace-nowrap">Vendre à {city.name}</span> : <span className="italic text-accent whitespace-nowrap">vos questions</span>
-            </h2>
-          </div>
-          <Accordion type="single" collapsible className="space-y-4">
-            {sell.faqs.map((f, i) => (
-              <AccordionItem
-                key={i}
-                value={`faq-${i}`}
-                className="bg-card border border-border rounded-2xl px-7 overflow-hidden data-[state=open]:border-accent/30 transition-colors"
-              >
-                <AccordionTrigger className="font-display text-lg md:text-xl text-foreground py-6 hover:no-underline gap-4 text-left [&[data-state=open]>svg]:text-accent">
-                  {f.q}
-                </AccordionTrigger>
-                <AccordionContent className="font-body text-base md:text-lg text-muted-foreground leading-relaxed pb-6">
-                  {f.a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      {/* MAILLAGE INTERNE */}
-      <section className="py-16 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-3xl text-center">
-          <p className="font-body text-base md:text-lg text-muted-foreground mb-4">
-            Acheteur à {city.name} ? Découvrez nos biens disponibles.
-          </p>
-          <Link
-            to={`/achat-appartement-${city.slug}`}
-            className="inline-flex items-center gap-2 text-accent font-body font-semibold text-base md:text-lg hover:underline"
-          >
-            Voir les biens à {city.name} <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
-
-      {/* CTA FINAL */}
-      <section className="py-24 md:py-32 bg-primary">
-        <div className="container mx-auto px-5 md:px-6 max-w-3xl text-center">
-          <h2 className={`${T.h2Light} mb-6`}>
-            Prêt à vendre votre bien <span className="whitespace-nowrap">à {city.name}</span> ?
-          </h2>
-          <p className="font-body text-primary-foreground/80 text-base md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-            Estimation gratuite et confidentielle, puis appel d'un conseiller dédié sous 24h.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <EstimationPopup
-              defaultCity={city.name}
-              defaultPostalCode={city.postalCodes[0]}
-              trigger={
-                <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-7 py-4 rounded-full font-body font-semibold text-base hover:brightness-110 transition-all">
-                  <TrendingUp className="w-5 h-5" /> Estimer mon bien
-                </button>
-              }
-            />
-            <a
-              href="tel:+33184801400"
-              className="inline-flex items-center justify-center gap-2 border border-primary-foreground/25 text-primary-foreground px-7 py-4 rounded-full font-body font-medium text-base hover:bg-primary-foreground/5 transition-colors"
-            >
-              <Phone className="w-5 h-5" /> 01 84 80 14 00
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <ContactForm />
+        <FaqSection eyebrow="Questions de vendeurs" title={<>Vendre {aVille(city)}{"\u00a0"}: <Em>vos questions</Em></>} items={sell.faqs} />
+        <AutresSecteurs current={city} kind="vendre" />
+      </main>
       <Footer />
     </div>
   );

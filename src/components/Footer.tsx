@@ -1,124 +1,98 @@
+/* Pied de page (refonte 2026) : le contact est ici, avec « Nous écrire ». */
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, Smile } from "lucide-react";
-import logo from "@/assets/logo.png";
+import { LineChart, Mail, Phone } from "lucide-react";
+import { useSiteModals } from "@/components/site/SiteModals";
+import { Container, MAIL, TEL, TEL_HREF } from "@/components/site/ui";
+import logoBlanc from "@/assets/refonte/logo-blanc.webp";
 
-const Footer = () => (
-  <footer className="bg-primary text-primary-foreground">
-    <div className="container mx-auto px-6 py-16">
-      <div className="grid md:grid-cols-7 gap-10">
-        <div className="md:col-span-1">
-          <img src={logo} alt="Emilio" className="h-14 brightness-0 invert mb-4" />
-          <p className="text-primary-foreground/70 text-sm font-body leading-relaxed">
-            Votre partenaire de confiance pour tous vos projets immobiliers en Île-de-France.
-          </p>
-        </div>
+const PARIS = [
+  ["Paris 6e", "/achat-appartement-paris-6"],
+  ["Paris 7e", "/achat-appartement-paris-7"],
+  ["Paris 15e", "/achat-appartement-paris-15"],
+  ["Paris 16e", "/achat-appartement-paris-16"],
+  ["Paris 17e", "/achat-appartement-paris-17"],
+];
+const HDS = [
+  ["Boulogne-Billancourt", "/achat-appartement-boulogne-billancourt"],
+  ["Issy-les-Moulineaux", "/achat-appartement-issy-les-moulineaux"],
+  ["Neuilly-sur-Seine", "/achat-appartement-neuilly-sur-seine"],
+  ["Levallois-Perret", "/achat-appartement-levallois-perret"],
+  ["Saint-Cloud", "/achat-appartement-saint-cloud"],
+  ["Garches", "/achat-appartement-garches"],
+  ["Clamart", "/achat-appartement-clamart"],
+];
 
-        <div>
-          <h4 className="font-display text-lg mb-4">Navigation</h4>
-          <div className="flex flex-col gap-2">
-            {[
-              { label: "Accueil", path: "/" },
-              { label: "Nos Biens", path: "/biens" },
-              { label: "Vendre", path: "/vendre" },
-              { label: "Acheter", path: "/mandat-recherche" },
-              { label: "Notre Histoire", path: "/notre-histoire" },
-              { label: "Mentions légales", path: "/mentions-legales" },
-            ].map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className="text-sm text-primary-foreground/70 hover:text-accent transition-colors font-body"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h4 className="font-display text-lg mb-4">Acheter</h4>
-          <div className="flex flex-col gap-2">
-            {[
-              { label: "Boulogne-Billancourt", path: "/achat-appartement-boulogne-billancourt" },
-              { label: "Neuilly-sur-Seine", path: "/achat-appartement-neuilly-sur-seine" },
-              { label: "Levallois-Perret", path: "/achat-appartement-levallois-perret" },
-              { label: "Issy-les-Moulineaux", path: "/achat-appartement-issy-les-moulineaux" },
-              { label: "Paris 6e", path: "/achat-appartement-paris-6" },
-              { label: "Paris 7e", path: "/achat-appartement-paris-7" },
-              { label: "Paris 15e", path: "/achat-appartement-paris-15" },
-              { label: "Paris 16e", path: "/achat-appartement-paris-16" },
-            ].map((s) => (
-              <Link
-                key={s.path}
-                to={s.path}
-                className="text-sm text-primary-foreground/70 hover:text-accent transition-colors font-body"
-              >
-                {s.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h4 className="font-display text-lg mb-4">Vendre</h4>
-          <div className="flex flex-col gap-2">
-            {[
-              { label: "Boulogne-Billancourt", path: "/vendre-appartement-boulogne-billancourt" },
-              { label: "Neuilly-sur-Seine", path: "/vendre-appartement-neuilly-sur-seine" },
-              { label: "Levallois-Perret", path: "/vendre-appartement-levallois-perret" },
-              { label: "Issy-les-Moulineaux", path: "/vendre-appartement-issy-les-moulineaux" },
-              { label: "Paris 6e", path: "/vendre-appartement-paris-6" },
-              { label: "Paris 7e", path: "/vendre-appartement-paris-7" },
-              { label: "Paris 15e", path: "/vendre-appartement-paris-15" },
-              { label: "Paris 16e", path: "/vendre-appartement-paris-16" },
-            ].map((s) => (
-              <Link
-                key={s.path}
-                to={s.path}
-                className="text-sm text-primary-foreground/70 hover:text-accent transition-colors font-body"
-              >
-                {s.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h4 className="font-display text-lg mb-4">Contact</h4>
-          <div className="flex flex-col gap-3 text-sm text-primary-foreground/70 font-body">
-            <a href="tel:+33184801400" className="flex items-center gap-2 hover:text-accent transition-colors">
-              <Phone className="w-4 h-4" /> 01 84 80 14 00
-            </a>
-            <a href="mailto:agence@emilio-immo.com" className="flex items-center gap-2 hover:text-accent transition-colors">
-              <Mail className="w-4 h-4" /> agence@emilio-immo.com
-            </a>
-          </div>
-        </div>
-
-        <div>
-          <h4 className="font-display text-lg mb-4">Adresse</h4>
-          <div className="flex flex-col gap-3 text-sm text-primary-foreground/70 font-body">
-            <p className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-              Paris & Hauts-de-Seine (92)
-            </p>
-            <p className="flex items-start gap-2">
-              <Smile className="w-4 h-4 mt-0.5 flex-shrink-0 text-accent" />
-              <span className="italic text-primary-foreground/50">...et surtout, chez vous !</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-t border-primary-foreground/20 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-primary-foreground/50 font-body">
-        <span>© {new Date().getFullYear()} Emilio Immobilier. Tous droits réservés.</span>
-        <div className="flex items-center gap-5">
-          <Link to="/guide-immobilier" className="hover:text-accent transition-colors">Guide Immobilier</Link>
-          <Link to="/mentions-legales" className="hover:text-accent transition-colors">Mentions légales</Link>
-        </div>
-      </div>
-    </div>
-  </footer>
+const Col = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="flex flex-col">
+    <span className="mb-2 font-display text-xl text-white">{title}</span>
+    {children}
+  </div>
 );
+const L = ({ to, children, strong }: { to: string; children: React.ReactNode; strong?: boolean }) => (
+  <Link to={to} className={`block py-2 text-[15px] leading-6 hover:text-white ${strong ? "font-bold text-white" : "font-medium text-brand-bt"}`}>
+    {children}
+  </Link>
+);
+
+const Footer = () => {
+  const { openEstimation, openContact } = useSiteModals();
+  return (
+    <>
+      <footer className="bg-brand text-brand-bt">
+        <Container className="flex flex-col gap-9 pb-[18px] pt-16 lg:pt-[72px]">
+          <div className="flex flex-wrap gap-x-14 gap-y-10">
+            <div className="flex min-w-0 max-w-[300px] flex-[1_1_260px] flex-col gap-[18px]">
+              <img src={logoBlanc} alt="Emilio conseil immobilier" className="h-[52px] w-auto self-start" />
+              <p className="m-0 text-[15px] leading-relaxed">Agence immobilière indépendante à Paris et dans les Hauts-de-Seine, créée en 2020 à Boulogne-Billancourt.</p>
+              <button type="button" onClick={() => openEstimation()} className="inline-flex h-12 items-center gap-2 self-start rounded-[10px] bg-brand-orange px-5 text-[15px] font-bold text-brand-ink">
+                <LineChart className="h-[18px] w-[18px]" /> Estimer mon bien
+              </button>
+            </div>
+            <div className="grid min-w-0 flex-[3_1_640px] grid-cols-2 gap-x-7 gap-y-8 sm:grid-cols-[1fr_0.8fr_1.15fr_1.35fr]">
+              <Col title="Navigation">
+                <L to="/biens">Nos biens</L>
+                <L to="/vendre">Vendre</L>
+                <L to="/acheter">Acheter</L>
+                <L to="/notre-histoire">Notre histoire</L>
+                <L to="/guide-immobilier">Guide immobilier</L>
+                <L to="/honoraires" strong>Nos honoraires</L>
+              </Col>
+              <Col title="Paris">{PARIS.map(([n, to]) => <L key={n} to={to}>{n}</L>)}</Col>
+              <Col title="Hauts-de-Seine">
+                {HDS.map(([n, to]) => <L key={n} to={to}>{n}</L>)}
+                <span className="py-2 text-sm leading-normal">et d’autres communes du 92</span>
+              </Col>
+              <Col title="Contact">
+                <a href={TEL_HREF} className="flex items-center gap-2 py-2 text-[15px] font-bold text-white"><Phone className="h-4 w-4 text-brand-orange" /> {TEL}</a>
+                <a href={`mailto:${MAIL}`} className="block py-2 text-[15px] text-brand-bt hover:text-white">{MAIL.split("@")[0]}<wbr />@{MAIL.split("@")[1]}</a>
+                <button type="button" onClick={() => openContact()} className="mt-2 inline-flex h-11 items-center gap-2 self-start rounded-[10px] border-[1.5px] border-white/50 px-4 text-[14.5px] font-bold text-white hover:bg-white/10">
+                  <Mail className="h-4 w-4 text-brand-orange" /> Nous écrire
+                </button>
+              </Col>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-white/15 pt-3 text-[13.5px]">
+            <span>© {new Date().getFullYear()} Emilio Immobilier · RT Conseils SAS · Carte professionnelle CPI 9201 2020 000 045 344</span>
+            <span className="flex flex-wrap gap-x-5 gap-y-0">
+              <Link to="/mentions-legales" className="inline-flex min-h-[44px] items-center hover:text-white">Mentions légales</Link>
+              <Link to="/honoraires" className="inline-flex min-h-[44px] items-center hover:text-white">Nos honoraires</Link>
+              <Link to="/mentions-legales#donnees" className="inline-flex min-h-[44px] items-center hover:text-white">Confidentialité</Link>
+            </span>
+          </div>
+        </Container>
+      </footer>
+      {/* Barre fixe sur téléphone */}
+      <div className="h-[84px] md:hidden" aria-hidden />
+      <div className="fixed inset-x-0 bottom-0 z-40 flex gap-2.5 border-t border-brand-line bg-white px-4 pb-3.5 pt-3 shadow-[0_-10px_28px_-18px_rgba(19,36,61,0.45)] md:hidden">
+        <a href={TEL_HREF} className="inline-flex h-[52px] flex-1 items-center justify-center gap-2 rounded-[10px] border-[1.5px] border-brand text-[15.5px] font-bold text-brand">
+          <Phone className="h-[18px] w-[18px]" /> Appeler
+        </a>
+        <button type="button" onClick={() => openEstimation()} className="inline-flex h-[52px] flex-[1.5] items-center justify-center gap-2 rounded-[10px] bg-brand-orange text-[15.5px] font-extrabold text-brand-ink">
+          <LineChart className="h-[18px] w-[18px]" /> Estimer mon bien
+        </button>
+      </div>
+    </>
+  );
+};
 
 export default Footer;
