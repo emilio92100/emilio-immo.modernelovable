@@ -1,4 +1,4 @@
-/* En-tête du site (refonte 2026) : bandeau bleu + menu. */
+/* En-tête du site (refonte 2026) : logo, menu, téléphone et « Estimer mon bien ». */
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { LineChart, Mail, Menu, Phone, X } from "lucide-react";
@@ -23,19 +23,6 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-brand">
-        <Container className="flex min-h-[44px] items-center justify-between gap-6">
-          <span className="hidden text-[13.5px] text-brand-bt sm:inline">Agence immobilière indépendante à Paris et dans les Hauts-de-Seine, depuis 2020</span>
-          <div className="ml-auto flex items-center gap-5">
-            <a href={TEL_HREF} className="inline-flex min-h-[44px] items-center gap-2 text-[13.5px] font-bold text-white">
-              <Phone className="h-[15px] w-[15px] text-brand-orange" /> {TEL}
-            </a>
-            <a href={`mailto:${MAIL}`} className="hidden min-h-[44px] items-center gap-2 text-[13.5px] font-semibold text-brand-bt sm:inline-flex">
-              <Mail className="h-[15px] w-[15px] text-brand-orange" /> {MAIL}
-            </a>
-          </div>
-        </Container>
-      </div>
       <header className="sticky top-0 z-50 border-b border-brand-line bg-white/95 backdrop-blur">
         <Container className="flex min-h-[76px] items-center gap-7 lg:min-h-[84px]">
           <Link to="/" className="block flex-none" aria-label="Emilio Immobilier, accueil">
@@ -49,8 +36,8 @@ const Navbar = () => {
                 end={n.to === "/"}
                 className={({ isActive }) =>
                   cn(
-                    "inline-flex h-11 items-center px-3.5 text-[13px] uppercase tracking-[0.1em] transition-colors",
-                    isActive ? "font-bold text-brand-orange-text shadow-[inset_0_-2px_0_#E68B23]" : "font-semibold text-brand hover:text-brand-orange-text",
+                    "nav-link relative inline-flex h-11 items-center px-3.5 text-[13px] uppercase tracking-[0.1em] transition-colors duration-300",
+                    isActive ? "nav-active font-bold text-brand-orange-text" : "font-semibold text-brand hover:text-brand-orange-text",
                   )
                 }
               >
@@ -59,6 +46,14 @@ const Navbar = () => {
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-2.5 lg:ml-0">
+            <a
+              href={TEL_HREF}
+              aria-label={`Appeler l’agence au ${TEL}`}
+              className="hidden h-[46px] items-center gap-2 rounded-[10px] border-[1.5px] border-brand-line px-3.5 text-[15px] font-bold text-brand transition hover:border-brand md:inline-flex"
+            >
+              <Phone className="h-[17px] w-[17px] text-brand-orange-text" />
+              <span className="hidden whitespace-nowrap xl:inline">{TEL}</span>
+            </a>
             <button
               type="button"
               onClick={() => openEstimation()}
@@ -66,9 +61,6 @@ const Navbar = () => {
             >
               <LineChart className="h-[18px] w-[18px]" /> Estimer mon bien
             </button>
-            <a href={TEL_HREF} aria-label="Appeler l’agence" className="grid h-11 w-11 place-items-center rounded-[10px] border border-brand-line text-brand sm:hidden">
-              <Phone className="h-5 w-5" />
-            </a>
             <button
               type="button"
               aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
@@ -93,6 +85,9 @@ const Navbar = () => {
                   {n.label}
                 </NavLink>
               ))}
+              <a href={`mailto:${MAIL}`} className="flex min-h-[52px] items-center gap-2.5 border-b border-brand-line2 text-[16px] font-semibold text-brand-ink">
+                <Mail className="h-[18px] w-[18px] text-brand-orange-text" /> {MAIL}
+              </a>
               <button
                 type="button"
                 onClick={() => { setOpen(false); openEstimation(); }}

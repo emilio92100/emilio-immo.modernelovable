@@ -22,7 +22,7 @@ const Hero = () => (
       <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[22px]">
         <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Acheter" }]} />
         <Eyebrow>Acheter avec Emilio</Eyebrow>
-        <h1 className="m-0 font-display text-[clamp(36px,4.4vw,62px)] font-medium leading-[1.06] tracking-[-0.015em] text-brand-ink text-balance">
+        <h1 className="m-0 font-display text-[clamp(34px,3.9vw,54px)] font-medium leading-[1.06] tracking-[-0.015em] text-brand-ink text-balance">
           Un chasseur qui cherche pour vous, <Em wrap>et reste de votre côté</Em>
         </h1>
         <p className="m-0 max-w-[560px] text-lg leading-relaxed text-brand-txt text-pretty">
@@ -226,10 +226,11 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
   ];
   return (
     <section id="espace" className="bg-brand-pale" style={{ backgroundImage: "radial-gradient(circle at 50% 58%, #E4ECF6 0%, rgba(228,236,246,0) 46%)" }}>
-      <Container className="flex flex-col gap-7 py-14 md:py-[100px]">
+      <Container className="flex flex-col gap-6 py-14 md:py-[84px]">
         <SectionHead center eyebrow="Votre espace client" title={<>Un espace créé <Em>rien que pour vous</Em></>} lead="Dès que vous nous confiez votre recherche, vous recevez votre lien personnel. Vous y retrouvez tous les biens qu’on sélectionne pour vous, sur ordinateur comme sur téléphone." className="max-w-[800px]" />
         {/* Ordinateur : la scène animée */}
-        <div className="relative hidden h-[690px] justify-center pt-6 lg:flex">
+        <div className="hidden h-[610px] lg:block">
+        <div className="relative flex h-[690px] origin-top scale-[.86] justify-center pt-6">
           {[[-210, 18, 10, "#E68B23", "anim-bob-b"], [186, 330, 8, "#22497D", "anim-bob-a"], [-190, 400, 7, "#9AACC4", "anim-bob-c"], [170, 600, 12, "#E68B23", "anim-bob-c"], [-178, 640, 9, "#22497D", "anim-bob-a"]].map(([x, y, r, c, cl], k) => (
             <span key={k} aria-hidden className={cn("absolute rounded-full opacity-85", cl as string)} style={{ left: `calc(50% + ${x}px)`, top: y as number, width: r as number, height: r as number, background: c as string }} />
           ))}
@@ -244,6 +245,7 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
             </div>
           ))}
           {phone}
+        </div>
         </div>
         {/* Téléphone et tablette : téléphone au centre, atouts en dessous */}
         <div className="flex flex-col items-center gap-6 lg:hidden">
@@ -280,17 +282,17 @@ const Etapes = () => {
   ];
   return (
     <section className="bg-white">
-      <Container className="flex flex-col gap-11 py-14 md:py-[100px]">
+      <Container className="flex flex-col gap-9 py-14 md:py-[84px]">
         <SectionHead center eyebrow="Comment ça se passe" title={<>Votre recherche, <Em>étape par étape</Em></>} />
         <ol className="m-0 grid list-none grid-cols-1 gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
           {steps.map((s, i) => (
-            <li key={s.t} className={cn("flex flex-col gap-3.5 rounded-[18px] bg-white p-[22px]", FRAME_SHADOW)}>
+            <li key={s.t} className={cn("flex flex-col gap-3 rounded-[18px] bg-white p-5", FRAME_SHADOW)}>
               <div className="flex items-center justify-between">
-                <span className={cn("grid h-[50px] w-[50px] place-items-center rounded-full", i === 0 ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{s.icon}</span>
-                <span className="font-display text-[30px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
+                <span className={cn("grid h-11 w-11 place-items-center rounded-full", i === 0 ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{s.icon}</span>
+                <span className="font-display text-[26px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
               </div>
-              <span className="text-[17px] font-extrabold text-brand-ink">{s.t}</span>
-              <span className="text-[15px] leading-normal text-brand-txt">{s.d}</span>
+              <span className="text-[16px] font-extrabold text-brand-ink">{s.t}</span>
+              <span className="text-[14.5px] leading-normal text-brand-txt">{s.d}</span>
             </li>
           ))}
         </ol>
@@ -377,7 +379,6 @@ const Recherche = () => {
     }
   };
 
-  const tags = [type, usage !== "Résidence principale" && usage, ...secteurs.slice(0, 3), pieces.length ? `${pieces.join(" ou ")} pièces` : "", budget].filter(Boolean) as string[];
 
   const left = (
     <div className="flex min-w-0 flex-col gap-7 lg:pt-10">
@@ -398,18 +399,12 @@ const Recherche = () => {
     <section id="recherche" className="bg-brand">
       <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-10 py-14 md:py-[100px] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.25fr)]">
         {left}
-        <div ref={ref} className="relative min-w-0 scroll-mt-28 lg:mt-[110px]">
-          {step < 4 && tags.length > 0 && (
-            <div className="anim-float absolute -right-[22px] bottom-[calc(100%-26px)] z-[3] hidden w-[280px] flex-col gap-2.5 rounded-[18px] bg-white px-4 py-3.5 shadow-[0_30px_60px_-24px_rgba(0,0,0,0.55)] lg:flex">
-              <div className="flex items-center gap-2"><span className="anim-blink h-2 w-2 rounded-full bg-[#2E9A66]" /><span className="text-xs font-extrabold uppercase tracking-[0.14em] text-brand-orange-text">Votre recherche</span></div>
-              <div className="flex flex-wrap gap-1.5">{tags.map((t) => <span key={t} className="inline-flex h-8 items-center rounded-full border border-brand-line bg-brand-pale px-3 text-[13.5px] font-bold text-brand-ink">{t}</span>)}</div>
-            </div>
-          )}
+        <div ref={ref} className="relative min-w-0 scroll-mt-28 lg:mt-6">
           <div className="relative flex min-h-[540px] flex-col gap-[22px] rounded-[26px] bg-white p-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:p-[34px]">
-            <h3 className={cn("m-0 font-display text-[28px] font-medium text-brand-ink md:text-[30px]", step < 4 && "lg:pr-60")}>Votre recherche, <Em>en 3 temps</Em></h3>
+            <h3 className="m-0 font-display text-[26px] font-medium text-brand-ink md:text-[28px]">Votre recherche, <Em>en 3 temps</Em></h3>
             <div className="hidden sm:block"><Steps labels={["Votre projet", "Vos critères", "Vos coordonnées"]} current={step} /></div>
             <div className="sm:hidden"><Steps labels={["Votre projet", "Vos critères", "Vos coordonnées"]} current={step} compact /></div>
-            <div className="flex flex-1 flex-col gap-[22px]">
+            <div key={step} className="fx-fade flex flex-1 flex-col gap-[22px]">
               {step === 1 && (
                 <>
                   <Group title="Quel type de bien ?">

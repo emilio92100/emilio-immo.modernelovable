@@ -3,9 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { SiteModalsProvider } from "./components/site/SiteModals";
+import { PageFx } from "./components/site/PageFx";
 import Acheter from "./pages/Acheter";
 import Honoraires from "./pages/Honoraires";
 import Index from "./pages/Index";
@@ -37,10 +38,14 @@ export const Providers = ({ children }: { children: ReactNode }) => (
 );
 
 /** Toutes les routes du site. */
-export const AppRoutes = () => (
+export const AppRoutes = () => {
+  const location = useLocation();
+  return (
   <SiteModalsProvider>
     <ScrollToTop />
-    <Routes>
+    <PageFx />
+    {/* Clé = adresse : chaque page s'affiche avec sa transition, même entre deux pages du même modèle. */}
+    <Routes location={location} key={location.pathname}>
       <Route path="/" element={<Index />} />
       <Route path="/biens" element={<Properties />} />
       <Route path="/biens/:id" element={<PropertyDetail />} />
@@ -73,7 +78,8 @@ export const AppRoutes = () => (
       <Route path="*" element={<NotFound />} />
     </Routes>
   </SiteModalsProvider>
-);
+  );
+};
 
 const App = () => (
   <Providers>

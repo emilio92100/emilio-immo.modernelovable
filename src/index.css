@@ -157,3 +157,30 @@
 
 /* Ancres : laisser la place à l'en-tête collant */
 [id] { scroll-margin-top: 96px; }
+
+/* Jamais de défilement horizontal de la page (téléphones étroits) */
+body { overflow-x: clip; }
+@supports not (overflow-x: clip) { body { overflow-x: hidden; } }
+
+/* ── Fluidité : arrivée sur une page, menu, sections, images ── */
+@keyframes page-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes nav-line { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+main { animation: page-in .55s cubic-bezier(.2, .7, .2, 1) both; }
+.nav-link::after {
+  content: ""; position: absolute; left: 14px; right: 14px; bottom: 0; height: 2px; border-radius: 2px;
+  background: #E68B23; transform: scaleX(0); transform-origin: left center; transition: transform .35s cubic-bezier(.2, .7, .2, 1);
+}
+.nav-link:hover::after { transform: scaleX(.35); }
+.nav-active::after { transform: scaleX(1); animation: nav-line .5s .08s cubic-bezier(.2, .7, .2, 1) both; }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1); }
+.reveal.is-in { opacity: 1; transform: none; }
+img.img-fade { opacity: 0; transition: opacity .6s ease; }
+img.img-fade.is-loaded { opacity: 1; }
+.fx-fade { animation: fade-up .4s cubic-bezier(.2, .7, .2, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  main, .nav-active::after, .fx-fade { animation: none !important; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  img.img-fade { opacity: 1; transition: none; }
+}
