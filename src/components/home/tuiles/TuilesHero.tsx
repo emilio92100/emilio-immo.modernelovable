@@ -68,7 +68,7 @@ const Recherche = () => {
   return (
     <form
       onSubmit={envoyer}
-      className="relative z-[3] mx-2.5 rounded-[26px] bg-white p-2.5 shadow-[0_40px_70px_-40px_rgba(19,36,61,0.55),0_0_0_1px_rgba(19,36,61,0.06)] md:absolute md:bottom-[-64px] md:left-1/2 md:mx-0 md:w-[min(1060px,calc(100%-80px))] md:-translate-x-1/2 md:rounded-[30px] md:p-3"
+      className="relative z-[3] mx-2.5 rounded-[26px] bg-white p-2.5 shadow-[0_40px_70px_-40px_rgba(19,36,61,0.55),0_0_0_1px_rgba(19,36,61,0.06)] md:absolute md:bottom-[-64px] md:left-1/2 md:mx-0 md:w-[min(1140px,calc(100%-80px))] md:-translate-x-1/2 md:rounded-[30px] md:p-3"
     >
       <div role="tablist" aria-label="Votre projet" className="mb-2.5 flex gap-1 rounded-[18px] bg-brand-surf p-1 md:inline-flex">
         {ONGLETS.map((o) => (
@@ -119,8 +119,8 @@ const CONFIANCE = [
 ];
 
 const TuilesHero = () => (
-  <section className="mx-auto w-full max-w-[1320px] px-4 md:px-10">
-    <div className="relative rounded-[30px] md:h-[640px] md:rounded-[40px]">
+  <section className="mx-auto w-full max-w-[1560px] px-3 md:px-6">
+    <div className="relative rounded-[30px] md:h-[660px] md:rounded-[40px]">
       {/* La photo et son voile */}
       <div className="absolute inset-x-0 top-0 h-[600px] overflow-hidden rounded-[30px] bg-[#DFE8F2] md:inset-0 md:h-auto md:rounded-[40px]">
         <img
@@ -141,7 +141,10 @@ const TuilesHero = () => (
           Votre projet immobilier,{" "}
           <span className="relative z-0 whitespace-nowrap">
             simplement.
-            <span aria-hidden className="absolute -left-0.5 -right-1 bottom-1 -z-10 h-3.5 rounded-full bg-[#FAD3A0] md:bottom-2 md:h-[18px]" />
+            {/* Le trait bleu Emilio, qui se dessine à l’arrivée */}
+            <svg aria-hidden viewBox="0 0 300 22" preserveAspectRatio="none" className="absolute -left-1 right-2 top-full -mt-1.5 h-[13px] w-[calc(100%-4px)] overflow-visible md:-mt-2.5 md:h-[20px]">
+              <path d="M4 15 C 70 6, 170 3, 296 9" fill="none" stroke="#22497D" strokeWidth="7" strokeLinecap="round" pathLength={1} className="trait-dessine" />
+            </svg>
           </span>
         </h1>
         <p className="fx-fade m-0 max-w-[600px] text-base font-medium leading-[1.55] text-[#33445B] md:text-[19px]">
