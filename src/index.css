@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -69,6 +69,10 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
   }
+  /* Direction « Tuiles » : tout en Plus Jakarta Sans, titres compris */
+  .font-jakarta h1, .font-jakarta h2, .font-jakarta h3, .font-jakarta h4 {
+    font-family: 'Plus Jakarta Sans', 'Albert Sans', system-ui, sans-serif;
+  }
 }
 
 @layer utilities {
@@ -115,6 +119,7 @@
 @keyframes ec-notif { 0% { opacity: 0; transform: translateY(-16px) scale(.94); } 6%, 62% { opacity: 1; transform: none; } 70%, 100% { opacity: 0; transform: translateY(-10px) scale(.97); } }
 @keyframes ec-tap { 0%, 62% { transform: scale(.5); opacity: 0; } 70% { opacity: .75; } 100% { transform: scale(1.9); opacity: 0; } }
 @keyframes ec-pin { 0% { opacity: 0; transform: translate(-50%, -30%) scale(.6); } 8%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 88%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.8); } }
+@keyframes em-swipe { 0%, 100% { transform: translateX(0) rotate(0); } 40% { transform: translateX(-6px) rotate(-8deg); } 70% { transform: translateX(4px) rotate(4deg); } }
 @keyframes em-drift { 0% { transform: scale(1.015) translateX(0); } 100% { transform: scale(1.045) translateX(-0.8%); } }
 
 @layer utilities {
@@ -135,6 +140,7 @@
   .anim-tap { animation: ec-tap 3.6s ease-out infinite; }
   .anim-pin { animation: ec-pin 9s ease-in-out infinite both; }
   .anim-drift { animation: em-drift 22s ease-in-out infinite alternate; }
+  .anim-swipe { animation: em-swipe 1.8s ease-in-out infinite; }
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
   .no-scrollbar { scrollbar-width: none; }
@@ -143,7 +149,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .anim-spin-90, .anim-spin-90-r, .anim-spin-60, .anim-spin-60-r, .anim-spin-16, .anim-float, .anim-blink, .anim-glow,
-  .anim-phone, .anim-bob-a, .anim-bob-b, .anim-bob-c, .anim-highlight, .anim-notif, .anim-tap, .anim-pin, .anim-drift { animation: none !important; }
+  .anim-phone, .anim-bob-a, .anim-bob-b, .anim-bob-c, .anim-highlight, .anim-notif, .anim-tap, .anim-pin, .anim-drift, .anim-swipe { animation: none !important; }
 }
 
 /* Carte des secteurs : survol des zones */
