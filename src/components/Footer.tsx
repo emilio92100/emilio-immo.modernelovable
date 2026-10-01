@@ -82,13 +82,13 @@ const Footer = () => {
         </Container>
       </footer>
       {/* Barre fixe sur téléphone */}
-      <div className="h-[84px] md:hidden" aria-hidden />
-      <div className="fixed inset-x-0 bottom-0 z-40 flex gap-2.5 border-t border-brand-line bg-white px-4 pb-3.5 pt-3 shadow-[0_-10px_28px_-18px_rgba(19,36,61,0.45)] md:hidden">
-        <a href={TEL_HREF} className="inline-flex h-[52px] flex-1 items-center justify-center gap-2 rounded-[10px] border-[1.5px] border-brand text-[15.5px] font-bold text-brand">
-          <Phone className="h-[18px] w-[18px]" /> Appeler
+      <div className="h-[80px] md:hidden" aria-hidden />
+      <div className="fixed bottom-0 left-0 z-40 flex w-full max-w-[100vw] gap-2 border-t border-brand-line bg-white px-3 pt-2.5 shadow-[0_-10px_28px_-18px_rgba(19,36,61,0.45)] md:hidden" style={{ paddingBottom: "max(10px, env(safe-area-inset-bottom))" }}>
+        <a href={TEL_HREF} className="inline-flex h-[50px] min-w-0 flex-[1_1_0%] items-center justify-center gap-1.5 whitespace-nowrap rounded-[10px] border-[1.5px] border-brand px-2 text-[15px] font-bold text-brand">
+          <Phone className="h-[17px] w-[17px] flex-none" /> Appeler
         </a>
-        <button type="button" onClick={() => openEstimation()} className="inline-flex h-[52px] flex-[1.5] items-center justify-center gap-2 rounded-[10px] bg-brand-orange text-[15.5px] font-extrabold text-brand-ink">
-          <LineChart className="h-[18px] w-[18px]" /> Estimer mon bien
+        <button type="button" onClick={() => openEstimation()} className="inline-flex h-[50px] min-w-0 flex-[1.6_1_0%] items-center justify-center gap-1.5 whitespace-nowrap rounded-[10px] bg-brand-orange px-2 text-[15px] font-extrabold text-brand-ink">
+          <LineChart className="h-[17px] w-[17px] flex-none" /> <span className="truncate">Estimer mon bien</span>
         </button>
       </div>
     </>
