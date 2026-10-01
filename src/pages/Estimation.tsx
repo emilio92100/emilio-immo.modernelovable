@@ -1,56 +1,43 @@
+/* Page « Estimation » (refonte 2026). Le formulaire est la fenêtre d'estimation commune (CRM + DVF). */
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import {
-  TrendingUp,
-  ShieldCheck,
-  Database,
-  MapPin,
-  Clock,
-  CheckCircle2,
-  ArrowRight,
-  Phone,
-  Calculator,
-  Sparkles,
-  Lock,
-} from "lucide-react";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
+import { ArrowRight, ClipboardCheck, Database, FileText, LineChart, Lock, MapPin, Phone, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SEOHead from "@/components/SEOHead";
-import EstimationPopup from "@/components/EstimationPopup";
+import SEOHead, { SITE_URL } from "@/components/SEOHead";
+import { cn } from "@/lib/utils";
 import { cityList } from "@/lib/cities";
+import { useSiteModals } from "@/components/site/SiteModals";
+import { Btn, Checks, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF } from "@/components/site/ui";
+import { EstimerCard } from "@/components/site/EstimerCard";
+import { FaqSection, faqJsonLd } from "@/components/site/Faq";
+import { eurM2 } from "@/components/site/CityParts";
 
-const PAGE_URL = "https://www.emilio-immo.com/estimation";
+const URL = `${SITE_URL}/estimation`;
 
-const faqs = [
+const FAQS = [
   {
-    q: "L'estimation est-elle vraiment gratuite et sans engagement ?",
-    a: "Oui. L'estimation en ligne est 100 % gratuite et sans engagement. Un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée. Si vous souhaitez un avis de valeur écrit signé par un de nos experts, nous nous déplaçons également sans frais ni obligation de mandat.",
+    q: "L’estimation est-elle vraiment gratuite et sans engagement ?",
+    a: "Oui. L’estimation en ligne est gratuite et sans engagement : vous voyez une première fourchette tout de suite, puis un membre de l’équipe vous rappelle sous 24 h pour l’affiner. Si vous le souhaitez, nous venons voir le bien et vous remettons un avis de valeur écrit, sans frais ni obligation de mandat.",
   },
   {
     q: "Comment calculez-vous la valeur de mon appartement ?",
-    a: "Notre estimation s'appuie sur trois sources : la base DVF (Demandes de Valeurs Foncières) publiée par l'État qui recense toutes les transactions notariées, les comparables actifs sur le marché et notre connaissance terrain (étage, exposition, vue, état de la copropriété, DPE).",
+    a: "À partir de trois sources : la base DVF (Demandes de valeurs foncières) publiée par l’État, qui recense les ventes enregistrées chez les notaires ; les biens comparables actuellement en vente ; et notre connaissance du terrain : étage, exposition, vue, état de la copropriété, DPE.",
   },
   {
-    q: "Combien de temps prend l'estimation ?",
-    a: "Après réception de votre demande, un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée. Pour un avis de valeur signé après visite, comptez 24 à 48h après notre passage.",
+    q: "Combien de temps prend l’estimation ?",
+    a: "Deux minutes pour remplir le formulaire et voir une première fourchette. Un membre de l’équipe vous rappelle ensuite sous 24 h. Pour un avis de valeur écrit après visite, comptez 24 à 48 h après notre passage.",
   },
   {
     q: "Mes données sont-elles confidentielles ?",
-    a: "Absolument. Vos coordonnées et l'adresse de votre bien ne sont jamais transmises à des tiers, jamais revendues, et ne servent qu'à vous adresser votre estimation et un éventuel suivi.",
+    a: "Oui. Vos coordonnées et l’adresse de votre bien ne sont jamais revendues ni transmises à d’autres agences. Elles servent uniquement à vous répondre et à suivre votre demande.",
   },
   {
-    q: "Sur quelles villes intervenez-vous ?",
-    a: "Nous intervenons sur Paris (6ᵉ, 7ᵉ, 15ᵉ, 16ᵉ) et les Hauts-de-Seine (Boulogne-Billancourt, Neuilly-sur-Seine, Issy-les-Moulineaux, Levallois-Perret). Pour les communes limitrophes, contactez-nous directement.",
+    q: "Sur quels secteurs intervenez-vous ?",
+    a: "À Paris dans les 6e, 7e, 15e, 16e et 17e arrondissements, et dans les Hauts-de-Seine : Boulogne-Billancourt, Neuilly-sur-Seine, Issy-les-Moulineaux, Levallois-Perret, Saint-Cloud, Garches, Clamart et d’autres communes du 92. Pour une autre commune, contactez-nous.",
   },
   {
-    q: "Quelle est la différence entre l'estimation en ligne et l'avis de valeur ?",
-    a: "L'estimation en ligne donne une fourchette indicative basée sur les transactions du quartier. L'avis de valeur, lui, intègre la visite physique du bien (étage, vue, travaux, prestations de la copropriété) et constitue un document opposable et précis utilisable pour une succession, un divorce ou la mise en vente.",
+    q: "Quelle différence entre l’estimation en ligne et l’avis de valeur ?",
+    a: "L’estimation en ligne donne une fourchette indicative, à partir des ventes du secteur. L’avis de valeur tient compte de la visite du bien (étage, vue, travaux, prestations de l’immeuble) : c’est un document écrit et argumenté, utile pour une mise en vente, une succession ou un partage.",
   },
 ];
 
@@ -60,307 +47,141 @@ const jsonLd = {
     {
       "@type": "Service",
       name: "Estimation immobilière gratuite",
-      provider: {
-        "@type": "RealEstateAgent",
-        name: "Emilio Immobilier",
-        url: "https://www.emilio-immo.com",
-        telephone: "+33184801400",
-        areaServed: ["Paris 6e", "Paris 7e", "Paris 15e", "Paris 16e", "Boulogne-Billancourt", "Neuilly-sur-Seine", "Issy-les-Moulineaux", "Levallois-Perret"],
-      },
-      areaServed: "Paris & Hauts-de-Seine",
-      description: "Estimation immobilière gratuite pour appartements à Paris et dans les Hauts-de-Seine. Méthode basée sur la base DVF officielle et l'expertise locale. Réponse d'un conseiller sous 24h.",
+      serviceType: "Estimation immobilière",
+      provider: { "@type": "RealEstateAgent", name: "Emilio Immobilier", url: SITE_URL, telephone: "+33184801400" },
+      areaServed: ["Paris 6e", "Paris 7e", "Paris 15e", "Paris 16e", "Paris 17e", "Boulogne-Billancourt", "Neuilly-sur-Seine", "Issy-les-Moulineaux", "Levallois-Perret", "Hauts-de-Seine"].map((name) => ({ "@type": "Place", name })),
+      description: "Estimation gratuite de votre appartement ou de votre maison à Paris et dans les Hauts-de-Seine, à partir des ventes DVF et de la connaissance du terrain.",
       offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
-      url: PAGE_URL,
+      url: URL,
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: faqs.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
-    },
+    faqJsonLd(FAQS),
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.emilio-immo.com/" },
-        { "@type": "ListItem", position: 2, name: "Estimation", item: PAGE_URL },
+        { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Estimation", item: URL },
       ],
     },
   ],
 };
 
 const EstimationPage = () => {
+  const { openEstimation } = useSiteModals();
+  const etapes = [
+    { t: "Votre bien en 2 minutes", d: "L’adresse, le type de bien, la surface et votre projet." },
+    { t: "Une première fourchette", d: "Calculée tout de suite à partir des ventes récentes du secteur." },
+    { t: "L’avis d’un membre de l’équipe", d: "Il vous rappelle sous 24 h, et peut venir voir le bien si vous le souhaitez." },
+  ];
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <SEOHead
-        title="Estimation immobilière gratuite Paris & Hauts-de-Seine | Emilio Immobilier"
-        description="Estimation gratuite de votre appartement à Paris et dans les Hauts-de-Seine. Méthode DVF + expertise locale. Sans engagement, réponse d'un conseiller sous 24h."
-        canonical={PAGE_URL}
+        title="Estimation immobilière gratuite à Paris et dans les Hauts-de-Seine | Emilio"
+        description="Estimez gratuitement votre appartement ou votre maison à Paris 6e, 7e, 15e, 16e, 17e, Boulogne, Neuilly, Issy, Levallois : première fourchette immédiate, puis l’avis d’un membre de l’équipe sous 24 h."
+        canonical={URL}
         jsonLd={jsonLd}
       />
       <Navbar />
-
-      {/* HERO */}
-      <section className="relative pt-32 pb-24 md:pt-44 md:pb-36 bg-primary overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.04]">
-          <div className="absolute top-20 left-10 w-72 h-72 rounded-full border border-primary-foreground" />
-          <div className="absolute bottom-10 right-20 w-96 h-96 rounded-full border border-primary-foreground" />
-        </div>
-        <div className="container mx-auto px-5 md:px-6 relative text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-4 py-2 mb-8">
-              <Calculator className="w-4 h-4 text-accent" />
-              <span className="font-body text-accent text-sm font-semibold tracking-wide uppercase">
-                Service gratuit · sans engagement
+      <main>
+        <section className="bg-brand-pale">
+          <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 pb-14 pt-6 md:pb-[80px] md:pt-10">
+            <div className="flex min-w-0 flex-[1_1_540px] flex-col gap-[22px]">
+              <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Estimation" }]} />
+              <Eyebrow>Gratuit · sans engagement</Eyebrow>
+              <h1 className="m-0 font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+                Estimation immobilière gratuite, <Em wrap>à Paris et dans les Hauts-de-Seine</Em>
+              </h1>
+              <p className="m-0 max-w-[580px] text-lg leading-relaxed text-brand-txt text-pretty">
+                Une première fourchette tout de suite, à partir des ventes notariées du secteur. Puis l’avis d’un membre de l’équipe, qui connaît votre quartier.
+              </p>
+              <div className="pt-1"><EstimerCard /></div>
+              <span className="text-[14.5px] text-brand-mut">
+                Vous préférez en parler ? <a href={TEL_HREF} className="inline-flex min-h-[44px] items-center font-bold text-brand">{TEL}</a>
               </span>
             </div>
-            <h1 className="font-display text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl text-primary-foreground leading-[1.1] mb-8">
-              Estimation immobilière{" "}
-              <span className="italic text-accent whitespace-nowrap">gratuite & personnalisée</span>
-            </h1>
-            <p className="font-body text-primary-foreground/80 text-base md:text-2xl leading-relaxed max-w-3xl mx-auto mb-10">
-              Confiez-nous les caractéristiques de votre appartement à Paris ou dans les Hauts-de-Seine.
-              Un conseiller vous rappelle sous 24h avec une fourchette de prix basée sur les transactions notariées récentes et notre expertise terrain.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <EstimationPopup
-                trigger={
-                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-7 py-4 rounded-full font-body font-semibold text-base hover:brightness-110 transition-all">
-                    <TrendingUp className="w-5 h-5" /> Estimer mon bien gratuitement
-                  </button>
-                }
-              />
-              <a
-                href="tel:+33184801400"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/25 text-primary-foreground px-7 py-4 rounded-full font-body font-medium text-base hover:bg-primary-foreground/5 transition-all"
-              >
-                <Phone className="w-5 h-5" /> Parler à un expert
-              </a>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-primary-foreground/60 text-sm font-body">
-              <span className="inline-flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-accent" /> 100 % gratuit</span>
-              <span className="inline-flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-accent" /> Sans engagement</span>
-              <span className="inline-flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-accent" /> Données confidentielles</span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* MÉTHODOLOGIE */}
-      <section className="py-24 md:py-32 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-6xl">
-          <div className="text-center mb-16">
-            <span className="inline-block text-xs uppercase tracking-[0.2em] text-accent font-semibold font-body">Notre méthode</span>
-            <h2 className="font-display text-3xl md:text-5xl text-foreground mt-4">
-              Une estimation <span className="italic text-accent">fiable</span>, pas un chiffre au hasard
-            </h2>
-            <p className="font-body text-muted-foreground text-base md:text-lg mt-6 max-w-3xl mx-auto leading-relaxed">
-              Trois piliers pour une valorisation réaliste, défendable face aux acheteurs et conforme aux pratiques notariales.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: Database,
-                title: "Base DVF officielle",
-                desc: "Nous interrogeons en temps réel la base des Demandes de Valeurs Foncières publiée par la DGFIP : toutes les transactions notariées des 5 dernières années dans votre secteur.",
-              },
-              {
-                icon: MapPin,
-                title: "Expertise locale terrain",
-                desc: "Nos conseillers parcourent vos quartiers chaque semaine. Étage, exposition, état de la copropriété, vue, DPE : autant de critères que les algorithmes ignorent.",
-              },
-              {
-                icon: ShieldCheck,
-                title: "Avis de valeur signé",
-                desc: "Au-delà du chiffre, nous remettons un document écrit, argumenté, comparables à l'appui. Opposable en cas de succession, divorce ou contestation fiscale.",
-              },
-            ].map((m) => (
-              <div key={m.title} className="bg-card border border-border rounded-2xl p-8">
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-5">
-                  <m.icon className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="font-display text-xl text-foreground mb-3">{m.title}</h3>
-                <p className="font-body text-muted-foreground leading-relaxed text-sm">{m.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PRIX PAR VILLE */}
-      <section className="py-24 md:py-32 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-6xl">
-          <div className="text-center mb-14">
-            <span className="inline-block text-xs uppercase tracking-[0.2em] text-accent font-semibold font-body">Prix au m² 2026</span>
-            <h2 className="font-display text-3xl md:text-5xl text-foreground mt-4">
-              Combien vaut un appartement <span className="italic text-accent">dans votre ville</span> ?
-            </h2>
-            <p className="font-body text-muted-foreground text-base md:text-lg mt-6 max-w-3xl mx-auto leading-relaxed">
-              Aperçu des prix médians actuels sur nos zones d'intervention. Cliquez sur votre ville pour le détail complet et lancer votre estimation.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {cityList.map((c) => (
-              <Link
-                key={c.slug}
-                to={`/vendre-appartement-${c.slug}`}
-                className="group bg-card border border-border rounded-2xl p-6 hover:border-accent transition-all hover:shadow-lg"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-display text-lg text-foreground group-hover:text-accent transition-colors">{c.name}</h3>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all" />
-                </div>
-                <div className="font-display text-2xl text-foreground mb-1">
-                  ≈ {c.pricePerSqm.mid.toLocaleString("fr-FR")} €/m²
-                </div>
-                <div className="font-body text-xs text-muted-foreground">
-                  De {c.pricePerSqm.low.toLocaleString("fr-FR")} à {c.pricePerSqm.high.toLocaleString("fr-FR")} €/m²
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* CTA intermédiaire */}
-          <div className="mt-16 text-center">
-            <EstimationPopup
-              trigger={
-                <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-7 py-4 rounded-full font-body font-semibold text-base hover:brightness-110 transition-all shadow-md">
-                  <TrendingUp className="w-5 h-5" /> Estimer mon bien gratuitement
-                </button>
-              }
-            />
-            <p className="font-body text-muted-foreground text-xs mt-3">
-              Réponse d'un conseiller sous 24h · sans engagement
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* CONFIANCE */}
-      <section className="py-24 md:py-32 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <span className="inline-block text-xs uppercase tracking-[0.2em] text-accent font-semibold font-body">Pourquoi nous</span>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground mt-4 mb-6 leading-tight">
-                Une estimation que vous pouvez <span className="italic text-accent">défendre</span>
-              </h2>
-              <p className="font-body text-muted-foreground text-base leading-relaxed mb-6">
-                Surévaluer un bien, c'est le condamner à rester invisible. Sous-évaluer, c'est offrir des dizaines de milliers d'euros aux acheteurs.
-                Notre estimation n'a qu'un objectif : vous donner le <strong className="text-foreground">juste prix de marché</strong>, celui auquel votre bien partira en moins de 60 jours.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "Méthode transparente : tous les comparables vous sont communiqués",
-                  "Avis de valeur écrit signé par un expert",
-                  "Mise à jour selon l'évolution du marché",
-                  "Engagement : sincérité plutôt que sur-évaluation pour vous séduire",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 font-body text-sm text-foreground">
-                    <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-primary text-primary-foreground rounded-2xl p-10 relative overflow-hidden">
-              <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-accent/10" />
-              <Lock className="w-10 h-10 text-accent mb-5" />
-              <h3 className="font-display text-2xl mb-4">Confidentialité absolue</h3>
-              <p className="font-body text-primary-foreground/75 text-sm leading-relaxed mb-6">
-                Vos coordonnées et l'adresse de votre bien ne sont <strong>jamais</strong> diffusées, jamais revendues à des tiers,
-                jamais transmises à d'autres agences. Conformité RGPD garantie.
-              </p>
-              <div className="flex items-center gap-3 text-sm font-body text-accent">
-                <Sparkles className="w-4 h-4" />
-                Réponse personnelle d'un conseiller sous 24h
+            <div className="min-w-0 flex-[1_1_420px]">
+              <div className="relative mx-4 mb-4">
+                <span aria-hidden className="absolute -bottom-4 -right-4 h-[62%] w-[60%] rounded-[28px] bg-brand" />
+                <ol className={cn("relative m-0 flex list-none flex-col gap-5 rounded-[24px] bg-white p-6 md:p-8", FRAME_SHADOW)}>
+                  <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Comment ça marche</span>
+                  {etapes.map((e, i) => (
+                    <li key={e.t} className="flex gap-4">
+                      <span className={cn("grid h-11 w-11 flex-none place-items-center rounded-full font-display text-[20px]", i === 0 ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{i + 1}</span>
+                      <span className="flex flex-col gap-0.5">
+                        <span className="text-[16.5px] font-bold text-brand-ink">{e.t}</span>
+                        <span className="text-[15px] leading-relaxed text-brand-txt">{e.d}</span>
+                      </span>
+                    </li>
+                  ))}
+                  <Btn onClick={() => openEstimation()} full iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Commencer mon estimation</Btn>
+                </ol>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </Container>
+        </section>
 
-      {/* FAQ */}
-      <section className="py-24 md:py-32 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-3xl">
-          <div className="text-center mb-12">
-            <span className="inline-block text-xs uppercase tracking-[0.2em] text-accent font-semibold font-body">Questions fréquentes</span>
-            <h2 className="font-display text-3xl md:text-5xl text-foreground mt-4">
-              Tout ce que vous voulez savoir
-            </h2>
-          </div>
-          <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((f, i) => (
-              <AccordionItem
-                key={i}
-                value={`f${i}`}
-                className="bg-card border border-border rounded-xl px-5"
-              >
-                <AccordionTrigger className="font-body font-semibold text-left text-foreground hover:no-underline">
-                  {f.q}
-                </AccordionTrigger>
-                <AccordionContent className="font-body text-muted-foreground leading-relaxed">
-                  {f.a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
+        <section className="bg-white">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead center eyebrow="Notre méthode" title={<>Une estimation <Em>fiable</Em>, pas un chiffre au hasard</>} lead="Trois sources pour un prix réaliste, que vous pourrez défendre face aux acheteurs." className="max-w-[780px]" />
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {[
+                { icon: Database, t: "Les ventes DVF", d: "La base publiée par l’État, qui recense les ventes enregistrées chez les notaires dans votre secteur ces dernières années." },
+                { icon: MapPin, t: "Le terrain", d: "Étage, exposition, vue, état de la copropriété, DPE : ce que les algorithmes ne voient pas, et que nous connaissons rue par rue." },
+                { icon: FileText, t: "Un avis de valeur écrit", d: "Au-delà du chiffre, un document argumenté, comparables à l’appui, que vous pouvez garder pour la suite de votre projet." },
+              ].map((m) => (
+                <article key={m.t} className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand text-white"><m.icon className="h-[22px] w-[22px]" /></span>
+                  <h3 className="m-0 font-display text-[24px] font-medium text-brand-ink">{m.t}</h3>
+                  <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt text-pretty">{m.d}</p>
+                </article>
+              ))}
+            </div>
+          </Container>
+        </section>
 
-      {/* CTA FINAL */}
-      <section className="py-20 md:py-28 bg-primary">
-        <div className="container mx-auto px-5 md:px-6 text-center max-w-3xl">
-          <Clock className="w-10 h-10 text-accent mx-auto mb-6" />
-          <h2 className="font-display text-3xl md:text-5xl text-primary-foreground mb-5 leading-tight">
-            Lancez votre estimation maintenant
-          </h2>
-          <p className="font-body text-primary-foreground/75 text-base md:text-lg mb-9 max-w-xl mx-auto">
-            Aucun engagement. Un conseiller vous rappelle sous 24h avec une fourchette de prix personnalisée, accompagnée d'un avis de valeur si vous le souhaitez.
-          </p>
-          <EstimationPopup
-            trigger={
-              <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-full font-body font-semibold text-base hover:brightness-110 transition-all">
-                <TrendingUp className="w-5 h-5" /> Estimer mon bien gratuitement
-              </button>
-            }
-          />
-        </div>
-      </section>
+        <section className="bg-brand-pale">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead eyebrow="Prix au m²" title={<>Combien vaut un appartement <Em>dans votre ville</Em>{"\u00a0"}?</>} lead="Les prix moyens sur nos secteurs. Ouvrez votre ville pour le détail par quartier." />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {cityList.map((c) => (
+                <Link key={c.slug} to={`/vendre-appartement-${c.slug}`} className={cn("group flex flex-col gap-2 rounded-[20px] bg-white p-5 transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
+                  <span className="inline-flex items-center gap-1.5 text-[13px] font-bold text-brand-mut"><MapPin className="h-3.5 w-3.5 text-brand-orange-text" /> {c.postalCodes.join(" · ")}</span>
+                  <span className="font-display text-[24px] leading-tight text-brand-ink">{c.name}</span>
+                  <span className="text-[15px] text-brand-txt">≈ <strong className="text-brand-ink">{eurM2(c.pricePerSqm.mid)}</strong></span>
+                  <span className="mt-1 inline-flex items-center gap-1.5 text-[14.5px] font-bold text-brand">Vendre {c.name.startsWith("Paris") ? "dans le " + c.name.replace("Paris ", "") : "à " + c.name} <ArrowRight className="h-4 w-4 text-brand-orange transition-transform group-hover:translate-x-1" /></span>
+                </Link>
+              ))}
+            </div>
+          </Container>
+        </section>
 
+        <section className="bg-white">
+          <Container className="grid grid-cols-1 items-center gap-x-16 gap-y-10 py-14 md:grid-cols-2 md:py-[96px]">
+            <div className="flex flex-col gap-6">
+              <SectionHead eyebrow="Pourquoi nous" title={<>Une estimation que vous pouvez <Em>défendre</Em></>} lead="Surévaluer un bien, c’est le laisser sans visites. Le sous-évaluer, c’est offrir des milliers d’euros à l’acheteur. Notre seul objectif : le juste prix du marché." />
+              <Checks items={["Une méthode transparente : les ventes comparables vous sont communiquées", "Un avis de valeur écrit, si vous le souhaitez", "Une valeur mise à jour quand le marché bouge", "La sincérité plutôt qu’un prix gonflé pour vous séduire"]} />
+              <div className="flex flex-wrap gap-3 pt-1">
+                <Btn onClick={() => openEstimation()} iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
+                <Btn variant="outline" href={TEL_HREF} iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4 rounded-[24px] bg-brand p-7 text-brand-bt md:p-9">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-orange text-brand-ink"><Lock className="h-[22px] w-[22px]" /></span>
+              <h2 className="m-0 font-display text-[28px] font-medium leading-tight text-white">Vos informations restent <Em dark>confidentielles</Em></h2>
+              <p className="m-0 text-[16px] leading-relaxed">Vos coordonnées et l’adresse de votre bien ne sont jamais diffusées, jamais revendues, jamais transmises à d’autres agences.</p>
+              <div className="flex flex-col gap-2.5 pt-1">
+                {[[ShieldCheck, "Données protégées, conformément au RGPD"], [ClipboardCheck, "Une réponse personnelle sous 24 h"]].map(([I, t]) => {
+                  const Icon = I as typeof Lock;
+                  return <span key={t as string} className="inline-flex items-center gap-2.5 text-[15px] font-semibold text-white"><Icon className="h-[18px] w-[18px] text-brand-orange" /> {t as string}</span>;
+                })}
+              </div>
+              <Link to="/mentions-legales#donnees" className="inline-flex min-h-[44px] items-center gap-1.5 self-start text-[14.5px] font-bold text-white underline-offset-4 hover:underline">Notre politique de confidentialité <ArrowRight className="h-4 w-4 text-brand-orange" /></Link>
+            </div>
+          </Container>
+        </section>
+
+        <FaqSection title={<>L’estimation, <Em>vos questions</Em></>} items={FAQS} />
+      </main>
       <Footer />
-
-      {/* CTA flottant sticky — toujours visible au scroll */}
-      <div className="fixed bottom-4 left-0 right-0 z-40 px-4 pointer-events-none md:bottom-6">
-        <div className="container mx-auto flex justify-center md:justify-end">
-          <EstimationPopup
-            trigger={
-              <motion.button
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="pointer-events-auto inline-flex items-center gap-2 bg-accent text-accent-foreground pl-4 pr-5 py-3 rounded-full font-body font-semibold text-sm shadow-2xl shadow-accent/30 hover:brightness-110 transition-all"
-              >
-                <span className="flex w-7 h-7 rounded-full bg-white/25 items-center justify-center">
-                  <TrendingUp className="w-3.5 h-3.5" />
-                </span>
-                Estimer mon bien
-              </motion.button>
-            }
-          />
-        </div>
-      </div>
     </div>
   );
 };

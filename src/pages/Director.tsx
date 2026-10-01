@@ -1,299 +1,190 @@
-import { motion } from "framer-motion";
-import { Award, Users, Target, BadgeCheck, Star, Clock, MessageCircle, ShieldCheck } from "lucide-react";
+/* Page « Notre histoire » (refonte 2026). Pas encore de photos d'équipe : pas de section équipe. */
+import { LineChart, Mail } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
-import alexandreImg from "@/assets/alexandre.png";
+import { cn } from "@/lib/utils";
+import { useSiteModals } from "@/components/site/SiteModals";
+import { Btn, Container, Crumbs, Em, Eyebrow, Filet, FRAME_SHADOW, SectionHead } from "@/components/site/ui";
+import alexandre from "@/assets/refonte/alexandre-detoure.webp";
+import seine from "@/assets/refonte/paris-seine.webp";
 
-
-const stats = [
-  { icon: Award, label: "10+ ans d'expérience" },
-  { icon: Users, label: "200+ clients accompagnés" },
-  { icon: Target, label: "Expert Île-de-France" },
-  { icon: BadgeCheck, label: "Titulaire carte T professionnelle" },
-];
-
-const values = [
-  {
-    icon: MessageCircle,
-    title: "Transparence totale",
-    text: "On vous dit les choses telles qu'elles sont. Pas de promesses en l'air, pas d'estimations gonflées. Vous méritez la vérité pour prendre les bonnes décisions.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Engagement sans faille",
-    text: "Chaque dossier est traité avec la même rigueur, qu'il s'agisse d'un studio ou d'un hôtel particulier. Nous nous engageons sur des résultats, pas sur des mots.",
-  },
-  {
-    icon: Clock,
-    title: "Disponibilité réelle",
-    text: "Soir, week-end, jour férié : quand vous avez besoin de nous, nous répondons. L'immobilier n'attend pas, nous non plus.",
-  },
-  {
-    icon: Star,
-    title: "Excellence du service",
-    text: "Photos professionnelles, dossiers complets, accompagnement juridique, suivi personnalisé — nous ne laissons rien au hasard pour que votre projet aboutisse.",
-  },
-];
-
-const emilioTimeline = [
-  {
-    period: "Septembre 2020",
-    title: "Lancement d'Emilio Immobilier",
-    text: "Création de l'agence avec un premier secteur sur Boulogne-Billancourt. Un démarrage ambitieux, porté par l'envie de faire les choses différemment.",
-  },
-  {
-    period: "2021",
-    title: "Expansion dans les villes limitrophes",
-    text: "Fort d'un bouche-à-oreille rapide, développement sur Neuilly-sur-Seine, Saint-Cloud, Garches et Issy-les-Moulineaux.",
-  },
-  {
-    period: "2023",
-    title: "Implantation à Paris",
-    text: "Ouverture sur les 16e, 15e, 6e et 7e arrondissements — des secteurs où nous sommes aujourd'hui bien établis.",
-  },
-];
-
-const Director = () => {
+const Ctas = ({ estimate = "blue" }: { estimate?: "blue" | "orange" }) => {
+  const { openEstimation, openContact } = useSiteModals();
   return (
-    <div className="min-h-screen">
-      <SEOHead
-        title="Notre Histoire — Emilio Immobilier | Alexandre, fondateur"
-        description="Découvrez l'histoire d'Emilio Immobilier, fondée en 2020 à Boulogne-Billancourt. Une approche humaine et experte de l'immobilier à Paris et Hauts-de-Seine."
-        canonical="https://www.emilio-immo.com/notre-histoire"
-      />
-      <Navbar />
-
-      {/* Hero */}
-      <section className="pt-28 pb-12 bg-primary">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Notre Histoire</h1>
-          <div className="w-16 h-0.5 bg-accent mx-auto" />
-        </div>
-      </section>
-
-      {/* Why the name Emilio? */}
-      <section className="py-16 bg-secondary">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-8">
-              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">L'origine du nom</span>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
-                Pourquoi Emilio Immobilier ?
-              </h2>
-              <div className="w-16 h-0.5 bg-accent mx-auto" />
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-card p-8 md:p-10 rounded-lg border border-border shadow-sm"
-            >
-              <p className="font-body text-muted-foreground text-base leading-relaxed mb-4">
-                Pour moi, le métier d'agent immobilier est avant tout un métier d'humain, de contact et de relation. 
-                Je voulais que le nom de l'agence reflète cette dimension personnelle — quelque chose de chaleureux, 
-                d'accessible, qui sonne comme un prénom plutôt qu'un nom d'entreprise.
-              </p>
-              <p className="font-body text-muted-foreground text-base leading-relaxed">
-                Le nom <span className="text-accent font-semibold">Emilio</span> vient de l'Italie. J'ai de très bons amis italiens, 
-                et c'est lors d'un moment partagé avec eux que l'idée m'est venue. Emilio, c'est simple, 
-                c'est joli, ça se retient facilement — et ça incarne exactement l'esprit que je voulais donner à l'agence : 
-                humain, sincère et mémorable.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Portrait & Bio */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="flex justify-center"
-            >
-              <div className="relative max-w-md">
-                <div className="absolute -inset-3 border-2 border-accent/30 rounded-lg" />
-                <div className="absolute -inset-1 border border-accent/60 rounded-lg" />
-                <div className="relative overflow-hidden rounded-lg shadow-xl">
-                  <img
-                    src={alexandreImg}
-                    alt="Alexandre - Fondateur Emilio Immobilier"
-                    className="w-full"
-                    style={{
-                      maskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
-                      WebkitMaskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
-                    }}
-                  />
-                </div>
-                <div className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-accent rounded-tl-lg" />
-                <div className="absolute -top-3 -right-3 w-8 h-8 border-t-2 border-r-2 border-accent rounded-tr-lg" />
-                <div className="absolute -bottom-3 -left-3 w-8 h-8 border-b-2 border-l-2 border-accent rounded-bl-lg" />
-                <div className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-accent rounded-br-lg" />
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Fondateur & Directeur</span>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-6">Alexandre</h2>
-              <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
-                Passionné par l'immobilier depuis plus de 10 ans, j'ai fondé Emilio Immobilier
-                avec une idée simple : offrir à mes clients le service que j'aurais aimé recevoir moi-même.
-              </p>
-              <p className="font-body text-muted-foreground leading-relaxed mb-6 text-base">
-                Avant de créer Emilio, j'ai évolué au sein de plusieurs agences immobilières reconnues,
-                de réseaux généralistes à des enseignes spécialisées dans l'immobilier de luxe.
-                Ces expériences m'ont permis de développer une vision complète du marché, du bien classique au prestige.
-              </p>
-              <p className="font-body text-muted-foreground leading-relaxed mb-8 text-base">
-                Mon objectif aujourd'hui : que chaque client se sente accompagné, écouté et en confiance
-                du premier appel jusqu'à la signature.
-              </p>
-
-              <div className="grid grid-cols-2 gap-4">
-                {stats.map((item) => (
-                  <div key={item.label} className="flex items-center gap-3 p-3 bg-secondary rounded">
-                    <item.icon className="w-5 h-5 text-accent flex-shrink-0" />
-                    <span className="font-body text-sm text-foreground">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-20 bg-primary">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-14">
-            <span className="font-body text-accent font-semibold text-sm tracking-[0.3em] uppercase">Notre force</span>
-            <h2 className="font-display text-4xl md:text-5xl text-primary-foreground mt-3 mb-4">
-              Une équipe à taille humaine
-            </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-primary-foreground/80 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
-              Chez Emilio, chaque collaborateur partage les mêmes valeurs : l'écoute, l'exigence et le goût du travail bien fait. 
-              Nous formons une équipe soudée où chaque client est connu par son prénom, pas par un numéro de dossier.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {[
-              { value: "5", label: "collaborateurs passionnés" },
-              { value: "100%", label: "des clients suivis personnellement" },
-              { value: "7j/7", label: "à votre écoute" },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <span className="font-display text-4xl md:text-5xl text-accent">{stat.value}</span>
-                <p className="font-body text-primary-foreground/80 text-sm mt-2">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Values – Nos engagements */}
-      <section className="py-20 bg-secondary">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-14">
-            <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Ce qui nous définit</span>
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
-              Nos engagements
-            </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto" />
-          </div>
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {values.map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="group relative bg-card rounded-xl border border-border p-8 hover:border-accent/40 transition-all duration-300 hover:shadow-lg"
-              >
-                <div className="flex items-start gap-5">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-accent transition-colors duration-300">
-                    <item.icon className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl text-foreground mb-2">{item.title}</h3>
-                    <p className="font-body text-muted-foreground text-base leading-relaxed">{item.text}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Parcours / Journey */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-14">
-              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Notre parcours</span>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground mt-3 mb-4">
-                Un chemin guidé par la passion
-              </h2>
-              <div className="w-16 h-0.5 bg-accent mx-auto" />
-            </div>
-
-            <div className="relative">
-              <div className="absolute left-6 top-0 bottom-0 w-px bg-accent/30" />
-              <div className="space-y-0">
-                {emilioTimeline.map((step, i) => (
-                  <motion.div
-                    key={step.period}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: i * 0.15 }}
-                    viewport={{ once: true }}
-                    className="relative flex gap-8 group pb-10 last:pb-0"
-                  >
-                    <div className="relative z-10 flex-shrink-0 mt-1">
-                      <div className="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                        <div className="w-3 h-3 rounded-full bg-accent group-hover:bg-primary-foreground transition-colors duration-300" />
-                      </div>
-                    </div>
-                    <div className="flex-1 bg-card border border-border rounded-lg p-6 shadow-sm group-hover:shadow-lg group-hover:border-accent/40 transition-all duration-300 group-hover:-translate-y-1">
-                      <span className="inline-block font-body text-accent text-sm font-bold tracking-wider uppercase bg-accent/10 px-3 py-1 rounded-full group-hover:bg-accent group-hover:text-primary-foreground transition-all duration-300">
-                        {step.period}
-                      </span>
-                      <h3 className="font-display text-xl text-foreground mt-3 mb-2">{step.title}</h3>
-                      <p className="font-body text-muted-foreground text-base leading-relaxed">{step.text}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <ContactForm />
-      <Footer />
+    <div className="flex flex-wrap gap-3 pt-1">
+      <Btn variant={estimate} onClick={() => openEstimation()} iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
+      <Btn variant="outline" onClick={() => openContact()} iconLeft={<Mail className="h-[18px] w-[18px]" />}>Nous écrire</Btn>
     </div>
   );
 };
+
+/* ── Haut de page : portrait, titre, citation ── */
+const Hero = () => (
+  <section className="bg-white">
+    <Container className="flex flex-wrap items-center gap-x-16 gap-y-12 pb-14 pt-6 md:pb-[96px] md:pt-10">
+      <div className="flex min-w-0 flex-[1_1_540px] flex-col gap-6">
+        <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Notre histoire" }]} />
+        <Eyebrow>Notre histoire</Eyebrow>
+        <h1 className="m-0 font-display text-[clamp(38px,4.8vw,68px)] font-medium leading-[1.05] tracking-[-0.015em] text-brand-ink text-balance">
+          Une agence née d’une <Em>idée simple</Em>
+        </h1>
+        <figure className="m-0 flex flex-col gap-3.5 py-1">
+          <blockquote className="m-0 font-display text-[clamp(23px,2.2vw,30px)] font-normal italic leading-[1.35] text-brand-ink text-balance">
+            <span aria-hidden className="mr-1 text-[1.3em] leading-[0] text-brand-orange">“</span>
+            Offrir à mes clients le service que j’aurais aimé recevoir moi-même.
+            <span aria-hidden className="ml-0.5 text-[1.3em] leading-[0] text-brand-orange">”</span>
+          </blockquote>
+          <figcaption className="flex items-center gap-3">
+            <Filet />
+            <span className="text-[15px] font-bold text-brand-ink">Alexandre, fondateur et directeur</span>
+          </figcaption>
+        </figure>
+        <p className="m-0 max-w-[560px] text-[17px] leading-relaxed text-brand-txt text-pretty">
+          Emilio a été créée en septembre 2020 à Boulogne-Billancourt par Alexandre, après plusieurs années passées dans différentes agences, des réseaux généralistes à l’immobilier de prestige.
+        </p>
+        <p className="m-0 max-w-[560px] text-[17px] leading-relaxed text-brand-txt text-pretty">
+          Aujourd’hui, il dirige une petite équipe de cinq collaborateurs. Chaque client est suivi personnellement, par quelqu’un qui connaît son dossier et qui répond quand on l’appelle.
+        </p>
+        <Ctas />
+      </div>
+      <div className="min-w-0 flex-[1_1_440px]">
+        <div className="relative mx-4 mb-4">
+          <span aria-hidden className="absolute -bottom-4 -right-4 h-[58%] w-[64%] rounded-[28px] bg-brand-orange" />
+          <div className={cn("relative rounded-[26px] bg-white p-3", FRAME_SHADOW)}>
+            <div className="relative h-[440px] overflow-hidden rounded-[18px] md:h-[560px]" style={{ background: "linear-gradient(180deg, #EAF0F7 0%, #DCE6F2 100%)" }}>
+              <span aria-hidden className="absolute left-1/2 top-[60px] block aspect-square w-[78%] max-w-[400px] -translate-x-1/2 rounded-full border-[1.5px] border-brand-orange opacity-60" />
+              <img src={alexandre} alt="Alexandre, fondateur et directeur d’Emilio Immobilier" className="absolute bottom-0 left-1/2 block h-[94%] w-auto max-w-none -translate-x-1/2" />
+              <div className={cn("absolute bottom-4 left-4 flex flex-col rounded-xl bg-white px-3.5 py-2.5", FRAME_SHADOW)}>
+                <span className="text-[15px] font-extrabold text-brand-ink">Alexandre</span>
+                <span className="text-[13px] text-brand-mut">Fondateur et directeur</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+);
+
+/* ── L'agence en bref (remontée) : une équipe, pas une personne seule ── */
+const EnBref = () => {
+  const stats = [
+    ["6", "personnes dans l’équipe", "Alexandre et cinq collaborateurs"],
+    ["Depuis 2020", "agence indépendante", "née à Boulogne-Billancourt"],
+    ["200+", "clients accompagnés", "vendeurs et acheteurs"],
+    ["10+ ans", "de métier", "sur le terrain"],
+  ];
+  return (
+    <section className="bg-brand">
+      <Container className="flex flex-col gap-9 py-14 md:py-[72px]">
+        <h2 className="m-0 font-display text-[clamp(28px,2.8vw,40px)] font-medium leading-[1.15] text-white">
+          Une petite équipe,
+          <br />
+          <Em dark>un vrai suivi</Em>
+        </h2>
+        <div className="grid grid-cols-2 gap-x-0 gap-y-8 lg:grid-cols-4">
+          {stats.map(([a, b, c], i) => (
+            <div key={a} className={cn("flex flex-col gap-1.5 py-1 pr-4", i % 2 === 1 && "border-l border-white/15 pl-5 lg:pl-8", i === 2 && "lg:border-l lg:border-white/15 lg:pl-8")}>
+              <span className="font-display text-[34px] leading-none text-brand-orange md:text-[44px]">{a}</span>
+              <span className="text-[15.5px] font-bold text-white">{b}</span>
+              <span className="text-[13.5px] text-brand-bt">{c}</span>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+};
+
+/* ── Le parcours ── */
+const Parcours = () => {
+  const tl = [
+    ["Septembre 2020", "La création", "Alexandre crée Emilio à Boulogne-Billancourt : une agence indépendante, avec un suivi personnel pour chaque client."],
+    ["2021", "Les villes voisines", "Le bouche-à-oreille fait le reste : Neuilly-sur-Seine, Saint-Cloud, Garches et Issy-les-Moulineaux."],
+    ["2023", "L’arrivée à Paris", "Les 6e, 7e, 15e et 16e arrondissements, où l’agence est aujourd’hui bien installée."],
+    ["Aujourd’hui", "Une équipe de six", "Paris 6e, 7e, 15e, 16e, 17e et les Hauts-de-Seine. Plus de 200 clients accompagnés."],
+  ];
+  return (
+    <section className="bg-white">
+      <Container className="flex flex-col gap-[52px] py-14 md:pb-[96px] md:pt-[100px]">
+        <SectionHead eyebrow="Notre parcours" title={<>De l’expérience <Em>à l’indépendance</Em></>} />
+        <ol className="relative m-0 grid list-none grid-cols-1 gap-x-10 gap-y-10 p-0 sm:grid-cols-2 lg:grid-cols-4">
+          <span aria-hidden className="absolute left-[9px] right-0 top-2 hidden h-[2px] lg:block" style={{ background: "linear-gradient(90deg, #E68B23 0%, rgba(230,139,35,0.25) 100%)" }} />
+          {tl.map(([y, t, d], i) => (
+            <li key={y} className="relative flex flex-col gap-3 pt-[34px]">
+              <span aria-hidden className={cn("absolute left-0 top-0 block h-[18px] w-[18px] rounded-full shadow-[0_0_0_2px_#E68B23]", i === tl.length - 1 ? "bg-brand-orange" : "bg-white")} />
+              <span className="font-display text-[30px] leading-tight text-brand-ink md:text-[32px]">{y}</span>
+              <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">{t}</span>
+              <span className="max-w-[340px] text-base leading-relaxed text-brand-txt text-pretty">{d}</span>
+            </li>
+          ))}
+        </ol>
+      </Container>
+    </section>
+  );
+};
+
+/* ── Ce qui nous guide ── */
+const Principes = () => {
+  const vals = [
+    ["Indépendante", "Pas de réseau ni de franchise : nos conseils ne dépendent que de votre intérêt."],
+    ["Un suivi personnel", "Un interlocuteur dédié, du premier rendez-vous à la signature, joignable 7 j/7."],
+    ["Transparente", "Des honoraires annoncés dès le départ, un compte-rendu après chaque visite."],
+  ];
+  return (
+    <section className="bg-brand-pale">
+      <Container className="flex flex-col gap-12 py-14 md:py-[96px]">
+        <SectionHead eyebrow="Ce qui nous guide" title={<>Trois principes, <Em>tous les jours</Em></>} />
+        <div className="grid grid-cols-1 gap-y-8 md:grid-cols-3">
+          {vals.map(([t, d], i) => (
+            <div key={t} className={cn("flex flex-col gap-3.5 py-2 md:pr-9", i > 0 && "border-t border-brand-line pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-2")}>
+              <span className="font-display text-[22px] italic text-brand-orange-lt">0{i + 1}</span>
+              <span className="font-display text-[30px] leading-tight text-brand-ink">{t}</span>
+              <span className="text-base leading-relaxed text-brand-txt text-pretty">{d}</span>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+};
+
+/* ── Notre terrain ── */
+const Terrain = () => (
+  <section className="bg-white">
+    <Container className="grid grid-cols-1 items-center gap-x-[72px] gap-y-12 py-14 md:grid-cols-2 md:py-[104px]">
+      <div className="relative mx-4 mb-4">
+        <span aria-hidden className="absolute -bottom-4 -left-4 h-[60%] w-[60%] rounded-[28px] bg-brand" />
+        <div className={cn("relative rounded-[24px] bg-white p-3", FRAME_SHADOW)}>
+          <img src={seine} alt="La Seine et ses ponts vus du ciel" loading="lazy" className="block h-[300px] w-full rounded-2xl object-cover md:h-[440px]" />
+        </div>
+      </div>
+      <div className="flex min-w-0 flex-col gap-[22px]">
+        <SectionHead eyebrow="Notre terrain" title={<>Paris Ouest et <Em>Hauts-de-Seine</Em></>} lead="Un périmètre resserré, que l’on connaît rue par rue : les prix, les copropriétés, les écoles et les transports de chaque quartier." />
+        <Ctas estimate="orange" />
+      </div>
+    </Container>
+  </section>
+);
+
+const Director = () => (
+  <div className="min-h-screen bg-white">
+    <SEOHead
+      title="Notre histoire — Emilio Immobilier | Alexandre et son équipe"
+      description="Emilio Immobilier, agence indépendante créée en 2020 à Boulogne-Billancourt par Alexandre. Une petite équipe, un vrai suivi, à Paris et dans les Hauts-de-Seine."
+      canonical="https://www.emilio-immo.com/notre-histoire"
+    />
+    <Navbar />
+    <main>
+      <Hero />
+      <EnBref />
+      <Parcours />
+      <Principes />
+      <Terrain />
+    </main>
+    <Footer />
+  </div>
+);
 
 export default Director;

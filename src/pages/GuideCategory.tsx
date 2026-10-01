@@ -1,138 +1,85 @@
-import { Helmet } from "react-helmet-async";
-import { Link, useParams, Navigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ChevronLeft, Clock, ArrowRight } from "lucide-react";
+/* Un thème du guide immobilier (refonte 2026). */
+import { Link, Navigate, useParams } from "react-router-dom";
+import { MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getCategory, getArticlesByCategory, CATEGORIES } from "@/data/blogArticles";
-
-const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+import SEOHead, { SITE_URL } from "@/components/SEOHead";
+import { CATEGORIES, getArticlesByCategory, getCategory } from "@/data/blogArticles";
+import { cityList } from "@/lib/cities";
+import { Container, Crumbs, Eyebrow } from "@/components/site/ui";
+import { ArticleCard, articleUrl } from "@/components/site/GuideParts";
 
 const GuideCategory = () => {
   const { category } = useParams<{ category: string }>();
   const cat = category ? getCategory(category) : undefined;
-
   if (!cat) return <Navigate to="/guide-immobilier" replace />;
 
   const articles = getArticlesByCategory(cat.slug);
-  const canonical = `https://www.emilio-immo.com/guide-immobilier/${cat.slug}`;
+  const url = `${SITE_URL}/guide-immobilier/${cat.slug}`;
+  const pages = cat.slug === "vendre" ? "vendre" : cat.slug === "acheter" ? "achat" : null;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: `${cat.label} — Guide immobilier`,
+        description: cat.description,
+        url,
+        inLanguage: "fr-FR",
+        hasPart: articles.map((a) => ({ "@type": "BlogPosting", headline: a.title, url: `${SITE_URL}${articleUrl(a)}` })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "Guide immobilier", item: `${SITE_URL}/guide-immobilier` },
+          { "@type": "ListItem", position: 3, name: cat.label, item: url },
+        ],
+      },
+    ],
+  };
 
   return (
-    <>
-      <Helmet>
-        <title>{cat.label} — Guide Immobilier | Emilio Immobilier</title>
-        <meta name="description" content={cat.description} />
-        <link rel="canonical" href={canonical} />
-        <meta property="og:title" content={`${cat.label} — Guide Immobilier`} />
-        <meta property="og:description" content={cat.description} />
-        <meta property="og:url" content={canonical} />
-        <meta property="og:type" content="website" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.emilio-immo.com/" },
-              { "@type": "ListItem", position: 2, name: "Guide Immobilier", item: "https://www.emilio-immo.com/guide-immobilier" },
-              { "@type": "ListItem", position: 3, name: cat.label, item: canonical },
-            ],
-          })}
-        </script>
-      </Helmet>
-
+    <div className="min-h-screen bg-white">
+      <SEOHead title={`${cat.label} : conseils et analyses | Guide immobilier Emilio`} description={cat.description} canonical={url} jsonLd={jsonLd} />
       <Navbar />
-
-      <main className="pt-24 bg-background min-h-screen">
-        {/* Breadcrumb + Hero */}
-        <section className="bg-primary text-primary-foreground py-16 md:py-20">
-          <div className="container mx-auto px-6">
-            <nav className="flex items-center gap-2 text-xs font-body text-primary-foreground/60 mb-6">
-              <Link to="/" className="hover:text-accent transition-colors">Accueil</Link>
-              <span>/</span>
-              <Link to="/guide-immobilier" className="hover:text-accent transition-colors">Guide Immobilier</Link>
-              <span>/</span>
-              <span className="text-accent">{cat.label}</span>
-            </nav>
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="max-w-3xl"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-px w-10 bg-accent" />
-                <span className="font-body text-[11px] tracking-[0.3em] uppercase text-accent">
-                  Catégorie
-                </span>
-              </div>
-              <h1 className="font-display text-4xl md:text-5xl leading-tight mb-5">
-                {cat.label}
-              </h1>
-              <p className="font-body text-base md:text-lg text-primary-foreground/80 leading-relaxed">
-                {cat.description}
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Articles */}
-        <section className="py-16 md:py-20 container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-8">
-            {articles.map((article, i) => (
-              <motion.article
-                key={article.slug}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-              >
-                <Link
-                  to={`/guide-immobilier/${cat.slug}/${article.slug}`}
-                  className="group block h-full bg-card border border-border hover:border-accent transition-all duration-300 p-8"
-                >
-                  <div className="flex items-center gap-3 text-xs font-body text-muted-foreground mb-4">
-                    <span>{formatDate(article.date)}</span>
-                    <span>·</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" /> {article.readMinutes} min
-                    </span>
-                  </div>
-                  <h2 className="font-display text-2xl leading-tight text-primary group-hover:text-accent transition-colors mb-4">
-                    {article.title}
-                  </h2>
-                  <p className="font-body text-muted-foreground leading-relaxed mb-6">
-                    {article.excerpt}
-                  </p>
-                  <div className="flex items-center gap-2 text-accent font-body text-sm">
-                    <span className="tracking-wider uppercase">Lire l'article</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              </motion.article>
-            ))}
-          </div>
-
-          {/* Autres catégories */}
-          <div className="mt-24 pt-12 border-t border-border">
-            <h3 className="font-display text-2xl text-primary mb-6">Autres thématiques</h3>
-            <div className="flex flex-wrap gap-3">
+      <main>
+        <section className="bg-brand-pale">
+          <Container className="flex flex-col gap-[22px] pb-12 pt-6 md:pb-[72px] md:pt-10">
+            <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Guide immobilier", to: "/guide-immobilier" }, { label: cat.label }]} />
+            <Eyebrow>{cat.short}</Eyebrow>
+            <h1 className="m-0 max-w-[900px] font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">{cat.label}</h1>
+            <p className="m-0 max-w-[700px] text-lg leading-relaxed text-brand-txt text-pretty">{cat.description}</p>
+            <div className="flex flex-wrap gap-2 pt-1">
               {CATEGORIES.filter((c) => c.slug !== cat.slug).map((c) => (
-                <Link
-                  key={c.slug}
-                  to={`/guide-immobilier/${c.slug}`}
-                  className="px-5 py-2.5 border border-border rounded-full text-sm font-body text-foreground hover:border-accent hover:text-accent transition-colors"
-                >
-                  {c.label}
-                </Link>
+                <Link key={c.slug} to={`/guide-immobilier/${c.slug}`} className="inline-flex min-h-[42px] items-center rounded-full border border-brand-line bg-white px-4 text-[14.5px] font-semibold text-brand-ink transition hover:border-brand-orange hover:bg-[#FFF1DF]">{c.label}</Link>
               ))}
             </div>
-          </div>
+          </Container>
+        </section>
+
+        <section className="bg-white">
+          <Container className="flex flex-col gap-12 py-14 md:py-[88px]">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {articles.map((a) => <ArticleCard key={a.slug} a={a} />)}
+            </div>
+            {pages && (
+              <div className="flex flex-col gap-3.5 rounded-[22px] border border-brand-line bg-brand-pale p-6 md:p-7">
+                <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">{pages === "vendre" ? "Vendre dans votre secteur" : "Acheter dans votre secteur"}</span>
+                <div className="flex flex-wrap gap-2">
+                  {cityList.map((c) => (
+                    <Link key={c.slug} to={`/${pages === "vendre" ? "vendre" : "achat"}-appartement-${c.slug}`} className="inline-flex min-h-[42px] items-center gap-1.5 rounded-full border border-brand-line bg-white px-3.5 text-[14px] font-semibold text-brand-ink transition hover:border-brand-orange hover:bg-[#FFF1DF]">
+                      <MapPin className="h-3.5 w-3.5 text-brand-orange-text" /> {c.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </Container>
         </section>
       </main>
-
       <Footer />
-    </>
+    </div>
   );
 };
 

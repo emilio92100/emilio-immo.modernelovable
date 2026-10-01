@@ -1,326 +1,213 @@
-import { motion } from "framer-motion";
-import { 
-  ClipboardCheck, Camera, BarChart3, Megaphone, FileSignature, Key, 
-  ArrowRight, Shield, TrendingUp, Users, Clock, Handshake, Award,
-  CheckCircle, Phone, Star
+/* Page « Vendre » (refonte 2026) : sans honoraires (ils sont sur la page « Nos honoraires »). */
+import type { ReactNode } from "react";
+import {
+  BarChart3, Camera, Check, ClipboardCheck, Euro, Handshake, Key,
+  Megaphone, MessageCircle, Target, UserRound,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ContactForm from "@/components/ContactForm";
-import EstimationPopup from "@/components/EstimationPopup";
-import PricingSection from "@/components/PricingSection";
 import SEOHead from "@/components/SEOHead";
+import { cn } from "@/lib/utils";
+import { Confidential } from "@/components/home/HomeSections";
+import { FaqSection, faqJsonLd } from "@/components/site/Faq";
+import { EstimerCard } from "@/components/site/EstimerCard";
+import { Checks, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF, TextLink } from "@/components/site/ui";
+import toits from "@/assets/refonte/paris-toits.webp";
+import sejour from "@/assets/refonte/clamart-sejour.webp";
+import terrasse from "@/assets/refonte/clamart-terrasse.webp";
+import cuisine from "@/assets/refonte/clamart-cuisine.webp";
 
-const steps = [
-  {
-    icon: ClipboardCheck,
-    title: "Estimation gratuite & personnalisée",
-    description: "Nous réalisons une estimation précise de votre bien basée sur notre connaissance approfondie du marché local, les dernières transactions comparables et une analyse des atouts spécifiques de votre propriété.",
-    details: ["Analyse comparative de marché", "Visite approfondie du bien", "Rapport d'estimation détaillé", "Conseil sur les travaux à envisager"],
-  },
-  {
-    icon: Camera,
-    title: "Mise en valeur premium",
-    description: "Nous investissons dans la présentation de votre bien pour maximiser son attractivité : photographies professionnelles HDR, vidéo drone si pertinent, home staging virtuel et rédaction d'une annonce percutante.",
-    details: ["Photos HDR professionnelles", "Visite virtuelle 360°", "Home staging conseil", "Annonce rédactionnelle soignée"],
-  },
-  {
-    icon: BarChart3,
-    title: "Stratégie de commercialisation",
-    description: "Ensemble, nous définissons une stratégie de prix et de commercialisation parfaitement adaptée à votre bien et aux conditions actuelles du marché.",
-    details: ["Analyse du marché actuel", "Positionnement prix optimisé", "Ciblage acheteurs qualifiés", "Calendrier de commercialisation"],
-  },
-  {
-    icon: Megaphone,
-    title: "Diffusion multi-canal",
-    description: "Votre bien est diffusé sur les meilleurs portails, nos réseaux sociaux, notre base d'acheteurs qualifiés et notre réseau off-market confidentiel.",
-    details: ["Portails immobiliers premium", "Réseaux sociaux ciblés", "Base acheteurs privée", "Réseau off-market exclusif"],
-  },
-  {
-    icon: FileSignature,
-    title: "Sélection & négociation",
-    description: "Nous organisons et gérons toutes les visites, sélectionnons les acquéreurs sérieux et négocions dans votre intérêt pour obtenir le meilleur prix.",
-    details: ["Visites qualifiées uniquement", "Vérification financement", "Négociation experte", "Rédaction compromis"],
-  },
-  {
-    icon: Key,
-    title: "Accompagnement jusqu'aux clés",
-    description: "Nous assurons le suivi complet du dossier auprès du notaire et restons à vos côtés jusqu'à la signature de l'acte authentique et la remise des clés.",
-    details: ["Suivi notaire complet", "Coordination des parties", "Gestion administrative", "Remise des clés"],
-  },
+/* ── Haut de page ── */
+const SUIVI: { st: "done" | "now" | "todo"; t: string }[] = [
+  { st: "done", t: "Estimation remise" },
+  { st: "done", t: "Photos et vidéo drone" },
+  { st: "done", t: "Annonce en ligne" },
+  { st: "now", t: "Visites en cours" },
+  { st: "todo", t: "Compromis" },
+  { st: "todo", t: "Remise des clés" },
 ];
 
-const advantages = [
-  { icon: Shield, title: "0% de frais cachés", desc: "Nos honoraires sont transparents, définis et acceptés dès le départ. Aucune surprise." },
-  { icon: TrendingUp, title: "Prix de vente optimisé", desc: "Notre expertise locale nous permet d'obtenir les meilleurs prix du marché pour nos vendeurs." },
-  { icon: Users, title: "Réseau d'acheteurs qualifiés", desc: "Accès immédiat à notre base de +500 acheteurs actifs et qualifiés en Île-de-France." },
-  { icon: Clock, title: "Délai de vente réduit", desc: "Notre délai moyen de vente est de 45 jours, bien en dessous de la moyenne du marché." },
-  { icon: Handshake, title: "Accompagnement humain", desc: "Un interlocuteur unique et dédié vous accompagne à chaque étape, disponible 7j/7." },
-  { icon: Award, title: "Engagement de résultat", desc: "Nous nous engageons sur un plan d'action précis et des objectifs clairs dès le début." },
-];
+const Hero = () => (
+  <section className="bg-brand-pale">
+    <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 pb-14 pt-6 md:pb-[80px] md:pt-10">
+      <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[22px]">
+        <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Vendre" }]} />
+        <Eyebrow>Vendre avec Emilio</Eyebrow>
+        <h1 className="m-0 font-display text-[clamp(36px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+          Vendre votre bien <Em wrap>en toute sérénité</Em>
+        </h1>
+        <p className="m-0 max-w-[560px] text-lg leading-relaxed text-brand-txt text-pretty">
+          De l’estimation à la remise des clés, un interlocuteur dédié prépare votre vente, la suit de près et vous explique chaque étape.
+        </p>
+        <div className="pt-1"><EstimerCard /></div>
+        <span className="text-[14.5px] text-brand-mut">
+          Vous préférez en parler ? <a href={TEL_HREF} className="inline-flex min-h-[44px] items-center font-bold text-brand">{TEL}</a>
+        </span>
+      </div>
+      <div className="min-w-0 flex-[1_1_440px]">
+        <div className="relative mx-4 mb-4">
+          <span aria-hidden className="absolute -bottom-4 -right-4 h-[64%] w-[58%] rounded-[28px] bg-brand-orange/90" />
+          <div className={cn("relative rounded-[24px] bg-white p-3", FRAME_SHADOW)}>
+            <div className="relative h-[420px] overflow-hidden rounded-2xl bg-brand-tint md:h-[600px]">
+              <img src={toits} alt="Toits de Paris au coucher du soleil" className="absolute inset-0 h-full w-full object-cover" />
+              <div className={cn("absolute bottom-4 left-4 right-4 flex max-w-[400px] flex-col gap-2.5 rounded-xl bg-white px-5 py-[18px] md:bottom-5 md:left-5", FRAME_SHADOW)}>
+                <span className="text-[15.5px] font-extrabold text-brand-ink">Le suivi de votre vente</span>
+                <ol className="m-0 flex list-none flex-col gap-0.5 p-0">
+                  {SUIVI.map(({ st, t }) => (
+                    <li key={t} className={cn("flex min-h-[32px] items-center gap-3 text-[14.5px]", st === "todo" ? "font-medium text-brand-mut" : st === "now" ? "font-extrabold text-brand-ink" : "font-semibold text-brand-ink")}>
+                      {st === "done" && <span className="grid h-[22px] w-[22px] flex-none place-items-center rounded-full bg-brand"><Check className="h-[13px] w-[13px] text-white" strokeWidth={3} /></span>}
+                      {st === "now" && <span className="grid h-[22px] w-[22px] flex-none place-items-center rounded-full border-2 border-brand-orange bg-[#FCEBD6]"><span className="anim-blink h-2 w-2 rounded-full bg-brand-orange" /></span>}
+                      {st === "todo" && <span className="block h-[22px] w-[22px] flex-none rounded-full border-2 border-[#C3CEDB] bg-white" />}
+                      {st === "now" ? (
+                        <span className="flex flex-col py-1 leading-tight">
+                          <span>{t}</span>
+                          <span className="text-[12.5px] font-bold text-brand-orange-text">Un compte-rendu après chaque visite</span>
+                        </span>
+                      ) : (
+                        <span>{t}</span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+);
 
-const stats = [
-  { value: "45j", label: "Délai moyen de vente" },
-  { value: "200+", label: "Ventes réalisées" },
-  { value: "10+", label: "Années d'expérience" },
-];
-
-const SellPage = () => {
+/* ── Engagements ── */
+const Engagements = () => {
+  const data = [
+    { icon: <Euro className="h-[23px] w-[23px]" />, t: "Des honoraires transparents", d: "Annoncés dès le départ, sans frais cachés." },
+    { icon: <UserRound className="h-[23px] w-[23px]" />, t: "Un interlocuteur dédié", d: "Alexandre ou un membre de l’équipe suit votre vente du début à la fin, joignable 7 j/7." },
+    { icon: <MessageCircle className="h-[23px] w-[23px]" />, t: "Des nouvelles régulières", d: "Un compte-rendu après chaque visite et un point chaque semaine." },
+    { icon: <Target className="h-[23px] w-[23px]" />, t: "Un plan d’action clair", d: "Vous savez dès le début comment votre bien sera présenté et diffusé." },
+  ];
   return (
-    <div className="min-h-screen">
-      <SEOHead
-        title="Vendre votre bien — Emilio Immobilier | Paris & Hauts-de-Seine"
-        description="Vendez votre bien immobilier au meilleur prix avec Emilio Immobilier. Estimation gratuite, photos professionnelles, accompagnement complet de A à Z."
-        canonical="https://www.emilio-immo.com/vendre"
-      />
-      <Navbar />
-
-      {/* HERO */}
-      <section className="pt-20 md:pt-28 pb-10 md:pb-16 bg-primary relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary via-primary to-primary/90" />
-        <div className="relative container mx-auto px-5 md:px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <span className="inline-block font-body text-accent text-[10px] md:text-sm font-semibold tracking-[0.25em] md:tracking-widest uppercase mb-3 md:mb-4">Vendez en toute sérénité</span>
-            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-primary-foreground mb-4 md:mb-6 leading-tight">
-              Votre bien mérite<br />
-              <span className="text-gold italic">le meilleur accompagnement</span>
-            </h1>
-            <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
-            <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto text-sm md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8">
-              De l'estimation à la remise des clés, nous vous accompagnons avec expertise, 
-              transparence et engagement. Chaque vente est unique, notre approche aussi.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-              <EstimationPopup
-                trigger={
-                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 md:px-8 md:py-4 font-body font-semibold tracking-wide text-sm md:text-base rounded hover:brightness-110 transition-all">
-                    Estimation gratuite <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                  </button>
-                }
-              />
-              <a
-                href="tel:+33184801400"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/30 text-primary-foreground px-6 py-3 md:px-8 md:py-4 font-body font-semibold tracking-wide text-sm md:text-base rounded hover:bg-primary-foreground/10 transition-all"
-              >
-                <Phone className="w-4 h-4 md:w-5 md:h-5" /> Nous appeler
-              </a>
+    <section className="bg-white">
+      <Container className="flex flex-col gap-11 py-14 md:py-[96px]">
+        <SectionHead center eyebrow="Nos engagements" title={<>Quatre engagements, <Em>dès le départ</Em></>} className="max-w-[760px]" />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {data.map((e) => (
+            <div key={e.t} className={cn("flex flex-col gap-3.5 rounded-[20px] bg-white px-6 py-[26px] transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
+              <span className="grid h-[50px] w-[50px] place-items-center rounded-xl bg-brand-tint text-brand">{e.icon}</span>
+              <span className="font-display text-[22px] leading-tight text-brand-ink">{e.t}</span>
+              <span className="text-[15.5px] leading-relaxed text-brand-txt text-pretty">{e.d}</span>
             </div>
-          </motion.div>
+          ))}
         </div>
-      </section>
-
-      {/* STATS */}
-      <section className="py-0 -mt-1">
-        <div className="container mx-auto px-5 md:px-6">
-          <div className="grid grid-cols-3 bg-card rounded-lg shadow-lg border border-border -mt-6 md:-mt-8 relative z-10">
-            {stats.map((s, i) => (
-              <motion.div
-                key={s.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="p-4 md:p-8 text-center border-r last:border-r-0 border-border"
-              >
-                <div className="font-display text-xl md:text-3xl text-accent mb-0.5 md:mb-1">{s.value}</div>
-                <div className="font-body text-muted-foreground text-[10px] md:text-xs tracking-wide leading-tight">{s.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* INTRO */}
-      <section className="py-12 md:py-24">
-        <div className="container mx-auto px-5 md:px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="font-display text-2xl md:text-4xl text-foreground mb-4 md:mb-6">
-              Pourquoi vendre avec <span className="text-gold italic">Emilio</span> ?
-            </h2>
-            <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
-            <p className="font-body text-muted-foreground leading-relaxed text-sm md:text-base lg:text-lg">
-              Vendre un bien immobilier est une étape importante. C'est pourquoi nous mettons tout en œuvre
-              pour que cette expérience soit fluide, sereine et aboutisse au meilleur résultat possible. 
-              Notre connaissance approfondie du marché francilien, combinée à une approche humaine et personnalisée, 
-              fait toute la différence.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* PROCESS */}
-      <section className="py-12 md:py-24 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6">
-          <div className="text-center mb-10 md:mb-20">
-            <h2 className="font-display text-2xl md:text-4xl text-foreground mb-3 md:mb-5">Notre processus en<br className="sm:hidden" /> <span className="text-accent italic">6 étapes</span></h2>
-            <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-3 md:mb-5" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm md:text-base lg:text-lg leading-relaxed">
-              Un accompagnement structuré et transparent pour une vente réussie.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto space-y-4 md:space-y-0">
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                viewport={{ once: true }}
-                className="relative flex flex-col md:flex-row gap-3 md:gap-8 pb-0 md:pb-12 last:pb-0"
-              >
-                <div className="flex md:flex-col items-center gap-3 md:gap-0">
-                  <div className="w-9 h-9 md:w-14 md:h-14 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-display font-bold text-sm md:text-lg shrink-0 shadow-md">
-                    {i + 1}
-                  </div>
-                  <h3 className="font-display text-base md:hidden">{step.title}</h3>
-                  {i < steps.length - 1 && (
-                    <div className="hidden md:block w-0.5 flex-1 bg-accent/20 mt-2" />
-                  )}
-                </div>
-                
-                <div className="bg-card p-4 md:p-7 rounded-xl shadow-sm border border-border flex-1 mb-2">
-                  <div className="hidden md:flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
-                      <step.icon className="w-5 h-5 text-accent" />
-                    </div>
-                    <h3 className="font-display text-xl">{step.title}</h3>
-                  </div>
-                  <p className="font-body text-muted-foreground text-xs md:text-base leading-relaxed mb-3 md:mb-5">{step.description}</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-3">
-                    {step.details.map((d) => (
-                      <div key={d} className="flex items-center gap-2 font-body text-xs md:text-sm text-muted-foreground">
-                        <CheckCircle className="w-3.5 h-3.5 md:w-4 md:h-4 text-accent shrink-0" />
-                        {d}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ADVANTAGES */}
-      <section className="py-12 md:py-24">
-        <div className="container mx-auto px-5 md:px-6">
-          <div className="text-center mb-10 md:mb-20">
-            <h2 className="font-display text-2xl md:text-4xl text-foreground mb-3 md:mb-5">Nos <span className="text-accent italic">engagements</span></h2>
-            <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-3 md:mb-5" />
-            <p className="font-body text-muted-foreground max-w-2xl mx-auto text-sm md:text-base lg:text-lg leading-relaxed">
-              Ce qui fait la différence quand vous nous confiez la vente de votre bien.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 max-w-5xl mx-auto">
-            {advantages.map((a, i) => (
-              <motion.div
-                key={a.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                viewport={{ once: true }}
-                className="group bg-card p-4 md:p-6 rounded-xl md:rounded-2xl shadow-sm border border-border hover:shadow-xl hover:border-accent/30 hover:-translate-y-1 transition-all duration-500"
-              >
-                <div className="w-9 h-9 md:w-11 md:h-11 bg-accent/10 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
-                  <a.icon className="w-4 h-4 md:w-5 md:h-5 text-accent group-hover:text-accent-foreground transition-colors duration-500" />
-                </div>
-                <h3 className="font-display text-sm md:text-lg mb-1.5 md:mb-2">{a.title}</h3>
-                <p className="font-body text-muted-foreground text-[11px] md:text-sm leading-relaxed">{a.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIAL */}
-      <section className="py-12 md:py-20 bg-primary">
-        <div className="container mx-auto px-5 md:px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="flex justify-center gap-1 mb-3 md:mb-4">
-              {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 md:w-6 md:h-6 fill-accent text-accent" />)}
-            </div>
-            <blockquote className="font-display text-base md:text-2xl text-primary-foreground italic leading-relaxed mb-4 md:mb-6">
-              "La vente de notre appartement s'est déroulée de manière exceptionnelle. 
-              L'estimation était juste, la mise en valeur parfaite et nous avons vendu 
-              en seulement 3 semaines au prix souhaité."
-            </blockquote>
-            <p className="font-body text-primary-foreground/60 text-xs md:text-sm">— Sophie & Marc L., vente à Boulogne-Billancourt</p>
-          </div>
-        </div>
-      </section>
-
-      {/* PRICING */}
-      <PricingSection
-        heading="Nos honoraires"
-        subheading="Des tarifs transparents, adaptés à votre projet de vente."
-        plans={[
-          {
-            title: "Mandat Simple",
-            rate: "5% TTC",
-            subtitle: "du prix de vente du bien",
-            features: [
-              { text: "Estimation gratuite du bien", included: true },
-              { text: "Photos professionnelles", included: true },
-              { text: "Diffusion portails immobiliers", included: true },
-              { text: "Visites et compte-rendus", included: true },
-              { text: "Accompagnement notaire", included: true },
-              { text: "Stratégie de vente exclusive", included: false },
-              { text: "Priorité de diffusion maximale", included: false },
-              { text: "Reporting hebdomadaire détaillé", included: false },
-              { text: "Vente en moyenne 2x plus rapide", included: false },
-            ],
-            cta: "Choisir le mandat simple",
-          },
-          {
-            title: "Mandat Exclusif",
-            rate: "4% TTC",
-            subtitle: "du prix de vente du bien",
-            recommended: true,
-            features: [
-              { text: "Estimation gratuite du bien", included: true },
-              { text: "Photos & vidéo drone professionnelles", included: true },
-              { text: "Diffusion premium multi-canal", included: true },
-              { text: "Visites qualifiées et compte-rendus", included: true },
-              { text: "Accompagnement notaire complet", included: true },
-              { text: "Stratégie de vente sur-mesure dédiée", included: true },
-              { text: "Priorité de diffusion maximale", included: true },
-              { text: "Reporting hebdomadaire détaillé", included: true },
-              { text: "Vente en moyenne 2x plus rapide", included: true },
-            ],
-            cta: "Choisir le mandat exclusif",
-          },
-        ]}
-      />
-
-      {/* CTA FINAL */}
-      <section className="py-12 md:py-24 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 text-center">
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mb-3 md:mb-5">
-            Prêt à vendre votre bien ?
-          </h2>
-          <div className="w-12 md:w-16 h-0.5 bg-accent mx-auto mb-4 md:mb-6" />
-          <p className="font-body text-muted-foreground max-w-xl mx-auto mb-6 md:mb-8 text-sm md:text-base lg:text-lg">
-            Commencez par une estimation gratuite et sans engagement.
-          </p>
-          <EstimationPopup
-            trigger={
-              <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 md:px-10 md:py-4 font-body font-semibold tracking-wide text-sm md:text-base rounded hover:brightness-110 transition-all">
-                Demander une estimation gratuite <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-              </button>
-            }
-          />
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+      </Container>
+    </section>
   );
 };
+
+/* ── Le processus ── */
+const Processus = () => {
+  const steps: { icon: ReactNode; t: string; items: string[] }[] = [
+    { icon: <ClipboardCheck className="h-[22px] w-[22px]" />, t: "Estimation gratuite et personnalisée", items: ["Visite sur place", "Analyse des ventes comparables du quartier", "Rapport d’estimation détaillé"] },
+    { icon: <Camera className="h-[22px] w-[22px]" />, t: "Mise en valeur", items: ["Photos HDR", "Visite virtuelle 360°", "Conseils de home staging", "Annonce soignée"] },
+    { icon: <BarChart3 className="h-[22px] w-[22px]" />, t: "Stratégie de commercialisation", items: ["Positionnement du prix", "Ciblage des acquéreurs", "Calendrier de mise en vente"] },
+    { icon: <Megaphone className="h-[22px] w-[22px]" />, t: "Diffusion multicanal", items: ["Portails immobiliers", "Réseaux sociaux", "Base d’acheteurs privée", "Réseau off-market"] },
+    { icon: <Handshake className="h-[22px] w-[22px]" />, t: "Sélection et négociation", items: ["Visites qualifiées", "Vérification du financement", "Négociation", "Rédaction du compromis"] },
+    { icon: <Key className="h-[22px] w-[22px]" />, t: "Accompagnement jusqu’aux clés", items: ["Suivi avec le notaire", "Coordination jusqu’à la signature", "Remise des clés"] },
+  ];
+  return (
+    <section id="processus" className="bg-brand-pale">
+      <Container className="flex flex-col gap-11 py-14 md:py-[96px]">
+        <SectionHead eyebrow="Le processus" title={<>Six étapes, <Em>jusqu’aux clés</Em></>} lead="Chaque étape est expliquée avant d’être lancée. Vous savez toujours où en est votre vente, et ce qui vient ensuite." />
+        <ol className="m-0 grid list-none grid-cols-1 gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
+          {steps.map((s, i) => (
+            <li key={s.t} className={cn("flex flex-col gap-4 rounded-[20px] bg-white px-[26px] pb-7 pt-[26px]", FRAME_SHADOW)}>
+              <div className="flex items-center justify-between">
+                <span className="flex items-baseline gap-2.5">
+                  <span className="font-display text-[44px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
+                  <span className="text-[12.5px] font-bold uppercase tracking-[0.16em] text-brand-mut">Étape</span>
+                </span>
+                <span className="grid h-[46px] w-[46px] place-items-center rounded-xl bg-brand-tint text-brand">{s.icon}</span>
+              </div>
+              <h3 className="m-0 font-display text-2xl font-medium leading-tight text-brand-ink text-balance">{s.t}</h3>
+              <div className="h-px bg-brand-line2" />
+              <Checks items={s.items} />
+            </li>
+          ))}
+        </ol>
+      </Container>
+    </section>
+  );
+};
+
+/* ── Mise en valeur ── */
+const MiseEnValeur = () => (
+  <section className="bg-white">
+    <Container className="flex flex-wrap items-center gap-x-16 gap-y-12 py-14 md:py-[96px]">
+      <div className="flex min-w-0 flex-[1_1_420px] flex-col gap-6">
+        <SectionHead eyebrow="Mise en valeur" title={<>Votre bien, <Em>sous son meilleur jour</Em></>} lead="Les acheteurs se font une idée en quelques secondes. Nous préparons des images et une annonce qui donnent envie de visiter." />
+        <Checks items={["Photos HDR prises par un professionnel", "Visite virtuelle 360°", "Conseils de home staging avant les photos", "Une annonce soignée, relue et complète"]} />
+        <span className="inline-flex items-start gap-2 text-sm leading-normal text-brand-mut">
+          <Camera className="mt-0.5 h-4 w-4 flex-none" /> Photos d’une maison 5 pièces à Clamart, mise en vente par Emilio.
+        </span>
+        <div><TextLink to="/biens">Voir nos biens</TextLink></div>
+      </div>
+      <div className="relative min-w-0 flex-[1.4_1_520px]">
+        <span aria-hidden className="absolute -bottom-4 -left-4 hidden h-[62%] w-[56%] rounded-[28px] bg-brand md:block" />
+        <div className={cn("relative grid grid-cols-2 gap-2.5 rounded-[24px] bg-white p-3", FRAME_SHADOW)}>
+          <img src={sejour} alt="Séjour meublé d’une maison 5 pièces à Clamart" loading="lazy" className="col-span-2 block h-[240px] w-full rounded-2xl object-cover md:h-[360px]" />
+          <img src={terrasse} alt="Terrasse meublée sur le toit du séjour" loading="lazy" className="block h-[150px] w-full rounded-2xl object-cover md:h-[220px]" />
+          <img src={cuisine} alt="Cuisine neuve avec sol en carreaux de ciment" loading="lazy" className="block h-[150px] w-full rounded-2xl object-cover md:h-[220px]" />
+        </div>
+      </div>
+    </Container>
+  </section>
+);
+
+/* ── Questions fréquentes ── */
+const QUESTIONS = [
+  { q: "L’estimation est-elle vraiment gratuite ?", a: "Oui. L’estimation est gratuite et sans engagement : visite sur place, analyse des ventes comparables du quartier et rapport d’estimation détaillé." },
+  {
+    q: "Quelle différence entre mandat simple et mandat exclusif ?",
+    a: "Avec le mandat simple, vous restez libre de confier votre bien à d’autres agences : photos professionnelles, diffusion sur les portails, visites et comptes-rendus, accompagnement jusqu’au notaire. Avec le mandat exclusif, nous sommes seuls à vendre votre bien, et nous ajoutons la vidéo drone, une diffusion premium avec notre réseau off-market, une stratégie dédiée et un point détaillé chaque semaine.",
+  },
+  { q: "Puis-je vendre sans que mon bien apparaisse en ligne ?", a: "Oui, avec la vente confidentielle : votre bien est présenté uniquement à des acquéreurs vérifiés, sans aucune annonce en ligne." },
+  { q: "Comment suis-je tenu au courant ?", a: "Vous avez un interlocuteur dédié, joignable 7 j/7. Vous recevez un compte-rendu après chaque visite, et nous faisons un point chaque semaine." },
+  { q: "Jusqu’où m’accompagnez-vous ?", a: "Jusqu’à la remise des clés : vérification du financement des acquéreurs, négociation, rédaction du compromis, suivi avec le notaire et coordination jusqu’à la signature." },
+];
+
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.emilio-immo.com/" },
+        { "@type": "ListItem", position: 2, name: "Vendre", item: "https://www.emilio-immo.com/vendre" },
+      ],
+    },
+    faqJsonLd(QUESTIONS),
+  ],
+};
+
+const SellPage = () => (
+  <div className="min-h-screen bg-white">
+    <SEOHead
+      title="Vendre votre bien — Emilio Immobilier | Paris & Hauts-de-Seine"
+      description="Vendez votre bien à Paris et dans les Hauts-de-Seine avec Emilio Immobilier : estimation gratuite, mise en valeur, diffusion, négociation et accompagnement jusqu’aux clés."
+      canonical="https://www.emilio-immo.com/vendre"
+      jsonLd={JSON_LD}
+    />
+    <Navbar />
+    <main>
+      <Hero />
+      <Engagements />
+      <Processus />
+      <MiseEnValeur />
+      <Confidential />
+      <FaqSection title={<>Vos questions, <Em>nos réponses</Em></>} items={QUESTIONS} />
+    </main>
+    <Footer />
+  </div>
+);
 
 export default SellPage;
