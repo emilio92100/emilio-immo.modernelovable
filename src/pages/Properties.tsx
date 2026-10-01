@@ -1,390 +1,292 @@
-import { useState, useMemo, useEffect, lazy, Suspense } from "react";
-import { Search, SlidersHorizontal, X, Lock, ArrowRight, Phone, Map, LayoutGrid, ChevronDown, MapPin } from "lucide-react";
+/* « Nos biens » (refonte 2026) : recherche, filtres, tri et vue par ville. */
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, LayoutGrid, Lock, MapPin, Phone, Search, SlidersHorizontal, X } from "lucide-react";
 import PropertyCard from "@/components/PropertyCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SEOHead from "@/components/SEOHead";
-import { Property, mockProperties, formatPrice, fetchPropertiesFromFeed } from "@/lib/properties";
+import SEOHead, { SITE_URL } from "@/components/SEOHead";
+import { cn } from "@/lib/utils";
+import { Property, fetchPropertiesFromFeed, mockProperties } from "@/lib/properties";
+import { cityList } from "@/lib/cities";
+import { Btn, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF } from "@/components/site/ui";
+
+const TYPES = ["Tous", "Appartement", "Maison", "Immeuble"] as const;
+const PIECES = ["", "1", "2", "3", "4", "5"] as const;
+const TRIS = { recent: "Plus récents", asc: "Prix croissant", desc: "Prix décroissant" } as const;
+
+const sel = "h-12 w-full appearance-none rounded-xl border border-brand-line bg-white px-3.5 text-[15px] font-semibold text-brand-ink outline-none focus:border-brand-orange";
 
 const Properties = () => {
-  const [properties, setProperties] = useState<Property[]>(mockProperties);
-  const [loading, setLoading] = useState(true);
-  const [searchCity, setSearchCity] = useState("");
-  const [priceMin, setPriceMin] = useState("");
-  const [priceMax, setPriceMax] = useState("");
-  const [roomsFilter, setRoomsFilter] = useState("");
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [typeFilter, setTypeFilter] = useState("");
-  const [groundFloor, setGroundFloor] = useState<"any" | "yes" | "no" | "last">("any");
-  const [balconyFilter, setBalconyFilter] = useState(false);
-  const [terraceFilter, setTerraceFilter] = useState(false);
-  const [elevatorFilter, setElevatorFilter] = useState(false);
-  const [bedroomsMin, setBedroomsMin] = useState("");
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
-  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
+  const [properties, setProperties] = useState<Property[] | null>(null);
+  const [ville, setVille] = useState("");
+  const [showSugg, setShowSugg] = useState(false);
+  const [type, setType] = useState<(typeof TYPES)[number]>("Tous");
+  const [pieces, setPieces] = useState("");
+  const [budget, setBudget] = useState("");
+  const [plus, setPlus] = useState(false);
+  const [chambres, setChambres] = useState("");
+  const [etage, setEtage] = useState<"any" | "rdc" | "etage" | "dernier">("any");
+  const [balcon, setBalcon] = useState(false);
+  const [terrasse, setTerrasse] = useState(false);
+  const [ascenseur, setAscenseur] = useState(false);
+  const [tri, setTri] = useState<keyof typeof TRIS>("recent");
+  const [vue, setVue] = useState<"grille" | "ville">("grille");
 
   useEffect(() => {
-    fetchPropertiesFromFeed().then((data) => {
-      setProperties(data);
-      setLoading(false);
-    });
+    let on = true;
+    fetchPropertiesFromFeed()
+      .then((d) => on && setProperties(d))
+      .catch(() => on && setProperties(mockProperties));
+    return () => {
+      on = false;
+    };
   }, []);
 
-  const filtered = useMemo(() => {
-    return properties.filter((p) => {
-      if (searchCity && !p.city.toLowerCase().includes(searchCity.toLowerCase()) && !p.postalCode.includes(searchCity)) return false;
-      if (priceMin && p.price < Number(priceMin)) return false;
-      if (priceMax && p.price > Number(priceMax)) return false;
-      if (roomsFilter && p.rooms !== Number(roomsFilter)) return false;
-      if (typeFilter && p.type.toLowerCase() !== typeFilter.toLowerCase()) return false;
-      if (groundFloor === "yes" && (p.floor !== 0 && p.floor !== undefined)) return false;
-      if (groundFloor === "no" && p.floor === 0) return false;
-      if (groundFloor === "last" && (p.floor === undefined || p.totalFloors === undefined || p.floor !== p.totalFloors)) return false;
-      if (groundFloor === "last" && (p.floor === undefined || p.totalFloors === undefined || p.floor !== p.totalFloors)) return false;
-      if (balconyFilter && !p.balcony) return false;
-      if (terraceFilter && !p.terrace) return false;
-      if (elevatorFilter && !p.elevator) return false;
-      if (bedroomsMin && p.bedrooms < Number(bedroomsMin)) return false;
+  const list = properties || [];
+  const villes = useMemo(() => [...new Set(list.map((p) => p.city))].sort(), [list]);
+  const sugg = ville ? villes.filter((c) => c.toLowerCase().includes(ville.toLowerCase())).slice(0, 6) : [];
+
+  const filtres = useMemo(() => {
+    const out = list.filter((p) => {
+      if (ville && !p.city.toLowerCase().includes(ville.toLowerCase()) && !p.postalCode.includes(ville)) return false;
+      if (type !== "Tous" && !p.type.toLowerCase().includes(type.toLowerCase())) return false;
+      if (pieces && (pieces === "5" ? p.rooms < 5 : p.rooms !== Number(pieces))) return false;
+      if (budget && p.price > Number(budget)) return false;
+      if (chambres && p.bedrooms < Number(chambres)) return false;
+      if (etage === "rdc" && p.floor !== 0) return false;
+      if (etage === "etage" && (p.floor === undefined || p.floor === 0)) return false;
+      if (etage === "dernier" && (p.floor === undefined || p.totalFloors === undefined || p.floor !== p.totalFloors)) return false;
+      if (balcon && !p.balcony) return false;
+      if (terrasse && !p.terrace) return false;
+      if (ascenseur && !p.elevator) return false;
       return true;
     });
-  }, [properties, searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor, balconyFilter, terraceFilter, elevatorFilter, bedroomsMin]);
+    if (tri === "asc") out.sort((a, b) => a.price - b.price);
+    if (tri === "desc") out.sort((a, b) => b.price - a.price);
+    if (tri === "recent") out.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
+    return out;
+  }, [list, ville, type, pieces, budget, chambres, etage, balcon, terrasse, ascenseur, tri]);
 
-  const uniqueCities = useMemo(() => [...new Set(properties.map(p => p.city))].sort(), [properties]);
+  const parVille = useMemo(() => {
+    const m: Record<string, Property[]> = {};
+    filtres.forEach((p) => (m[p.city] ||= []).push(p));
+    return Object.entries(m).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [filtres]);
 
-  const activeFiltersCount = [searchCity, priceMin, priceMax, roomsFilter, typeFilter, groundFloor !== "any", balconyFilter, terraceFilter, elevatorFilter, bedroomsMin].filter(Boolean).length;
-
-  const clearFilters = () => {
-    setSearchCity("");
-    setPriceMin("");
-    setPriceMax("");
-    setRoomsFilter("");
-    setTypeFilter("");
-    setGroundFloor("any");
-    setBalconyFilter(false);
-    setTerraceFilter(false);
-    setElevatorFilter(false);
-    setBedroomsMin("");
+  const nbFiltres = [ville, type !== "Tous", pieces, budget, chambres, etage !== "any", balcon, terrasse, ascenseur].filter(Boolean).length;
+  const reset = () => {
+    setVille(""); setType("Tous"); setPieces(""); setBudget(""); setChambres(""); setEtage("any"); setBalcon(false); setTerrasse(false); setAscenseur(false);
   };
 
-  const filteredCities = useMemo(() => {
-    if (!searchCity) return [];
-    return uniqueCities.filter(c => c.toLowerCase().includes(searchCity.toLowerCase())).slice(0, 6);
-  }, [searchCity, uniqueCities]);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: "Biens à vendre — Emilio Immobilier",
+        url: `${SITE_URL}/biens`,
+        inLanguage: "fr-FR",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "Nos biens", item: `${SITE_URL}/biens` },
+        ],
+      },
+    ],
+  };
 
-  // Map view: grouped by city
-  const citiesWithProperties = useMemo(() => {
-    const cityMap: Record<string, Property[]> = {};
-    filtered.forEach(p => {
-      if (!cityMap[p.city]) cityMap[p.city] = [];
-      cityMap[p.city].push(p);
-    });
-    return Object.entries(cityMap).sort((a, b) => a[0].localeCompare(b[0]));
-  }, [filtered]);
+  const toggle = (on: boolean, set: (v: boolean) => void, label: string) => (
+    <button type="button" aria-pressed={on} onClick={() => set(!on)} className={cn("inline-flex h-11 items-center gap-2 rounded-full border px-4 text-[14.5px] font-semibold transition", on ? "border-brand bg-brand text-white" : "border-brand-line bg-white text-brand-ink hover:border-brand/40")}>
+      {label}
+    </button>
+  );
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <SEOHead
-        title="Biens immobiliers à vendre — Paris & Hauts-de-Seine | Emilio"
-        description="Consultez nos biens immobiliers à vendre à Paris et dans les Hauts-de-Seine. Appartements, maisons, biens de prestige. Mise à jour quotidienne."
-        canonical="https://www.emilio-immo.com/biens"
+        title="Biens à vendre à Paris et dans les Hauts-de-Seine | Emilio Immobilier"
+        description="Appartements, maisons et immeubles à vendre à Paris 6e, 7e, 15e, 16e, 17e, Boulogne, Neuilly, Issy et dans les Hauts-de-Seine. Photos, prix et visites avec Emilio Immobilier."
+        canonical={`${SITE_URL}/biens`}
+        jsonLd={jsonLd}
       />
       <Navbar />
+      <main>
+        <section className="bg-brand-pale">
+          <Container className="flex flex-col gap-[22px] pb-10 pt-6 md:pb-14 md:pt-10">
+            <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Nos biens" }]} />
+            <Eyebrow>Nos biens</Eyebrow>
+            <h1 className="m-0 max-w-[900px] font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+              Nos biens à vendre, <Em wrap>à Paris et dans les Hauts-de-Seine</Em>
+            </h1>
+            <p className="m-0 max-w-[640px] text-lg leading-relaxed text-brand-txt text-pretty">Appartements, maisons et immeubles, avec leurs vraies photos. Survolez un bien pour la vue rapide, ou ouvrez sa fiche complète.</p>
 
-      {/* HEADER */}
-      <section className="pt-28 pb-12 bg-primary">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">Nos Biens Immobiliers</h1>
-          <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-          <p className="font-body text-primary-foreground/70 max-w-xl mx-auto">
-            Découvrez notre sélection de biens en Île-de-France.
-          </p>
-        </div>
-      </section>
-
-      {/* SEARCH BAR - Compact & Modern */}
-      <section className="py-4 bg-card border-b border-border md:sticky md:top-[60px] z-40 shadow-sm">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto bg-secondary/50 backdrop-blur-sm rounded-2xl p-3 border border-border"
-          >
-            {/* Main filters row */}
-            <div className="flex flex-col sm:flex-row gap-2">
-              {/* City search with autocomplete */}
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
-                <input
-                  type="text"
-                  placeholder="Ville ou code postal..."
-                  value={searchCity}
-                  onChange={(e) => { setSearchCity(e.target.value); setShowCitySuggestions(true); }}
-                  onFocus={() => setShowCitySuggestions(true)}
-                  onBlur={() => setTimeout(() => setShowCitySuggestions(false), 150)}
-                  className="w-full pl-9 pr-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all"
-                />
-                {showCitySuggestions && filteredCities.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-xl shadow-lg z-50 overflow-hidden">
-                    {filteredCities.map(city => (
-                      <button
-                        key={city}
-                        onMouseDown={() => { setSearchCity(city); setShowCitySuggestions(false); }}
-                        className="w-full text-left px-3 py-2 font-body text-sm hover:bg-accent/10 transition-colors flex items-center gap-2"
-                      >
-                        <MapPin className="w-3.5 h-3.5 text-accent" />
-                        {city}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Rooms */}
-              <div className="relative sm:w-32">
-                <select
-                  value={roomsFilter}
-                  onChange={(e) => setRoomsFilter(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none cursor-pointer"
-                >
-                  <option value="">Pièces</option>
-                  <option value="1">1 pièce</option>
-                  <option value="2">2 pièces</option>
-                  <option value="3">3 pièces</option>
-                  <option value="4">4 pièces</option>
-                  <option value="5">5+ pièces</option>
-                </select>
-                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-              </div>
-
-              {/* Price range */}
-              <div className="flex gap-1.5 sm:w-48">
-                <input
-                  type="number"
-                  placeholder="Min €"
-                  value={priceMin}
-                  onChange={(e) => setPriceMin(e.target.value)}
-                  className="w-1/2 px-2.5 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
-                />
-                <input
-                  type="number"
-                  placeholder="Max €"
-                  value={priceMax}
-                  onChange={(e) => setPriceMax(e.target.value)}
-                  className="w-1/2 px-2.5 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
-                />
-              </div>
-
-              {/* Advanced toggle */}
-              <button
-                onClick={() => setShowAdvanced(!showAdvanced)}
-                className={`flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-body text-xs font-semibold tracking-wide transition-all whitespace-nowrap ${
-                  showAdvanced ? "bg-accent text-accent-foreground" : "bg-card border border-border hover:border-accent/40"
-                }`}
-              >
-                <SlidersHorizontal className="w-3.5 h-3.5" />
-                Filtres Avancés
-                {activeFiltersCount > 0 && (
-                  <span className="bg-accent text-accent-foreground text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold leading-none">
-                    {activeFiltersCount}
-                  </span>
-                )}
-              </button>
-            </div>
-
-            {/* Advanced filters */}
-            <AnimatePresence>
-              {showAdvanced && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <div className="mt-3 pt-3 border-t border-border grid grid-cols-2 md:grid-cols-6 gap-2">
-                    <div className="relative">
-                      <select
-                        value={typeFilter}
-                        onChange={(e) => setTypeFilter(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none"
-                      >
-                        <option value="">Type de bien</option>
-                        <option value="Appartement">Appartement</option>
-                        <option value="Maison">Maison</option>
-                        <option value="Immeuble">Immeuble</option>
-                      </select>
-                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-                    </div>
-
-                    <div className="relative">
-                      <select
-                        value={groundFloor}
-                        onChange={(e) => setGroundFloor(e.target.value as "any" | "yes" | "no" | "last")}
-                        className="w-full px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none"
-                      >
-                        <option value="any">Étage (tous)</option>
-                        <option value="yes">RDC uniquement</option>
-                        <option value="no">Étage uniquement</option>
-                        <option value="last">Dernier étage</option>
-                      </select>
-                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-                    </div>
-
-                    <div className="relative">
-                      <select
-                        value={bedroomsMin}
-                        onChange={(e) => setBedroomsMin(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 appearance-none"
-                      >
-                        <option value="">Chambres min.</option>
-                        <option value="1">1+ chambre</option>
-                        <option value="2">2+ chambres</option>
-                        <option value="3">3+ chambres</option>
-                        <option value="4">4+ chambres</option>
-                      </select>
-                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-                    </div>
-
-                    <label className="flex items-center gap-2 px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm cursor-pointer hover:border-accent/40 transition-colors">
-                      <input type="checkbox" checked={balconyFilter} onChange={(e) => setBalconyFilter(e.target.checked)} className="w-3.5 h-3.5 accent-accent rounded" />
-                      Balcon
-                    </label>
-
-                    <label className="flex items-center gap-2 px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm cursor-pointer hover:border-accent/40 transition-colors">
-                      <input type="checkbox" checked={terraceFilter} onChange={(e) => setTerraceFilter(e.target.checked)} className="w-3.5 h-3.5 accent-accent rounded" />
-                      Terrasse
-                    </label>
-
-                    <label className="flex items-center gap-2 px-3 py-2.5 bg-card border border-border rounded-xl font-body text-sm cursor-pointer hover:border-accent/40 transition-colors">
-                      <input type="checkbox" checked={elevatorFilter} onChange={(e) => setElevatorFilter(e.target.checked)} className="w-3.5 h-3.5 accent-accent rounded" />
-                      Ascenseur
-                    </label>
-                  </div>
-                  {activeFiltersCount > 0 && (
-                    <div className="mt-2 flex justify-end">
-                      <button onClick={clearFilters} className="flex items-center gap-1.5 text-accent font-body text-xs font-semibold hover:underline">
-                        <X className="w-3 h-3" /> Réinitialiser
-                      </button>
+            {/* Recherche */}
+            <div className={cn("mt-2 flex flex-col gap-3 rounded-[22px] bg-white p-3.5 md:p-4", FRAME_SHADOW)}>
+              <div className="grid grid-cols-1 gap-2.5 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
+                <div className="relative">
+                  <label className="flex h-12 items-center gap-2.5 rounded-xl border border-brand-line bg-white px-3.5 focus-within:border-brand-orange">
+                    <Search className="h-[18px] w-[18px] flex-none text-brand-orange-text" />
+                    <span className="sr-only">Ville ou code postal</span>
+                    <input value={ville} onChange={(e) => { setVille(e.target.value); setShowSugg(true); }} onFocus={() => setShowSugg(true)} onBlur={() => setTimeout(() => setShowSugg(false), 150)} placeholder="Ville ou code postal" className="w-full min-w-0 border-0 bg-transparent p-0 text-[15.5px] text-brand-ink outline-none placeholder:text-[#8A97A8]" />
+                    {ville && <button type="button" aria-label="Effacer" onClick={() => setVille("")} className="text-brand-mut"><X className="h-4 w-4" /></button>}
+                  </label>
+                  {showSugg && sugg.length > 0 && (
+                    <div className={cn("absolute left-0 right-0 top-[calc(100%+6px)] z-30 overflow-hidden rounded-xl bg-white py-1", FRAME_SHADOW)}>
+                      {sugg.map((c) => (
+                        <button key={c} type="button" onMouseDown={() => { setVille(c); setShowSugg(false); }} className="flex w-full items-center gap-2 px-3.5 py-2.5 text-left text-[15px] text-brand-ink hover:bg-brand-pale">
+                          <MapPin className="h-4 w-4 text-brand-orange-text" /> {c}
+                        </button>
+                      ))}
                     </div>
                   )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* LISTING */}
-      <section className="py-12 pb-24">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between mb-6">
-            <p className="font-body text-muted-foreground text-sm">{filtered.length} bien(s) trouvé(s)</p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setViewMode("list")}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-body text-sm transition-colors ${viewMode === "list" ? "bg-accent text-accent-foreground" : "bg-card border border-border hover:bg-muted"}`}
-              >
-                <LayoutGrid className="w-4 h-4" /> Liste
-              </button>
-              <button
-                onClick={() => setViewMode("map")}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-body text-sm transition-colors ${viewMode === "map" ? "bg-accent text-accent-foreground" : "bg-card border border-border hover:bg-muted"}`}
-              >
-                <MapPin className="w-4 h-4" /> Par ville
-              </button>
-            </div>
-          </div>
-          
-          {loading ? (
-            <div className="text-center py-20">
-              <div className="inline-block w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mb-4" />
-              <p className="font-body text-muted-foreground">Chargement des biens...</p>
-            </div>
-          ) : viewMode === "map" ? (
-            /* City grouped view */
-            <div className="space-y-10">
-              {citiesWithProperties.length > 0 ? citiesWithProperties.map(([city, props]) => (
-                <motion.div
-                  key={city}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
-                      <MapPin className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <h3 className="font-display text-xl text-foreground">{city}</h3>
-                      <p className="font-body text-muted-foreground text-xs">{props.length} bien(s)</p>
-                    </div>
+                </div>
+                <label>
+                  <span className="sr-only">Nombre de pièces</span>
+                  <select value={pieces} onChange={(e) => setPieces(e.target.value)} className={sel}>
+                    {PIECES.map((p) => <option key={p} value={p}>{p === "" ? "Toutes les pièces" : p === "5" ? "5 pièces et plus" : `${p} pièce${p === "1" ? "" : "s"}`}</option>)}
+                  </select>
+                </label>
+                <label>
+                  <span className="sr-only">Budget maximum</span>
+                  <select value={budget} onChange={(e) => setBudget(e.target.value)} className={sel}>
+                    <option value="">Tous les budgets</option>
+                    {[500000, 800000, 1000000, 1500000, 2000000, 3000000].map((b) => <option key={b} value={b}>Jusqu’à {new Intl.NumberFormat("fr-FR").format(b)} €</option>)}
+                  </select>
+                </label>
+                <button type="button" onClick={() => setPlus(!plus)} aria-expanded={plus} className={cn("inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-xl border px-4 text-[15px] font-bold transition", plus ? "border-brand bg-brand text-white" : "border-brand-line bg-white text-brand hover:border-brand/40")}>
+                  <SlidersHorizontal className="h-4 w-4" /> Plus de filtres
+                  {nbFiltres > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-brand-orange px-1 text-[11.5px] font-extrabold text-brand-ink">{nbFiltres}</span>}
+                </button>
+              </div>
+              <div className="no-scrollbar -mx-3.5 flex gap-2 overflow-x-auto px-3.5 md:mx-0 md:flex-wrap md:px-0">
+                {TYPES.map((t) => (
+                  <button key={t} type="button" aria-pressed={type === t} onClick={() => setType(t)} className={cn("h-10 flex-none rounded-full border px-4 text-[14.5px] transition", type === t ? "border-brand bg-brand font-bold text-white" : "border-brand-line bg-white font-semibold text-brand hover:border-brand/40")}>
+                    {t === "Tous" ? "Tous les biens" : `${t}s`}
+                  </button>
+                ))}
+              </div>
+              {plus && (
+                <div className="flex flex-col gap-3 border-t border-brand-line2 pt-3">
+                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:max-w-[560px]">
+                    <label>
+                      <span className="sr-only">Chambres minimum</span>
+                      <select value={chambres} onChange={(e) => setChambres(e.target.value)} className={sel}>
+                        <option value="">Chambres : peu importe</option>
+                        {["1", "2", "3", "4"].map((c) => <option key={c} value={c}>{c} chambre{c === "1" ? "" : "s"} ou plus</option>)}
+                      </select>
+                    </label>
+                    <label>
+                      <span className="sr-only">Étage</span>
+                      <select value={etage} onChange={(e) => setEtage(e.target.value as typeof etage)} className={sel}>
+                        <option value="any">Étage : peu importe</option>
+                        <option value="rdc">Rez-de-chaussée</option>
+                        <option value="etage">En étage</option>
+                        <option value="dernier">Dernier étage</option>
+                      </select>
+                    </label>
                   </div>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {props.map((p, i) => (
-                      <PropertyCard key={p.id} property={p} index={i} />
-                    ))}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {toggle(balcon, setBalcon, "Balcon")}
+                    {toggle(terrasse, setTerrasse, "Terrasse")}
+                    {toggle(ascenseur, setAscenseur, "Ascenseur")}
+                    {nbFiltres > 0 && (
+                      <button type="button" onClick={reset} className="ml-auto inline-flex min-h-[44px] items-center gap-1.5 text-[14.5px] font-bold text-brand-orange-text"><X className="h-4 w-4" /> Tout effacer</button>
+                    )}
                   </div>
-                </motion.div>
-              )) : (
-                <div className="text-center py-20">
-                  <p className="font-body text-muted-foreground">Aucun bien ne correspond à vos critères.</p>
                 </div>
               )}
             </div>
-          ) : filtered.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filtered.map((p, i) => (
-                <PropertyCard key={p.id} property={p} index={i} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20">
-              <p className="font-body text-muted-foreground">Aucun bien ne correspond à vos critères.</p>
-            </div>
-          )}
-        </div>
-      </section>
+          </Container>
+        </section>
 
-      {/* OFF-MARKET CTA */}
-      <section className="pb-16">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto bg-secondary border border-border rounded-lg p-10 md:p-14 text-center">
-            <div className="flex items-center justify-center gap-3 mb-5">
-              <Lock className="w-6 h-6 text-accent" />
-              <span className="font-body text-accent font-semibold text-sm tracking-wider uppercase">Off-market</span>
+        <section className="bg-white">
+          <Container className="flex flex-col gap-7 py-10 md:py-14">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="m-0 text-[15.5px] font-semibold text-brand-ink" aria-live="polite">
+                {properties ? `${filtres.length} bien${filtres.length > 1 ? "s" : ""} à vendre` : "Chargement des biens…"}
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="relative">
+                  <span className="sr-only">Trier</span>
+                  <select value={tri} onChange={(e) => setTri(e.target.value as keyof typeof TRIS)} className="h-11 appearance-none rounded-full border border-brand-line bg-white px-4 text-[14.5px] font-semibold text-brand-ink outline-none">
+                    {Object.entries(TRIS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                  </select>
+                </label>
+                <div role="group" aria-label="Affichage" className="flex rounded-full border border-brand-line bg-brand-pale p-1">
+                  {([["grille", "Grille", LayoutGrid], ["ville", "Par ville", MapPin]] as const).map(([k, t, I]) => (
+                    <button key={k} type="button" aria-pressed={vue === k} onClick={() => setVue(k)} className={cn("inline-flex h-9 items-center gap-1.5 rounded-full px-3.5 text-[14px] font-bold transition", vue === k ? "bg-white text-brand-ink shadow-[0_4px_12px_-6px_rgba(19,36,61,0.45)]" : "text-brand-mut")}>
+                      <I className="h-4 w-4" /> {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
-              Vous ne voyez qu'une partie de nos biens
-            </h2>
-            <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
-            <p className="font-body text-muted-foreground text-base leading-relaxed mb-4 max-w-2xl mx-auto">
-              Nous travaillons en grande partie sur du <span className="text-accent font-semibold italic">off-market</span>.
-              De nombreux biens d'exception ne sont jamais publiés en ligne et restent accessibles uniquement via notre réseau confidentiel.
-            </p>
-            <p className="font-body text-muted-foreground/70 text-sm mb-8">
-              Confiez-nous votre recherche et accédez à des opportunités exclusives avant tout le monde.
-            </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/mandat-recherche"
-                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:brightness-110 transition-all"
-              >
-                Nous confier votre recherche <ArrowRight className="w-4 h-4" />
-              </Link>
-              <a
-                href="tel:+33184801400"
-                className="inline-flex items-center justify-center gap-2 border border-border text-foreground px-8 py-3.5 font-body font-semibold tracking-wide text-sm rounded hover:bg-muted transition-all"
-              >
-                <Phone className="w-4 h-4" /> 01 84 80 14 00
-              </a>
+            {!properties ? (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {[0, 1, 2].map((i) => <div key={i} className="h-[380px] animate-pulse rounded-[22px] bg-brand-pale" />)}
+              </div>
+            ) : filtres.length === 0 ? (
+              <div className="flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand-pale p-7 md:p-9">
+                <div className="flex max-w-[620px] flex-col gap-2">
+                  <span className="font-display text-[26px] leading-tight text-brand-ink">Aucun bien ne correspond à ces critères</span>
+                  <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Élargissez la recherche, ou confiez-nous vos critères : on vous présente aussi des biens qui ne sont pas en ligne.</p>
+                </div>
+                <div className="flex flex-wrap gap-2.5">
+                  {nbFiltres > 0 && <Btn variant="outline" onClick={reset}>Tout effacer</Btn>}
+                  <Btn to="/acheter#recherche" iconLeft={<Search className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
+                </div>
+              </div>
+            ) : vue === "ville" ? (
+              <div className="flex flex-col gap-11">
+                {parVille.map(([c, ps]) => (
+                  <div key={c} className="flex flex-col gap-5">
+                    <div className="flex items-center gap-3">
+                      <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-tint text-brand"><MapPin className="h-5 w-5" /></span>
+                      <h2 className="m-0 font-display text-[26px] font-medium text-brand-ink">{c}</h2>
+                      <span className="text-[14px] font-semibold text-brand-mut">{ps.length} bien{ps.length > 1 ? "s" : ""}</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                      {ps.map((p, i) => <PropertyCard key={p.id} property={p} index={i} />)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {filtres.map((p, i) => <PropertyCard key={p.id} property={p} index={i} />)}
+              </div>
+            )}
+          </Container>
+        </section>
+
+        {/* Biens hors marché */}
+        <section className="bg-brand">
+          <Container className="grid grid-cols-1 items-center gap-x-16 gap-y-8 py-14 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:py-[88px]">
+            <div className="flex flex-col gap-5">
+              <SectionHead dark eyebrow="Hors marché" title={<>Vous ne voyez qu’une partie <Em dark>de nos biens</Em></>} lead="Certains propriétaires préfèrent vendre sans annonce. Ces biens sont présentés uniquement aux acheteurs qui nous ont confié leur recherche." />
+              <div className="flex flex-wrap gap-3 pt-1">
+                <Btn to="/acheter#recherche" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
+                <Btn href={TEL_HREF} variant="ghost" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
-
+            <div className="flex flex-col gap-4 rounded-[22px] bg-white p-6 md:p-7">
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand text-brand-orange"><Lock className="h-5 w-5" /></span>
+              <span className="font-display text-[24px] leading-tight text-brand-ink">Acheter par secteur</span>
+              <div className="flex flex-wrap gap-2">
+                {cityList.map((c) => (
+                  <Link key={c.slug} to={`/achat-appartement-${c.slug}`} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full border border-brand-line bg-brand-pale px-3.5 text-[14px] font-semibold text-brand-ink transition hover:border-brand-orange hover:bg-[#FFF1DF]">
+                    <MapPin className="h-3.5 w-3.5 text-brand-orange-text" /> {c.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </Container>
+        </section>
+      </main>
       <Footer />
     </div>
   );

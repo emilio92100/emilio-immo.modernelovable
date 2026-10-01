@@ -1,379 +1,180 @@
+/* Pages « achat-appartement-… » (refonte 2026) : même adresse, même contenu, nouvelle présentation. */
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import {
-  MapPin,
-  Train,
-  Trees,
-  ArrowRight,
-  CheckCircle2,
-  Search,
-  Phone,
-  TrendingUp,
-} from "lucide-react";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
+import { ArrowRight, CheckCircle2, LineChart, Phone, Search, Train, Trees } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
-import ContactForm from "@/components/ContactForm";
 import SEOHead from "@/components/SEOHead";
-import EstimationPopup from "@/components/EstimationPopup";
-import { Property, mockProperties, fetchPropertiesFromFeed } from "@/lib/properties";
+import { cn } from "@/lib/utils";
+import { Property, fetchPropertiesFromFeed, mockProperties } from "@/lib/properties";
 import type { CityData } from "@/lib/cities";
-
-const renderMarkdownLight = (txt: string) =>
-  txt.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-    part.startsWith("**") && part.endsWith("**") ? (
-      <strong key={i} className="text-foreground">
-        {part.slice(2, -2)}
-      </strong>
-    ) : (
-      <span key={i}>{part}</span>
-    ),
-  );
+import { useSiteModals } from "@/components/site/SiteModals";
+import { Btn, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF, TextLink } from "@/components/site/ui";
+import { FaqSection, faqJsonLd } from "@/components/site/Faq";
+import { AutresSecteurs, PrixCard, SITE, agentLd, aVille, md } from "@/components/site/CityParts";
 
 const CityPageTemplate = ({ city }: { city: CityData }) => {
-  const [properties, setProperties] = useState<Property[]>(mockProperties);
-  const PAGE_URL = `https://www.emilio-immo.com/achat-appartement-${city.slug}`;
+  const { openEstimation } = useSiteModals();
+  const [properties, setProperties] = useState<Property[] | null>(null);
+  const url = `${SITE}/achat-appartement-${city.slug}`;
+  const estimer = () => openEstimation({ city: city.name.startsWith("Paris") ? "Paris" : city.name, postalCode: city.postalCodes[0] });
 
   useEffect(() => {
-    fetchPropertiesFromFeed().then(setProperties).catch(() => {});
+    let on = true;
+    fetchPropertiesFromFeed()
+      .then((d) => on && setProperties(d))
+      .catch(() => on && setProperties(mockProperties));
+    return () => {
+      on = false;
+    };
   }, []);
 
-  const cityProperties = properties
-    .filter(
-      (p) =>
-        city.postalCodes.includes(p.postalCode) ||
-        city.cityMatch.some((m) => p.city.toLowerCase().includes(m)),
-    )
+  const biens = (properties || [])
+    .filter((p) => !p.id.includes("fictif"))
+    .filter((p) => city.postalCodes.includes(p.postalCode) || city.cityMatch.some((m) => p.city.toLowerCase().includes(m)))
     .slice(0, 6);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "RealEstateAgent",
-        name: "Emilio Immobilier",
-        url: PAGE_URL,
-        areaServed: { "@type": "Place", name: city.name },
-        telephone: "+33184801400",
-      },
+      agentLd(city, url),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.emilio-immo.com/" },
-          { "@type": "ListItem", position: 2, name: "Vendre", item: "https://www.emilio-immo.com/vendre" },
-          { "@type": "ListItem", position: 3, name: `Achat ${city.name}`, item: PAGE_URL },
+          { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE}/` },
+          { "@type": "ListItem", position: 2, name: "Acheter", item: `${SITE}/acheter` },
+          { "@type": "ListItem", position: 3, name: `Achat appartement ${city.name}`, item: url },
         ],
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: city.faqs.map((f) => ({
-          "@type": "Question",
-          name: f.q,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
-        })),
-      },
+      faqJsonLd(city.faqs),
     ],
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <SEOHead
-        title={city.metaTitle}
-        description={city.metaDescription}
-        canonical={PAGE_URL}
-        jsonLd={jsonLd}
-      />
+    <div className="min-h-screen bg-white">
+      <SEOHead title={city.metaTitle} description={city.metaDescription} canonical={url} jsonLd={jsonLd} />
       <Navbar />
-
-      {/* HERO */}
-      <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 bg-primary overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.04]">
-          <div className="absolute top-20 left-10 w-72 h-72 rounded-full border border-primary-foreground" />
-          <div className="absolute bottom-10 right-20 w-96 h-96 rounded-full border border-primary-foreground" />
-        </div>
-        <div className="container mx-auto px-5 md:px-6 relative text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-4 py-1.5 mb-8">
-              <MapPin className="w-3.5 h-3.5 text-accent" />
-              <span className="font-body text-accent text-xs font-semibold tracking-wide uppercase">
-                {city.postalLabel}
-              </span>
-            </div>
-            <h1 className="font-display text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl text-primary-foreground leading-[1.1] mb-8">
-              Achat & vente d'appartement{" "}
-              <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
-            </h1>
-            <p className="font-body text-primary-foreground/80 text-base md:text-xl leading-relaxed max-w-3xl mx-auto mb-10">
-              {city.heroIntro}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <EstimationPopup
-                defaultCity={city.name}
-                defaultPostalCode={city.postalCodes[0]}
-                trigger={
-                  <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full font-body font-semibold text-sm hover:brightness-110 transition-all">
-                    <TrendingUp className="w-4 h-4" /> Estimer mon bien
-                  </button>
-                }
-              />
-              <Link
-                to="/biens"
-                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/20 text-primary-foreground px-6 py-3 rounded-full font-body font-medium text-sm hover:bg-primary-foreground/5 transition-all"
-              >
-                <Search className="w-4 h-4" /> Voir les biens
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* MARCHÉ */}
-      <section className="py-24 md:py-36 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl text-center">
-          <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
-            Le marché
-          </span>
-          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mt-4 mb-10">
-            Le marché immobilier <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
-          </h2>
-          <div className="max-w-3xl mx-auto font-body text-base md:text-lg text-muted-foreground leading-relaxed space-y-6 text-left md:text-center">
-            {city.marketParagraphs.map((p, i) => (
-              <p key={i}>{renderMarkdownLight(p)}</p>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
-            {city.stats.map((s) => (
-              <div
-                key={s.label}
-                className="bg-card border border-border rounded-xl p-6 text-center"
-              >
-                <s.icon className="w-6 h-6 text-accent mx-auto mb-3" />
-                <div className="font-display text-xl md:text-2xl text-foreground">{s.val}</div>
-                <div className="font-body text-sm text-muted-foreground mt-2">{s.label}</div>
+      <main>
+        {/* Haut de page */}
+        <section className="bg-brand-pale">
+          <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 pb-14 pt-6 md:pb-[80px] md:pt-10">
+            <div className="flex min-w-0 flex-[1_1_540px] flex-col gap-[22px]">
+              <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Acheter", to: "/acheter" }, { label: city.name }]} />
+              <Eyebrow>{city.postalLabel}</Eyebrow>
+              <h1 className="m-0 font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+                Achat et vente d’appartement <Em>{aVille(city)}</Em>
+              </h1>
+              <p className="m-0 max-w-[580px] text-lg leading-relaxed text-brand-txt text-pretty">{city.heroIntro}</p>
+              <div className="flex flex-wrap gap-3 pt-1">
+                <Btn href="#biens" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Voir les biens</Btn>
+                <Btn variant="outline" onClick={estimer} iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MID-PAGE ESTIMATION CTA */}
-      <section className="py-16 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-primary border border-accent/30 rounded-2xl p-8 md:p-10 text-center"
-          >
-            <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/25 rounded-full px-4 py-1.5 mb-5">
-              <TrendingUp className="w-3.5 h-3.5 text-accent" />
-              <span className="font-body text-accent text-xs font-semibold tracking-wide uppercase">
-                Estimation immédiate · gratuite
+              <span className="text-[14.5px] text-brand-mut">
+                Un projet {aVille(city)} ? <a href={TEL_HREF} className="inline-flex min-h-[44px] items-center font-bold text-brand">{TEL}</a>
               </span>
             </div>
-            <h3 className="font-display text-xl md:text-2xl text-primary-foreground mb-4 max-w-2xl mx-auto leading-tight">
-              {city.estimationCta}
-            </h3>
-            <p className="font-body text-primary-foreground/60 text-sm mb-6 max-w-xl mx-auto">
-              Estimation experte basée sur les dernières transactions de votre quartier.
-              100 % gratuit, sans engagement.
-            </p>
-            <EstimationPopup
-              defaultCity={city.name}
-              defaultPostalCode={city.postalCodes[0]}
-              trigger={
-                <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full font-body font-semibold text-sm hover:brightness-110 transition-all">
-                  Estimer mon bien en 2 minutes <ArrowRight className="w-4 h-4" />
-                </button>
-              }
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* QUARTIERS */}
-      <section className="py-24 md:py-36 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-6xl">
-          <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
-            Les quartiers
-          </span>
-          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mt-4 mb-4">
-            Où acheter <span className="italic text-accent whitespace-nowrap">à {city.name}</span> ?
-          </h2>
-          <p className="font-body text-base md:text-lg text-muted-foreground mb-10 max-w-3xl leading-relaxed">
-            Chaque quartier a son identité. Voici notre sélection pour vous aider à cibler.
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {city.quartiers.map((q, i) => (
-              <motion.div
-                key={q.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                viewport={{ once: true }}
-                className="bg-card border border-border rounded-2xl p-6 md:p-7 hover:border-accent/40 hover:shadow-lg transition-all"
-              >
-                <h3 className="font-display text-xl text-foreground mb-3">{q.name}</h3>
-                <p className="font-body text-[15px] md:text-base text-muted-foreground leading-relaxed">{q.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* BIENS DISPO */}
-      <section className="py-24 md:py-36 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-6xl">
-          <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
-            <div>
-              <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
-                Disponibles
-              </span>
-              <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mt-4">
-                Nos biens <span className="italic text-accent whitespace-nowrap">à {city.name}</span>
-              </h2>
+            <div className="min-w-0 flex-[1_1_440px]">
+              <PrixCard city={city} />
             </div>
-            <Link
-              to="/biens"
-              className="inline-flex items-center gap-2 text-accent font-body font-semibold text-sm hover:underline"
-            >
-              Voir tous nos biens <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+          </Container>
+        </section>
 
-          {cityProperties.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cityProperties.map((p, i) => (
-                <PropertyCard key={p.id} property={p} index={i} />
+        {/* Le marché */}
+        <section className="bg-white">
+          <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-10 py-14 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:py-[96px]">
+            <div className="flex min-w-0 flex-col gap-6">
+              <SectionHead eyebrow="Le marché" title={<>Le marché immobilier <Em>{aVille(city)}</Em></>} />
+              <div className="flex max-w-[680px] flex-col gap-5 text-[17px] leading-relaxed text-brand-txt text-pretty">
+                {city.marketParagraphs.map((p, i) => <p key={i} className="m-0">{md(p)}</p>)}
+              </div>
+            </div>
+            <div className="flex min-w-0 flex-col gap-4 rounded-[24px] bg-brand p-7 text-brand-bt md:sticky md:top-28 md:p-8">
+              <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-soft">Estimation gratuite</span>
+              <h2 className="m-0 font-display text-[26px] font-medium leading-tight text-white md:text-[30px] text-balance">{city.estimationCta}</h2>
+              <p className="m-0 text-[15.5px] leading-relaxed">Une première fourchette tout de suite, à partir des ventes récentes du secteur. Puis un membre de l’équipe vous rappelle pour l’affiner.</p>
+              <Btn onClick={estimer} iconLeft={<LineChart className="h-[18px] w-[18px]" />} icon={<ArrowRight className="h-[18px] w-[18px]" />} className="self-start">Estimer mon bien</Btn>
+            </div>
+          </Container>
+        </section>
+
+        {/* Les quartiers */}
+        <section className="bg-brand-pale">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead eyebrow="Les quartiers" title={<>Où acheter <Em>{aVille(city)}</Em>{"\u00a0"}?</>} lead="Chaque quartier a son identité, ses prix et ses acheteurs. Voici nos repères pour vous aider à cibler." />
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {city.quartiers.map((q, i) => (
+                <article key={q.name} className={cn("flex flex-col gap-3 rounded-[20px] bg-white p-6 transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
+                  <span className="font-display text-[34px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
+                  <h3 className="m-0 font-display text-[23px] font-medium leading-tight text-brand-ink">{q.name}</h3>
+                  <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt text-pretty">{q.desc}</p>
+                </article>
               ))}
             </div>
-          ) : (
-            <div className="bg-card border border-border rounded-2xl p-10 text-center">
-              <p className="font-body text-muted-foreground mb-6">
-                Aucun bien à {city.name} n'est actuellement publié. Nos biens off-market évoluent
-                chaque semaine — confiez-nous votre recherche.
-              </p>
-              <Link
-                to="/mandat-recherche"
-                className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full font-body font-semibold text-sm"
-              >
-                Démarrer ma recherche <ArrowRight className="w-4 h-4" />
-              </Link>
+          </Container>
+        </section>
+
+        {/* Les biens du secteur */}
+        <section id="biens" className="bg-white">
+          <Container className="flex flex-col gap-9 py-14 md:py-[96px]">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <SectionHead eyebrow="À vendre" title={<>Nos biens <Em>{aVille(city)}</Em></>} />
+              <TextLink to="/biens">Voir tous nos biens</TextLink>
             </div>
-          )}
-        </div>
-      </section>
+            {!properties ? (
+              <div className="h-[360px] animate-pulse rounded-[22px] bg-brand-pale" />
+            ) : biens.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {biens.map((p, i) => <PropertyCard key={p.id} property={p} index={i} />)}
+              </div>
+            ) : (
+              <div className={cn("flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand-pale p-7 md:p-9")}>
+                <div className="flex max-w-[640px] flex-col gap-2">
+                  <span className="font-display text-[26px] leading-tight text-brand-ink">Aucun bien publié {aVille(city)} en ce moment</span>
+                  <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Certains biens se vendent sans annonce. Confiez-nous votre recherche : on vous présente ceux qui vous correspondent, y compris hors marché.</p>
+                </div>
+                <Btn to="/acheter#recherche" iconLeft={<Search className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
+              </div>
+            )}
+          </Container>
+        </section>
 
-      {/* TRANSPORTS / ATOUTS */}
-      <section className="py-24 md:py-36 bg-primary">
-        <div className="container mx-auto px-5 md:px-6 max-w-5xl">
-          <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
-            Cadre de vie
-          </span>
-          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-primary-foreground leading-[1.15] mt-4 mb-10">
-            Pourquoi vivre <span className="italic text-accent whitespace-nowrap">à {city.name}</span> ?
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-primary-foreground/[0.04] border border-primary-foreground/10 rounded-xl p-6">
-              <Train className="w-6 h-6 text-accent mb-3" />
-              <h3 className="font-display text-lg text-primary-foreground mb-3">Transports</h3>
-              <ul className="space-y-2 font-body text-sm text-primary-foreground/70">
-                {city.transports.map((t) => (
-                  <li key={t.line} className="flex gap-3">
-                    <span className="text-accent font-semibold shrink-0">{t.line}</span>
-                    <span>{t.stations}</span>
-                  </li>
-                ))}
-              </ul>
+        {/* Cadre de vie */}
+        <section className="bg-brand">
+          <Container className="flex flex-col gap-10 py-14 md:py-[96px]">
+            <SectionHead dark eyebrow="Cadre de vie" title={<>Pourquoi vivre <Em dark>{aVille(city)}</Em>{"\u00a0"}?</>} />
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              <div className="flex flex-col gap-4 rounded-[22px] border border-white/15 bg-white/[0.06] p-6 md:p-7">
+                <span className="inline-flex items-center gap-3 font-display text-[24px] text-white"><span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Train className="h-5 w-5" /></span>Transports</span>
+                <ul className="m-0 flex list-none flex-col gap-3 p-0">
+                  {city.transports.map((t) => (
+                    <li key={t.line} className="flex flex-col gap-0.5 border-t border-white/10 pt-3 first:border-0 first:pt-0 sm:flex-row sm:gap-4">
+                      <span className="w-[150px] flex-none text-[15px] font-extrabold text-brand-orange-soft">{t.line}</span>
+                      <span className="text-[15px] leading-normal text-brand-bt">{t.stations}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex flex-col gap-4 rounded-[22px] border border-white/15 bg-white/[0.06] p-6 md:p-7">
+                <span className="inline-flex items-center gap-3 font-display text-[24px] text-white"><span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Trees className="h-5 w-5" /></span>Atouts</span>
+                <ul className="m-0 flex list-none flex-col gap-3 p-0">
+                  {city.atouts.map((a) => (
+                    <li key={a} className="flex items-start gap-2.5 text-[15.5px] leading-normal text-brand-bt">
+                      <CheckCircle2 className="mt-0.5 h-[18px] w-[18px] flex-none text-brand-orange" /> {a}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <div className="bg-primary-foreground/[0.04] border border-primary-foreground/10 rounded-xl p-6">
-              <Trees className="w-6 h-6 text-accent mb-3" />
-              <h3 className="font-display text-lg text-primary-foreground mb-3">Atouts</h3>
-              <ul className="space-y-2 font-body text-sm text-primary-foreground/70">
-                {city.atouts.map((a) => (
-                  <li key={a} className="flex gap-2 items-start">
-                    <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                    <span>{a}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="flex flex-wrap gap-3">
+              <Btn to="/acheter#recherche" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche {aVille(city)}</Btn>
+              <Btn href={TEL_HREF} variant="ghost" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
             </div>
-          </div>
-        </div>
-      </section>
+          </Container>
+        </section>
 
-      {/* FAQ */}
-      <section className="py-24 md:py-36 bg-secondary">
-        <div className="container mx-auto px-5 md:px-6 max-w-3xl">
-          <span className="font-body text-accent font-semibold text-sm tracking-[0.25em] uppercase">
-            Questions fréquentes
-          </span>
-          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mt-4 mb-10">
-            <span className="whitespace-nowrap">{city.name}</span> : <span className="italic text-accent whitespace-nowrap">vos questions</span>
-          </h2>
-          <Accordion type="single" collapsible className="space-y-4">
-            {city.faqs.map((f, i) => (
-              <AccordionItem
-                key={i}
-                value={`faq-${i}`}
-                className="bg-card border border-border rounded-2xl px-7 overflow-hidden data-[state=open]:border-accent/30 transition-colors"
-              >
-                <AccordionTrigger className="font-display text-base md:text-xl text-foreground py-6 hover:no-underline gap-4 text-left [&[data-state=open]>svg]:text-accent">
-                  {f.q}
-                </AccordionTrigger>
-                <AccordionContent className="font-body text-base md:text-lg text-muted-foreground leading-relaxed pb-6">
-                  {f.a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      {/* CTA FINAL */}
-      <section className="py-24 md:py-36 bg-background">
-        <div className="container mx-auto px-5 md:px-6 max-w-3xl text-center">
-          <h2 className="font-display text-[1.75rem] sm:text-4xl md:text-5xl text-foreground leading-[1.15] mb-6">
-            {city.estimationCta}
-          </h2>
-          <p className="font-body text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Estimation gratuite par notre équipe d'experts du marché local, puis appel
-            d'un conseiller sous 24h pour affiner.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <EstimationPopup
-              defaultCity={city.name}
-              defaultPostalCode={city.postalCodes[0]}
-              trigger={
-                <button className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-full font-body font-semibold text-sm hover:brightness-110 transition-all">
-                  <TrendingUp className="w-4 h-4" /> Estimer mon bien
-                </button>
-              }
-            />
-            <a
-              href="tel:+33184801400"
-              className="inline-flex items-center justify-center gap-2 border border-border text-foreground px-6 py-3 rounded-full font-body font-medium text-sm hover:bg-secondary transition-colors"
-            >
-              <Phone className="w-4 h-4" /> 01 84 80 14 00
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <ContactForm />
+        <FaqSection title={<>{city.name}{"\u00a0"}: <Em>vos questions</Em></>} items={city.faqs} />
+        <AutresSecteurs current={city} kind="achat" />
+      </main>
       <Footer />
     </div>
   );

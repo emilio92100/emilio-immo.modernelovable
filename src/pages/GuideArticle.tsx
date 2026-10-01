@@ -1,99 +1,61 @@
-import { Helmet } from "react-helmet-async";
-import { Link, useParams, Navigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Clock, Calendar, ArrowRight, ArrowLeft, HelpCircle } from "lucide-react";
+/* Article du guide immobilier (refonte 2026) : sommaire, mise en page lisible, FAQ, articles liés. */
+import { Link, Navigate, useParams } from "react-router-dom";
+import { ArrowLeft, ArrowRight, CalendarDays, Clock, LineChart, Phone } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import EstimationPopup from "@/components/EstimationPopup";
-import {
-  getArticleBySlug,
-  getCategory,
-  getRelatedArticles,
-  type ArticleSection,
-} from "@/data/blogArticles";
+import SEOHead, { SITE_URL } from "@/components/SEOHead";
+import { cn } from "@/lib/utils";
+import { getArticleBySlug, getCategory, getRelatedArticles, type ArticleSection } from "@/data/blogArticles";
+import { useSiteModals } from "@/components/site/SiteModals";
+import { Btn, Container, Crumbs, FRAME_SHADOW, SectionHead, Em, TEL, TEL_HREF } from "@/components/site/ui";
+import { FaqList } from "@/components/site/Faq";
+import { ArticleCard, formatDate, slugify } from "@/components/site/GuideParts";
+import alexandre from "@/assets/refonte/alexandre-detoure.webp";
 
-const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-
-const SectionRenderer = ({ section }: { section: ArticleSection }) => {
-  switch (section.type) {
+const Bloc = ({ s }: { s: ArticleSection }) => {
+  switch (s.type) {
     case "p":
-      return (
-        <p className="font-body text-[17px] leading-[1.85] text-foreground/85 mb-6">
-          {section.text}
-        </p>
-      );
+      return <p className="m-0 text-[17.5px] leading-[1.8] text-brand-txt text-pretty">{s.text}</p>;
     case "h2":
-      return (
-        <h2 className="font-display text-2xl md:text-3xl text-primary mt-14 mb-6 leading-tight">
-          {section.text}
-        </h2>
-      );
+      return <h2 id={slugify(s.text)} className="m-0 mt-8 font-display text-[clamp(26px,2.4vw,32px)] font-medium leading-tight text-brand-ink text-balance">{s.text}</h2>;
     case "h3":
-      return (
-        <h3 className="font-display text-xl md:text-2xl text-primary mt-10 mb-4 leading-tight">
-          {section.text}
-        </h3>
-      );
+      return <h3 className="m-0 mt-3 font-display text-[22px] font-medium leading-tight text-brand-ink">{s.text}</h3>;
     case "list":
       return (
-        <ul className="font-body text-[17px] leading-[1.8] text-foreground/85 mb-6 space-y-3">
-          {section.items.map((item, idx) => (
-            <li key={idx} className="flex gap-3">
-              <span className="text-accent mt-2 flex-shrink-0 h-1 w-1 rounded-full bg-accent" />
-              <span>{item}</span>
+        <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
+          {s.items.map((it, i) => (
+            <li key={i} className="flex gap-3 text-[17px] leading-[1.7] text-brand-txt">
+              <span aria-hidden className="mt-[11px] h-1.5 w-1.5 flex-none rounded-full bg-brand-orange" />
+              <span>{it}</span>
             </li>
           ))}
         </ul>
       );
     case "quote":
       return (
-        <blockquote className="my-10 pl-6 border-l-2 border-accent italic font-display text-xl leading-relaxed text-primary">
-          « {section.text} »
-          {section.author && (
-            <cite className="block not-italic font-body text-sm text-muted-foreground mt-3">
-              — {section.author}
-            </cite>
-          )}
-        </blockquote>
+        <figure className="m-0 my-2 border-l-2 border-brand-orange pl-6">
+          <blockquote className="m-0 font-display text-[22px] italic leading-relaxed text-brand-ink">« {s.text} »</blockquote>
+          {s.author && <figcaption className="mt-2 text-sm font-semibold text-brand-mut">{s.author}</figcaption>}
+        </figure>
       );
     case "callout":
       return (
-        <aside className="my-10 p-7 bg-primary text-primary-foreground relative">
-          <div className="absolute top-0 left-0 h-1 w-16 bg-accent" />
-          <h4 className="font-display text-lg mb-3 text-accent">{section.title}</h4>
-          <p className="font-body text-[15px] leading-relaxed text-primary-foreground/90">
-            {section.text}
-          </p>
+        <aside className="my-2 flex flex-col gap-2 rounded-[20px] bg-brand p-6 md:p-7">
+          <span className="font-display text-[21px] leading-tight text-brand-orange-soft">{s.title}</span>
+          <p className="m-0 text-[16px] leading-relaxed text-brand-bt">{s.text}</p>
         </aside>
       );
     case "table":
       return (
-        <div className="my-8 overflow-x-auto">
-          <table className="w-full border-collapse font-body text-sm">
-            <thead>
-              <tr className="border-b-2 border-primary">
-                {section.headers.map((h, i) => (
-                  <th
-                    key={i}
-                    className="text-left py-3 px-4 font-display text-primary text-base"
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
+        <div className="my-2 overflow-x-auto rounded-[18px] border border-brand-line">
+          <table className="w-full min-w-[520px] border-collapse text-[15px]">
+            <thead className="bg-brand-pale">
+              <tr>{s.headers.map((h, i) => <th key={i} className="px-4 py-3 text-left font-extrabold text-brand-ink">{h}</th>)}</tr>
             </thead>
             <tbody>
-              {section.rows.map((row, i) => (
-                <tr key={i} className="border-b border-border">
-                  {row.map((cell, j) => (
-                    <td
-                      key={j}
-                      className={`py-3 px-4 ${j === 0 ? "font-semibold text-foreground" : "text-foreground/80"}`}
-                    >
-                      {cell}
-                    </td>
-                  ))}
+              {s.rows.map((row, i) => (
+                <tr key={i} className="border-t border-brand-line2">
+                  {row.map((c, j) => <td key={j} className={cn("px-4 py-3", j === 0 ? "font-semibold text-brand-ink" : "text-brand-txt")}>{c}</td>)}
                 </tr>
               ))}
             </tbody>
@@ -102,21 +64,14 @@ const SectionRenderer = ({ section }: { section: ArticleSection }) => {
       );
     case "links":
       return (
-        <div className="my-10 p-6 border border-border bg-cream/50">
-          <div className="font-body text-[11px] tracking-[0.25em] uppercase text-accent mb-4">
-            {section.title}
-          </div>
-          <ul className="space-y-2">
-            {section.items.map((item, idx) => (
-              <li key={idx}>
-                <Link
-                  to={item.to}
-                  className="group inline-flex items-center gap-2 font-body text-[15px] text-primary hover:text-accent transition-colors"
-                >
-                  <ArrowRight className="w-3.5 h-3.5 text-accent" />
-                  <span className="underline underline-offset-4 decoration-accent/30 group-hover:decoration-accent">
-                    {item.label}
-                  </span>
+        <div className="my-2 flex flex-col gap-3 rounded-[18px] border border-brand-line bg-brand-pale p-5 md:p-6">
+          <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">{s.title}</span>
+          <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
+            {s.items.map((it, i) => (
+              <li key={i}>
+                <Link to={it.to} className="group inline-flex min-h-[36px] items-center gap-2 text-[15.5px] font-semibold text-brand hover:text-brand-orange-text">
+                  <ArrowRight className="h-4 w-4 flex-none text-brand-orange" />
+                  <span className="underline decoration-brand-orange/30 underline-offset-4 group-hover:decoration-brand-orange">{it.label}</span>
                 </Link>
               </li>
             ))}
@@ -127,248 +82,137 @@ const SectionRenderer = ({ section }: { section: ArticleSection }) => {
 };
 
 const GuideArticle = () => {
+  const { openEstimation } = useSiteModals();
   const { category, slug } = useParams<{ category: string; slug: string }>();
   const article = slug ? getArticleBySlug(slug) : undefined;
   const cat = category ? getCategory(category) : undefined;
-
-  if (!article || !cat || article.category !== cat.slug) {
-    return <Navigate to="/guide-immobilier" replace />;
-  }
+  if (!article || !cat || article.category !== cat.slug) return <Navigate to="/guide-immobilier" replace />;
 
   const related = getRelatedArticles(article.slug, article.category, 3);
-  const canonical = `https://www.emilio-immo.com/guide-immobilier/${cat.slug}/${article.slug}`;
+  const url = `${SITE_URL}/guide-immobilier/${cat.slug}/${article.slug}`;
+  const sommaire = article.sections.filter((s): s is { type: "h2"; text: string } => s.type === "h2");
+  const author = { "@type": "Person", name: "Alexandre Rogelet", jobTitle: "Fondateur d’Emilio Immobilier", url: `${SITE_URL}/notre-histoire` };
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: article.title,
+      description: article.metaDescription,
+      datePublished: article.date,
+      dateModified: article.updated || article.date,
+      inLanguage: "fr-FR",
+      author,
+      publisher: { "@type": "Organization", name: "Emilio Immobilier", url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/og-image.jpg` } },
+      image: `${SITE_URL}/og-image.jpg`,
+      mainEntityOfPage: url,
+      articleSection: cat.label,
+      keywords: article.keywords.join(", "),
+      wordCount: article.sections.reduce((n, s) => n + ("text" in s ? s.text.split(/\s+/).length : "items" in s ? s.items.join(" ").split(/\s+/).length : 0), 0),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Guide immobilier", item: `${SITE_URL}/guide-immobilier` },
+        { "@type": "ListItem", position: 3, name: cat.label, item: `${SITE_URL}/guide-immobilier/${cat.slug}` },
+        { "@type": "ListItem", position: 4, name: article.title, item: url },
+      ],
+    },
+    ...(article.faq?.length
+      ? [{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: article.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }]
+      : []),
+  ];
 
   return (
-    <>
-      <Helmet>
-        <title>{article.metaTitle}</title>
-        <meta name="description" content={article.metaDescription} />
-        <meta name="keywords" content={article.keywords.join(", ")} />
-        <link rel="canonical" href={canonical} />
-        <meta property="og:title" content={article.title} />
-        <meta property="og:description" content={article.metaDescription} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={canonical} />
+    <div className="min-h-screen bg-white">
+      <SEOHead title={article.metaTitle} description={article.metaDescription} canonical={url} jsonLd={jsonLd} type="article">
         <meta property="article:published_time" content={article.date} />
-        {article.updated && <meta property="article:modified_time" content={article.updated} />}
+        <meta property="article:modified_time" content={article.updated || article.date} />
         <meta property="article:section" content={cat.label} />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: article.title,
-            description: article.metaDescription,
-            datePublished: article.date,
-            dateModified: article.updated || article.date,
-            author: {
-              "@type": "Organization",
-              name: "Emilio Immobilier",
-              url: "https://www.emilio-immo.com",
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "Emilio Immobilier",
-              url: "https://www.emilio-immo.com",
-            },
-            mainEntityOfPage: canonical,
-            articleSection: cat.label,
-            keywords: article.keywords.join(", "),
-          })}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.emilio-immo.com/" },
-              { "@type": "ListItem", position: 2, name: "Guide Immobilier", item: "https://www.emilio-immo.com/guide-immobilier" },
-              { "@type": "ListItem", position: 3, name: cat.label, item: `https://www.emilio-immo.com/guide-immobilier/${cat.slug}` },
-              { "@type": "ListItem", position: 4, name: article.title, item: canonical },
-            ],
-          })}
-        </script>
-        {article.faq && article.faq.length > 0 && (
-          <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: article.faq.map((f) => ({
-                "@type": "Question",
-                name: f.q,
-                acceptedAnswer: { "@type": "Answer", text: f.a },
-              })),
-            })}
-          </script>
-        )}
-      </Helmet>
-
+      </SEOHead>
       <Navbar />
-
-      <main className="pt-24 bg-background min-h-screen">
-        {/* Hero */}
-        <section className="bg-primary text-primary-foreground py-16 md:py-24">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <nav className="flex items-center gap-2 text-xs font-body text-primary-foreground/60 mb-8 flex-wrap">
-              <Link to="/" className="hover:text-accent transition-colors">Accueil</Link>
-              <span>/</span>
-              <Link to="/guide-immobilier" className="hover:text-accent transition-colors">Guide Immobilier</Link>
-              <span>/</span>
-              <Link to={`/guide-immobilier/${cat.slug}`} className="hover:text-accent transition-colors">
-                {cat.label}
-              </Link>
-            </nav>
-
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Link
-                to={`/guide-immobilier/${cat.slug}`}
-                className="inline-flex items-center gap-2 text-xs font-body tracking-[0.25em] uppercase text-accent mb-6 hover:opacity-80 transition-opacity"
-              >
-                {cat.label}
-              </Link>
-              <h1 className="font-display text-3xl md:text-5xl leading-[1.15] mb-6">
-                {article.title}
-              </h1>
-              <div className="flex items-center gap-6 text-sm font-body text-primary-foreground/70">
-                <span className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" /> {formatDate(article.date)}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" /> {article.readMinutes} min de lecture
-                </span>
-              </div>
-            </motion.div>
-          </div>
+      <main>
+        <section className="bg-brand-pale">
+          <Container className="flex flex-col gap-5 pb-12 pt-6 md:pb-[64px] md:pt-10">
+            <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Guide immobilier", to: "/guide-immobilier" }, { label: cat.label, to: `/guide-immobilier/${cat.slug}` }]} />
+            <Link to={`/guide-immobilier/${cat.slug}`} className="inline-flex h-8 items-center self-start rounded-full bg-brand-tint px-3.5 text-[12.5px] font-extrabold uppercase tracking-[0.12em] text-brand">{cat.label}</Link>
+            <h1 className="m-0 max-w-[920px] font-display text-[clamp(32px,3.9vw,54px)] font-medium leading-[1.1] tracking-[-0.01em] text-brand-ink text-balance">{article.title}</h1>
+            <p className="m-0 max-w-[760px] text-lg leading-relaxed text-brand-txt text-pretty">{article.excerpt}</p>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-1 text-[14px] text-brand-mut">
+              <span className="inline-flex items-center gap-2.5">
+                <span className="block h-10 w-10 flex-none overflow-hidden rounded-full bg-brand-tint"><img src={alexandre} alt="" className="block h-[58px] w-10 object-cover object-top" /></span>
+                <span className="flex flex-col leading-tight"><span className="font-bold text-brand-ink">Alexandre Rogelet</span><span>Fondateur d’Emilio Immobilier</span></span>
+              </span>
+              <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-4 w-4" /> {article.updated ? <>Mis à jour le <time dateTime={article.updated}>{formatDate(article.updated)}</time></> : <>Publié le <time dateTime={article.date}>{formatDate(article.date)}</time></>}</span>
+              <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" /> {article.readMinutes} min de lecture</span>
+            </div>
+          </Container>
         </section>
 
-        {/* Article body */}
-        <article className="py-16 md:py-20">
-          <div className="container mx-auto px-6 max-w-3xl">
-            <div className="font-body">
-              <p className="text-xl md:text-2xl font-display leading-relaxed text-primary italic mb-12 pb-8 border-b border-border">
-                {article.excerpt}
-              </p>
-              {article.sections.map((section, i) => (
-                <SectionRenderer key={i} section={section} />
-              ))}
-            </div>
+        <section className="bg-white">
+          <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-10 py-12 md:py-[72px] lg:grid-cols-[minmax(0,1fr)_320px]">
+            <article className="flex min-w-0 max-w-[740px] flex-col gap-5">
+              {article.sections.map((s, i) => <Bloc key={i} s={s} />)}
 
-            {/* FAQ */}
-            {article.faq && article.faq.length > 0 && (
-              <section className="mt-16 pt-12 border-t border-border">
-                <div className="flex items-center gap-3 mb-8">
-                  <HelpCircle className="w-5 h-5 text-accent" />
-                  <h2 className="font-display text-2xl md:text-3xl text-primary leading-tight">
-                    Questions fréquentes
-                  </h2>
+              {article.faq && article.faq.length > 0 && (
+                <div className="mt-10 flex flex-col gap-5 border-t border-brand-line2 pt-10">
+                  <h2 id="questions-frequentes" className="m-0 font-display text-[clamp(26px,2.4vw,32px)] font-medium leading-tight text-brand-ink">Questions fréquentes</h2>
+                  <FaqList items={article.faq} />
                 </div>
-                <div className="space-y-6">
-                  {article.faq.map((item, i) => (
-                    <details
-                      key={i}
-                      className="group border-l-2 border-accent/40 pl-6 py-2 hover:border-accent transition-colors"
-                    >
-                      <summary className="cursor-pointer font-display text-lg text-primary marker:hidden list-none flex items-start justify-between gap-4">
-                        <span>{item.q}</span>
-                        <span className="text-accent text-2xl leading-none flex-shrink-0 group-open:rotate-45 transition-transform">
-                          +
-                        </span>
-                      </summary>
-                      <p className="mt-4 font-body text-[16px] leading-[1.8] text-foreground/80">
-                        {item.a}
-                      </p>
-                    </details>
-                  ))}
+              )}
+
+              <div className="mt-8 flex flex-wrap items-center justify-between gap-5 rounded-[22px] bg-brand-pale p-6 md:p-8">
+                <div className="flex max-w-[460px] flex-col gap-2">
+                  <span className="font-display text-[26px] leading-tight text-brand-ink">Envie d’un avis de valeur sérieux ?</span>
+                  <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Une première fourchette tout de suite, puis un membre de l’équipe vous rappelle sous 24 h. Gratuit et sans engagement.</p>
                 </div>
-              </section>
-            )}
-
-            {/* CTA Estimation */}
-            <div className="mt-16 p-8 md:p-10 bg-cream border-l-4 border-accent">
-              <span className="font-body text-xs tracking-[0.25em] uppercase text-accent">
-                Passer à l'action
-              </span>
-              <h3 className="font-display text-2xl md:text-3xl text-primary mt-3 mb-4">
-                Envie d'une estimation sérieuse de votre bien ?
-              </h3>
-              <p className="font-body text-muted-foreground mb-6 leading-relaxed">
-                Un conseiller vous rappelle sous 24h pour un avis de valeur argumenté,
-                gratuit et sans engagement.
-              </p>
-              <EstimationPopup
-                trigger={
-                  <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 font-body text-sm tracking-wider uppercase hover:bg-primary/90 transition-colors">
-                    Estimer mon bien
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                }
-              />
-            </div>
-
-            {/* Retour catégorie */}
-            <div className="mt-12">
-              <Link
-                to={`/guide-immobilier/${cat.slug}`}
-                className="inline-flex items-center gap-2 text-sm font-body text-primary hover:text-accent transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Retour à {cat.label}
+                <Btn onClick={() => openEstimation()} iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
+              </div>
+              <Link to={`/guide-immobilier/${cat.slug}`} className="inline-flex min-h-[44px] items-center gap-2 self-start text-[15px] font-bold text-brand hover:text-brand-orange-text">
+                <ArrowLeft className="h-4 w-4 text-brand-orange" /> Tous les articles « {cat.label} »
               </Link>
-            </div>
-          </div>
-        </article>
+            </article>
 
-        {/* Related */}
+            <aside className="hidden flex-col gap-5 lg:sticky lg:top-28 lg:flex">
+              {sommaire.length > 2 && (
+                <nav aria-label="Sommaire" className={cn("flex flex-col gap-3 rounded-[20px] bg-white p-5", FRAME_SHADOW)}>
+                  <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Sommaire</span>
+                  <ol className="m-0 flex list-none flex-col gap-1 p-0">
+                    {sommaire.map((h, i) => (
+                      <li key={i}>
+                        <a href={`#${slugify(h.text)}`} className="flex gap-2.5 rounded-lg px-2 py-1.5 text-[14px] leading-snug text-brand-txt hover:bg-brand-pale hover:text-brand-ink">
+                          <span className="font-display italic text-brand-orange-lt">{String(i + 1).padStart(2, "0")}</span>
+                          <span>{h.text}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              )}
+              <div className="flex flex-col gap-3 rounded-[20px] bg-brand p-5 text-brand-bt">
+                <span className="font-display text-[22px] leading-tight text-white">Un projet à Paris Ouest ou dans le 92 ?</span>
+                <span className="text-[14.5px] leading-relaxed">Parlez-en avec l’équipe, sans engagement.</span>
+                <Btn onClick={() => openEstimation()} full iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
+                <a href={TEL_HREF} className="inline-flex min-h-[44px] items-center justify-center gap-2 text-[15px] font-bold text-white"><Phone className="h-4 w-4 text-brand-orange" /> {TEL}</a>
+              </div>
+            </aside>
+          </Container>
+        </section>
+
         {related.length > 0 && (
-          <section className="py-16 md:py-20 bg-cream">
-            <div className="container mx-auto px-6">
-              <div className="flex items-center gap-3 mb-10">
-                <span className="font-body text-xs tracking-[0.25em] uppercase text-accent">
-                  À lire aussi
-                </span>
-                <div className="h-px flex-1 bg-border" />
+          <section className="bg-brand-pale">
+            <Container className="flex flex-col gap-10 py-14 md:py-[88px]">
+              <SectionHead eyebrow="À lire aussi" title={<>Sur le même <Em>sujet</Em></>} />
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                {related.map((a) => <ArticleCard key={a.slug} a={a} />)}
               </div>
-              <div className="grid md:grid-cols-3 gap-6">
-                {related.map((rel) => {
-                  const relCat = getCategory(rel.category);
-                  return (
-                    <Link
-                      key={rel.slug}
-                      to={`/guide-immobilier/${rel.category}/${rel.slug}`}
-                      className="group block bg-background border border-border hover:border-accent transition-all p-6"
-                    >
-                      <span className="text-[10px] tracking-[0.2em] uppercase text-accent font-body font-semibold">
-                        {relCat?.label}
-                      </span>
-                      <h4 className="font-display text-lg text-primary group-hover:text-accent transition-colors mt-3 mb-3 leading-tight">
-                        {rel.title}
-                      </h4>
-                      <p className="font-body text-sm text-muted-foreground line-clamp-2">
-                        {rel.excerpt}
-                      </p>
-                    </Link>
-                  );
-                })}
-              </div>
-              <div className="text-center mt-12">
-                <Link
-                  to="/guide-immobilier"
-                  className="inline-flex items-center gap-2 text-sm font-body tracking-wider uppercase text-primary hover:text-accent transition-colors"
-                >
-                  Voir tout le Guide Immobilier
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
+            </Container>
           </section>
         )}
       </main>
-
       <Footer />
-    </>
+    </div>
   );
 };
 

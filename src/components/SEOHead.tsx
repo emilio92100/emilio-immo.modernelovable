@@ -1,80 +1,50 @@
-import { useEffect } from "react";
+/* Balises de référencement de chaque page (titre, description, canonique, partage, données structurées).
+   Passe par react-helmet-async : rendu côté navigateur ET dans les pages pré-générées au build. */
+import type { ReactNode } from "react";
+import { Helmet } from "react-helmet-async";
+
+export const SITE_URL = "https://www.emilio-immo.com";
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface SEOHeadProps {
   title: string;
   description: string;
   canonical?: string;
-  jsonLd?: Record<string, unknown>;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
+  image?: string;
+  type?: "website" | "article";
+  children?: ReactNode;
 }
 
-const SEOHead = ({ title, description, canonical, jsonLd, noindex }: SEOHeadProps) => {
-  useEffect(() => {
-    document.title = title;
+const ld = (o: unknown) => JSON.stringify(o).replace(/</g, "\\u003c");
 
-    const setMeta = (name: string, content: string, isProperty = false) => {
-      const attr = isProperty ? "property" : "name";
-      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement | null;
-      if (!el) {
-        el = document.createElement("meta");
-        el.setAttribute(attr, name);
-        document.head.appendChild(el);
-      }
-      el.setAttribute("content", content);
-    };
-
-    setMeta("description", description);
-    setMeta("og:title", title, true);
-    setMeta("og:description", description, true);
-    setMeta("twitter:title", title);
-    setMeta("twitter:description", description);
-
-    // Robots noindex (per-page) — for pages that should be removed from index (e.g. deleted listings)
-    let robots = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
-    if (noindex) {
-      if (!robots) {
-        robots = document.createElement("meta");
-        robots.setAttribute("name", "robots");
-        document.head.appendChild(robots);
-      }
-      robots.setAttribute("content", "noindex, nofollow");
-    } else if (robots) {
-      robots.remove();
-    }
-
-    // Canonical
-    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-    if (canonical) {
-      if (!link) {
-        link = document.createElement("link");
-        link.setAttribute("rel", "canonical");
-        document.head.appendChild(link);
-      }
-      link.setAttribute("href", canonical);
-    } else if (link) {
-      link.remove();
-    }
-
-    // JSON-LD
-    const existingScript = document.querySelector('script[data-seo-jsonld]');
-    if (existingScript) existingScript.remove();
-    if (jsonLd) {
-      const script = document.createElement("script");
-      script.setAttribute("type", "application/ld+json");
-      script.setAttribute("data-seo-jsonld", "true");
-      script.textContent = JSON.stringify(jsonLd);
-      document.head.appendChild(script);
-    }
-
-    return () => {
-      const script = document.querySelector('script[data-seo-jsonld]');
-      if (script) script.remove();
-      const r = document.querySelector('meta[name="robots"]');
-      if (r) r.remove();
-    };
-  }, [title, description, canonical, jsonLd, noindex]);
-
-  return null;
+const SEOHead = ({ title, description, canonical, jsonLd, noindex, image = DEFAULT_OG_IMAGE, type = "website", children }: SEOHeadProps) => {
+  const blocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+  return (
+    <Helmet prioritizeSeoTags>
+      <html lang="fr" />
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      {canonical && <link rel="canonical" href={canonical} />}
+      <meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large"} />
+      <meta property="og:site_name" content="Emilio Immobilier" />
+      <meta property="og:locale" content="fr_FR" />
+      <meta property="og:type" content={type} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      {canonical && <meta property="og:url" content={canonical} />}
+      <meta property="og:image" content={image} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
+      {children}
+      {blocks.map((b, i) => (
+        <script key={i} type="application/ld+json">{ld(b)}</script>
+      ))}
+    </Helmet>
+  );
 };
 
 export default SEOHead;

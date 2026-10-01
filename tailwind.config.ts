@@ -15,9 +15,26 @@ export default {
     extend: {
       fontFamily: {
         display: ['Playfair Display', 'Georgia', 'serif'],
-        body: ['Raleway', 'system-ui', 'sans-serif'],
+        body: ['Albert Sans', 'Segoe UI', 'system-ui', 'sans-serif'],
+        jakarta: ['Plus Jakarta Sans', 'Albert Sans', 'sans-serif'],
       },
       colors: {
+        brand: {
+          DEFAULT: "#22497D",
+          deep: "#1B3D6B",
+          ink: "#13243D",
+          orange: "#E68B23",
+          "orange-text": "#A95808",
+          "orange-lt": "#C8710F",
+          "orange-soft": "#F2B266",
+          pale: "#F5F8FC",
+          tint: "#E6EDF6",
+          line: "#DCE3EC",
+          line2: "#E8EDF3",
+          txt: "#46566B",
+          mut: "#5B6B80",
+          bt: "#C9D5E6",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

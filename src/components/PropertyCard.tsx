@@ -1,265 +1,185 @@
+/* Carte d'un bien (refonte 2026) : carte encadrée, survol « Vue rapide / Détail ».
+   Sur téléphone, les deux boutons restent visibles sur la photo. */
 import { useState } from "react";
-import { Property, formatPrice } from "@/lib/properties";
-import { MapPin, Maximize, BedDouble, Home, Eye, ArrowRight, Bath, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, BedDouble, Eye, LayoutGrid, MapPin, Maximize, X } from "lucide-react";
+import { Property, formatPrice, formatSurface } from "@/lib/properties";
+import { cn } from "@/lib/utils";
+import { useSiteModals } from "@/components/site/SiteModals";
+import { FRAME_SHADOW } from "@/components/site/ui";
 
 interface PropertyCardProps {
   property: Property;
   index?: number;
+  className?: string;
+  imgClassName?: string;
 }
 
-const getDisplayTitle = (property: Property) => {
-  const type = property.type || "Bien";
-  if (property.rooms > 0) {
-    return `${type} ${property.rooms} pièce${property.rooms > 1 ? "s" : ""}`;
+export const displayTitle = (p: Property) => {
+  const type = p.type || "Bien";
+  return p.rooms > 0 ? `${type} ${p.rooms} pièce${p.rooms > 1 ? "s" : ""}` : type;
+};
+
+export const displayCity = (p: Property) => {
+  if (p.city.toLowerCase().startsWith("paris") && p.postalCode.startsWith("75")) {
+    const n = parseInt(p.postalCode.slice(3), 10);
+    if (n > 0) return `Paris ${n}${n === 1 ? "er" : "e"}`;
   }
-  return type;
+  return p.city;
 };
 
-const getDisplayCity = (property: Property) => {
-  const city = property.city;
-  if (city.toLowerCase().startsWith("paris") && property.postalCode.startsWith("75")) {
-    const arrNum = parseInt(property.postalCode.slice(3), 10);
-    if (arrNum > 0 && !city.includes("ème") && !city.includes("er")) {
-      return `Paris ${arrNum}${arrNum === 1 ? "er" : "ème"}`;
-    }
-  }
-  return city;
+export const featureBadges = (p: Property) => {
+  const b: string[] = [];
+  if (p.parking && p.parking > 0) b.push("Parking");
+  if (p.terrace) b.push("Terrasse");
+  if (p.balcony) b.push("Balcon");
+  if (p.garden) b.push("Jardin");
+  if (p.cave) b.push("Cave");
+  if (p.elevator) b.push("Ascenseur");
+  return b;
 };
 
-const getFeatureBadges = (property: Property) => {
-  const badges: string[] = [];
-  if (property.parking && property.parking > 0) badges.push("Parking");
-  if (property.terrace) badges.push("Terrasse");
-  if (property.balcony) badges.push("Balcon");
-  if (property.garden) badges.push("Jardin");
-  if (property.cave) badges.push("Cave");
-  if (property.elevator) badges.push("Ascenseur");
-  return badges;
-};
+const perM2 = (p: Property) => (p.surface > 0 ? `${new Intl.NumberFormat("fr-FR").format(Math.round(p.price / p.surface))} €/m²` : "");
 
-/* ── Quick View Popup ── */
-const QuickViewPopup = ({
-  property,
-  open,
-  onClose,
-}: {
-  property: Property;
-  open: boolean;
-  onClose: () => void;
-}) => (
-  <AnimatePresence>
-    {open && (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.25 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      >
+/* ── Vue rapide ── */
+export const QuickViewPopup = ({ property, open, onClose }: { property: Property; open: boolean; onClose: () => void }) => {
+  const { openContact } = useSiteModals();
+  const specs = [
+    { icon: <Maximize className="h-[18px] w-[18px]" />, v: formatSurface(property.surface), l: "surface" },
+    property.rooms > 0 && { icon: <LayoutGrid className="h-[18px] w-[18px]" />, v: String(property.rooms), l: "pièces" },
+    property.bedrooms > 0 && { icon: <BedDouble className="h-[18px] w-[18px]" />, v: String(property.bedrooms), l: "chambres" },
+  ].filter(Boolean) as { icon: JSX.Element; v: string; l: string }[];
+  return (
+    <AnimatePresence>
+      {open && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.92, y: 30 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.92, y: 20 }}
-          transition={{ type: "spring", damping: 28, stiffness: 350 }}
-          onClick={(e) => e.stopPropagation()}
-          className="relative max-w-2xl w-full mx-4 bg-card rounded-xl overflow-hidden shadow-2xl border border-border"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[80] flex items-end justify-center bg-[rgba(19,36,61,0.6)] p-0 sm:items-center sm:p-6"
+          onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Vue rapide : ${displayTitle(property)}, ${displayCity(property)}`}
         >
-          {/* Image header */}
-          <div className="relative aspect-[16/9] overflow-hidden">
-            <motion.img
-              initial={{ scale: 1.08 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              src={property.images[0]}
-              alt={property.title}
-              className="w-full h-full object-cover"
-            />
-            <button
-              onClick={onClose}
-              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-foreground/60 hover:bg-foreground/80 flex items-center justify-center transition-colors"
-            >
-              <X className="w-5 h-5 text-background" />
-            </button>
-            <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-body font-bold tracking-wider uppercase px-3 py-1.5 rounded">
-              Vente
-            </span>
-            {property.exclusive && (
-              <span className="absolute top-3 left-[5.5rem] bg-accent text-accent-foreground text-xs font-body font-bold tracking-wider uppercase px-3 py-1.5 rounded">
-                Exclusivité
-              </span>
-            )}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/90 to-transparent p-5 pt-14">
-              <span className="text-primary-foreground font-display text-2xl font-bold">
-                {formatPrice(property.price)}
-              </span>
-            </div>
-          </div>
-
-          {/* Content */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.12, duration: 0.3 }}
-            className="p-6 space-y-4"
+            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ type: "spring", damping: 28, stiffness: 340 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative grid max-h-[92vh] w-full max-w-[960px] grid-cols-1 overflow-y-auto rounded-t-[24px] bg-white p-3 shadow-2xl sm:rounded-[24px] md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
           >
-            <div>
-              <h3 className="font-display text-xl font-semibold text-foreground">
-                {getDisplayTitle(property)}
+            <button type="button" onClick={onClose} aria-label="Fermer la vue rapide" className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full bg-white text-brand-ink shadow-lg">
+              <X className="h-[18px] w-[18px]" strokeWidth={2.4} />
+            </button>
+            <div className="relative h-[240px] overflow-hidden rounded-2xl bg-brand-tint md:h-[440px]">
+              <img src={property.images[0]} alt={displayTitle(property)} className="h-full w-full object-cover" />
+              <span className="absolute left-3 top-3 inline-flex h-[30px] items-center rounded-full bg-white px-3 text-[13px] font-bold text-brand-ink">{property.type}</span>
+              {property.exclusive && <span className="absolute left-3 top-12 inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
+            </div>
+            <div className="flex min-w-0 flex-col gap-3.5 px-2 pb-2 pt-[18px] md:px-[30px] md:pb-6 md:pt-[34px]">
+              <span className="text-xs font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Vue rapide</span>
+              <h3 className="m-0 pr-10 font-display text-[24px] font-medium leading-tight text-brand-ink md:text-[30px]">
+                {displayTitle(property)}, <em className="font-normal italic text-brand-orange-lt">{displayCity(property)}</em>
               </h3>
-              <div className="flex items-center gap-1.5 text-muted-foreground text-sm mt-1 font-body">
-                <MapPin className="w-3.5 h-3.5 text-accent" />
-                {getDisplayCity(property)}, {property.postalCode}
+              <span className="inline-flex items-center gap-1.5 text-[14.5px] text-brand-mut"><MapPin className="h-[15px] w-[15px] text-brand-orange-text" />{displayCity(property)} · {property.postalCode}</span>
+              <div className="flex flex-wrap items-baseline gap-2.5">
+                <span className="font-display text-[32px] font-medium tracking-[-0.01em] text-brand-ink">{formatPrice(property.price)}</span>
+                <span className="text-xs font-bold text-brand-mut">FAI</span>
+                <span className="text-[13.5px] text-brand-mut">{perM2(property)}</span>
               </div>
-            </div>
-
-            <div className="flex items-center gap-5 text-sm text-muted-foreground font-body border-t border-b border-border py-3">
-              <span className="flex items-center gap-1.5">
-                <Maximize className="w-4 h-4 text-accent" /> {property.surface} m²
-              </span>
-              {property.rooms > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <Home className="w-4 h-4 text-accent" /> {property.rooms} pièces
-                </span>
-              )}
-              {property.bedrooms > 0 && (
-                <span className="flex items-center gap-1.5">
-                  <BedDouble className="w-4 h-4 text-accent" /> {property.bedrooms} ch.
-                </span>
-              )}
-            </div>
-
-            <p className="font-body text-muted-foreground text-sm leading-relaxed line-clamp-3">
-              {property.description}
-            </p>
-
-            {getFeatureBadges(property).length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {getFeatureBadges(property).map((badge) => (
-                  <span
-                    key={badge}
-                    className="text-xs font-body font-medium text-accent border border-accent/30 rounded-full px-3 py-1"
-                  >
-                    {badge}
-                  </span>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(min(110px,100%),1fr))] gap-2">
+                {specs.map((s) => (
+                  <div key={s.l} className="flex items-center gap-2.5 rounded-[10px] bg-brand-pale px-3 py-2.5">
+                    <span className="text-brand-orange-text">{s.icon}</span>
+                    <span className="flex flex-col leading-tight"><span className="text-[15.5px] font-bold text-brand-ink">{s.v}</span><span className="text-[12.5px] text-brand-mut">{s.l}</span></span>
+                  </div>
                 ))}
               </div>
-            )}
-
-            <div className="flex gap-3 pt-2">
-              <button
-                onClick={onClose}
-                className="flex-1 border border-border text-foreground font-body font-semibold text-sm py-3 rounded-lg hover:bg-muted transition-colors"
-              >
-                Fermer
-              </button>
-              <Link
-                to={`/biens/${property.id}`}
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground font-body font-semibold text-sm py-3 rounded-lg hover:brightness-110 transition-all"
-              >
-                <ArrowRight className="w-4 h-4" /> Voir en détail
-              </Link>
+              <p className="m-0 line-clamp-4 text-[15px] leading-relaxed text-brand-txt">{property.description}</p>
+              {featureBadges(property).length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {featureBadges(property).map((b) => <span key={b} className="rounded-full border border-brand-orange/30 px-3 py-1 text-xs font-semibold text-brand-orange-text">{b}</span>)}
+                </div>
+              )}
+              <div className="mt-1 flex flex-wrap gap-2.5">
+                <Link to={`/biens/${property.id}`} className="inline-flex h-[50px] items-center gap-2 rounded-[10px] bg-brand-orange px-5 text-[15.5px] font-bold text-brand-ink">
+                  Voir la fiche détaillée <ArrowRight className="h-[18px] w-[18px]" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => { onClose(); openContact({ objet: "Visiter un bien", propertyRef: property.id, propertyTitle: `${displayTitle(property)} · ${displayCity(property)} · ${formatPrice(property.price)}` }); }}
+                  className="inline-flex h-[50px] items-center rounded-[10px] border-[1.5px] border-brand px-5 text-[15.5px] font-bold text-brand"
+                >
+                  Demander une visite
+                </button>
+              </div>
+              <Link to="/honoraires" className="text-[13.5px] font-semibold text-brand-mut underline">Honoraires : consulter nos tarifs</Link>
             </div>
           </motion.div>
         </motion.div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
+      )}
+    </AnimatePresence>
+  );
+};
 
-/* ── Property Card ── */
-const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
-  const [quickView, setQuickView] = useState(false);
-
+/* ── Carte ── */
+const PropertyCard = ({ property, index = 0, className, imgClassName }: PropertyCardProps) => {
+  const [quick, setQuick] = useState(false);
+  const voir = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setQuick(true);
+  };
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
+      <motion.article
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
         viewport={{ once: true }}
-        className="group bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border"
+        transition={{ duration: 0.45, delay: Math.min(index, 6) * 0.07 }}
+        className={cn("group relative flex flex-col rounded-[18px] bg-white p-2.5 transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW, className)}
       >
-        {/* Image zone */}
-        <div className="relative overflow-hidden aspect-[4/3]">
-          <img
-            src={property.images[0]}
-            alt={property.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            loading="lazy"
-          />
-
-          {/* Badge VENTE */}
-          <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-[11px] font-body font-bold tracking-wider uppercase px-3 py-1 rounded z-10">
-            Vente
-          </span>
-          {property.exclusive && (
-            <span className="absolute top-3 left-[5rem] bg-accent text-accent-foreground text-[11px] font-body font-bold tracking-wider uppercase px-3 py-1 rounded z-10">
-              Exclusivité
-            </span>
-          )}
-
-          {/* Price overlay */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/85 to-transparent p-4 pt-12">
-            <span className="text-primary-foreground font-display text-xl font-bold">
-              {formatPrice(property.price)}{" "}
-              <span className="text-sm font-body font-normal opacity-70">FAI</span>
-            </span>
-          </div>
-
-          {/* Hover overlay with 2 buttons */}
-          <div className="absolute inset-0 bg-primary/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 z-20">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setQuickView(true);
-              }}
-              className="flex items-center gap-2 bg-background/95 text-foreground px-5 py-2.5 rounded-lg font-body text-sm font-semibold hover:bg-background transition-colors shadow-lg"
-            >
-              <Eye className="w-4 h-4" /> Vue rapide
+        <div className={cn("relative h-[210px] overflow-hidden rounded-xl bg-brand-tint", imgClassName)}>
+          <img src={property.images[0]} alt={displayTitle(property)} loading="lazy" className="h-full w-full object-cover transition-all duration-700 group-hover:scale-[1.045] md:group-hover:grayscale-[.45]" />
+          <span className="absolute left-2.5 top-2.5 z-[2] inline-flex h-[30px] items-center rounded-full bg-white px-3 text-[13px] font-bold text-brand-ink">{property.type}</span>
+          {property.exclusive && <span className="absolute left-2.5 top-11 z-[2] inline-flex h-[24px] items-center rounded-full bg-brand-orange px-2.5 text-[11.5px] font-extrabold text-brand-ink">Exclusivité</span>}
+          {/* Survol (ordinateur) */}
+          <div className="absolute inset-0 z-[3] hidden items-center justify-center gap-2.5 bg-[rgba(19,36,61,0.45)] opacity-0 transition-opacity duration-300 group-focus-within:opacity-100 group-hover:opacity-100 md:flex">
+            <button type="button" onClick={voir} className="inline-flex h-[46px] items-center gap-2 rounded-full bg-white px-[18px] text-[14.5px] font-extrabold text-brand-ink shadow-lg">
+              <Eye className="h-[17px] w-[17px]" /> Vue rapide
             </button>
-            <Link
-              to={`/biens/${property.id}`}
-              className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-lg font-body text-sm font-semibold hover:brightness-110 transition-all shadow-lg"
-            >
-              <ArrowRight className="w-4 h-4" /> Détails
+            <Link to={`/biens/${property.id}`} className="inline-flex h-[46px] items-center gap-2 rounded-full bg-brand-orange px-[18px] text-[14.5px] font-extrabold text-brand-ink shadow-lg">
+              Détail <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-        </div>
-
-        {/* Info zone */}
-        <Link to={`/biens/${property.id}`} className="block p-5">
-          <h3 className="font-display text-lg font-semibold text-foreground mb-2 line-clamp-1">
-            {getDisplayTitle(property)}
-          </h3>
-          <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-3 font-body">
-            <MapPin className="w-3.5 h-3.5 text-accent" />
-            {getDisplayCity(property)}, {property.postalCode}
+          {/* Téléphone */}
+          <div className="absolute bottom-2.5 right-2.5 z-[3] flex gap-1.5 md:hidden">
+            <button type="button" onClick={voir} className="inline-flex h-9 items-center gap-1.5 rounded-full bg-white/95 px-3 text-[13px] font-extrabold text-brand-ink"><Eye className="h-[15px] w-[15px]" /> Vue rapide</button>
+            <Link to={`/biens/${property.id}`} className="inline-flex h-9 items-center rounded-full bg-brand-orange px-3 text-[13px] font-extrabold text-brand-ink">Détail</Link>
           </div>
-
-          <div className="flex items-center gap-4 text-sm text-muted-foreground font-body border-t border-border pt-3">
-            <span className="flex items-center gap-1">
-              <Maximize className="w-3.5 h-3.5 text-accent" /> {property.surface} m²
+        </div>
+        <Link to={`/biens/${property.id}`} className="flex flex-1 flex-col gap-1.5 px-2.5 pb-2 pt-4">
+          <div className="flex items-baseline justify-between gap-2.5">
+            <span className="inline-flex items-baseline gap-1.5">
+              <span className="whitespace-nowrap font-display text-2xl font-medium tracking-[-0.01em] text-brand-ink">{formatPrice(property.price)}</span>
+              <span className="text-xs font-bold text-brand-mut">FAI</span>
             </span>
-            {property.bedrooms > 0 && (
-              <span className="flex items-center gap-1">
-                <BedDouble className="w-3.5 h-3.5 text-accent" /> {property.bedrooms} ch.
-              </span>
-            )}
+            <span className="whitespace-nowrap text-[12.5px] text-brand-mut">{perM2(property)}</span>
+          </div>
+          <span className="text-base font-bold leading-snug text-brand-ink">{displayTitle(property)}</span>
+          <span className="inline-flex items-center gap-1.5 text-sm text-brand-mut"><MapPin className="h-[15px] w-[15px] text-brand-orange-text" />{displayCity(property)} · {property.postalCode}</span>
+          <div className="mt-auto flex flex-wrap items-center gap-x-3.5 gap-y-2 border-t border-brand-line2 pt-3 text-sm text-brand-mut">
+            <span className="inline-flex items-center gap-1.5"><Maximize className="h-3.5 w-3.5 text-brand-orange-text" /> {formatSurface(property.surface)}</span>
+            {property.rooms > 0 && <span className="inline-flex items-center gap-1.5"><LayoutGrid className="h-3.5 w-3.5 text-brand-orange-text" /> {property.rooms} p.</span>}
+            {property.bedrooms > 0 && <span className="inline-flex items-center gap-1.5"><BedDouble className="h-3.5 w-3.5 text-brand-orange-text" /> {property.bedrooms} ch.</span>}
           </div>
         </Link>
-      </motion.div>
-
-      {/* Quick View Dialog */}
-      <QuickViewPopup
-        property={property}
-        open={quickView}
-        onClose={() => setQuickView(false)}
-      />
+      </motion.article>
+      <QuickViewPopup property={property} open={quick} onClose={() => setQuick(false)} />
     </>
   );
 };

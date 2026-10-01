@@ -599,6 +599,288 @@ const cities: Record<string, CityData> = {
     ],
     estimationCta: "Vous vendez dans le 6e arrondissement ? Estimation experte et confidentielle.",
   },
+  "paris-17": {
+    slug: "paris-17",
+    name: "Paris 17e",
+    postalCodes: ["75017"],
+    cityMatch: ["paris 17"],
+    postalLabel: "Paris · 75017",
+    population: "159 000",
+    pricePerSqm: {
+      low: 7100,
+      mid: 10000,
+      high: 13300,
+      description: "Autour de 10 000 €/m² en moyenne : moins de 9 000 €/m² aux Épinettes, plus de 10 500 €/m² en Plaine Monceau et aux Ternes.",
+    },
+    metaTitle: "Achat appartement Paris 17e (75017) | Prix m² 2026 & biens à vendre",
+    metaDescription:
+      "Acheter un appartement dans le 17e : prix au m² par quartier (Batignolles, Ternes, Plaine Monceau, Épinettes), transports et biens à vendre avec Emilio Immobilier.",
+    heroIntro:
+      "Vous cherchez à acheter ou à vendre un appartement dans le 17e ? Des Ternes aux Batignolles, nous vous accompagnons à chaque étape : les prix rue par rue, les biens visibles et hors marché, les visites, la négociation et la signature.",
+    marketParagraphs: [
+      "Le **17e arrondissement** réunit plusieurs Paris : l'ouest haussmannien de la **Plaine Monceau** et des **Ternes**, le village des **Batignolles**, les **Épinettes** plus abordables au nord, et le nouveau quartier **Clichy-Batignolles** autour du parc Martin-Luther-King.",
+      "Le **prix au m² dans le 17e** tourne autour de 10 000 € en moyenne. Il dépasse 10 500 €/m² en Plaine Monceau et aux Ternes, et reste sous les 9 000 €/m² aux Épinettes. Les grands appartements familiaux avec ascenseur et balcon sont les plus recherchés.",
+      "En 2026, le marché est stable, en légère hausse sur un an. La ligne 14 (Pont Cardinet, Porte de Clichy), le RER E à Porte Maillot et le tramway T3b ont nettement amélioré la desserte de l'arrondissement ces dernières années.",
+    ],
+    stats: [
+      { icon: Building2, val: "≈ 10 000 €/m²", label: "Prix moyen" },
+      { icon: Users, val: "159 000", label: "Habitants" },
+      { icon: Landmark, val: "5 lignes", label: "Métro, dont la 14" },
+      { icon: Trees, val: "10 ha", label: "Parc Martin-Luther-King" },
+    ],
+    quartiers: [
+      { name: "Batignolles", desc: "L'esprit village autour du square et de la rue des Batignolles, très apprécié des jeunes couples et des familles." },
+      { name: "Clichy-Batignolles", desc: "Le nouveau quartier autour du parc Martin-Luther-King et du Tribunal de Paris : immeubles récents, terrasses, ligne 14." },
+      { name: "Ternes", desc: "De l'Étoile à la Porte Maillot, autour de l'avenue des Ternes et de la rue Poncelet : haussmannien, commerces, adresse prisée." },
+      { name: "Plaine Monceau", desc: "Hôtels particuliers et grands appartements fin XIXe autour de la place Malesherbes, à deux pas du parc Monceau." },
+      { name: "Épinettes", desc: "Ancien quartier ouvrier devenu très vivant, avec la cité des Fleurs : les prix les plus accessibles de l'arrondissement." },
+      { name: "Pereire – Wagram", desc: "Immeubles haussmanniens et grands appartements familiaux, le long du boulevard Pereire et de l'avenue de Wagram." },
+    ],
+    transports: [
+      { line: "Ligne 14", stations: "Pont Cardinet · Porte de Clichy" },
+      { line: "Lignes 2 et 3", stations: "Ternes · Courcelles · Villiers · Pereire · Wagram · Malesherbes" },
+      { line: "Ligne 13", stations: "La Fourche · Brochant · Guy Môquet · Porte de Clichy" },
+      { line: "RER C et E", stations: "Pereire-Levallois · Porte de Clichy · Neuilly-Porte Maillot" },
+      { line: "Tram T3b", stations: "Le long des boulevards des Maréchaux" },
+    ],
+    atouts: [
+      "Parc Clichy-Batignolles – Martin-Luther-King et square des Batignolles",
+      "Lycées Carnot et Honoré-de-Balzac",
+      "Rues commerçantes et marchés : Lévis, Poncelet, Batignolles",
+      "Palais des Congrès et Porte Maillot",
+      "Le parc Monceau, juste à la limite du 8e",
+    ],
+    faqs: [
+      {
+        q: "Quel est le prix au m² dans le 17e arrondissement ?",
+        a: "Autour de 10 000 €/m² en moyenne en 2026, avec de vrais écarts selon le quartier : plus de 10 500 €/m² en Plaine Monceau et aux Ternes, autour de 10 000 €/m² aux Batignolles, moins de 9 000 €/m² aux Épinettes. L'étage, l'ascenseur, l'extérieur et l'état de l'immeuble font ensuite la différence.",
+      },
+      {
+        q: "Quels quartiers choisir pour acheter dans le 17e ?",
+        a: "La Plaine Monceau et les Ternes pour l'haussmannien et les grands appartements, les Batignolles pour l'ambiance village, Clichy-Batignolles pour le neuf autour du parc, et les Épinettes ou Guy Môquet pour des prix plus accessibles.",
+      },
+      {
+        q: "Le 17e est-il bien desservi ?",
+        a: "Oui : lignes 1, 2, 3, 13 et 14 du métro, RER C et RER E à Porte Maillot, ligne L à Pont-Cardinet et tramway T3b sur les Maréchaux.",
+      },
+      {
+        q: "Combien de temps pour acheter dans le 17e ?",
+        a: "Avec un mandat de recherche, comptez en général 3 à 4 mois entre le premier rendez-vous et la remise des clés, selon la rareté du bien recherché.",
+      },
+    ],
+    estimationCta: "Vous vendez dans le 17e ? Découvrez la valeur de votre appartement en 2 minutes.",
+  },
+
+  "saint-cloud": {
+    slug: "saint-cloud",
+    name: "Saint-Cloud",
+    postalCodes: ["92210"],
+    cityMatch: ["saint-cloud", "saint cloud"],
+    postalLabel: "Hauts-de-Seine · 92210",
+    population: "29 900",
+    pricePerSqm: {
+      low: 4850,
+      mid: 6500,
+      high: 8850,
+      description: "Autour de 6 500 €/m² pour un appartement, davantage à Montretout. Les maisons se vendent autour de 8 400 €/m² en moyenne.",
+    },
+    metaTitle: "Achat appartement Saint-Cloud (92210) | Prix m² 2026 & biens à vendre",
+    metaDescription:
+      "Acheter un appartement ou une maison à Saint-Cloud : prix au m² par quartier (Montretout, Coteaux, Val d'Or), transports, écoles et biens à vendre avec Emilio Immobilier.",
+    heroIntro:
+      "Vous cherchez à acheter ou à vendre à Saint-Cloud ? Appartement familial, maison à Montretout ou vue sur la Seine depuis les Coteaux : nous vous accompagnons de la recherche à la signature.",
+    marketParagraphs: [
+      "Entre le **domaine national de Saint-Cloud** et la Seine, **Saint-Cloud** est l'une des communes les plus résidentielles des Hauts-de-Seine : environ 30 000 habitants, beaucoup de familles, et plus de huit logements sur dix en appartement.",
+      "Le **prix au m² à Saint-Cloud** tourne autour de 6 500 € pour un appartement en 2026, et autour de 8 400 € pour une maison. **Montretout** reste le secteur le plus recherché, tandis que **Fouilleuse** et le **Val d'Or** offrent des prix plus accessibles.",
+      "Après une baisse en 2024 et 2025, les prix se sont stabilisés. La future gare de la ligne 15 Ouest, prévue vers 2031, viendra compléter une desserte déjà assurée par les lignes L et U et le tramway T2.",
+    ],
+    stats: [
+      { icon: Building2, val: "≈ 6 500 €/m²", label: "Prix moyen" },
+      { icon: Users, val: "29 900", label: "Habitants" },
+      { icon: Landmark, val: "L · U · T2", label: "Train et tramway" },
+      { icon: Trees, val: "460 ha", label: "Domaine national" },
+    ],
+    quartiers: [
+      { name: "Centre", desc: "Autour de l'église et des rues commerçantes, proche de la gare de Saint-Cloud : appartements anciens et vie de quartier." },
+      { name: "Montretout – Coutureau", desc: "Le secteur résidentiel le plus recherché, avec maisons et grands appartements, et le mieux tenu en prix." },
+      { name: "Coteaux – Bords de Seine", desc: "Vues sur la Seine et sur Paris, desservi par le tramway T2 à la station Les Coteaux." },
+      { name: "Pasteur – Magenta", desc: "Calme et familial, autour de la rue Pasteur et de l'American School of Paris." },
+      { name: "Val d'Or", desc: "Autour de la gare du Val d'Or (ligne L), apprécié des actifs qui travaillent à La Défense ou à Paris." },
+      { name: "Fouilleuse", desc: "Le secteur le plus accessible de la ville, à la limite de Rueil-Malmaison." },
+    ],
+    transports: [
+      { line: "Ligne L", stations: "Gare de Saint-Cloud · Gare du Val d'Or (Saint-Lazare)" },
+      { line: "Ligne U", stations: "Gare de Saint-Cloud (La Défense – La Verrière)" },
+      { line: "Tram T2", stations: "Les Coteaux · Les Milons · Parc de Saint-Cloud" },
+      { line: "Métro 10", stations: "Boulogne – Pont de Saint-Cloud, de l'autre côté du pont" },
+    ],
+    atouts: [
+      "Domaine national de Saint-Cloud (460 ha, jardins de Le Nôtre)",
+      "Hippodrome de Saint-Cloud",
+      "Lycées Alexandre-Dumas et Santos-Dumont, American School of Paris",
+      "La Défense et Paris en quelques minutes",
+      "Musée des Avelines et centre-ville commerçant",
+    ],
+    faqs: [
+      {
+        q: "Quel est le prix au m² à Saint-Cloud ?",
+        a: "Autour de 6 500 €/m² pour un appartement en 2026, et autour de 8 400 €/m² pour une maison. Montretout se situe au-dessus de la moyenne, Fouilleuse et le Val d'Or en dessous.",
+      },
+      {
+        q: "Quels quartiers choisir pour acheter à Saint-Cloud ?",
+        a: "Montretout pour les maisons et les grands appartements, le centre pour la vie de quartier près de la gare, les Coteaux pour la vue sur la Seine, Pasteur-Magenta pour le calme et les écoles.",
+      },
+      {
+        q: "Saint-Cloud est-elle bien desservie ?",
+        a: "Oui : lignes L et U à la gare de Saint-Cloud (Saint-Lazare et La Défense), ligne L au Val d'Or, tramway T2 le long de la Seine, et métro 10 juste de l'autre côté du pont. Une gare de la ligne 15 Ouest est prévue vers 2031.",
+      },
+      {
+        q: "Acheter une maison à Saint-Cloud, est-ce possible ?",
+        a: "Oui, mais l'offre est rare : la grande majorité des logements sont des appartements. Les maisons se concentrent surtout à Montretout et sur les coteaux. Confier sa recherche permet d'être prévenu avant la mise en ligne.",
+      },
+    ],
+    estimationCta: "Vous vendez à Saint-Cloud ? Découvrez la valeur de votre bien en 2 minutes.",
+  },
+
+  garches: {
+    slug: "garches",
+    name: "Garches",
+    postalCodes: ["92380"],
+    cityMatch: ["garches"],
+    postalLabel: "Hauts-de-Seine · 92380",
+    population: "17 700",
+    pricePerSqm: {
+      low: 4200,
+      mid: 5800,
+      high: 8050,
+      description: "Autour de 5 800 €/m² pour un appartement et 7 350 €/m² pour une maison en moyenne, avec de gros écarts selon l'état et le terrain.",
+    },
+    metaTitle: "Achat appartement Garches (92380) | Prix m² 2026 & biens à vendre",
+    metaDescription:
+      "Acheter un appartement ou une maison à Garches : prix au m² par quartier, transports, cadre de vie et biens à vendre avec Emilio Immobilier, agence de l'Ouest parisien.",
+    heroIntro:
+      "Vous cherchez à acheter ou à vendre à Garches ? Maison avec jardin ou appartement au calme, entre le golf et le domaine de Saint-Cloud : nous vous accompagnons de la recherche à la signature.",
+    marketParagraphs: [
+      "Commune résidentielle de près de 18 000 habitants, **Garches** se situe entre le **domaine national de Saint-Cloud**, le bois de Saint-Cucufa et le golf de Saint-Cloud. Près d'un logement sur quatre y est une maison, ce qui en fait une adresse prisée des familles.",
+      "Le **prix au m² à Garches** tourne autour de 5 800 € pour un appartement et 7 350 € pour une maison en 2026. Le centre, autour de la mairie, et le **Petit Garches** sont les secteurs les plus recherchés ; **Buzenval** reste le plus accessible.",
+      "Après une forte hausse entre 2019 et 2022, les prix ont reculé en 2025, surtout pour les maisons. Pour un acheteur, c'est une fenêtre intéressante ; pour un vendeur, la justesse du prix de départ compte plus que jamais.",
+    ],
+    stats: [
+      { icon: Building2, val: "≈ 5 800 €/m²", label: "Prix moyen" },
+      { icon: Users, val: "17 700", label: "Habitants" },
+      { icon: Landmark, val: "Ligne L", label: "Vers Saint-Lazare" },
+      { icon: Trees, val: "Golf et bois", label: "Saint-Cloud, Saint-Cucufa" },
+    ],
+    quartiers: [
+      { name: "Mairie – Centre", desc: "Commerces, écoles et gare à proximité : le cœur pratique de la ville." },
+      { name: "Petit Garches", desc: "Villas et jardins, parmi les secteurs les plus recherchés de la commune." },
+      { name: "Porte Jaune", desc: "Résidences de qualité et peu de biens à vendre, en lisière du golf." },
+      { name: "Côte Saint-Louis", desc: "Résidentiel et calme, à quelques minutes du centre." },
+      { name: "Poincaré", desc: "Autour de l'hôpital Raymond-Poincaré, sur le point le plus haut de la ville." },
+      { name: "Buzenval", desc: "Le quartier le plus accessible de Garches, apprécié des primo-accédants." },
+    ],
+    transports: [
+      { line: "Ligne L", stations: "Gare de Garches – Marnes-la-Coquette, Saint-Lazare en 20 à 30 minutes" },
+      { line: "Bus", stations: "Lignes 360, 426, 459 et 467" },
+    ],
+    atouts: [
+      "Golf de Saint-Cloud et bois de Saint-Cucufa",
+      "Domaine national de Saint-Cloud au sud",
+      "Hôpital Raymond-Poincaré (AP-HP)",
+      "Église Saint-Louis, la première de France dédiée à saint Louis",
+      "Un cadre calme, avec maisons et jardins",
+    ],
+    faqs: [
+      {
+        q: "Quel est le prix au m² à Garches ?",
+        a: "Autour de 5 800 €/m² pour un appartement et 7 350 €/m² pour une maison en 2026, en moyenne. Le centre et le Petit Garches sont au-dessus, Buzenval en dessous. Le terrain, l'état et l'exposition pèsent beaucoup sur le prix d'une maison.",
+      },
+      {
+        q: "Quels quartiers choisir pour acheter à Garches ?",
+        a: "Le centre pour avoir tout à pied, le Petit Garches et la Porte Jaune pour les maisons et le calme, Buzenval pour un budget plus doux.",
+      },
+      {
+        q: "Comment rejoindre Paris depuis Garches ?",
+        a: "La ligne L relie la gare de Garches – Marnes-la-Coquette à Saint-Lazare en 20 à 30 minutes. Plusieurs lignes de bus desservent aussi Saint-Cloud, Rueil et La Défense.",
+      },
+      {
+        q: "Est-ce le bon moment pour acheter à Garches ?",
+        a: "Après la baisse de 2025, les prix sont plus raisonnables qu'au pic de 2022, surtout pour les maisons. Les biens bien placés restent rares : mieux vaut être prêt, financement validé, pour se positionner vite.",
+      },
+    ],
+    estimationCta: "Vous vendez à Garches ? Découvrez la valeur de votre bien en 2 minutes.",
+  },
+
+  clamart: {
+    slug: "clamart",
+    name: "Clamart",
+    postalCodes: ["92140"],
+    cityMatch: ["clamart"],
+    postalLabel: "Hauts-de-Seine · 92140",
+    population: "58 600",
+    pricePerSqm: {
+      low: 3750,
+      mid: 5600,
+      high: 7400,
+      description: "Autour de 5 600 €/m² pour un appartement : plus de 6 000 €/m² près de la gare et à Percy, moins de 5 000 €/m² au Petit-Clamart. Maisons autour de 6 250 €/m².",
+    },
+    metaTitle: "Achat appartement Clamart (92140) | Prix m² 2026 & biens à vendre",
+    metaDescription:
+      "Acheter un appartement ou une maison à Clamart : prix au m² par quartier (Gare, Percy, Centre, Jardin Parisien), ligne 15, tramways et biens à vendre avec Emilio Immobilier.",
+    heroIntro:
+      "Vous cherchez à acheter ou à vendre à Clamart ? Près de la gare, en centre-ville ou en lisière de forêt : nous vous accompagnons de la recherche à la signature, avec une vraie connaissance des prix par quartier.",
+    marketParagraphs: [
+      "Aux portes de Paris et en lisière de la **forêt de Meudon**, **Clamart** compte près de 59 000 habitants. La ville mêle centre-ville commerçant, quartiers pavillonnaires et programmes récents, comme l'écoquartier **Panorama**.",
+      "Le **prix au m² à Clamart** tourne autour de 5 600 € pour un appartement en 2026. Il dépasse 6 000 €/m² dans les quartiers **de la Gare** et **Percy**, et reste plus accessible au **Petit-Clamart**.",
+      "Clamart fait partie des rares marchés du secteur en hausse sur un an. L'arrivée de la **ligne 15 Sud** à la gare Fort d'Issy – Vanves – Clamart, attendue à l'automne 2027, et le tramway T10 renforcent son attrait.",
+    ],
+    stats: [
+      { icon: Building2, val: "≈ 5 600 €/m²", label: "Prix moyen" },
+      { icon: Users, val: "58 600", label: "Habitants" },
+      { icon: Landmark, val: "N · T6 · T10", label: "Train et tramways" },
+      { icon: Sparkles, val: "Ligne 15", label: "Attendue fin 2027" },
+    ],
+    quartiers: [
+      { name: "Centre-ville", desc: "Mairie, église Saint-Pierre-Saint-Paul et un grand marché : le cœur commerçant de la ville." },
+      { name: "La Gare", desc: "Ligne N vers Montparnasse et future ligne 15 : le quartier le plus suivi par les acheteurs." },
+      { name: "Percy", desc: "Résidentiel, autour de l'hôpital Percy, parmi les quartiers les plus chers de Clamart." },
+      { name: "Jardin Parisien", desc: "Ancien lotissement du début du XXe siècle, maisons et petits immeubles, terminus du tramway T10." },
+      { name: "Panorama", desc: "Écoquartier récent sur l'ancien site d'EDF, avec son plan d'eau et des immeubles neufs." },
+      { name: "Petit-Clamart", desc: "Sur le plateau, en bordure de forêt : les prix les plus accessibles de la ville." },
+    ],
+    transports: [
+      { line: "Ligne N", stations: "Gare de Clamart, Montparnasse en 7 minutes environ" },
+      { line: "Tram T6", stations: "Hôpital Béclère · Pavé Blanc" },
+      { line: "Tram T10", stations: "Jardin Parisien → Antony" },
+      { line: "Ligne 15 Sud", stations: "Fort d'Issy – Vanves – Clamart, attendue à l'automne 2027" },
+    ],
+    atouts: [
+      "Bois de Clamart et forêt de Meudon",
+      "Marché du centre-ville",
+      "Hôpitaux Antoine-Béclère et Percy",
+      "Écoquartier Panorama et son plan d'eau",
+      "Montparnasse en quelques minutes",
+    ],
+    faqs: [
+      {
+        q: "Quel est le prix au m² à Clamart ?",
+        a: "Autour de 5 600 €/m² pour un appartement en 2026. Plus de 6 000 €/m² près de la gare et à Percy, environ 5 700 €/m² en centre-ville, moins de 5 000 €/m² au Petit-Clamart. Les maisons tournent autour de 6 250 €/m².",
+      },
+      {
+        q: "Quels quartiers choisir pour acheter à Clamart ?",
+        a: "La Gare et Percy pour la proximité de Paris et de la future ligne 15, le centre-ville pour les commerces et le marché, le Jardin Parisien pour les maisons, le Petit-Clamart pour un budget plus doux près de la forêt.",
+      },
+      {
+        q: "Quand la ligne 15 arrive-t-elle à Clamart ?",
+        a: "La gare Fort d'Issy – Vanves – Clamart de la ligne 15 Sud est attendue à l'automne 2027, sous l'actuelle gare SNCF, en correspondance avec la ligne N.",
+      },
+      {
+        q: "Clamart est-elle un bon investissement ?",
+        a: "Les prix y progressent légèrement alors que le secteur est plutôt stable, et la ligne 15 va rapprocher la ville du reste du Grand Paris. La demande locative est soutenue près de la gare et des tramways.",
+      },
+    ],
+    estimationCta: "Vous vendez à Clamart ? Découvrez la valeur de votre bien en 2 minutes.",
+  },
 };
 
 export const getCityData = (slug: string): CityData | null => cities[slug] || null;
