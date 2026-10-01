@@ -59,10 +59,10 @@ export const QuickViewPopup = ({ property, open, onClose }: { property: Property
   }, [open]);
   const imgs = property.images.length ? property.images : [];
   const specs = [
-    { icon: <Maximize className="h-[18px] w-[18px]" />, v: formatSurface(property.surface), l: "surface" },
-    property.rooms > 0 && { icon: <LayoutGrid className="h-[18px] w-[18px]" />, v: String(property.rooms), l: "pièces" },
-    property.bedrooms > 0 && { icon: <BedDouble className="h-[18px] w-[18px]" />, v: String(property.bedrooms), l: "chambres" },
-  ].filter(Boolean) as { icon: JSX.Element; v: string; l: string }[];
+    { icon: <Maximize className="h-[18px] w-[18px]" />, v: formatSurface(property.surface), l: "surface", lm: "" },
+    property.rooms > 0 && { icon: <LayoutGrid className="h-[18px] w-[18px]" />, v: String(property.rooms), l: "pièces", lm: "p." },
+    property.bedrooms > 0 && { icon: <BedDouble className="h-[18px] w-[18px]" />, v: String(property.bedrooms), l: "chambres", lm: "ch." },
+  ].filter(Boolean) as { icon: JSX.Element; v: string; l: string; lm: string }[];
   return (
     <Portal>
     <AnimatePresence>
@@ -84,52 +84,56 @@ export const QuickViewPopup = ({ property, open, onClose }: { property: Property
             exit={{ opacity: 0, y: 20 }}
             transition={{ type: "spring", damping: 28, stiffness: 340 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative grid max-h-[92vh] w-full max-w-[960px] grid-cols-1 overflow-y-auto rounded-t-[24px] bg-white p-3 shadow-2xl sm:rounded-[24px] md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
+            className="relative grid max-h-[88vh] w-full max-w-[960px] grid-cols-1 overflow-y-auto rounded-t-[24px] bg-white px-3 pb-[max(12px,env(safe-area-inset-bottom))] pt-2.5 shadow-2xl sm:rounded-[24px] sm:p-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
           >
-            <button type="button" onClick={onClose} aria-label="Fermer la vue rapide" className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full bg-white text-brand-ink shadow-lg">
+            <span aria-hidden className="mx-auto mb-2 block h-1 w-10 rounded-full bg-brand-line sm:hidden" />
+            <button type="button" onClick={onClose} aria-label="Fermer la vue rapide" className="absolute right-5 top-6 z-10 grid h-10 w-10 place-items-center rounded-full bg-white text-brand-ink shadow-lg sm:right-4 sm:top-4 sm:h-11 sm:w-11">
               <X className="h-[18px] w-[18px]" strokeWidth={2.4} />
             </button>
-            <div className="relative h-[240px] overflow-hidden rounded-2xl bg-brand-tint md:h-[440px]">
+            <div className="relative h-[210px] overflow-hidden rounded-2xl bg-brand-tint sm:h-[300px] md:h-[440px]">
               <Slider images={imgs} index={photo} onIndex={setPhoto} alt={(k) => `${displayTitle(property)}, photo ${k + 1}`} className="absolute inset-0" keys arrowSize="sm" />
               {imgs.length > 1 && <span className="pointer-events-none absolute bottom-3 left-3 z-[2] inline-flex h-[28px] items-center rounded-lg bg-[rgba(19,36,61,0.82)] px-2.5 text-[12.5px] font-semibold text-white">{photo + 1} / {imgs.length}</span>}
               <span className="pointer-events-none absolute left-3 top-3 z-[2] inline-flex h-[30px] items-center rounded-full bg-white px-3 text-[13px] font-bold text-brand-ink">{property.type}</span>
               {property.exclusive && <span className="pointer-events-none absolute left-3 top-12 z-[2] inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
             </div>
-            <div className="flex min-w-0 flex-col gap-3.5 px-2 pb-2 pt-[18px] md:px-[30px] md:pb-6 md:pt-[34px]">
-              <span className="text-xs font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Vue rapide</span>
-              <h3 className="m-0 pr-10 font-display text-[24px] font-medium leading-tight text-brand-ink md:text-[30px]">
-                {displayTitle(property)}, <em className="font-normal italic text-brand-orange-lt">{displayCity(property)}</em>
-              </h3>
-              <span className="inline-flex items-center gap-1.5 text-[14.5px] text-brand-mut"><MapPin className="h-[15px] w-[15px] text-brand-orange-text" />{displayCity(property)} · {property.postalCode}</span>
-              <div className="flex flex-wrap items-baseline gap-2.5">
+            <div className="flex min-w-0 flex-col gap-2.5 px-1 pb-1 pt-3.5 md:gap-3.5 md:px-[30px] md:pb-6 md:pt-[34px]">
+              <span className="hidden text-xs font-extrabold uppercase tracking-[0.16em] text-brand-orange-text md:block">Vue rapide</span>
+              <div className="flex items-start justify-between gap-3 md:block">
+                <h3 className="m-0 min-w-0 font-display text-[21px] font-medium leading-tight text-brand-ink md:pr-10 md:text-[30px]">
+                  {displayTitle(property)}<span className="hidden md:inline">, </span><em className="hidden font-normal italic text-brand-orange-lt md:inline">{displayCity(property)}</em>
+                </h3>
+                <span className="flex-none whitespace-nowrap font-display text-[22px] font-medium text-brand-ink md:hidden">{formatPrice(property.price)}</span>
+              </div>
+              <span className="inline-flex items-center gap-1.5 text-[14px] text-brand-mut md:text-[14.5px]"><MapPin className="h-[15px] w-[15px] flex-none text-brand-orange-text" />{displayCity(property)} · {property.postalCode}<span className="md:hidden">&nbsp;· {perM2(property)}</span></span>
+              <div className="hidden flex-wrap items-baseline gap-2.5 md:flex">
                 <span className="font-display text-[32px] font-medium tracking-[-0.01em] text-brand-ink">{formatPrice(property.price)}</span>
                 <span className="text-xs font-bold text-brand-mut">FAI</span>
                 <span className="text-[13.5px] text-brand-mut">{perM2(property)}</span>
               </div>
-              <div className="grid grid-cols-[repeat(auto-fit,minmax(min(110px,100%),1fr))] gap-2">
+              <div className="flex flex-wrap gap-1.5 md:grid md:grid-cols-[repeat(auto-fit,minmax(min(110px,100%),1fr))] md:gap-2">
                 {specs.map((s) => (
-                  <div key={s.l} className="flex items-center gap-2.5 rounded-[10px] bg-brand-pale px-3 py-2.5">
+                  <div key={s.l} className="flex items-center gap-2 rounded-[10px] bg-brand-pale px-2.5 py-1.5 md:gap-2.5 md:px-3 md:py-2.5">
                     <span className="text-brand-orange-text">{s.icon}</span>
-                    <span className="flex flex-col leading-tight"><span className="text-[15.5px] font-bold text-brand-ink">{s.v}</span><span className="text-[12.5px] text-brand-mut">{s.l}</span></span>
+                    <span className="flex items-baseline gap-1 leading-tight md:flex-col md:items-start md:gap-0"><span className="text-[14.5px] font-bold text-brand-ink md:text-[15.5px]">{s.v}</span>{s.lm && <span className="text-[12.5px] text-brand-mut md:hidden">{s.lm}</span>}<span className="hidden text-[12.5px] text-brand-mut md:inline">{s.l}</span></span>
                   </div>
                 ))}
               </div>
-              <p className="m-0 line-clamp-4 text-[15px] leading-relaxed text-brand-txt">{property.description}</p>
+              <p className="m-0 hidden text-[15px] leading-relaxed text-brand-txt md:line-clamp-4">{property.description}</p>
               {featureBadges(property).length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
+                <div className="hidden flex-wrap gap-1.5 md:flex">
                   {featureBadges(property).map((b) => <span key={b} className="rounded-full border border-brand-orange/30 px-3 py-1 text-xs font-semibold text-brand-orange-text">{b}</span>)}
                 </div>
               )}
-              <div className="mt-1 flex flex-wrap gap-2.5">
-                <Link to={`/biens/${property.id}`} className="inline-flex h-[50px] items-center gap-2 rounded-[10px] bg-brand-orange px-5 text-[15.5px] font-bold text-brand-ink">
-                  Voir la fiche détaillée <ArrowRight className="h-[18px] w-[18px]" />
+              <div className="mt-1 grid grid-cols-[1.25fr_1fr] gap-2 md:flex md:flex-wrap md:gap-2.5">
+                <Link to={`/biens/${property.id}`} className="inline-flex h-[50px] items-center justify-center gap-2 rounded-[10px] bg-brand-orange px-3 text-[15px] font-bold text-brand-ink md:px-5 md:text-[15.5px]">
+                  <span className="md:hidden">Voir le bien</span><span className="hidden md:inline">Voir la fiche détaillée</span> <ArrowRight className="h-[18px] w-[18px] flex-none" />
                 </Link>
                 <button
                   type="button"
                   onClick={() => { onClose(); openContact({ objet: "Visiter un bien", propertyRef: property.id, propertyTitle: `${displayTitle(property)} · ${displayCity(property)} · ${formatPrice(property.price)}` }); }}
-                  className="inline-flex h-[50px] items-center rounded-[10px] border-[1.5px] border-brand px-5 text-[15.5px] font-bold text-brand"
+                  className="inline-flex h-[50px] items-center justify-center rounded-[10px] border-[1.5px] border-brand px-3 text-[15px] font-bold text-brand md:px-5 md:text-[15.5px]"
                 >
-                  Demander une visite
+                  <span className="md:hidden">Visiter</span><span className="hidden md:inline">Demander une visite</span>
                 </button>
               </div>
             </div>
