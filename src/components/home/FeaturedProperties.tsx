@@ -100,7 +100,7 @@ const FeaturedProperties = () => {
       <Container className="flex flex-col gap-7 pb-12 pt-10 md:gap-9 md:pb-[84px] md:pt-[84px]">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHead eyebrow="À vendre en ce moment" title={<>Nos biens <em className="font-normal italic text-brand-orange-lt">du moment</em></>} lead="Maisons, appartements et immeubles en vente à Paris et dans les Hauts-de-Seine, avec leurs vraies photos." />
-          <div className="flex flex-col gap-3 md:items-end">
+          <div className="flex w-full min-w-0 flex-col gap-3 md:w-auto md:items-end">
             <div role="group" aria-label="Filtrer les biens" className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:flex-wrap md:px-0">
               {dispo.map((f) => (
                 <button
@@ -122,7 +122,7 @@ const FeaturedProperties = () => {
         ) : !une ? (
           <p className="text-brand-txt">Aucun bien dans cette catégorie pour le moment.</p>
         ) : (
-          <>
+          <div key={filtre} className="fx-fade flex flex-col gap-7 md:gap-9">
             <Featured p={une} />
             {autres.length > 0 && (
               <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-5 pb-5 pt-1.5 md:mx-0 md:grid md:grid-cols-[repeat(auto-fit,minmax(min(270px,100%),1fr))] md:gap-6 md:overflow-visible md:p-0">
@@ -131,7 +131,7 @@ const FeaturedProperties = () => {
                 ))}
               </div>
             )}
-          </>
+          </div>
         )}
       </Container>
     </section>

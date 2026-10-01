@@ -6,7 +6,7 @@ import { useSiteModals } from "@/components/site/SiteModals";
 import { Btn, Checks, Container, Em, FRAME_SHADOW, SectionHead, TEL, TEL_HREF, TextLink } from "@/components/site/ui";
 import { TeamStack } from "@/components/site/ModalShell";
 import { AVIS, AVIS_GOOGLE_URL } from "@/data/avis";
-import salon from "@/assets/refonte/salon-haussmannien.webp";
+import facade from "@/assets/refonte/paris-facade-eiffel.webp";
 import alexandre from "@/assets/refonte/alexandre-detoure.webp";
 
 /* ── Vente confidentielle (bleu) ── */
@@ -24,7 +24,7 @@ export const Confidential = () => {
           <span aria-hidden className="absolute -bottom-[22px] -right-[22px] left-[22px] top-[22px] hidden rounded-[28px] border-[1.5px] border-[rgba(242,178,102,0.7)] md:block" />
           <div className="relative rounded-[26px] bg-white p-3 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)]">
             <div className="relative aspect-[4/3] overflow-hidden rounded-[18px] bg-brand-tint">
-              <img src={salon} alt="Grand séjour haussmannien avec canapés, cheminée et fenêtres (illustration)" loading="lazy" className="absolute inset-0 h-full w-full object-cover object-center" />
+              <img src={facade} alt="Immeubles haussmanniens et tour Eiffel, à Paris" loading="lazy" className="absolute inset-0 h-full w-full object-cover object-center" />
             </div>
             <div className="flex items-center gap-3 px-2.5 pb-1 pt-3.5">
               <span className="grid h-[38px] w-[38px] flex-none place-items-center rounded-xl bg-brand text-brand-orange"><Lock className="h-[18px] w-[18px]" /></span>

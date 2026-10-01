@@ -1,7 +1,7 @@
 /* ═══ Haut de l'accueil : « Ils tournent autour d'un bien comme le vôtre » ═══
    Au centre, les recherches défilent (ordre mélangé à chaque visite).
    Autour, les secteurs tournent lentement. Fond bleu Emilio. */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Home, LineChart, Search } from "lucide-react";
@@ -27,7 +27,12 @@ function shuffle<T>(a: T[]): T[] {
 
 const Orbit = ({ small }: { small: boolean }) => {
   const reduce = useReducedMotion();
-  const list = useMemo(() => shuffle(RECHERCHES_ORBITE), []);
+  // Même ordre au premier affichage (page pré-générée), puis mélange côté navigateur.
+  const [list, setList] = useState(RECHERCHES_ORBITE);
+  useEffect(() => {
+    const [first, ...rest] = RECHERCHES_ORBITE;
+    setList([first, ...shuffle(rest)]);
+  }, []);
   const [i, setI] = useState(0);
   useEffect(() => {
     if (reduce) return;
@@ -38,10 +43,10 @@ const Orbit = ({ small }: { small: boolean }) => {
   const badge = r.quoi.includes("maison") ? "maison" : r.kind === "invest" || r.quoi.includes("louer") ? "cle" : "appart";
   const R1 = small ? 40 : 43;
   const R2 = small ? 27 : 28.5;
-  const disc = small ? 47 : 40;
 
   return (
-    <div className="relative mx-auto aspect-square w-full" style={{ maxWidth: small ? 340 : 600 }}>
+    <div className="flex flex-col items-center gap-3">
+    <div className="relative mx-auto aspect-square w-full max-w-[340px] md:max-w-[600px]">
       {/* La carte, en cercle */}
       <div className="absolute inset-[4%] overflow-hidden rounded-full shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_50px_90px_-30px_rgba(0,0,0,0.65)]">
         <img src={carte} alt="Carte illustrée de Paris Ouest et Boulogne-Billancourt" className="absolute max-w-none opacity-[0.92] saturate-[.85] brightness-[.92]" style={{ left: "-66%", top: "-10%", width: "212%" }} />
@@ -93,8 +98,7 @@ const Orbit = ({ small }: { small: boolean }) => {
       )}
       {/* Centre : une recherche après l'autre */}
       <div
-        className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_30px_60px_-24px_rgba(19,36,61,0.6),0_0_0_8px_rgba(255,255,255,0.14)]"
-        style={{ width: `${disc}%` }}
+        className="absolute left-1/2 top-1/2 aspect-square w-[30%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white md:w-[40%] shadow-[0_30px_60px_-24px_rgba(19,36,61,0.6),0_0_0_8px_rgba(255,255,255,0.14)]"
         aria-live="polite"
       >
         <AnimatePresence mode="wait">
@@ -106,13 +110,37 @@ const Orbit = ({ small }: { small: boolean }) => {
             transition={{ duration: 0.35 }}
             className="absolute inset-0 flex flex-col items-center justify-center gap-1 px-[9%] text-center"
           >
-            <Picto kind={r.kind} color={r.color} badge={badge} size={small ? 37 : 56} />
-            <span className={cn("mt-1 font-extrabold uppercase leading-tight tracking-[0.08em] text-brand-orange-text", small ? "text-[9px]" : "text-[11px]")}>{r.qui}</span>
-            <span className={cn("font-display leading-[1.16] text-brand-ink text-balance", small ? "text-[15px]" : "text-[20px]")}>{r.quoi}</span>
-            <span className={cn("font-bold leading-tight text-brand-mut", small ? "text-[10.5px]" : "text-[12.5px]")}>{r.ou}</span>
+            <span className="md:hidden"><Picto kind={r.kind} color={r.color} badge={badge} size={50} /></span>
+            <span className="hidden md:block"><Picto kind={r.kind} color={r.color} badge={badge} size={56} /></span>
+            <span className="mt-1 hidden text-[11px] font-extrabold uppercase leading-tight tracking-[0.08em] text-brand-orange-text md:block">{r.qui}</span>
+            <span className="hidden font-display text-[20px] leading-[1.16] text-brand-ink text-balance md:block">{r.quoi}</span>
+            <span className="hidden text-[12.5px] font-bold leading-tight text-brand-mut md:block">{r.ou}</span>
           </motion.div>
         </AnimatePresence>
       </div>
+    </div>
+    {/* Téléphone : la recherche s'affiche en clair sous l'orbite, avec toute la place qu'il faut */}
+    {(
+      <div className="relative -mt-3 w-full max-w-[340px] md:hidden" aria-hidden>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.3 }}
+            className="flex min-h-[84px] items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-[0_24px_44px_-22px_rgba(0,0,0,0.6)]"
+          >
+            <Picto kind={r.kind} color={r.color} badge={badge} size={40} />
+            <span className="flex min-w-0 flex-col gap-0.5">
+              <span className="text-[10.5px] font-extrabold uppercase tracking-[0.1em] text-brand-orange-text">{r.qui}</span>
+              <span className="font-display text-[19px] leading-tight text-brand-ink">{r.quoi}</span>
+              <span className="text-[12.5px] font-bold text-brand-mut">{r.ou}</span>
+            </span>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    )}
     </div>
   );
 };
@@ -150,7 +178,7 @@ export const HeroTabs = ({ initial = "Estimer" }: { initial?: Onglet }) => {
           </button>
         ))}
       </div>
-      <div className="flex flex-col gap-2.5 p-3.5">
+      <div key={tab} className="fx-fade flex flex-col gap-2.5 p-3.5">
         {tab === "Estimer" && (
           <form
             className="flex flex-wrap gap-2"
