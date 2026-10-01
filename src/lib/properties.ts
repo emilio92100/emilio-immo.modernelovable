@@ -300,3 +300,6 @@ export async function fetchPropertiesFromFeed(): Promise<Property[]> {
     return mockProperties;
   }
 }
+
+/** Surface au format français : 87,85 m². */
+export const formatSurface = (n: number): string => `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(n)} m²`;
