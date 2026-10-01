@@ -1,15 +1,41 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/mandat-recherche",
+      "destination": "/acheter",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/sitemap-biens.xml",
       "destination": "https://eutxmrdcykztjdyydmuo.supabase.co/functions/v1/sitemap"
     },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/spa.html"
+    }
   ],
   "headers": [
     {
       "source": "/sitemap-biens.xml",
-      "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }
