@@ -17,16 +17,15 @@ import { BUDGET_STEPS, CityPicker, RangeDual, RangeOne, euros } from "@/componen
 import rueEiffel from "@/assets/refonte/paris-rue-eiffel.webp";
 import alexandre from "@/assets/refonte/alexandre-detoure.webp";
 
-/* ── Haut de page ── */
+/* ── Le chasseur (juste après l’espace client) ── */
 const Hero = () => (
-  <section className="bg-brand-pale">
-    <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 pb-14 pt-6 md:pb-[88px] md:pt-10">
+  <section className="bg-white">
+    <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 py-14 md:py-[88px]">
       <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[22px]">
-        <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Acheter" }]} />
-        <Eyebrow>Acheter avec Emilio</Eyebrow>
-        <h1 className="m-0 font-display text-[clamp(34px,3.9vw,54px)] font-medium leading-[1.06] tracking-[-0.015em] text-brand-ink text-balance">
+        <Eyebrow>Votre chasseur immobilier</Eyebrow>
+        <h2 className="m-0 font-display text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.06] tracking-[-0.015em] text-brand-ink text-balance">
           Un chasseur qui cherche pour vous, <Em wrap>et reste de votre côté</Em>
-        </h1>
+        </h2>
         <p className="m-0 max-w-[560px] text-lg leading-relaxed text-brand-txt text-pretty">
           Vous nous dites ce que vous cherchez. On cherche partout, y compris là où les biens ne sont pas affichés, on vérifie chaque dossier et on négocie pour vous, jusqu’à la signature.
         </p>
@@ -66,7 +65,7 @@ const Pourquoi = () => {
     { icon: <KeyRound className="h-6 w-6" />, t: "Jusqu’à la signature", d: "Offre, compromis, notaire : on vous accompagne à chaque étape, jusqu’à la remise des clés." },
   ];
   return (
-    <section className="bg-white">
+    <section className="bg-brand-pale">
       <Container className="flex flex-col gap-11 py-14 md:py-[100px]">
         <SectionHead center eyebrow="Pourquoi un chasseur" title={<>Quelqu’un qui travaille <Em>pour l’acheteur</Em></>} lead="Une agence classique travaille pour le vendeur. Avec un mandat de recherche, on travaille pour vous." className="max-w-[760px]" />
         <div className="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-4">
@@ -159,8 +158,20 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
   ];
   return (
     <section id="espace" className="bg-brand-pale" style={{ backgroundImage: "radial-gradient(circle at 50% 58%, #E4ECF6 0%, rgba(228,236,246,0) 46%)" }}>
-      <Container className="flex flex-col gap-6 py-14 md:py-[84px]">
-        <SectionHead center eyebrow="Votre espace client" title={<>Un espace créé <Em>rien que pour vous</Em></>} lead="Dès que vous nous confiez votre recherche, vous recevez votre lien personnel. Vous y retrouvez tous les biens qu’on sélectionne pour vous, sur ordinateur comme sur téléphone." className="max-w-[800px]" />
+      <Container className="flex flex-col gap-6 pb-14 pt-4 md:pb-[84px] md:pt-8">
+        <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Acheter" }]} />
+        <SectionHead
+          as="h1"
+          center
+          eyebrow="Acheter avec Emilio"
+          title={<><span className="sr-only">Chasseur immobilier à Paris et dans les Hauts-de-Seine : </span>Un espace créé <Em>rien que pour vous</Em></>}
+          lead="Dès que vous nous confiez votre recherche, vous recevez votre lien personnel. Vous y retrouvez tous les biens qu’on sélectionne pour vous, sur ordinateur comme sur téléphone."
+          className="max-w-[800px]"
+        />
+        <div className="flex flex-wrap justify-center gap-3">
+          <Btn href="#recherche" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
+          <Btn href={TEL_HREF} variant="outline" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
+        </div>
         {/* Ordinateur : la scène animée */}
         <div className="hidden h-[610px] lg:block">
         <div className="relative flex h-[690px] origin-top scale-[.86] justify-center pt-6">
@@ -442,9 +453,10 @@ const Acheter = () => {
       />
       <Navbar />
       <main>
+        {/* D’abord l’espace client (on voit tout de suite l’appli), puis le chasseur */}
+        <EspaceClient photos={photos.length ? photos : [rueEiffel, rueEiffel]} />
         <Hero />
         <Pourquoi />
-        <EspaceClient photos={photos.length ? photos : [rueEiffel, rueEiffel]} />
         <Etapes />
         <Recherche />
         {biens && biens.length > 0 && (
