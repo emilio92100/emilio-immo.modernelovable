@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Home, LineChart, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { EstimerCard } from "@/components/site/EstimerCard";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { Avatar, Picto, type AvatarColor, type AvatarKind } from "@/components/site/Avatar";
 import { Container, Em, Eyebrow, TrustRow } from "@/components/site/ui";
@@ -218,20 +219,24 @@ export const HeroTabs = ({ initial = "Estimer" }: { initial?: Onglet }) => {
   );
 };
 
-const OrbitHero = () => {
+/** Haut de page avec l’orbite des recherches. `vendre` : version de la page Vendre (estimation directe). */
+const OrbitHero = ({ vendre }: { vendre?: boolean }) => {
   const small = useIsMobile();
+  const action = vendre ? <EstimerCard /> : <HeroTabs />;
   return (
     <section className="overflow-hidden text-brand-bt" style={{ background: "linear-gradient(165deg, #1B3D6B 0%, #22497D 58%, #2C5C99 100%)" }}>
       <Container className="flex flex-wrap items-center gap-x-12 gap-y-8 pb-12 pt-8 md:pb-[60px] md:pt-14">
         <div className="flex min-w-0 max-w-[560px] flex-[1_1_460px] flex-col gap-[22px]">
-          <Eyebrow dark>Ils cherchent en ce moment</Eyebrow>
+          <Eyebrow dark>{vendre ? "Vendre avec Emilio" : "Ils cherchent en ce moment"}</Eyebrow>
           <h1 className="m-0 font-display text-[33px] font-medium leading-[1.08] tracking-[-0.01em] text-white text-balance sm:text-[clamp(40px,4.6vw,60px)] sm:leading-[1.06]">
             Ils tournent autour <Em dark wrap>d’un bien comme le vôtre.</Em>
           </h1>
           <p className="m-0 text-base leading-relaxed text-pretty sm:text-lg">
-            Des familles, des couples, des investisseurs nous confient leur recherche dans le 6e, le 7e, le 15e, le 16e, le 17e, à Neuilly ou à Boulogne. Estimez votre bien : on vous dit combien d’entre eux il peut intéresser.
+            {vendre
+              ? "Des familles, des couples, des investisseurs nous ont déjà confié leur recherche. Estimez votre bien : on vous dit combien d’entre eux il peut intéresser, et on prépare votre vente avec vous."
+              : "Des familles, des couples, des investisseurs nous confient leur recherche, à Paris, dans les Hauts-de-Seine et au-delà. Estimez votre bien : on vous dit combien d’entre eux il peut intéresser."}
           </p>
-          <div className="hidden md:block"><HeroTabs /></div>
+          <div className="hidden md:block">{action}</div>
           <TrustRow dark className="hidden md:flex" />
         </div>
         <div className="flex min-w-0 flex-[1_1_520px] flex-col gap-[18px]">
@@ -243,7 +248,7 @@ const OrbitHero = () => {
           </div>
         </div>
         <div className="flex w-full flex-col gap-4 md:hidden">
-          <HeroTabs />
+          {action}
           <TrustRow dark className="justify-between" />
         </div>
       </Container>
