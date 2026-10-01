@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, BedDouble, Camera, Eye, LayoutGrid, MapPin, Maximize, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Property, fetchPropertiesFromFeed, formatPrice, mockProperties } from "@/lib/properties";
+import { Property, fetchPropertiesFromFeed, formatPrice, formatSurface, mockProperties } from "@/lib/properties";
 import PropertyCard, { QuickViewPopup, displayCity, displayTitle, featureBadges } from "@/components/PropertyCard";
 import { Container, FRAME_SHADOW, SectionHead, TextLink } from "@/components/site/ui";
 
@@ -34,7 +34,7 @@ const Featured = ({ p }: { p: Property }) => {
   const [quick, setQuick] = useState(false);
   const badges = featureBadges(p).slice(0, 2);
   const specs = [
-    { icon: <Maximize className="h-[19px] w-[19px]" />, v: `${p.surface} m²`, l: "habitables" },
+    { icon: <Maximize className="h-[19px] w-[19px]" />, v: formatSurface(p.surface), l: "habitables" },
     p.rooms > 0 && { icon: <LayoutGrid className="h-[19px] w-[19px]" />, v: String(p.rooms), l: "pièces" },
     p.bedrooms > 0 && { icon: <BedDouble className="h-[19px] w-[19px]" />, v: String(p.bedrooms), l: "chambres" },
     p.surface > 0 && { icon: <Star className="h-[19px] w-[19px]" />, v: `${new Intl.NumberFormat("fr-FR").format(Math.round(p.price / p.surface))} €`, l: "le m²" },
