@@ -2,9 +2,10 @@
    Paris sous un voile clair, le titre, puis la recherche à onglets (Estimer / Vendre / Acheter). */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, CalendarDays, ChevronDown, Home, KeyRound, LineChart, MapPin, Search, UserRound, Wallet } from "lucide-react";
+import { ArrowRight, CalendarDays, Home, KeyRound, LineChart, MapPin, Search, UserRound, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
+import { Choix, type Option } from "@/components/home/tuiles/Choix";
 import panorama from "@/assets/refonte/paris-panorama.webp";
 
 type Onglet = "estimer" | "vendre" | "acheter";
@@ -15,9 +16,17 @@ const ONGLETS: { k: Onglet; label: string; icon: JSX.Element }[] = [
   { k: "acheter", label: "Acheter", icon: <KeyRound className="h-4 w-4" /> },
 ];
 
-const DELAIS = ["Dès que possible", "Dans les 3 mois", "Dans l’année", "Je me renseigne"];
-const BUDGETS = [500000, 800000, 1000000, 1500000, 2000000, 3000000];
+const DELAIS: Option[] = [
+  { v: "Dès que possible", t: "Dès que possible", d: "Je suis prêt à mettre en vente" },
+  { v: "Dans les 3 mois", t: "Dans les 3 mois", d: "Le projet est bien avancé" },
+  { v: "Dans l’année", t: "Dans l’année", d: "Je prépare mon projet" },
+  { v: "Je me renseigne", t: "Je me renseigne", d: "Je veux d’abord connaître le prix" },
+];
 const nf = new Intl.NumberFormat("fr-FR");
+const BUDGETS: Option[] = [
+  { v: "", t: "Tous les budgets" },
+  ...[500000, 800000, 1000000, 1500000, 2000000, 3000000].map((b) => ({ v: String(b), t: `Jusqu’à ${nf.format(b)} €` })),
+];
 
 /** Un champ du module de recherche : pastille d’icône, petit libellé, saisie. */
 const Champ = ({ icon, label, children, className }: { icon: JSX.Element; label: string; children: React.ReactNode; className?: string }) => (
@@ -31,14 +40,13 @@ const Champ = ({ icon, label, children, className }: { icon: JSX.Element; label:
 );
 
 const inputCls = "w-full min-w-0 border-0 bg-transparent p-0 text-base font-semibold text-brand-ink outline-none placeholder:font-medium placeholder:text-[#8794A6]";
-const selectCls = "w-full min-w-0 cursor-pointer appearance-none border-0 bg-transparent p-0 pr-6 text-base font-semibold text-brand-ink outline-none";
 
 const Recherche = () => {
   const { openEstimation, openContact } = useSiteModals();
   const navigate = useNavigate();
   const [tab, setTab] = useState<Onglet>("estimer");
   const [adresse, setAdresse] = useState("");
-  const [delai, setDelai] = useState(DELAIS[1]);
+  const [delai, setDelai] = useState(DELAIS[1].v);
   const [ville, setVille] = useState("");
   const [budget, setBudget] = useState("");
 
@@ -91,21 +99,10 @@ const Recherche = () => {
           </Champ>
         )}
         {tab === "vendre" && (
-          <Champ icon={<CalendarDays className="h-[18px] w-[18px]" />} label="Votre délai" className="md:max-w-[300px]">
-            <select value={delai} onChange={(e) => setDelai(e.target.value)} className={selectCls}>
-              {DELAIS.map((d) => <option key={d}>{d}</option>)}
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-brand-mut" />
-          </Champ>
+          <Choix icon={<CalendarDays className="h-[18px] w-[18px]" />} label="Votre délai" value={delai} options={DELAIS} onChange={setDelai} className="md:max-w-[300px]" />
         )}
         {tab === "acheter" && (
-          <Champ icon={<Wallet className="h-[18px] w-[18px]" />} label="Budget maximum" className="md:max-w-[300px]">
-            <select value={budget} onChange={(e) => setBudget(e.target.value)} className={selectCls}>
-              <option value="">Tous les budgets</option>
-              {BUDGETS.map((b) => <option key={b} value={b}>Jusqu’à {nf.format(b)} €</option>)}
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-brand-mut" />
-          </Champ>
+          <Choix icon={<Wallet className="h-[18px] w-[18px]" />} label="Budget maximum" value={budget} options={BUDGETS} onChange={setBudget} className="md:max-w-[300px]" />
         )}
         <button type="submit" className="inline-flex h-14 flex-none items-center justify-center gap-2.5 whitespace-nowrap rounded-[20px] bg-brand-orange px-7 text-base font-bold text-brand-ink transition hover:brightness-105 md:h-[68px]">
           {bouton} <ArrowRight className="h-[18px] w-[18px]" />
