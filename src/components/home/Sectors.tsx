@@ -63,7 +63,7 @@ const Carte = ({ small }: { small: boolean }) => (
 
 const Legende = () => (
   <div className="flex flex-wrap gap-x-5 gap-y-2 px-2 pb-1 pt-3.5">
-    {[["#C7D4E8", "#22497D", "Paris"], ["#F7D7AE", "#E68B23", "Hauts-de-Seine"], ["#E1E8F2", "#C3CEDC", "Autres communes du 92, sur demande"]].map(([c, b, t]) => (
+    {[["#C7D4E8", "#22497D", "Paris"], ["#F7D7AE", "#E68B23", "Hauts-de-Seine"], ["#E1E8F2", "#C3CEDC", "Autres villes, sur demande"]].map(([c, b, t]) => (
       <span key={t} className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-brand-txt">
         <span className="h-4 w-4 flex-none rounded-[5px]" style={{ background: c, boxShadow: `inset 0 0 0 1.5px ${b}` }} />
         {t}
@@ -97,7 +97,7 @@ const Sectors = () => {
           <SectionHead
             eyebrow="Nos secteurs"
             title={<>Paris Ouest et <span className="whitespace-nowrap">Hauts-de-Seine</span>, <em className="font-normal italic text-brand-orange-lt">nos secteurs</em></>}
-            lead="Un périmètre volontairement resserré, pour bien connaître chaque quartier : ses prix, ses copropriétés, ses écoles et ses transports."
+            lead="Les quartiers que nous connaissons par cœur : leurs prix, leurs copropriétés, leurs écoles et leurs transports. Votre projet est ailleurs ? Nous vous accompagnons aussi."
           />
           <div className="md:hidden">{carte}</div>
           {grp(
@@ -125,7 +125,7 @@ const Sectors = () => {
             <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-brand-tint text-brand"><Route className="h-[19px] w-[19px]" /></span>
             <span className="flex flex-col gap-1">
               <span className="text-base font-bold text-brand-ink">Votre commune n’est pas dans la liste ?</span>
-              <span className="text-[15px] leading-normal text-brand-txt">Nous intervenons aussi ailleurs dans les Hauts-de-Seine. Dites-nous où se trouve votre bien, on vous répond vite.</span>
+              <span className="text-[15px] leading-normal text-brand-txt">Nous intervenons aussi ailleurs, à Paris, en Île-de-France et au-delà. Dites-nous où se trouve votre projet, on vous répond vite.</span>
               <button type="button" onClick={() => openContact({ objet: "Autre", message: "Mon bien se trouve à : " })} className="inline-flex min-h-[40px] items-center gap-1.5 self-start text-[15px] font-bold text-brand">
                 Nous contacter <ArrowRight className="h-4 w-4 text-brand-orange" />
               </button>
