@@ -61,10 +61,10 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
             <div className="flex min-w-0 flex-[1_1_540px] flex-col gap-[22px]">
               <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Acheter", to: "/acheter" }, { label: city.name }]} />
               <Eyebrow>{city.postalLabel}</Eyebrow>
-              <h1 className="m-0 font-display text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+              <h1 className="m-0 font-display text-[29px] sm:text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
                 Achat et vente d’appartement <Em wrap>{aVille(city)}</Em>
               </h1>
-              <p className="m-0 max-w-[580px] text-lg leading-relaxed text-brand-txt text-pretty">{city.heroIntro}</p>
+              <p className="m-0 max-w-[580px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">{city.heroIntro}</p>
               <div className="flex flex-wrap gap-3 pt-1">
                 <Btn href="#biens" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Voir les biens</Btn>
                 <Btn variant="outline" onClick={estimer} iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
@@ -90,7 +90,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
             </div>
             <div className="flex min-w-0 flex-col gap-4 rounded-[24px] bg-brand p-7 text-brand-bt md:sticky md:top-28 md:p-8">
               <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-soft">Estimation gratuite</span>
-              <h2 className="m-0 font-display text-[26px] font-medium leading-tight text-white md:text-[30px] text-balance">{city.estimationCta}</h2>
+              <h2 className="m-0 font-display text-[18.5px] sm:text-[21px] sm:text-[26px] font-medium leading-tight text-white md:text-[30px] text-balance">{city.estimationCta}</h2>
               <p className="m-0 text-[15.5px] leading-relaxed">Une première fourchette tout de suite, à partir des ventes récentes du secteur. Puis un membre de l’équipe vous rappelle pour l’affiner.</p>
               <Btn onClick={estimer} iconLeft={<LineChart className="h-[18px] w-[18px]" />} icon={<ArrowRight className="h-[18px] w-[18px]" />} className="self-start">Estimer mon bien</Btn>
             </div>
@@ -104,8 +104,8 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {city.quartiers.map((q, i) => (
                 <article key={q.name} className={cn("flex flex-col gap-3 rounded-[20px] bg-white p-6 transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
-                  <span className="font-display text-[34px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
-                  <h3 className="m-0 font-display text-[23px] font-medium leading-tight text-brand-ink">{q.name}</h3>
+                  <span className="font-display text-[27px] sm:text-[34px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
+                  <h3 className="m-0 font-display text-[19.5px] sm:text-[23px] font-medium leading-tight text-brand-ink">{q.name}</h3>
                   <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt text-pretty">{q.desc}</p>
                 </article>
               ))}
@@ -129,7 +129,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
             ) : (
               <div className={cn("flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-brand-pale p-7 md:p-9")}>
                 <div className="flex max-w-[640px] flex-col gap-2">
-                  <span className="font-display text-[26px] leading-tight text-brand-ink">Aucun bien publié {aVille(city)} en ce moment</span>
+                  <span className="font-display text-[18.5px] sm:text-[21px] sm:text-[26px] leading-tight text-brand-ink">Aucun bien publié {aVille(city)} en ce moment</span>
                   <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Certains biens se vendent sans annonce. Confiez-nous votre recherche : on vous présente ceux qui vous correspondent, y compris hors marché.</p>
                 </div>
                 <Btn to="/acheter#recherche" iconLeft={<Search className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
@@ -144,7 +144,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
             <SectionHead dark eyebrow="Cadre de vie" title={<>Pourquoi vivre <Em dark>{aVille(city)}</Em>{"\u00a0"}?</>} />
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div className="flex flex-col gap-4 rounded-[22px] border border-white/15 bg-white/[0.06] p-6 md:p-7">
-                <span className="inline-flex items-center gap-3 font-display text-[24px] text-white"><span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Train className="h-5 w-5" /></span>Transports</span>
+                <span className="inline-flex items-center gap-3 font-display text-[20px] sm:text-[24px] text-white"><span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Train className="h-5 w-5" /></span>Transports</span>
                 <ul className="m-0 flex list-none flex-col gap-3 p-0">
                   {city.transports.map((t) => (
                     <li key={t.line} className="flex flex-col gap-0.5 border-t border-white/10 pt-3 first:border-0 first:pt-0 sm:flex-row sm:gap-4">
@@ -155,7 +155,7 @@ const CityPageTemplate = ({ city }: { city: CityData }) => {
                 </ul>
               </div>
               <div className="flex flex-col gap-4 rounded-[22px] border border-white/15 bg-white/[0.06] p-6 md:p-7">
-                <span className="inline-flex items-center gap-3 font-display text-[24px] text-white"><span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Trees className="h-5 w-5" /></span>Atouts</span>
+                <span className="inline-flex items-center gap-3 font-display text-[20px] sm:text-[24px] text-white"><span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Trees className="h-5 w-5" /></span>Atouts</span>
                 <ul className="m-0 flex list-none flex-col gap-3 p-0">
                   {city.atouts.map((a) => (
                     <li key={a} className="flex items-start gap-2.5 text-[15.5px] leading-normal text-brand-bt">
