@@ -1,11 +1,10 @@
-/* Accueil (refonte 2026) */
+/* Accueil (refonte 2026, direction « Tuiles ») */
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead, { SITE_URL } from "@/components/SEOHead";
-import OrbitHero from "@/components/home/OrbitHero";
-import FeaturedProperties from "@/components/home/FeaturedProperties";
-import Sectors from "@/components/home/Sectors";
-import { AboutAlexandre, Confidential, Reviews, Services } from "@/components/home/HomeSections";
+import TuilesHero from "@/components/home/tuiles/TuilesHero";
+import TuilesBiens from "@/components/home/tuiles/TuilesBiens";
+import { AppelFinal, Avis, Discretion, Etapes, Secteurs, Services } from "@/components/home/tuiles/TuilesSections";
 
 const Index = () => (
   <div className="min-h-screen bg-white">
@@ -46,14 +45,15 @@ const Index = () => (
       ]}
     />
     <Navbar />
-    <main>
-      <OrbitHero />
-      <FeaturedProperties />
-      <Sectors />
-      <Confidential />
+    <main className="font-jakarta">
+      <TuilesHero />
+      <TuilesBiens />
+      <Discretion />
       <Services />
-      <AboutAlexandre />
-      <Reviews />
+      <Etapes />
+      <Secteurs />
+      <Avis />
+      <AppelFinal />
     </main>
     <Footer />
   </div>

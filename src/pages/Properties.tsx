@@ -15,6 +15,15 @@ const TYPES = ["Tous", "Appartement", "Maison", "Immeuble"] as const;
 const PIECES = ["", "1", "2", "3", "4", "5"] as const;
 const TRIS = { recent: "Plus récents", asc: "Prix croissant", desc: "Prix décroissant" } as const;
 
+/** « Paris 15e », « 75015 », « Boulogne » ou plusieurs lieux séparés par des virgules. */
+const sansAccent = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+const matchVille = (p: Property, saisie: string) =>
+  saisie.split(/[,;]/).map(sansAccent).filter(Boolean).some((v) => {
+    const arr = v.match(/^paris\s*(\d{1,2})/);
+    if (arr) return p.postalCode === `750${arr[1].padStart(2, "0")}`;
+    return sansAccent(p.city).includes(v) || p.postalCode.startsWith(v);
+  });
+
 const sel = "h-12 w-full appearance-none rounded-xl border border-brand-line bg-white px-3.5 text-[15px] font-semibold text-brand-ink outline-none focus:border-brand-orange";
 
 const Properties = () => {
@@ -33,6 +42,15 @@ const Properties = () => {
   const [tri, setTri] = useState<keyof typeof TRIS>("recent");
   const [vue, setVue] = useState<"grille" | "ville">("grille");
 
+  /* Recherche lancée depuis l’accueil : /biens?ville=…&budget=… */
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const v = q.get("ville");
+    const b = q.get("budget");
+    if (v) setVille(v.slice(0, 80));
+    if (b && /^\d+$/.test(b)) setBudget(b);
+  }, []);
+
   useEffect(() => {
     let on = true;
     fetchPropertiesFromFeed()
@@ -49,7 +67,7 @@ const Properties = () => {
 
   const filtres = useMemo(() => {
     const out = list.filter((p) => {
-      if (ville && !p.city.toLowerCase().includes(ville.toLowerCase()) && !p.postalCode.includes(ville)) return false;
+      if (ville && !matchVille(p, ville)) return false;
       if (type !== "Tous" && !p.type.toLowerCase().includes(type.toLowerCase())) return false;
       if (pieces && (pieces === "5" ? p.rooms < 5 : p.rooms !== Number(pieces))) return false;
       if (budget && p.price > Number(budget)) return false;
