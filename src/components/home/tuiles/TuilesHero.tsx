@@ -6,7 +6,7 @@ import { ArrowRight, CalendarDays, Home, KeyRound, LineChart, MapPin, Search, Us
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { Choix, type Option } from "@/components/home/tuiles/Choix";
-import panorama from "@/assets/refonte/paris-panorama.webp";
+import panorama from "@/assets/refonte/paris-vue-ciel.webp";
 
 type Onglet = "estimer" | "vendre" | "acheter";
 
@@ -30,16 +30,16 @@ const BUDGETS: Option[] = [
 
 /** Un champ du module de recherche : pastille d’icône, petit libellé, saisie. */
 const Champ = ({ icon, label, children, className }: { icon: JSX.Element; label: string; children: React.ReactNode; className?: string }) => (
-  <label className={cn("relative flex h-16 min-w-0 flex-1 items-center gap-3.5 rounded-[20px] bg-brand-surf px-4 transition focus-within:bg-white focus-within:shadow-[0_0_0_2px_#22497D] md:h-[68px] md:px-5", className)}>
-    <span className="grid h-[38px] w-[38px] flex-none place-items-center rounded-xl bg-white text-brand">{icon}</span>
+  <label className={cn("relative flex h-[58px] min-w-0 flex-1 items-center gap-3 rounded-[18px] bg-brand-surf px-3.5 transition focus-within:bg-white focus-within:shadow-[0_0_0_2px_#22497D] md:h-[68px] md:gap-3.5 md:rounded-[20px] md:px-5", className)}>
+    <span className="grid h-[34px] w-[34px] flex-none place-items-center rounded-[11px] bg-white text-brand md:h-[38px] md:w-[38px] md:rounded-xl">{icon}</span>
     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-      <span className="text-xs font-bold text-brand-mut">{label}</span>
+      <span className="text-[11.5px] font-bold text-brand-mut md:text-xs">{label}</span>
       {children}
     </span>
   </label>
 );
 
-const inputCls = "w-full min-w-0 border-0 bg-transparent p-0 text-base font-semibold text-brand-ink outline-none placeholder:font-medium placeholder:text-[#8794A6]";
+const inputCls = "w-full min-w-0 border-0 bg-transparent p-0 text-base font-semibold text-brand-ink outline-none placeholder:font-medium placeholder:text-[#8794A6] max-md:text-[16px]";
 
 const Recherche = () => {
   const { openEstimation, openContact } = useSiteModals();
@@ -68,9 +68,9 @@ const Recherche = () => {
   return (
     <form
       onSubmit={envoyer}
-      className="relative z-[3] mx-2.5 rounded-[26px] bg-white p-2.5 shadow-[0_40px_70px_-40px_rgba(19,36,61,0.55),0_0_0_1px_rgba(19,36,61,0.06)] md:absolute md:bottom-[-64px] md:left-1/2 md:mx-0 md:w-[min(1140px,calc(100%-80px))] md:-translate-x-1/2 md:rounded-[30px] md:p-3"
+      className="relative z-[3] mx-2 rounded-[24px] bg-white p-2 shadow-[0_30px_60px_-30px_rgba(19,36,61,0.55),0_0_0_1px_rgba(19,36,61,0.06)] md:absolute md:bottom-[-64px] md:left-1/2 md:mx-0 md:w-[min(1140px,calc(100%-80px))] md:-translate-x-1/2 md:rounded-[30px] md:p-3"
     >
-      <div role="tablist" aria-label="Votre projet" className="mb-2.5 flex gap-1 rounded-[18px] bg-brand-surf p-1 md:inline-flex">
+      <div role="tablist" aria-label="Votre projet" className="mb-2 flex gap-1 rounded-[16px] bg-brand-surf p-1 md:mb-2.5 md:inline-flex md:rounded-[18px]">
         {ONGLETS.map((o) => (
           <button
             key={o.k}
@@ -79,11 +79,11 @@ const Recherche = () => {
             aria-selected={tab === o.k}
             onClick={() => setTab(o.k)}
             className={cn(
-              "inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-[14px] px-2 text-[14.5px] font-bold transition md:flex-none md:px-5",
+              "inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-[12px] px-2 text-[14px] font-bold transition md:h-11 md:flex-none md:gap-2 md:rounded-[14px] md:px-5 md:text-[14.5px]",
               tab === o.k ? "bg-brand text-white" : "text-brand-mut hover:text-brand-ink",
             )}
           >
-            <span className="hidden md:inline">{o.icon}</span>
+            <span className="max-[359px]:hidden">{o.icon}</span>
             {o.label}
           </button>
         ))}
@@ -104,7 +104,7 @@ const Recherche = () => {
         {tab === "acheter" && (
           <Choix icon={<Wallet className="h-[18px] w-[18px]" />} label="Budget maximum" value={budget} options={BUDGETS} onChange={setBudget} className="md:max-w-[300px]" />
         )}
-        <button type="submit" className="inline-flex h-14 flex-none items-center justify-center gap-2.5 whitespace-nowrap rounded-[20px] bg-brand-orange px-7 text-base font-bold text-brand-ink transition hover:brightness-105 md:h-[68px]">
+        <button type="submit" className="inline-flex h-[52px] flex-none items-center justify-center gap-2.5 whitespace-nowrap rounded-[18px] bg-brand-orange px-7 text-[15.5px] font-bold text-brand-ink transition hover:brightness-105 md:h-[68px] md:rounded-[20px] md:text-base">
           {bouton} <ArrowRight className="h-[18px] w-[18px]" />
         </button>
       </div>
@@ -125,9 +125,9 @@ const TuilesHero = () => (
       <div className="absolute inset-x-0 top-0 h-[600px] overflow-hidden rounded-[30px] bg-[#DFE8F2] md:inset-0 md:h-auto md:rounded-[40px]">
         <img
           src={panorama}
-          alt="Les toits de Paris et la tour Eiffel"
+          alt="Paris vu du ciel, avec la tour Eiffel et le Champ-de-Mars"
           {...({ fetchpriority: "high" } as object)}
-          className="h-full w-full object-cover object-[54%_0%] md:object-[0%_0%]"
+          className="h-full w-full object-cover object-[72%_30%] md:object-[50%_38%]"
         />
         <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.72)_40%,rgba(255,255,255,0.1)_64%,rgba(255,255,255,0)_72%)] md:bg-[linear-gradient(90deg,rgba(255,255,255,0.94)_0%,rgba(255,255,255,0.86)_34%,rgba(255,255,255,0.35)_50%,rgba(255,255,255,0)_60%)]" />
       </div>
@@ -153,9 +153,9 @@ const TuilesHero = () => (
       </div>
       <Recherche />
     </div>
-    <div className="mt-[22px] flex flex-wrap justify-start gap-2 md:mt-[100px] md:justify-center md:gap-3">
+    <div className="no-scrollbar -mx-3 mt-4 flex gap-2 overflow-x-auto px-3 md:mx-0 md:mt-[100px] md:flex-wrap md:justify-center md:gap-3 md:overflow-visible md:px-0">
       {CONFIANCE.map((c) => (
-        <span key={c.t} className="inline-flex min-h-10 items-center gap-2.5 rounded-[20px] bg-brand-surf py-1 pl-2 pr-[18px] text-[13.5px] font-semibold leading-tight text-[#33445B] md:min-h-11 md:rounded-full md:text-[14.5px]">
+        <span key={c.t} className="inline-flex h-10 flex-none items-center gap-2 whitespace-nowrap rounded-full bg-brand-surf py-1 pl-1.5 pr-4 text-[13px] font-semibold leading-tight text-[#33445B] md:h-auto md:min-h-11 md:gap-2.5 md:pl-2 md:pr-[18px] md:text-[14.5px]">
           <span className="grid h-[30px] w-[30px] flex-none place-items-center rounded-full bg-white text-brand">{c.icon}</span>
           {c.t}
         </span>

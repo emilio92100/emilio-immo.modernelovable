@@ -109,13 +109,13 @@ export const Choix = ({
         onClick={() => setOpen((o) => !o)}
         onKeyDown={clavier}
         className={cn(
-          "flex h-16 w-full min-w-0 items-center gap-3.5 rounded-[20px] px-4 text-left transition md:h-[68px] md:px-5",
+          "flex h-[58px] w-full min-w-0 items-center gap-3 rounded-[18px] px-3.5 text-left transition md:h-[68px] md:gap-3.5 md:rounded-[20px] md:px-5",
           open ? "bg-white shadow-[0_0_0_2px_#22497D]" : "bg-brand-surf hover:bg-[#EAEFF5]",
         )}
       >
-        <span className="grid h-[38px] w-[38px] flex-none place-items-center rounded-xl bg-white text-brand">{icon}</span>
+        <span className="grid h-[34px] w-[34px] flex-none place-items-center rounded-[11px] bg-white text-brand md:h-[38px] md:w-[38px] md:rounded-xl">{icon}</span>
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="text-xs font-bold text-brand-mut">{label}</span>
+          <span className="text-[11.5px] font-bold text-brand-mut md:text-xs">{label}</span>
           <span className="truncate text-base font-semibold text-brand-ink">{courant?.t ?? placeholder}</span>
         </span>
         <ChevronDown className={cn("h-[18px] w-[18px] flex-none text-brand-mut transition-transform duration-200", open && "rotate-180 text-brand")} />
