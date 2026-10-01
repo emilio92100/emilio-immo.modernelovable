@@ -77,14 +77,14 @@ export const SectionHead = ({
     <Tag
       className={cn(
         "m-0 font-display font-medium leading-[1.14] tracking-[-0.01em] text-balance",
-        Tag === "h1" ? "text-[clamp(36px,4.4vw,60px)] leading-[1.06]" : "text-[clamp(30px,3.1vw,44px)]",
+        Tag === "h1" ? "text-[clamp(34px,4vw,54px)] leading-[1.06]" : "text-[clamp(28px,2.7vw,40px)]",
         dark ? "text-white" : "text-brand-ink",
       )}
     >
       {title}
     </Tag>
     <Filet center={center} />
-    {lead && <p className={cn("m-0 max-w-[640px] text-[17px] leading-relaxed text-pretty", dark ? "text-brand-bt" : "text-brand-txt")}>{lead}</p>}
+    {lead && <p className={cn("m-0 max-w-[640px] text-[16.5px] leading-relaxed text-pretty", dark ? "text-brand-bt" : "text-brand-txt")}>{lead}</p>}
   </div>
 );
 
@@ -117,8 +117,8 @@ export const Btn = forwardRef<HTMLElement, BtnProps>(function Btn(
   ref,
 ) {
   const cls = cn(
-    "inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-[10px] font-bold transition-all disabled:cursor-not-allowed disabled:opacity-50",
-    size === "lg" ? "h-[54px] px-6 text-base" : "h-[50px] px-5 text-[15.5px]",
+    "inline-flex max-w-full items-center justify-center gap-2.5 rounded-[10px] py-2 text-center font-bold leading-tight transition-all disabled:cursor-not-allowed disabled:opacity-50 sm:whitespace-nowrap [&>svg]:flex-none",
+    size === "lg" ? "min-h-[54px] px-6 text-base" : "min-h-[50px] px-5 text-[15.5px]",
     BTN[variant],
     full && "w-full",
     className,

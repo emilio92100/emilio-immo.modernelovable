@@ -196,7 +196,7 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
         <div className="hidden sm:block"><Steps labels={STEPS} current={step} /></div>
         <div className="sm:hidden"><Steps labels={STEPS} current={step} compact /></div>
 
-        <div ref={bodyRef} className="flex flex-1 flex-col gap-5">
+        <div ref={bodyRef} key={step} className="fx-fade flex flex-1 flex-col gap-5">
           {step === 1 && (
             <>
               <Q t="Où se trouve votre bien ?" s="Votre adresse reste confidentielle. Elle sert seulement à situer le bien." />
