@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Raleway:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 215 50% 18%;
+    --foreground: 216 53% 16%;
 
     --card: 210 20% 98%;
     --card-foreground: 215 50% 18%;
@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 50% 18%;
 
-    --primary: 215 55% 22%;
+    --primary: 214 57% 31%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 215 25% 95%;
@@ -32,19 +32,19 @@
 
     --border: 215 20% 90%;
     --input: 215 20% 90%;
-    --ring: 215 55% 22%;
+    --ring: 214 57% 31%;
 
     --radius: 0.5rem;
 
     --gold: 32 80% 52%;
     --gold-light: 36 60% 70%;
-    --navy: 215 55% 22%;
-    --navy-light: 215 35% 35%;
+    --navy: 214 57% 31%;
+    --navy-light: 214 40% 42%;
     --cream: 40 30% 97%;
     --warm-gray: 215 10% 55%;
 
     --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'Raleway', system-ui, sans-serif;
+    --font-body: 'Albert Sans', 'Segoe UI', system-ui, sans-serif;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -97,3 +97,63 @@
     background-color: hsl(var(--gold));
   }
 }
+
+
+/* ═══ Refonte 2026 : animations du site ═══════════════════════════════════ */
+@keyframes em-spin { to { transform: rotate(360deg); } }
+@keyframes em-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes em-blink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes em-glow { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
+@keyframes ec-phone { 0%, 100% { transform: translateY(0) rotate(-1.4deg); } 50% { transform: translateY(-16px) rotate(1.4deg); } }
+@keyframes ec-bob-a { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(12px, -20px); } }
+@keyframes ec-bob-b { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-12px, -18px); } }
+@keyframes ec-bob-c { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(10px, -12px); } 66% { transform: translate(-8px, -22px); } }
+@keyframes ec-highlight {
+  0%, 22%, 100% { transform: scale(1); box-shadow: 0 0 0 1px rgba(19,36,61,.07), 0 34px 70px -34px rgba(19,36,61,.55); }
+  5%, 16% { transform: scale(1.045); box-shadow: 0 0 0 2.5px rgba(230,139,35,.9), 0 34px 70px -28px rgba(184,98,11,.55); }
+}
+@keyframes ec-notif { 0% { opacity: 0; transform: translateY(-16px) scale(.94); } 6%, 62% { opacity: 1; transform: none; } 70%, 100% { opacity: 0; transform: translateY(-10px) scale(.97); } }
+@keyframes ec-tap { 0%, 62% { transform: scale(.5); opacity: 0; } 70% { opacity: .75; } 100% { transform: scale(1.9); opacity: 0; } }
+@keyframes ec-pin { 0% { opacity: 0; transform: translate(-50%, -30%) scale(.6); } 8%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 88%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.8); } }
+@keyframes em-drift { 0% { transform: scale(1.015) translateX(0); } 100% { transform: scale(1.045) translateX(-0.8%); } }
+
+@layer utilities {
+  .anim-spin-90 { animation: em-spin 90s linear infinite; }
+  .anim-spin-90-r { animation: em-spin 90s linear infinite reverse; }
+  .anim-spin-60-r { animation: em-spin 60s linear infinite reverse; }
+  .anim-spin-60 { animation: em-spin 60s linear infinite; }
+  .anim-spin-16 { animation: em-spin 16s linear infinite; }
+  .anim-float { animation: em-float 4.2s ease-in-out infinite; }
+  .anim-blink { animation: em-blink 1.8s ease-in-out infinite; }
+  .anim-glow { animation: em-glow 6s ease-in-out infinite; }
+  .anim-phone { animation: ec-phone 7s ease-in-out infinite; }
+  .anim-bob-a { animation: ec-bob-a 5.2s ease-in-out infinite; }
+  .anim-bob-b { animation: ec-bob-b 6.4s ease-in-out infinite; }
+  .anim-bob-c { animation: ec-bob-c 7.8s ease-in-out infinite; }
+  .anim-highlight { animation: ec-highlight 15s ease-in-out infinite both; }
+  .anim-notif { animation: ec-notif 7s ease-in-out infinite both; }
+  .anim-tap { animation: ec-tap 3.6s ease-out infinite; }
+  .anim-pin { animation: ec-pin 9s ease-in-out infinite both; }
+  .anim-drift { animation: em-drift 22s ease-in-out infinite alternate; }
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-spin-90, .anim-spin-90-r, .anim-spin-60, .anim-spin-60-r, .anim-spin-16, .anim-float, .anim-blink, .anim-glow,
+  .anim-phone, .anim-bob-a, .anim-bob-b, .anim-bob-c, .anim-highlight, .anim-notif, .anim-tap, .anim-pin, .anim-drift { animation: none !important; }
+}
+
+/* Carte des secteurs : survol des zones */
+.secteur-zone { transition: fill .2s ease; }
+.secteur-zone:hover { fill: #F2B266; }
+.secteur-paris:hover { fill: #AFC2DF; }
+
+/* Écran du téléphone (espace client acheteur) : alternance de deux vues */
+@keyframes ec-swap { 0%, 44% { opacity: 1; } 50%, 94% { opacity: 0; } 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { [style*="ec-swap"] { animation: none !important; } }
+
+/* Ancres : laisser la place à l'en-tête collant */
+[id] { scroll-margin-top: 96px; }
