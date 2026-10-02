@@ -1,7 +1,7 @@
 /* Page « Acheter » (refonte 2026) : le chasseur, l'espace client, le formulaire en 3 temps. */
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpDown, Building2, Car, Fence, Leaf, School, Sofa, Sun, Umbrella, CalendarDays, CheckCircle2, FileText, Handshake, Heart, Home, KeyRound, Lock, MapPin, MessageCircle, Phone, Search, Sparkles, Users, Plus, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpDown, Building2, Car, Fence, Leaf, School, Sofa, Sun, Umbrella, CalendarDays, FileText, Handshake, Heart, Home, KeyRound, Lock, MapPin, MessageCircle, Phone, Search, Sparkles, Users, Plus, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Btn, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF, TextLink, TrustRow } from "@/components/site/ui";
 import { PhoneScreen } from "@/components/site/PhoneScreen";
+import { CocheEnvoyee } from "@/components/site/ModalShell";
 import { Consent, Field, Group, Pills, Segmented, Steps, Tile, toggleIn } from "@/components/site/form";
 import { BUDGET_STEPS, CityPicker, RangeDual, RangeOne, euros } from "@/components/site/SearchControls";
 import rueEiffel from "@/assets/refonte/paris-rue-eiffel.webp";
@@ -565,7 +566,7 @@ const Recherche = () => {
                 >
                   {fini ? (
                     <div className="flex flex-col items-center gap-3.5 px-2.5 pb-1.5 pt-[18px] text-center">
-                      <CheckCircle2 className="h-16 w-16 text-[#2E9A66]" strokeWidth={1.6} />
+                      <CocheEnvoyee />
                       <h4 className="m-0 mt-1.5 font-display text-[19.5px] sm:text-[23px] sm:text-[28px] font-medium text-brand-ink">C’est noté{c.prenom.trim() ? `, merci ${c.prenom.trim()}` : ""}</h4>
                       <p className="m-0 max-w-[440px] text-[15.5px] leading-relaxed text-brand-txt">Alexandre ou un membre de l’équipe vous appelle pour en parler. Ensuite, votre lien personnel arrive par e-mail : il ouvre votre espace client.</p>
                       <div className="flex flex-wrap justify-center gap-2.5 pt-1.5">
@@ -594,7 +595,8 @@ const Recherche = () => {
                     onClick={() => (derniere ? send() : go(page + 1))}
                     className="ml-auto inline-flex h-[54px] min-w-0 flex-1 items-center justify-center gap-2.5 rounded-xl bg-brand-orange px-4 text-[15.5px] font-extrabold text-brand-ink transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45 sm:flex-none sm:px-7 sm:text-[16px]"
                   >
-                    <span className="truncate">{derniere ? (sending ? "Envoi…" : "Envoyer ma recherche") : "Suivant"}</span> <ArrowRight className={cn("h-[18px] w-[18px] flex-none", derniere && "hidden sm:block")} />
+                    {sending && <span aria-hidden className="h-[18px] w-[18px] flex-none animate-spin rounded-full border-[2.5px] border-brand-ink/25 border-t-brand-ink" />}
+                    <span className="truncate">{derniere ? (sending ? "Envoi en cours…" : "Envoyer ma recherche") : "Suivant"}</span> <ArrowRight className={cn("h-[18px] w-[18px] flex-none", (derniere || sending) && "hidden sm:block", sending && "sm:hidden")} />
                   </button>
                 </div>
                 {bloque && AIDE[bloque] && <span className="text-[13px] text-brand-mut sm:text-right">{AIDE[bloque]}</span>}

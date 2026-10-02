@@ -183,7 +183,7 @@ const PropertyDetail = () => {
   const seoTitle = `${titre}${surf ? ` ${surf}` : ""} à vendre, ${ville} | Emilio Immobilier`;
   const seoDesc = `${titre} à vendre à ${ville}${surf ? `, ${surf}` : ""}${p.bedrooms ? `, ${p.bedrooms} chambre${p.bedrooms > 1 ? "s" : ""}` : ""} : ${formatPrice(p.price)}. Photos, plan, DPE et visite avec Emilio Immobilier.`.slice(0, 160);
   const avantages = plus(p);
-  const demande = (objet: "Visiter un bien" | "Autre", message: string) => openContact({ objet, message, propertyRef: p.id, propertyTitle: `${titre}, ${ville}` });
+  const demande = (objet: "Visiter un bien" | "Autre", message: string) => openContact({ objet, message, propertyRef: p.id, propertyTitle: `${titre}, ${ville}`, propertyImage: p.images[0], propertyPrice: formatPrice(p.price) });
 
   const specs = [
     p.surface > 0 && { icon: Maximize, l: "Surface", v: formatSurface(p.surface) },
