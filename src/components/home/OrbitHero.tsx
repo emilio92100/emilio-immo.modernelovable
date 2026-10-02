@@ -227,7 +227,7 @@ const OrbitHero = ({ vendre }: { vendre?: boolean }) => {
     <section className="overflow-hidden text-brand-bt" style={{ background: "linear-gradient(165deg, #1B3D6B 0%, #22497D 58%, #2C5C99 100%)" }}>
       <Container className="flex flex-wrap items-center gap-x-12 gap-y-8 pb-12 pt-8 md:pb-[60px] md:pt-14">
         <div className="flex min-w-0 max-w-[560px] flex-[1_1_460px] flex-col gap-[22px]">
-          <Eyebrow dark>{vendre ? "Vendre avec Emilio" : "Ils cherchent en ce moment"}</Eyebrow>
+          {!vendre && <Eyebrow dark>Ils cherchent en ce moment</Eyebrow>}
           <h1 className="m-0 font-display text-[33px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white text-balance sm:text-[clamp(40px,4.6vw,60px)] sm:leading-[1.06]">
             Ils tournent autour <Em dark wrap>d’un bien comme le vôtre.</Em>
           </h1>
