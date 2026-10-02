@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Playfair Display', 'Georgia', 'serif'],
-        body: ['Albert Sans', 'Segoe UI', 'system-ui', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        body: ['Plus Jakarta Sans', 'Segoe UI', 'system-ui', 'sans-serif'],
         jakarta: ['Plus Jakarta Sans', 'Albert Sans', 'sans-serif'],
       },
       colors: {
