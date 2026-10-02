@@ -74,7 +74,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
             <div className="flex min-w-0 flex-[1_1_540px] flex-col gap-[22px]">
               <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Vendre", to: "/vendre" }, { label: city.name }]} />
               <Eyebrow>Vendre · {city.postalLabel}</Eyebrow>
-              <h1 className="m-0 font-display text-[29px] sm:text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+              <h1 className="m-0 font-display text-[29px] sm:text-[clamp(34px,4.2vw,58px)] font-extrabold leading-[1.07] tracking-[-0.03em] text-brand-ink text-balance">
                 Vendre votre appartement <Em wrap>{aVille(city)}</Em>
               </h1>
               <p className="m-0 max-w-[580px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">{sell.heroIntro}</p>
@@ -98,7 +98,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
                 <article key={q.name} className={cn("flex gap-4 rounded-[20px] bg-white p-6", FRAME_SHADOW)}>
                   <span className="grid h-11 w-11 flex-none place-items-center rounded-xl bg-brand-tint text-brand"><Home className="h-5 w-5" /></span>
                   <div className="flex flex-col gap-1.5">
-                    <h3 className="m-0 font-display text-[19px] sm:text-[22px] font-medium leading-tight text-brand-ink">{q.name}</h3>
+                    <h3 className="m-0 font-display text-[19px] sm:text-[22px] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">{q.name}</h3>
                     <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt text-pretty">{q.desc}</p>
                   </div>
                 </article>
@@ -115,13 +115,13 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
               <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-tint text-brand"><Clock className="h-5 w-5" /></span>
                 <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Délai moyen du marché</span>
-                <span className="font-display text-[32px] sm:text-[44px] leading-none text-brand-ink">{sell.avgDelayCity}</span>
+                <span className="font-display text-[32px] sm:text-[44px] leading-none text-brand-ink font-extrabold tracking-[-0.025em]">{sell.avgDelayCity}</span>
                 <p className="m-0 text-[15px] leading-relaxed text-brand-txt">Observé {aVille(city)}, entre la mise en vente et l’accord avec un acheteur.</p>
               </div>
               <div className="flex flex-col gap-3 rounded-[22px] bg-brand p-7 text-brand-bt">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Sparkles className="h-5 w-5" /></span>
                 <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-soft">Pour aller plus vite</span>
-                <span className="font-display text-[18.5px] sm:text-[21px] sm:text-[26px] leading-tight text-white">Le bon prix dès le départ, et nos acheteurs en premier</span>
+                <span className="font-display text-[18.5px] sm:text-[21px] sm:text-[26px] leading-tight text-white font-extrabold tracking-[-0.025em]">Le bon prix dès le départ, et nos acheteurs en premier</span>
                 <p className="m-0 text-[15px] leading-relaxed">Un prix juste attire les acheteurs sérieux dès la première semaine. Et votre bien est d’abord présenté aux acheteurs que nous suivons déjà.</p>
               </div>
               <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
@@ -151,10 +151,10 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
               {METHODE.map((m, i) => (
                 <li key={m.title} className={cn("flex flex-col gap-3.5 rounded-[20px] bg-white p-6", FRAME_SHADOW)}>
                   <div className="flex items-center justify-between">
-                    <span className="font-display text-[19.5px] sm:text-[23px] sm:text-[28px] sm:text-[36px] italic leading-none text-brand-orange-lt">0{i + 1}</span>
+                    <span className="font-display text-[19.5px] sm:text-[23px] sm:text-[28px] sm:text-[36px] leading-none text-brand-orange-lt font-extrabold tracking-[-0.025em]">0{i + 1}</span>
                     <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-tint text-brand"><m.icon className="h-5 w-5" /></span>
                   </div>
-                  <h3 className="m-0 font-display text-[18.5px] sm:text-[21px] font-medium leading-tight text-brand-ink">{m.title}</h3>
+                  <h3 className="m-0 font-display text-[18.5px] sm:text-[21px] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">{m.title}</h3>
                   <p className="m-0 text-[15px] leading-relaxed text-brand-txt text-pretty">{m.desc}</p>
                 </li>
               ))}
@@ -167,11 +167,11 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
           <Container className="grid grid-cols-1 items-center gap-x-16 gap-y-8 py-14 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:py-[88px]">
             <div className="flex flex-col gap-5">
               <Eyebrow dark>Pourquoi vendre maintenant</Eyebrow>
-              <h2 className="m-0 font-display text-[25px] sm:text-[clamp(30px,3.1vw,44px)] font-medium leading-[1.14] text-white">{city.name} <Em dark>en 2026</Em></h2>
+              <h2 className="m-0 font-display text-[25px] sm:text-[clamp(30px,3.1vw,44px)] font-extrabold leading-[1.14] text-white tracking-[-0.025em]">{city.name} <Em dark>en 2026</Em></h2>
               <p className="m-0 text-[17.5px] leading-relaxed text-brand-bt text-pretty">{sell.marketAngle}</p>
             </div>
             <div className="flex flex-col gap-3 rounded-[22px] bg-white p-6 md:p-7">
-              <span className="font-display text-[20px] sm:text-[24px] leading-tight text-brand-ink">Combien vaut votre bien ?</span>
+              <span className="font-display text-[20px] sm:text-[24px] leading-tight text-brand-ink font-extrabold tracking-[-0.025em]">Combien vaut votre bien ?</span>
               <p className="m-0 text-[15px] leading-relaxed text-brand-txt">Une première fourchette tout de suite, puis l’avis de valeur d’un membre de l’équipe, sur place.</p>
               <Btn onClick={estimer} iconLeft={<LineChart className="h-[18px] w-[18px]" />} full>Estimer mon bien</Btn>
             </div>
@@ -197,7 +197,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
                 {sell.erreursAEviter.map((e, i) => (
                   <article key={e.title} className="flex flex-col gap-2.5 rounded-[20px] border border-brand-line bg-white p-5">
                     <span className="inline-flex items-center gap-2 text-[12.5px] font-extrabold uppercase tracking-[0.14em] text-brand-orange-text"><AlertTriangle className="h-4 w-4" /> Erreur 0{i + 1}</span>
-                    <h3 className="m-0 font-display text-[20px] font-medium leading-tight text-brand-ink">{e.title}</h3>
+                    <h3 className="m-0 font-display text-[20px] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">{e.title}</h3>
                     <p className="m-0 text-[14.5px] leading-relaxed text-brand-txt text-pretty">{e.desc}</p>
                   </article>
                 ))}
@@ -213,12 +213,12 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand text-white"><Calculator className="h-5 w-5" /></span>
-                <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-medium text-brand-ink">Résidence principale</h3>
+                <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-extrabold text-brand-ink tracking-[-0.025em]">Résidence principale</h3>
                 <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Exonération totale de la plus-value, sans condition de durée de détention. C’est le cas de la plupart des ventes que nous accompagnons.</p>
               </div>
               <div className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-orange text-brand-ink"><Calculator className="h-5 w-5" /></span>
-                <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-medium text-brand-ink">Résidence secondaire ou investissement</h3>
+                <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-extrabold text-brand-ink tracking-[-0.025em]">Résidence secondaire ou investissement</h3>
                 <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Plus-value soumise à l’impôt sur le revenu (19 %) et aux prélèvements sociaux (17,2 %), avec un abattement selon la durée de détention.</p>
                 <Checks items={["Exonération d’impôt sur le revenu après 22 ans de détention", "Exonération de prélèvements sociaux après 30 ans", "Surtaxe de 2 à 6 % au-delà de 50 000 € de plus-value imposable"]} />
                 <p className="m-0 text-[14px] italic text-brand-mut">Si votre situation le demande, nous vous orientons vers un notaire.</p>
@@ -239,7 +239,7 @@ const SellCityPageTemplate = ({ city, sell }: Props) => {
               ].map((b) => (
                 <div key={b.t} className={cn("flex flex-col gap-3 rounded-[20px] bg-white p-7", FRAME_SHADOW)}>
                   <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-tint text-brand"><b.icon className="h-5 w-5" /></span>
-                  <h3 className="m-0 font-display text-[19.5px] sm:text-[23px] font-medium text-brand-ink">{b.t}</h3>
+                  <h3 className="m-0 font-display text-[19.5px] sm:text-[23px] font-extrabold text-brand-ink tracking-[-0.025em]">{b.t}</h3>
                   <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">{b.d}</p>
                 </div>
               ))}

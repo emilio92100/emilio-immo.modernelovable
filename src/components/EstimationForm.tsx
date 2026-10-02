@@ -183,7 +183,7 @@ const EstimationForm = ({ trigger }: EstimationFormProps) => {
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="font-display text-xl flex items-center gap-2">
+            <DialogTitle className="font-display text-xl flex items-center gap-2 font-extrabold tracking-[-0.025em]">
               <Home className="w-5 h-5 text-accent" />
               Estimer mon bien
             </DialogTitle>

@@ -50,7 +50,7 @@ const SuccessPopup = ({
             <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-7 h-7 text-accent" />
             </div>
-            <h3 className="font-display text-lg text-foreground mb-2">{title}</h3>
+            <h3 className="font-display text-lg text-foreground mb-2 font-extrabold tracking-[-0.025em]">{title}</h3>
             <p className="font-body text-sm text-muted-foreground">{description}</p>
           </motion.div>
         </motion.div>

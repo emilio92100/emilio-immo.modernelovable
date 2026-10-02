@@ -99,14 +99,14 @@ export const QuickViewPopup = ({ property, open, onClose }: { property: Property
             <div className="flex min-w-0 flex-col gap-2.5 px-1 pb-1 pt-3.5 md:gap-3.5 md:px-[30px] md:pb-6 md:pt-[34px]">
               <span className="hidden text-xs font-extrabold uppercase tracking-[0.16em] text-brand-orange-text md:block">Vue rapide</span>
               <div className="flex items-start justify-between gap-3 md:block">
-                <h3 className="m-0 min-w-0 font-display text-[21px] font-medium leading-tight text-brand-ink md:pr-10 md:text-[30px]">
-                  {displayTitle(property)}<span className="hidden md:inline">, </span><em className="hidden font-normal italic text-brand-orange-lt md:inline">{displayCity(property)}</em>
+                <h3 className="m-0 min-w-0 font-display text-[21px] font-extrabold leading-tight text-brand-ink md:pr-10 md:text-[30px] tracking-[-0.025em]">
+                  {displayTitle(property)}<span className="sr-only">, {displayCity(property)}</span>
                 </h3>
-                <span className="flex-none whitespace-nowrap font-display text-[22px] font-medium text-brand-ink md:hidden">{formatPrice(property.price)}</span>
+                <span className="flex-none whitespace-nowrap font-display text-[22px] font-extrabold text-brand-ink md:hidden tracking-[-0.025em]">{formatPrice(property.price)}</span>
               </div>
               <span className="inline-flex items-center gap-1.5 text-[14px] text-brand-mut md:text-[14.5px]"><MapPin className="h-[15px] w-[15px] flex-none text-brand-orange-text" />{displayCity(property)} · {property.postalCode}<span className="md:hidden">&nbsp;· {perM2(property)}</span></span>
               <div className="hidden flex-wrap items-baseline gap-2.5 md:flex">
-                <span className="font-display text-[32px] font-medium tracking-[-0.01em] text-brand-ink">{formatPrice(property.price)}</span>
+                <span className="font-display text-[32px] font-extrabold tracking-[-0.03em] text-brand-ink">{formatPrice(property.price)}</span>
                 <span className="text-xs font-bold text-brand-mut">FAI</span>
                 <span className="text-[13.5px] text-brand-mut">{perM2(property)}</span>
               </div>
@@ -184,7 +184,7 @@ const PropertyCard = ({ property, index = 0, className, imgClassName }: Property
         <Link to={`/biens/${property.id}`} className="flex flex-1 flex-col gap-1.5 px-2.5 pb-2 pt-4">
           <div className="flex items-baseline justify-between gap-2.5">
             <span className="inline-flex items-baseline gap-1.5">
-              <span className="whitespace-nowrap font-display text-2xl font-medium tracking-[-0.01em] text-brand-ink">{formatPrice(property.price)}</span>
+              <span className="whitespace-nowrap font-display text-2xl font-extrabold tracking-[-0.03em] text-brand-ink">{formatPrice(property.price)}</span>
               <span className="text-xs font-bold text-brand-mut">FAI</span>
             </span>
             <span className="whitespace-nowrap text-[12.5px] text-brand-mut">{perM2(property)}</span>

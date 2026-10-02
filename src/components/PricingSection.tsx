@@ -29,7 +29,7 @@ const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProp
     <section className="py-20">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">{heading}</h2>
+          <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4 font-extrabold tracking-[-0.025em]">{heading}</h2>
           <div className="w-16 h-0.5 bg-accent mx-auto mb-6" />
           <p className="font-body text-muted-foreground max-w-xl mx-auto text-base">{subheading}</p>
         </div>
@@ -70,8 +70,8 @@ const PricingSection = ({ heading, subheading, plans, note }: PricingSectionProp
               )}
 
               <div className="text-center mb-8">
-                <h3 className="font-display text-xl md:text-2xl text-foreground mb-3">{plan.title}</h3>
-                <div className="font-display text-4xl md:text-5xl text-accent mb-2">{plan.rate}</div>
+                <h3 className="font-display text-xl md:text-2xl text-foreground mb-3 font-extrabold tracking-[-0.025em]">{plan.title}</h3>
+                <div className="font-display text-4xl md:text-5xl text-accent mb-2 font-extrabold tracking-[-0.025em]">{plan.rate}</div>
                 <p className="font-body text-muted-foreground text-sm">{plan.subtitle}</p>
               </div>
 

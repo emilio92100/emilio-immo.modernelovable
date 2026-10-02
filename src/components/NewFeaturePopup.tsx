@@ -52,10 +52,10 @@ const NewFeaturePopup = () => {
               <Sparkles className="w-7 h-7 text-accent" />
             </div>
 
-            <p className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2">
+            <p className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2 tracking-[-0.025em]">
               Nouveau ! 🎉
             </p>
-            <p className="font-display text-base sm:text-lg font-semibold text-accent mb-3">
+            <p className="font-display text-base sm:text-lg font-extrabold text-accent mb-3 tracking-[-0.025em]">
               Détail des surfaces
             </p>
             <p className="font-body text-base text-muted-foreground leading-relaxed">

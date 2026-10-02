@@ -144,7 +144,7 @@ const BuyerMandateStepperForm = () => {
       case 0:
         return (
           <div className="space-y-5">
-            <h3 className="font-display text-xl md:text-2xl text-foreground">Budget et Financement</h3>
+            <h3 className="font-display text-xl md:text-2xl text-foreground font-extrabold tracking-[-0.025em]">Budget et Financement</h3>
             <div>
               <label className={labelClass}>Budget maximum {requiredStar}</label>
               <div className="relative">
@@ -181,7 +181,7 @@ const BuyerMandateStepperForm = () => {
       case 1:
         return (
           <div className="space-y-5">
-            <h3 className="font-display text-xl md:text-2xl text-foreground">Localisation souhaitée</h3>
+            <h3 className="font-display text-xl md:text-2xl text-foreground font-extrabold tracking-[-0.025em]">Localisation souhaitée</h3>
             <div>
               <label className={labelClass}>Ville(s) ou secteur(s) {requiredStar}</label>
               <textarea placeholder="Ex: Paris 16ème, Neuilly-sur-Seine, Boulogne-Billancourt..." rows={2} value={form.desired_location} onChange={(e) => update("desired_location", e.target.value)} className={`${inputClass} resize-none`} />
@@ -195,7 +195,7 @@ const BuyerMandateStepperForm = () => {
       case 2:
         return (
           <div className="space-y-5">
-            <h3 className="font-display text-xl md:text-2xl text-foreground">Critères du bien</h3>
+            <h3 className="font-display text-xl md:text-2xl text-foreground font-extrabold tracking-[-0.025em]">Critères du bien</h3>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Type de bien {requiredStar}</label>
@@ -251,7 +251,7 @@ const BuyerMandateStepperForm = () => {
       case 3:
         return (
           <div className="space-y-5">
-            <h3 className="font-display text-xl md:text-2xl text-foreground">Vos priorités</h3>
+            <h3 className="font-display text-xl md:text-2xl text-foreground font-extrabold tracking-[-0.025em]">Vos priorités</h3>
             <p className="font-body text-muted-foreground text-sm">Classez vos 3 critères les plus importants :</p>
             <div>
               <label className={labelClass}>Priorité n°1</label>
@@ -313,7 +313,7 @@ const BuyerMandateStepperForm = () => {
       case 4:
         return (
           <div className="space-y-5">
-            <h3 className="font-display text-xl md:text-2xl text-foreground">Vos coordonnées</h3>
+            <h3 className="font-display text-xl md:text-2xl text-foreground font-extrabold tracking-[-0.025em]">Vos coordonnées</h3>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Nom complet {requiredStar}</label>
@@ -355,7 +355,7 @@ const BuyerMandateStepperForm = () => {
           />
 
           <div className="text-center mb-12">
-            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-3">Démarrez Votre Recherche</h2>
+            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-3 font-extrabold tracking-[-0.025em]">Démarrez Votre Recherche</h2>
             <p className="font-body text-muted-foreground">Complétez le formulaire pour que nous puissions vous accompagner efficacement</p>
           </div>
 

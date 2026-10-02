@@ -34,7 +34,7 @@ const DPEBadge = ({ label, value, type, consoValue }: DPEBadgeProps) => {
   if (!value) {
     return (
       <div>
-        <h4 className="font-display text-sm font-semibold text-foreground mb-3">{label}</h4>
+        <h4 className="font-display text-sm font-extrabold text-foreground mb-3 tracking-[-0.025em]">{label}</h4>
         <div className="bg-muted/50 border border-border rounded p-4 text-center">
           <p className="font-body text-muted-foreground text-sm font-semibold">DPE NON DISPONIBLE</p>
         </div>
@@ -44,7 +44,7 @@ const DPEBadge = ({ label, value, type, consoValue }: DPEBadgeProps) => {
 
   return (
     <div>
-      <h4 className="font-display text-sm font-semibold text-foreground mb-3">{label}</h4>
+      <h4 className="font-display text-sm font-extrabold text-foreground mb-3 tracking-[-0.025em]">{label}</h4>
       <div className="flex flex-col gap-1">
         {allLetters.map((letter) => {
           const isActive = letter === value.toUpperCase();
