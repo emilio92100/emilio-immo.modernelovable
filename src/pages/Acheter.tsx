@@ -1,7 +1,7 @@
 /* Page « Acheter » (refonte 2026) : le chasseur, l'espace client, le formulaire en 3 temps. */
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpDown, Building2, Car, Fence, Leaf, School, Sofa, Sun, Umbrella, CalendarDays, FileText, Handshake, Heart, Home, KeyRound, Lock, MapPin, MessageCircle, Phone, Search, Sparkles, Users, Plus, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpDown, Building2, Car, Fence, Leaf, School, Sofa, Sun, Umbrella, CalendarDays, FileText, Handshake, Heart, Home, KeyRound, Lock, MessageCircle, Phone, Search, Sparkles, Users, Plus, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Btn, Container, Crumbs, Em, Eyebrow, FRAME_SHADOW, SectionHead, TEL, TEL_HREF, TextLink, TrustRow } from "@/components/site/ui";
 import { PhoneScreen } from "@/components/site/PhoneScreen";
+import { EtapesOrdi, TelephoneOrdi, useHistoire } from "@/components/site/EspaceClientOrdi";
 import { CocheEnvoyee } from "@/components/site/ModalShell";
 import { Consent, Field, Group, Pills, Segmented, Steps, Tile, toggleIn } from "@/components/site/form";
 import { BUDGET_STEPS, CityPicker, RangeDual, RangeOne, euros } from "@/components/site/SearchControls";
@@ -86,18 +87,12 @@ const Pourquoi = () => {
   );
 };
 
-/* ── L'espace client acheteur : téléphone animé + atouts autour ── */
-const Bulle = ({ icon, t, d, i, orange }: { icon: JSX.Element; t: string; d: string; i: number; orange?: boolean }) => (
-  <div className={cn("anim-highlight flex items-start gap-3.5 rounded-[18px] bg-white px-[18px] py-4", FRAME_SHADOW)} style={{ animationDelay: `${i ? i * 3 - 15 : 0}s` }}>
-    <span className={cn("grid h-[46px] w-[46px] flex-none place-items-center rounded-[14px]", orange ? "bg-brand-orange text-brand-ink" : "bg-brand text-white")}>{icon}</span>
-    <span className="flex flex-col gap-[3px]">
-      <span className="text-[15.5px] font-extrabold leading-snug text-brand-ink">{t}</span>
-      <span className="text-[13.5px] leading-normal text-brand-txt">{d}</span>
-    </span>
-  </div>
-);
-
+/* ── L’espace client acheteur, tout en haut de la page ──
+   Téléphone et tablette : le titre au centre, puis un petit téléphone avec la liste des atouts à côté.
+   Ordinateur : « l’appli qui se raconte » sur le bleu Emilio (voir EspaceClientOrdi), visible dès l’arrivée sans descendre.
+   Un seul titre h1, partagé par les deux mises en page. */
 const EspaceClient = ({ photos }: { photos: string[] }) => {
+  const histoire = useHistoire();
   const phone = (
     <div className="anim-phone relative z-[2] h-[630px] w-[300px] flex-none rounded-[46px] bg-brand-ink p-[11px] shadow-[0_60px_100px_-40px_rgba(19,36,61,0.75),inset_0_0_0_2px_#34465f]">
       <div className="relative h-full w-full overflow-hidden rounded-[36px]">
@@ -106,42 +101,6 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
       </div>
     </div>
   );
-  const pins: [number, number, string, string, number][] = [[30, 34, "995 k€", "#16a34a", 0], [68, 46, "1,25 M€", "#c9a84c", -6], [44, 74, "880 k€", "#7c3aed", -3]];
-  const carte = (
-    <div className={cn("anim-highlight rounded-[18px] bg-white p-2", FRAME_SHADOW)} style={{ animationDelay: "-6s" }}>
-      <div className="relative h-[140px] overflow-hidden rounded-xl bg-[#EEF2F7]">
-        <svg viewBox="0 0 300 140" aria-hidden className="absolute inset-0 h-full w-full">
-          <path d="M-10 92 C 40 70, 80 110, 130 84 S 220 40, 310 66" fill="none" stroke="#8EBBE5" strokeWidth="9" strokeLinecap="round" />
-          <path d="M20 0 L60 140 M150 0 L120 140 M230 0 L270 140 M0 30 L300 50 M0 120 L300 100" stroke="#FFFFFF" strokeWidth="5" />
-          <path d="M0 64 L300 74" stroke="#FFFFFF" strokeWidth="3" />
-        </svg>
-        {pins.map(([x, y, t, c, d]) => (
-          <span key={t} className="anim-pin absolute inline-flex h-6 items-center whitespace-nowrap rounded-full px-[9px] text-[11.5px] font-extrabold text-white shadow-[0_6px_12px_-6px_rgba(0,0,0,0.5)]" style={{ left: `${x}%`, top: `${y}%`, background: c, animationDelay: `${d}s` }}>{t}</span>
-        ))}
-      </div>
-      <div className="flex items-center gap-2 px-1.5 pb-[3px] pt-[9px] text-sm font-extrabold text-brand-ink"><MapPin className="h-4 w-4 text-brand-orange-text" /> Vos biens sur la carte</div>
-    </div>
-  );
-  const notif = (
-    <div className="anim-notif flex items-center gap-2.5 rounded-2xl bg-white/[.98] py-2.5 pl-2.5 pr-3.5 shadow-[0_24px_40px_-18px_rgba(19,36,61,0.6),0_0_0_1px_rgba(19,36,61,0.06)]" style={{ animationDelay: "-1s" }}>
-      <span className="grid h-[38px] w-[38px] flex-none place-items-center rounded-[10px] bg-[#1a2332] font-jakarta text-base font-extrabold text-white">E</span>
-      <span className="flex flex-col leading-snug">
-        <span className="text-[11px] font-bold text-brand-mut">Ma recherche · maintenant</span>
-        <span className="text-sm font-extrabold text-brand-ink">Un nouveau bien pour vous</span>
-      </span>
-    </div>
-  );
-  const left = [
-    { top: 10, cls: "anim-bob-a", el: <Bulle i={0} icon={<Star className="h-[22px] w-[22px]" />} t="Une sélection privée" d="Les biens retenus pour vous, annonces du marché et biens hors marché, au même endroit." /> },
-    { top: 222, cls: "anim-bob-c", el: <Bulle i={1} orange icon={<Heart className="h-[22px] w-[22px]" />} t="Votre avis en un clic" d="« Ça me plaît », « Pas pour moi » : on affine la recherche avec vous." /> },
-    { top: 418, cls: "anim-bob-b", el: carte },
-  ];
-  const right = [
-    { top: 20, cls: "anim-bob-b", el: notif },
-    { top: 150, cls: "anim-bob-a", el: <Bulle i={2} icon={<CalendarDays className="h-[22px] w-[22px]" />} t="La visite, en direct" d="« Je veux visiter » depuis la fiche du bien, et le rendez-vous s’ajoute à votre agenda." /> },
-    { top: 360, cls: "anim-bob-c", el: <Bulle i={3} orange icon={<FileText className="h-[22px] w-[22px]" />} t="Votre mandat signé en ligne" d="Un code reçu par e-mail, une signature au doigt : c’est fait." /> },
-    { top: 530, cls: "anim-bob-a", el: <Bulle i={4} icon={<Sparkles className="h-[22px] w-[22px]" />} t="Prévenu en premier" d="Une notification dès qu’un bien qui vous correspond arrive." /> },
-  ];
   const perks = [
     [<Lock key="l" className="h-[17px] w-[17px]" />, "Un lien personnel, sans mot de passe"],
     [<Home key="h" className="h-[17px] w-[17px]" />, "S’installe comme une appli"],
@@ -156,39 +115,39 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
     [<FileText key="f" className="h-5 w-5" />, "Le mandat signé en ligne", "Un code par e-mail, une signature au doigt."],
   ];
   return (
-    <section id="espace" className="bg-brand-pale" style={{ backgroundImage: "radial-gradient(circle at 50% 58%, #E4ECF6 0%, rgba(228,236,246,0) 46%)" }}>
-      <Container className="flex flex-col gap-6 pb-14 pt-4 md:pb-[84px] md:pt-8">
-        <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Acheter" }]} />
-        <SectionHead
-          as="h1"
-          center
-          title={<><span className="sr-only">Chasseur immobilier à Paris et dans les Hauts-de-Seine : </span>Un espace créé <Em>rien que pour vous</Em></>}
-          lead="Dès que vous nous confiez votre recherche, vous recevez votre lien personnel. Vous y retrouvez tous les biens qu’on sélectionne pour vous, sur ordinateur comme sur téléphone."
-          className="max-w-[800px]"
-        />
-        {/* Sur ordinateur, les boutons tout de suite ; sur téléphone, après le téléphone et ses atouts */}
-        <div className="hidden flex-wrap justify-center gap-3 sm:flex">
-          <Btn href="#recherche" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
-          <Btn href={TEL_HREF} variant="outline" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
+    <section id="espace" className="bg-brand-pale bg-[radial-gradient(circle_at_50%_58%,#E4ECF6_0%,rgba(228,236,246,0)_46%)] lg:bg-[linear-gradient(165deg,#1B3D6B_0%,#22497D_58%,#2C5C99_100%)] lg:text-brand-bt">
+      <Container className="flex flex-col gap-6 pb-14 pt-4 md:pb-[84px] md:pt-8 lg:grid lg:grid-cols-[400px_minmax(0,1fr)] lg:items-center lg:gap-x-12 lg:gap-y-0 lg:pb-12 lg:pt-2 xl:grid-cols-[480px_minmax(0,1fr)] xl:gap-x-16 lg:[@media(max-height:760px)]:pb-8">
+        <div className="lg:col-span-2 lg:[&_[aria-current]]:text-white lg:[&_a:hover]:text-white lg:[&_a]:text-white/65">
+          <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Acheter" }]} />
         </div>
-        {/* Ordinateur : la scène animée */}
-        <div className="hidden h-[610px] lg:block">
-        <div className="relative flex h-[690px] origin-top scale-[.86] justify-center pt-6">
-          {[[-210, 18, 10, "#E68B23", "anim-bob-b"], [186, 330, 8, "#22497D", "anim-bob-a"], [-190, 400, 7, "#9AACC4", "anim-bob-c"], [170, 600, 12, "#E68B23", "anim-bob-c"], [-178, 640, 9, "#22497D", "anim-bob-a"]].map(([x, y, r, c, cl], k) => (
-            <span key={k} aria-hidden className={cn("absolute rounded-full opacity-85", cl as string)} style={{ left: `calc(50% + ${x}px)`, top: y as number, width: r as number, height: r as number, background: c as string }} />
-          ))}
-          {left.map((b, k) => (
-            <div key={`l${k}`} className="absolute z-[3] w-[290px]" style={{ right: "calc(50% + 200px)", top: b.top }}>
-              <div className={b.cls} style={{ animationDelay: `-${(k + 1) * 1.7}s` }}>{b.el}</div>
-            </div>
-          ))}
-          {right.map((b, k) => (
-            <div key={`r${k}`} className={cn("absolute w-[290px]", k === 0 ? "z-[4]" : "z-[3]")} style={{ left: "calc(50% + 200px)", top: b.top }}>
-              <div className={b.cls} style={{ animationDelay: `-${(k + 4) * 1.7}s` }}>{b.el}</div>
-            </div>
-          ))}
-          {phone}
-        </div>
+        {/* Ordinateur : le téléphone qui raconte l’appli, à gauche */}
+        <TelephoneOrdi photos={photos} actif={histoire.actif} className="lg:col-start-1 lg:row-start-2" />
+        {/* Le titre ; sur ordinateur, à droite du téléphone avec la liste des atouts et les boutons */}
+        <div className="flex min-w-0 flex-col gap-6 lg:col-start-2 lg:row-start-2 lg:gap-5 lg:[@media(max-height:760px)]:gap-4">
+          <div className="mx-auto flex max-w-[800px] flex-col items-center gap-3 text-center sm:gap-4 lg:mx-0 lg:max-w-none lg:items-start lg:text-left">
+            <h1 className="m-0 font-display text-[30px] font-extrabold leading-[1.04] tracking-[-0.03em] text-brand-ink text-balance sm:text-[clamp(36px,4.2vw,58px)] sm:tracking-[-0.035em] lg:text-[clamp(38px,3.5vw,54px)] lg:text-white">
+              <span className="sr-only">Chasseur immobilier à Paris et dans les Hauts-de-Seine : </span>Un espace créé <em className="whitespace-nowrap not-italic text-brand lg:text-[#F9C98A]">rien que pour vous</em>
+            </h1>
+            <p className="m-0 max-w-[640px] text-[15px] font-medium leading-relaxed text-brand-mut text-pretty sm:text-[17px] lg:hidden">
+              Dès que vous nous confiez votre recherche, vous recevez votre lien personnel. Vous y retrouvez tous les biens qu’on sélectionne pour vous, sur ordinateur comme sur téléphone.
+            </p>
+            <p className="m-0 hidden max-w-[600px] text-[17px] font-medium leading-relaxed text-brand-bt text-pretty lg:block lg:[@media(max-height:720px)]:hidden">
+              Votre lien personnel réunit tous les biens qu’on sélectionne pour vous, sur ordinateur comme sur téléphone.
+            </p>
+          </div>
+          <div className="hidden lg:block">
+            <EtapesOrdi actif={histoire.actif} tour={histoire.tour} choisir={histoire.choisir} />
+          </div>
+          {/* Tablette : les boutons au centre, juste sous le titre */}
+          <div className="hidden flex-wrap justify-center gap-3 sm:flex lg:hidden">
+            <Btn href="#recherche" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
+            <Btn href={TEL_HREF} variant="outline" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
+          </div>
+          {/* Ordinateur : les boutons sous la liste, sur le bleu */}
+          <div className="hidden flex-wrap items-center gap-3 pt-1 lg:flex">
+            <Btn href="#recherche" size="lg" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
+            <Btn href={TEL_HREF} size="lg" variant="ghost" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
+          </div>
         </div>
         {/* Téléphone et tablette : un petit téléphone à gauche, les atouts juste à côté */}
         <div className="mx-auto flex w-full max-w-[640px] items-center gap-3.5 max-[359px]:gap-2.5 sm:gap-6 lg:hidden">
@@ -207,8 +166,8 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
             ))}
           </ul>
         </div>
-        {/* Les petits plus : sur ordinateur et tablette seulement (sur téléphone, c’était trop de texte) */}
-        <div className="hidden flex-wrap justify-center gap-2.5 sm:flex">
+        {/* Les petits plus : sur tablette seulement (trop de texte sur téléphone, et sur ordinateur le bandeau bleu dit déjà tout) */}
+        <div className="hidden flex-wrap justify-center gap-2.5 sm:flex lg:hidden">
           {perks.map(([ic, t]) => (
             <span key={t as string} className="inline-flex h-[42px] items-center gap-2 rounded-full border border-brand-line bg-white px-4 text-[14.5px] font-bold text-brand-ink"><span className="text-brand-orange-text">{ic}</span>{t}</span>
           ))}
