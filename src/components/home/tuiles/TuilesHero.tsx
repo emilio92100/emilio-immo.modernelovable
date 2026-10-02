@@ -114,9 +114,9 @@ const Recherche = () => {
 };
 
 const CONFIANCE = [
-  { icon: <UserRound className="h-4 w-4" />, t: "200+ clients accompagnés" },
-  { icon: <KeyRound className="h-4 w-4" />, t: "10+ ans de métier" },
-  { icon: <LineChart className="h-4 w-4" />, t: "Estimation gratuite et sans engagement" },
+  { icon: <UserRound className="h-4 w-4" />, t: "200+ clients accompagnés", chiffre: "200+", court: "clients accompagnés" },
+  { icon: <KeyRound className="h-4 w-4" />, t: "10+ ans de métier", chiffre: "10+ ans", court: "de métier" },
+  { icon: <LineChart className="h-4 w-4" />, t: "Estimation gratuite et sans engagement", chiffre: "Gratuite", court: "estimation sans engagement" },
 ];
 
 const TuilesHero = () => (
@@ -148,9 +148,20 @@ const TuilesHero = () => (
       </div>
       <Recherche />
     </div>
-    <div className="no-scrollbar -mx-3 mt-4 flex gap-2 overflow-x-auto px-3 md:mx-0 md:mt-[100px] md:flex-wrap md:justify-center md:gap-3 md:overflow-visible md:px-0">
+    {/* Téléphone : les trois repères côte à côte dans une seule carte, sans défilement */}
+    <div className="mx-1 mt-4 grid grid-cols-3 divide-x divide-[#DCE4EE] rounded-[22px] bg-brand-surf px-1 py-3 md:hidden">
       {CONFIANCE.map((c) => (
-        <span key={c.t} className="inline-flex h-10 flex-none items-center gap-2 whitespace-nowrap rounded-full bg-brand-surf py-1 pl-1.5 pr-4 text-[13px] font-semibold leading-tight text-[#33445B] md:h-auto md:min-h-11 md:gap-2.5 md:pl-2 md:pr-[18px] md:text-[14.5px]">
+        <div key={c.t} className="flex min-w-0 flex-col items-center gap-1 px-1.5 text-center">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-brand">{c.icon}</span>
+          <span className="text-[15px] font-extrabold leading-tight tracking-[-0.02em] text-brand-ink">{c.chiffre}</span>
+          <span className="text-[11.5px] font-semibold leading-tight text-brand-mut">{c.court}</span>
+        </div>
+      ))}
+    </div>
+    {/* Ordinateur : les pastilles habituelles */}
+    <div className="mt-[100px] hidden flex-wrap justify-center gap-3 md:flex">
+      {CONFIANCE.map((c) => (
+        <span key={c.t} className="inline-flex min-h-11 items-center gap-2.5 whitespace-nowrap rounded-full bg-brand-surf py-1 pl-2 pr-[18px] text-[14.5px] font-semibold leading-tight text-[#33445B]">
           <span className="grid h-[30px] w-[30px] flex-none place-items-center rounded-full bg-white text-brand">{c.icon}</span>
           {c.t}
         </span>
