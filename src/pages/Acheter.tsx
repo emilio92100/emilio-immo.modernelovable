@@ -281,6 +281,8 @@ const fmtSurface = (v: number) => (v ? `${v} m² minimum` : "Faites glisser");
 type Bloc = "type" | "usage" | "quand" | "ou" | "budget" | "piecesChambres" | "pieces" | "chambres" | "surface" | "atouts" | "coord" | "mot" | "espace" | "consent";
 const PAGES_ORDI: Bloc[][] = [["type", "usage", "quand", "piecesChambres"], ["ou", "budget", "surface", "atouts"], ["coord", "mot", "espace", "consent"]];
 const PAGES_MOBILE: Bloc[][] = [["type", "usage"], ["quand", "pieces", "chambres"], ["ou"], ["budget", "surface"], ["atouts"], ["coord"], ["mot", "espace", "consent"]];
+/* Petits téléphones (écran peu haut, type iPhone SE) : une question de plus par page coupée en deux, pour que tout tienne sans défiler */
+const PAGES_PETIT: Bloc[][] = [["type"], ["usage", "quand"], ["pieces", "chambres"], ["ou"], ["budget"], ["surface"], ["atouts"], ["coord"], ["mot", "consent"]];
 const TEMPS = (page: Bloc[]) => (page.some((b) => ["coord", "mot", "consent"].includes(b)) ? 3 : page.some((b) => ["ou", "budget", "surface", "atouts"].includes(b)) ? 2 : 1);
 const AIDE: Partial<Record<Bloc, string>> = {
   type: "Choisissez un type de bien pour continuer.",
@@ -294,13 +296,14 @@ const AIDE: Partial<Record<Bloc, string>> = {
   consent: "Cochez la case pour envoyer.",
 };
 
-/** Téléphone (moins de 640 px de large) */
+/** Téléphone (moins de 640 px de large), et « petit » s’il est aussi peu haut (moins de 740 px) */
 const useMobile = () => {
-  const [m, setM] = useState(false);
+  const [m, setM] = useState<"" | "mobile" | "petit">("");
   useEffect(() => {
     const q = window.matchMedia("(max-width: 639px)");
-    const f = () => setM(q.matches);
+    const f = () => setM(!q.matches ? "" : window.innerHeight < 740 ? "petit" : "mobile");
     f();
+    /* Mesuré une fois (et quand on tourne le téléphone), pas à chaque mouvement de la barre d’adresse */
     q.addEventListener("change", f);
     return () => q.removeEventListener("change", f);
   }, []);
@@ -310,7 +313,7 @@ const useMobile = () => {
 const Recherche = () => {
   const { toast } = useToast();
   const mobile = useMobile();
-  const pages = mobile ? PAGES_MOBILE : PAGES_ORDI;
+  const pages = mobile === "petit" ? PAGES_PETIT : mobile ? PAGES_MOBILE : PAGES_ORDI;
   const [page, setPage] = useState(0);
   const [fini, setFini] = useState(false);
   const [sens, setSens] = useState(1);
@@ -490,7 +493,7 @@ const Recherche = () => {
                     aria-pressed={on}
                     onClick={() => setAtouts(toggleIn(atouts, x.t))}
                     className={cn(
-                      "flex min-h-[52px] min-w-0 items-center gap-2.5 rounded-[14px] border-[1.5px] px-2.5 py-2 text-left text-[13.5px] font-bold leading-tight transition sm:text-[14px]",
+                      "flex min-h-[52px] min-w-0 items-center gap-2.5 rounded-[14px] border-[1.5px] px-2.5 py-2 text-left text-[13.5px] font-bold leading-tight transition sm:text-[14px] [@media(max-height:620px)]:min-h-[46px] [@media(max-height:620px)]:py-1.5",
                       on ? "border-brand bg-brand text-white" : "border-brand-line bg-white text-brand-ink hover:border-brand/40",
                     )}
                   >
@@ -504,11 +507,11 @@ const Recherche = () => {
         );
       case "coord":
         return (
-          <div key={b} className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <div key={b} className="grid grid-cols-2 gap-2 sm:gap-2.5">
             <Field label="Prénom" placeholder="Votre prénom" autoComplete="given-name" value={c.prenom} onChange={(e) => setC({ ...c, prenom: e.target.value })} />
             <Field label="Nom" placeholder="Votre nom" autoComplete="family-name" value={c.nom} onChange={(e) => setC({ ...c, nom: e.target.value })} />
-            <Field label="Téléphone" type="tel" inputMode="tel" autoComplete="tel" placeholder="06 12 34 56 78" value={c.tel} onChange={(e) => setC({ ...c, tel: e.target.value })} />
-            <Field label="E-mail" type="email" inputMode="email" autoComplete="email" placeholder="vous@exemple.fr" value={c.email} onChange={(e) => setC({ ...c, email: e.target.value })} />
+            <Field className="col-span-2 sm:col-span-1" label="Téléphone" type="tel" inputMode="tel" autoComplete="tel" placeholder="06 12 34 56 78" value={c.tel} onChange={(e) => setC({ ...c, tel: e.target.value })} />
+            <Field className="col-span-2 sm:col-span-1" label="E-mail" type="email" inputMode="email" autoComplete="email" placeholder="vous@exemple.fr" value={c.email} onChange={(e) => setC({ ...c, email: e.target.value })} />
           </div>
         );
       case "mot":
@@ -538,9 +541,9 @@ const Recherche = () => {
         <div ref={ref} className="relative -mx-5 min-w-0 scroll-mt-[72px] sm:mx-0 sm:scroll-mt-28 lg:mt-6">
           <div
             ref={carte}
-            className="relative flex min-h-[calc(100svh-72px)] min-w-0 flex-col gap-[18px] rounded-t-[28px] bg-white px-[18px] pb-[max(16px,env(safe-area-inset-bottom))] pt-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:min-h-[540px] sm:gap-[22px] sm:rounded-[26px] sm:p-[34px]"
+            className="relative flex min-h-[calc(100svh-72px)] min-w-0 flex-col gap-[18px] rounded-t-[28px] [@media(max-height:620px)]:gap-3 [@media(max-height:620px)]:pt-4 bg-white px-[18px] pb-[max(16px,env(safe-area-inset-bottom))] pt-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:min-h-[540px] sm:gap-[22px] sm:rounded-[26px] sm:p-[34px]"
           >
-            <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-medium text-brand-ink md:text-[28px]">Votre recherche, <Em>en 3 temps</Em></h3>
+            <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-medium text-brand-ink md:text-[28px] [@media(max-height:620px)]:text-[20px]">Votre recherche, <Em>en 3 temps</Em></h3>
             {!fini && (
               <>
                 <div className="hidden sm:block"><Steps labels={labels} current={temps} /></div>
