@@ -154,7 +154,7 @@ const PropertyDetail = () => {
           <section className="bg-brand-pale">
             <Container className="flex flex-col items-center gap-5 py-14 text-center md:py-20">
               <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Bien vendu ou retiré</span>
-              <h1 className="m-0 font-display text-[clamp(32px,3.6vw,48px)] font-medium leading-tight text-brand-ink">Ce bien n’est plus <Em>disponible</Em></h1>
+              <h1 className="m-0 font-display text-[clamp(32px,3.6vw,48px)] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">Ce bien n’est plus <Em>disponible</Em></h1>
               <p className="m-0 max-w-[560px] text-[17px] leading-relaxed text-brand-txt">Il a peut-être déjà trouvé preneur. Voici nos derniers biens à vendre, ou confiez-nous votre recherche.</p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Btn to="/biens" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Voir tous nos biens</Btn>
@@ -249,8 +249,10 @@ const PropertyDetail = () => {
                   <span className="inline-flex h-[30px] items-center rounded-full bg-brand-pale px-3 text-[13px] font-bold text-brand">{p.type}</span>
                   <span className="inline-flex h-[30px] items-center rounded-full bg-brand-pale px-3 text-[13px] font-semibold text-brand-mut">Réf. {p.id}</span>
                 </div>
-                <h1 className="m-0 font-display text-[clamp(30px,3.4vw,46px)] font-medium leading-[1.1] text-brand-ink text-balance">
-                  {titre}{surf && ` de ${surf}`}, <Em>{ville}</Em>
+                <h1 className="m-0 font-display text-[clamp(30px,3.4vw,46px)] font-extrabold leading-[1.1] text-brand-ink text-balance tracking-[-0.025em]">
+                  {titre}{surf && ` de ${surf}`}
+                  {/* La ville est déjà juste en dessous : on la garde seulement pour Google */}
+                  <span className="sr-only">, {ville}</span>
                 </h1>
                 <span className="inline-flex items-center gap-1.5 text-[15.5px] text-brand-mut"><MapPin className="h-4 w-4 text-brand-orange-text" /> {ville} · {p.postalCode}</span>
               </div>
@@ -269,7 +271,7 @@ const PropertyDetail = () => {
 
               {avantages.length > 0 && (
                 <div className="flex flex-col gap-3">
-                  <h2 className="m-0 font-display text-[26px] font-medium text-brand-ink">Les plus de ce bien</h2>
+                  <h2 className="m-0 font-display text-[26px] font-extrabold text-brand-ink tracking-[-0.025em]">Les plus de ce bien</h2>
                   <div className="flex flex-wrap gap-2">
                     {avantages.map((a) => <span key={a} className="inline-flex h-10 items-center rounded-full border border-brand-line bg-white px-4 text-[14.5px] font-semibold text-brand-ink">{a}</span>)}
                   </div>
@@ -278,7 +280,7 @@ const PropertyDetail = () => {
 
               {p.description?.trim() && (
                 <div className="flex flex-col gap-3">
-                  <h2 className="m-0 font-display text-[26px] font-medium text-brand-ink">Description</h2>
+                  <h2 className="m-0 font-display text-[26px] font-extrabold text-brand-ink tracking-[-0.025em]">Description</h2>
                   <p className="m-0 whitespace-pre-line text-[16.5px] leading-[1.75] text-brand-txt">{p.description}</p>
                 </div>
               )}
@@ -286,7 +288,7 @@ const PropertyDetail = () => {
               {p.roomDetails && p.roomDetails.length > 0 && (
                 <details className="group rounded-[20px] border border-brand-line bg-white">
                   <summary className="flex min-h-[64px] cursor-pointer list-none items-center justify-between gap-4 px-5 py-3 [&::-webkit-details-marker]:hidden">
-                    <span className="flex flex-col"><span className="font-display text-[22px] text-brand-ink">Détail des pièces</span><span className="text-[13.5px] text-brand-mut">{p.roomDetails.length} surface{p.roomDetails.length > 1 ? "s" : ""}</span></span>
+                    <span className="flex flex-col"><span className="font-display text-[22px] text-brand-ink font-extrabold tracking-[-0.025em]">Détail des pièces</span><span className="text-[13.5px] text-brand-mut">{p.roomDetails.length} surface{p.roomDetails.length > 1 ? "s" : ""}</span></span>
                     <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-brand-tint text-brand transition-transform group-open:rotate-180"><ChevronLeft className="h-[18px] w-[18px] -rotate-90" /></span>
                   </summary>
                   <div className="overflow-x-auto px-5 pb-5">
@@ -307,7 +309,7 @@ const PropertyDetail = () => {
               )}
 
               <div className="flex flex-col gap-5 rounded-[20px] border border-brand-line bg-white p-5 md:p-6">
-                <h2 className="m-0 font-display text-[24px] font-medium text-brand-ink">Diagnostic de performance énergétique</h2>
+                <h2 className="m-0 font-display text-[24px] font-extrabold text-brand-ink tracking-[-0.025em]">Diagnostic de performance énergétique</h2>
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                   <DPEBadge label="Consommation énergétique (DPE)" value={p.energyClass} type="energy" consoValue={p.consoEnergie} />
                   <DPEBadge label="Émissions de gaz à effet de serre (GES)" value={p.gesClass} type="ges" consoValue={p.valeurGes} />
@@ -320,7 +322,7 @@ const PropertyDetail = () => {
               <div className={cn("flex flex-col gap-4 rounded-[24px] bg-white p-6", FRAME_SHADOW)}>
                 <div className="flex flex-col gap-1">
                   <span className="flex flex-wrap items-baseline gap-2.5">
-                    <span className="font-display text-[40px] font-medium leading-none text-brand-ink">{formatPrice(p.price)}</span>
+                    <span className="font-display text-[40px] font-extrabold leading-none text-brand-ink tracking-[-0.025em]">{formatPrice(p.price)}</span>
                     <span className="text-sm font-bold text-brand-mut">FAI</span>
                   </span>
                   {p.surface > 0 && <span className="text-[14.5px] text-brand-mut">soit {nf.format(Math.round(p.price / p.surface))} €/m²</span>}
@@ -336,7 +338,7 @@ const PropertyDetail = () => {
                   )}
                 </div>
                 <div className="h-px bg-brand-line2" />
-                <span className="font-display text-[22px] leading-tight text-brand-ink">Ce bien vous intéresse ?</span>
+                <span className="font-display text-[22px] leading-tight text-brand-ink font-extrabold tracking-[-0.025em]">Ce bien vous intéresse ?</span>
                 <Btn full onClick={() => demande("Visiter un bien", "Je souhaite visiter ce bien.")} iconLeft={<CalendarDays className="h-[18px] w-[18px]" />}>Demander une visite</Btn>
                 <Btn full variant="outline" onClick={() => demande("Autre", "J’ai une question sur ce bien : ")} iconLeft={<MessageCircle className="h-[18px] w-[18px]" />}>Poser une question</Btn>
                 <div className="flex flex-col gap-1 pt-1">

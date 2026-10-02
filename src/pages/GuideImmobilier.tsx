@@ -58,7 +58,7 @@ const GuideImmobilier = () => {
             <div className="flex min-w-0 flex-[1_1_520px] flex-col gap-[22px]">
               <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Guide immobilier" }]} />
               <Eyebrow>Le guide</Eyebrow>
-              <h1 className="m-0 font-display text-[29px] sm:text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+              <h1 className="m-0 font-display text-[29px] sm:text-[clamp(34px,4.2vw,58px)] font-extrabold leading-[1.07] tracking-[-0.03em] text-brand-ink text-balance">
                 Le guide immobilier de <Em wrap>Paris Ouest et des Hauts-de-Seine</Em>
               </h1>
               <p className="m-0 max-w-[580px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">
@@ -94,7 +94,7 @@ const GuideImmobilier = () => {
                     <span className="grid h-[54px] w-[54px] flex-none place-items-center rounded-2xl bg-brand text-white">{ICONS[cat.slug] || <BookOpen className="h-6 w-6" />}</span>
                     <span className="flex min-w-0 flex-col gap-2">
                       <span className="text-[12.5px] font-extrabold uppercase tracking-[0.14em] text-brand-orange-text">{n} article{n > 1 ? "s" : ""}</span>
-                      <h2 className="m-0 font-display text-[18.5px] sm:text-[21px] sm:text-[26px] font-medium leading-tight text-brand-ink">{cat.label}</h2>
+                      <h2 className="m-0 font-display text-[18.5px] sm:text-[21px] sm:text-[26px] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">{cat.label}</h2>
                       <span className="text-[15.5px] leading-relaxed text-brand-txt text-pretty">{cat.description}</span>
                       <span className="inline-flex items-center gap-1.5 pt-1 text-[15px] font-bold text-brand">Découvrir <ArrowRight className="h-4 w-4 text-brand-orange transition-transform group-hover:translate-x-1" /></span>
                     </span>

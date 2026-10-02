@@ -54,7 +54,8 @@ const matchVille = (p: Property, saisie: string) =>
 
 /* ── Les biens du moment, en éventail dans le bandeau bleu ── */
 const Eventail = ({ biens }: { biens: Property[] | null }) => {
-  const trois = (biens || []).filter((p) => p.images[0]).slice(0, 3);
+  /* Seulement de vrais biens avec de vraies photos (pas l’annonce d’exemple ni une photo d’illustration) */
+  const trois = (biens || []).filter((p) => p.images[0] && !p.id.includes("fictif")).slice(0, 3);
   const places = [
     { cls: "left-0 top-[58px] z-[1]", rot: -7, bob: "anim-bob-a" },
     { cls: "left-1/2 top-0 z-[3] -ml-[125px]", rot: 2, bob: "anim-bob-b" },

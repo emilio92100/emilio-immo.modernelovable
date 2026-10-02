@@ -15,8 +15,8 @@ const NotFound = () => {
       <Navbar />
       <main className="bg-brand-pale">
         <Container className="flex flex-col items-center gap-6 py-20 text-center md:py-28">
-          <span className="font-display text-[96px] italic leading-none text-brand-orange-lt md:text-[132px]">404</span>
-          <h1 className="m-0 font-display text-[clamp(30px,3.6vw,48px)] font-medium leading-tight text-brand-ink">Cette page est <Em>introuvable</Em></h1>
+          <span className="font-display text-[96px] leading-none text-brand-orange-lt md:text-[132px] font-extrabold tracking-[-0.025em]">404</span>
+          <h1 className="m-0 font-display text-[clamp(30px,3.6vw,48px)] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">Cette page est <Em>introuvable</Em></h1>
           <p className="m-0 max-w-[520px] text-[17px] leading-relaxed text-brand-txt">Elle a peut-être été déplacée, ou le bien a déjà trouvé preneur. Voici par où continuer.</p>
           <div className="flex flex-wrap justify-center gap-3">
             <Btn to="/" iconLeft={<Home className="h-[18px] w-[18px]" />}>Retour à l’accueil</Btn>

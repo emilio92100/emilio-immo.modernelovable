@@ -10,16 +10,15 @@ import { useSiteModals } from "@/components/site/SiteModals";
 import { Btn, Container, Crumbs, FRAME_SHADOW, SectionHead, Em, TEL, TEL_HREF } from "@/components/site/ui";
 import { FaqList } from "@/components/site/Faq";
 import { ArticleCard, formatDate, slugify } from "@/components/site/GuideParts";
-import alexandre from "@/assets/refonte/alexandre-detoure.webp";
 
 const Bloc = ({ s }: { s: ArticleSection }) => {
   switch (s.type) {
     case "p":
       return <p className="m-0 text-[17.5px] leading-[1.8] text-brand-txt text-pretty">{s.text}</p>;
     case "h2":
-      return <h2 id={slugify(s.text)} className="m-0 mt-8 font-display text-[19px] sm:text-[22px] sm:text-[clamp(26px,2.4vw,32px)] font-medium leading-tight text-brand-ink text-balance">{s.text}</h2>;
+      return <h2 id={slugify(s.text)} className="m-0 mt-8 font-display text-[19px] sm:text-[22px] sm:text-[clamp(26px,2.4vw,32px)] font-extrabold leading-tight text-brand-ink text-balance tracking-[-0.025em]">{s.text}</h2>;
     case "h3":
-      return <h3 className="m-0 mt-3 font-display text-[19px] sm:text-[22px] font-medium leading-tight text-brand-ink">{s.text}</h3>;
+      return <h3 className="m-0 mt-3 font-display text-[19px] sm:text-[22px] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">{s.text}</h3>;
     case "list":
       return (
         <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
@@ -34,14 +33,14 @@ const Bloc = ({ s }: { s: ArticleSection }) => {
     case "quote":
       return (
         <figure className="m-0 my-2 border-l-2 border-brand-orange pl-6">
-          <blockquote className="m-0 font-display text-[19px] sm:text-[22px] italic leading-relaxed text-brand-ink">« {s.text} »</blockquote>
+          <blockquote className="m-0 font-display text-[18px] font-semibold leading-relaxed tracking-[-0.01em] text-brand-ink sm:text-[21px]">« {s.text} »</blockquote>
           {s.author && <figcaption className="mt-2 text-sm font-semibold text-brand-mut">{s.author}</figcaption>}
         </figure>
       );
     case "callout":
       return (
         <aside className="my-2 flex flex-col gap-2 rounded-[20px] bg-brand p-6 md:p-7">
-          <span className="font-display text-[18.5px] sm:text-[21px] leading-tight text-brand-orange-soft">{s.title}</span>
+          <span className="font-display text-[18.5px] sm:text-[21px] leading-tight text-brand-orange-soft font-extrabold tracking-[-0.025em]">{s.title}</span>
           <p className="m-0 text-[16px] leading-relaxed text-brand-bt">{s.text}</p>
         </aside>
       );
@@ -91,7 +90,7 @@ const GuideArticle = () => {
   const related = getRelatedArticles(article.slug, article.category, 3);
   const url = `${SITE_URL}/guide-immobilier/${cat.slug}/${article.slug}`;
   const sommaire = article.sections.filter((s): s is { type: "h2"; text: string } => s.type === "h2");
-  const author = { "@type": "Person", name: "Alexandre Rogelet", jobTitle: "Fondateur d’Emilio Immobilier", url: `${SITE_URL}/notre-histoire` };
+  const author = { "@type": "Organization", name: "Emilio Immobilier", url: SITE_URL };
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -137,12 +136,12 @@ const GuideArticle = () => {
           <Container className="flex flex-col gap-5 pb-12 pt-6 md:pb-[64px] md:pt-10">
             <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Guide immobilier", to: "/guide-immobilier" }, { label: cat.label, to: `/guide-immobilier/${cat.slug}` }]} />
             <Link to={`/guide-immobilier/${cat.slug}`} className="inline-flex h-8 items-center self-start rounded-full bg-brand-tint px-3.5 text-[12.5px] font-extrabold uppercase tracking-[0.12em] text-brand">{cat.label}</Link>
-            <h1 className="m-0 max-w-[920px] font-display text-[27px] sm:text-[clamp(32px,3.9vw,54px)] font-medium leading-[1.1] tracking-[-0.01em] text-brand-ink text-balance">{article.title}</h1>
+            <h1 className="m-0 max-w-[920px] font-display text-[27px] sm:text-[clamp(32px,3.9vw,54px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-brand-ink text-balance">{article.title}</h1>
             <p className="m-0 max-w-[760px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">{article.excerpt}</p>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-1 text-[14px] text-brand-mut">
               <span className="inline-flex items-center gap-2.5">
-                <span className="block h-10 w-10 flex-none overflow-hidden rounded-full bg-brand-tint"><img src={alexandre} alt="" className="block h-[58px] w-10 object-cover object-top" /></span>
-                <span className="flex flex-col leading-tight"><span className="font-bold text-brand-ink">Alexandre Rogelet</span><span>Fondateur d’Emilio Immobilier</span></span>
+                <span aria-hidden className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-brand text-[17px] font-extrabold text-white">E</span>
+                <span className="flex flex-col leading-tight"><span className="font-bold text-brand-ink">L’équipe Emilio Immobilier</span><span>Agence immobilière à Paris et dans les Hauts-de-Seine</span></span>
               </span>
               <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-4 w-4" /> {article.updated ? <>Mis à jour le <time dateTime={article.updated}>{formatDate(article.updated)}</time></> : <>Publié le <time dateTime={article.date}>{formatDate(article.date)}</time></>}</span>
               <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" /> {article.readMinutes} min de lecture</span>
@@ -157,14 +156,14 @@ const GuideArticle = () => {
 
               {article.faq && article.faq.length > 0 && (
                 <div className="mt-10 flex flex-col gap-5 border-t border-brand-line2 pt-10">
-                  <h2 id="questions-frequentes" className="m-0 font-display text-[19px] sm:text-[22px] sm:text-[clamp(26px,2.4vw,32px)] font-medium leading-tight text-brand-ink">Questions fréquentes</h2>
+                  <h2 id="questions-frequentes" className="m-0 font-display text-[19px] sm:text-[22px] sm:text-[clamp(26px,2.4vw,32px)] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">Questions fréquentes</h2>
                   <FaqList items={article.faq} />
                 </div>
               )}
 
               <div className="mt-8 flex flex-wrap items-center justify-between gap-5 rounded-[22px] bg-brand-pale p-6 md:p-8">
                 <div className="flex max-w-[460px] flex-col gap-2">
-                  <span className="font-display text-[18.5px] sm:text-[21px] sm:text-[26px] leading-tight text-brand-ink">Envie d’un avis de valeur sérieux ?</span>
+                  <span className="font-display text-[18.5px] sm:text-[21px] sm:text-[26px] leading-tight text-brand-ink font-extrabold tracking-[-0.025em]">Envie d’un avis de valeur sérieux ?</span>
                   <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt">Une première fourchette tout de suite, puis un membre de l’équipe vous rappelle sous 24 h. Gratuit et sans engagement.</p>
                 </div>
                 <Btn onClick={() => openEstimation()} iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
@@ -182,7 +181,7 @@ const GuideArticle = () => {
                     {sommaire.map((h, i) => (
                       <li key={i}>
                         <a href={`#${slugify(h.text)}`} className="flex gap-2.5 rounded-lg px-2 py-1.5 text-[14px] leading-snug text-brand-txt hover:bg-brand-pale hover:text-brand-ink">
-                          <span className="font-display italic text-brand-orange-lt">{String(i + 1).padStart(2, "0")}</span>
+                          <span className="font-display text-brand-orange-lt font-extrabold tracking-[-0.025em]">{String(i + 1).padStart(2, "0")}</span>
                           <span>{h.text}</span>
                         </a>
                       </li>
@@ -191,7 +190,7 @@ const GuideArticle = () => {
                 </nav>
               )}
               <div className="flex flex-col gap-3 rounded-[20px] bg-brand p-5 text-brand-bt">
-                <span className="font-display text-[19px] sm:text-[22px] leading-tight text-white">Un projet à Paris Ouest ou dans le 92 ?</span>
+                <span className="font-display text-[19px] sm:text-[22px] leading-tight text-white font-extrabold tracking-[-0.025em]">Un projet à Paris Ouest ou dans le 92 ?</span>
                 <span className="text-[14.5px] leading-relaxed">Parlez-en avec l’équipe, sans engagement.</span>
                 <Btn onClick={() => openEstimation()} full iconLeft={<LineChart className="h-[18px] w-[18px]" />}>Estimer mon bien</Btn>
                 <a href={TEL_HREF} className="inline-flex min-h-[44px] items-center justify-center gap-2 text-[15px] font-bold text-white"><Phone className="h-4 w-4 text-brand-orange" /> {TEL}</a>

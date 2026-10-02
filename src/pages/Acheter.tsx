@@ -25,17 +25,14 @@ const Hero = () => (
     <Container className="flex flex-wrap items-center gap-x-14 gap-y-10 py-14 md:py-[88px]">
       <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[22px]">
         <Eyebrow>Votre chasseur immobilier</Eyebrow>
-        <h2 className="m-0 font-display text-[27px] sm:text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.06] tracking-[-0.015em] text-brand-ink text-balance">
+        <h2 className="m-0 font-display text-[27px] sm:text-[clamp(32px,3.6vw,50px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-brand-ink text-balance">
           Un chasseur qui cherche pour vous, <Em wrap>et reste de votre côté</Em>
         </h2>
         <p className="m-0 max-w-[560px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">
           Vous nous dites ce que vous cherchez. On cherche partout, y compris là où les biens ne sont pas affichés, on vérifie chaque dossier et on négocie pour vous, jusqu’à la signature.
         </p>
-        <div className="flex flex-wrap gap-3 pt-1">
-          <Btn href="#recherche" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Confier ma recherche</Btn>
-          <Btn href={TEL_HREF} variant="outline" iconLeft={<Phone className="h-[18px] w-[18px]" />}>{TEL}</Btn>
-        </div>
-        <TrustRow className="pt-2.5" />
+        {/* Pas de boutons ici : « Confier ma recherche » est déjà juste au-dessus, sous l’espace client */}
+        <TrustRow className="pt-1" />
       </div>
       <div className="min-w-0 flex-[1_1_480px]">
         <div className="relative mx-4 mb-4">
@@ -75,10 +72,10 @@ const Pourquoi = () => {
             <article key={w.t} className={cn("flex items-start gap-3.5 rounded-[20px] bg-white p-4 transition-transform duration-300 hover:-translate-y-1 sm:flex-col sm:items-stretch sm:gap-0 sm:rounded-[22px] sm:p-2.5", FRAME_SHADOW)}>
               <div className="flex flex-none items-center justify-between sm:rounded-2xl sm:bg-brand-pale sm:p-[22px]">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand text-white sm:h-[54px] sm:w-[54px] sm:rounded-2xl">{w.icon}</span>
-                <span className="hidden font-display text-[44px] italic leading-[0.8] text-brand-orange-lt sm:inline">0{n + 1}</span>
+                <span className="hidden font-display text-[44px] leading-[0.8] text-brand-orange-lt sm:inline font-extrabold tracking-[-0.025em]">0{n + 1}</span>
               </div>
               <div className="flex min-w-0 flex-col gap-1 sm:gap-2.5 sm:px-[18px] sm:pb-[18px] sm:pt-5">
-                <h3 className="m-0 font-display text-[19px] font-medium leading-tight text-brand-ink sm:text-2xl">{w.t}</h3>
+                <h3 className="m-0 font-display text-[19px] font-extrabold leading-tight text-brand-ink sm:text-2xl tracking-[-0.025em]">{w.t}</h3>
                 <p className="m-0 text-[14px] leading-relaxed text-brand-txt text-pretty sm:text-[15.5px]">{w.d}</p>
               </div>
             </article>
@@ -240,10 +237,10 @@ const Etapes = () => {
             <li key={s.t} className={cn("flex items-start gap-3.5 rounded-[18px] bg-white p-4 sm:flex-col sm:items-stretch sm:gap-3 sm:p-5", FRAME_SHADOW)}>
               <div className="flex flex-none items-center justify-between">
                 <span className={cn("grid h-10 w-10 place-items-center rounded-full sm:h-11 sm:w-11", i === 0 ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{s.icon}</span>
-                <span className="hidden font-display text-[26px] italic leading-none text-brand-orange-lt sm:inline">0{i + 1}</span>
+                <span className="hidden font-display text-[26px] leading-none text-brand-orange-lt sm:inline font-extrabold tracking-[-0.025em]">0{i + 1}</span>
               </div>
               <div className="flex min-w-0 flex-col gap-1 sm:gap-3">
-                <span className="text-[15px] font-extrabold text-brand-ink sm:text-[16px]"><span className="mr-1.5 font-display italic text-brand-orange-lt sm:hidden">0{i + 1}</span>{s.t}</span>
+                <span className="text-[15px] font-extrabold text-brand-ink sm:text-[16px]"><span className="mr-1.5 font-display text-brand-orange-lt sm:hidden font-extrabold tracking-[-0.025em]">0{i + 1}</span>{s.t}</span>
                 <span className="text-[13.5px] leading-normal text-brand-txt sm:text-[14.5px]">{s.d}</span>
               </div>
             </li>
@@ -543,7 +540,7 @@ const Recherche = () => {
             ref={carte}
             className="relative flex min-h-[calc(100svh-72px)] min-w-0 flex-col gap-[18px] rounded-t-[28px] [@media(max-height:620px)]:gap-3 [@media(max-height:620px)]:pt-4 bg-white px-[18px] pb-[max(16px,env(safe-area-inset-bottom))] pt-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:min-h-[540px] sm:gap-[22px] sm:rounded-[26px] sm:p-[34px]"
           >
-            <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-medium text-brand-ink md:text-[28px] [@media(max-height:620px)]:text-[20px]">Votre recherche, <Em>en 3 temps</Em></h3>
+            <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-extrabold text-brand-ink md:text-[28px] [@media(max-height:620px)]:text-[20px] tracking-[-0.025em]">Votre recherche, <Em>en 3 temps</Em></h3>
             {!fini && (
               <>
                 <div className="hidden sm:block"><Steps labels={labels} current={temps} /></div>
@@ -570,7 +567,7 @@ const Recherche = () => {
                   {fini ? (
                     <div className="flex flex-col items-center gap-3.5 px-2.5 pb-1.5 pt-[18px] text-center">
                       <CocheEnvoyee />
-                      <h4 className="m-0 mt-1.5 font-display text-[19.5px] sm:text-[23px] sm:text-[28px] font-medium text-brand-ink">C’est noté{c.prenom.trim() ? `, merci ${c.prenom.trim()}` : ""}</h4>
+                      <h4 className="m-0 mt-1.5 font-display text-[19.5px] sm:text-[23px] sm:text-[28px] font-extrabold text-brand-ink tracking-[-0.025em]">C’est noté{c.prenom.trim() ? `, merci ${c.prenom.trim()}` : ""}</h4>
                       <p className="m-0 max-w-[440px] text-[15.5px] leading-relaxed text-brand-txt">Alexandre ou un membre de l’équipe vous appelle pour en parler. Ensuite, votre lien personnel arrive par e-mail : il ouvre votre espace client.</p>
                       <div className="flex flex-wrap justify-center gap-2.5 pt-1.5">
                         <Btn href="#espace" icon={<ArrowRight className="h-[18px] w-[18px]" />}>Découvrir l’espace client</Btn>

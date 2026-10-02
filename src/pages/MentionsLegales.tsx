@@ -95,7 +95,7 @@ const MentionsLegales = () => (
         <Container className="flex flex-col gap-[22px] pb-10 pt-6 md:pb-14 md:pt-10">
           <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Mentions légales" }]} />
           <Eyebrow>Informations légales</Eyebrow>
-          <h1 className="m-0 font-display text-[clamp(34px,4.2vw,56px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink">Mentions légales</h1>
+          <h1 className="m-0 font-display text-[clamp(34px,4.2vw,56px)] font-extrabold leading-[1.07] tracking-[-0.03em] text-brand-ink">Mentions légales</h1>
           <p className="m-0 max-w-[640px] text-lg leading-relaxed text-brand-txt">L’éditeur du site, notre carte professionnelle, l’utilisation de vos données et les cookies.</p>
         </Container>
       </section>
@@ -109,7 +109,7 @@ const MentionsLegales = () => (
           <div className="flex min-w-0 max-w-[780px] flex-col gap-4">
             {SECTIONS.map((s) => (
               <section key={s.id} id={s.id} className="flex flex-col gap-3 rounded-[20px] border border-brand-line bg-white p-6 md:p-7 [&_a]:font-semibold [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2 [&_li]:ml-5 [&_li]:list-disc [&_p]:m-0 [&_ul]:m-0 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-1 [&_ul]:p-0">
-                <h2 className="m-0 font-display text-[24px] font-medium text-brand-ink">{s.t}</h2>
+                <h2 className="m-0 font-display text-[24px] font-extrabold text-brand-ink tracking-[-0.025em]">{s.t}</h2>
                 <div className="flex flex-col gap-3 text-[16px] leading-relaxed text-brand-txt">{s.body}</div>
               </section>
             ))}

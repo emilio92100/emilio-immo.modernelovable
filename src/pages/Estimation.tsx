@@ -87,7 +87,7 @@ const EstimationPage = () => {
             <div className="flex min-w-0 flex-[1_1_540px] flex-col gap-[22px]">
               <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Estimation" }]} />
               <Eyebrow>Gratuit · sans engagement</Eyebrow>
-              <h1 className="m-0 font-display text-[29px] sm:text-[clamp(34px,4.2vw,58px)] font-medium leading-[1.07] tracking-[-0.015em] text-brand-ink text-balance">
+              <h1 className="m-0 font-display text-[29px] sm:text-[clamp(34px,4.2vw,58px)] font-extrabold leading-[1.07] tracking-[-0.03em] text-brand-ink text-balance">
                 Estimation immobilière gratuite, <Em wrap>à Paris et dans les Hauts-de-Seine</Em>
               </h1>
               <p className="m-0 max-w-[580px] text-base leading-relaxed text-brand-txt text-pretty sm:text-lg">
@@ -105,7 +105,7 @@ const EstimationPage = () => {
                   <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">Comment ça marche</span>
                   {etapes.map((e, i) => (
                     <li key={e.t} className="flex gap-4">
-                      <span className={cn("grid h-11 w-11 flex-none place-items-center rounded-full font-display text-[20px]", i === 0 ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{i + 1}</span>
+                      <span className={cn("grid h-11 w-11 flex-none place-items-center rounded-full font-display text-[20px] font-extrabold tracking-[-0.025em]", i === 0 ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{i + 1}</span>
                       <span className="flex flex-col gap-0.5">
                         <span className="text-[16.5px] font-bold text-brand-ink">{e.t}</span>
                         <span className="text-[15px] leading-relaxed text-brand-txt">{e.d}</span>
@@ -130,7 +130,7 @@ const EstimationPage = () => {
               ].map((m) => (
                 <article key={m.t} className={cn("flex flex-col gap-3 rounded-[22px] bg-white p-7", FRAME_SHADOW)}>
                   <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand text-white"><m.icon className="h-[22px] w-[22px]" /></span>
-                  <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-medium text-brand-ink">{m.t}</h3>
+                  <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-extrabold text-brand-ink tracking-[-0.025em]">{m.t}</h3>
                   <p className="m-0 text-[15.5px] leading-relaxed text-brand-txt text-pretty">{m.d}</p>
                 </article>
               ))}
@@ -145,7 +145,7 @@ const EstimationPage = () => {
               {cityList.map((c) => (
                 <Link key={c.slug} to={`/vendre-appartement-${c.slug}`} className={cn("group flex flex-col gap-2 rounded-[20px] bg-white p-5 transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
                   <span className="inline-flex items-center gap-1.5 text-[13px] font-bold text-brand-mut"><MapPin className="h-3.5 w-3.5 text-brand-orange-text" /> {c.postalCodes.join(" · ")}</span>
-                  <span className="font-display text-[20px] sm:text-[24px] leading-tight text-brand-ink">{c.name}</span>
+                  <span className="font-display text-[20px] sm:text-[24px] leading-tight text-brand-ink font-extrabold tracking-[-0.025em]">{c.name}</span>
                   <span className="text-[15px] text-brand-txt">≈ <strong className="text-brand-ink">{eurM2(c.pricePerSqm.mid)}</strong></span>
                   <span className="mt-1 inline-flex items-center gap-1.5 text-[14.5px] font-bold text-brand">Vendre {c.name.startsWith("Paris") ? "dans le " + c.name.replace("Paris ", "") : "à " + c.name} <ArrowRight className="h-4 w-4 text-brand-orange transition-transform group-hover:translate-x-1" /></span>
                 </Link>
@@ -166,7 +166,7 @@ const EstimationPage = () => {
             </div>
             <div className="flex flex-col gap-4 rounded-[24px] bg-brand p-7 text-brand-bt md:p-9">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-orange text-brand-ink"><Lock className="h-[22px] w-[22px]" /></span>
-              <h2 className="m-0 font-display text-[19.5px] sm:text-[23px] sm:text-[28px] font-medium leading-tight text-white">Vos informations restent <Em dark>confidentielles</Em></h2>
+              <h2 className="m-0 font-display text-[19.5px] sm:text-[23px] sm:text-[28px] font-extrabold leading-tight text-white tracking-[-0.025em]">Vos informations restent <Em dark>confidentielles</Em></h2>
               <p className="m-0 text-[16px] leading-relaxed">Vos coordonnées et l’adresse de votre bien ne sont jamais diffusées, jamais revendues, jamais transmises à d’autres agences.</p>
               <div className="flex flex-col gap-2.5 pt-1">
                 {[[ShieldCheck, "Données protégées, conformément au RGPD"], [ClipboardCheck, "Une réponse personnelle sous 24 h"]].map(([I, t]) => {

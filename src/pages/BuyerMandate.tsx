@@ -89,7 +89,7 @@ const BuyerMandate = () => {
               <span className="font-body text-accent text-sm font-semibold tracking-wide">Chasseur immobilier</span>
             </div>
 
-            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-primary-foreground mb-4 md:mb-6 leading-[1.1]">
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-primary-foreground mb-4 md:mb-6 leading-[1.1] font-extrabold tracking-[-0.025em]">
               Trouvons ensemble
               <br />
               <span className="italic text-accent">votre bien idéal</span>
@@ -128,7 +128,7 @@ const BuyerMandate = () => {
             className="text-center mb-10 md:mb-20"
           >
             <span className="font-body text-accent font-semibold text-[10px] md:text-sm tracking-[0.3em] uppercase">Le processus</span>
-            <h2 className="font-display text-2xl md:text-4xl lg:text-5xl text-foreground mt-3 md:mt-4 mb-3 md:mb-5">
+            <h2 className="font-display text-2xl md:text-4xl lg:text-5xl text-foreground mt-3 md:mt-4 mb-3 md:mb-5 font-extrabold tracking-[-0.025em]">
               5 étapes vers <span className="text-accent italic">votre nouveau chez-vous</span>
             </h2>
             <p className="font-body text-muted-foreground max-w-2xl mx-auto text-xs md:text-base leading-relaxed">
@@ -149,7 +149,7 @@ const BuyerMandate = () => {
                 <div className="flex items-stretch bg-card rounded-xl md:rounded-2xl border border-border overflow-hidden hover:border-accent/30 hover:shadow-xl transition-all duration-500">
                   {/* Number block */}
                   <div className="hidden md:flex w-24 shrink-0 items-center justify-center bg-primary group-hover:bg-accent transition-colors duration-500">
-                    <span className="font-display text-3xl text-primary-foreground/30 group-hover:text-accent-foreground/80 transition-colors duration-500">
+                    <span className="font-display text-3xl text-primary-foreground/30 group-hover:text-accent-foreground/80 transition-colors duration-500 font-extrabold tracking-[-0.025em]">
                       {step.num}
                     </span>
                   </div>
@@ -161,7 +161,7 @@ const BuyerMandate = () => {
                     </div>
                     <div>
                       <span className="md:hidden font-body text-accent text-[10px] font-bold tracking-wider uppercase">Étape {step.num}</span>
-                      <h3 className="font-display text-sm md:text-xl text-foreground mb-0.5 md:mb-1">{step.title}</h3>
+                      <h3 className="font-display text-sm md:text-xl text-foreground mb-0.5 md:mb-1 font-extrabold tracking-[-0.025em]">{step.title}</h3>
                       <p className="font-body text-muted-foreground text-xs md:text-sm leading-relaxed">{step.description}</p>
                     </div>
                   </div>
@@ -183,7 +183,7 @@ const BuyerMandate = () => {
             className="text-center mb-8 md:mb-16"
           >
             <span className="font-body text-accent font-semibold text-[10px] md:text-sm tracking-[0.3em] uppercase">Pourquoi nous choisir</span>
-            <h2 className="font-display text-2xl md:text-4xl lg:text-5xl text-primary-foreground mt-3 md:mt-4 mb-3 md:mb-5">
+            <h2 className="font-display text-2xl md:text-4xl lg:text-5xl text-primary-foreground mt-3 md:mt-4 mb-3 md:mb-5 font-extrabold tracking-[-0.025em]">
               Vos <span className="text-accent italic">avantages</span>
             </h2>
           </motion.div>
@@ -201,7 +201,7 @@ const BuyerMandate = () => {
                 <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-accent/15 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-accent group-hover:scale-105 transition-all duration-500">
                   <a.icon className="w-4 h-4 md:w-[18px] md:h-[18px] text-accent group-hover:text-accent-foreground transition-colors duration-500" />
                 </div>
-                <h3 className="font-display text-sm md:text-base text-primary-foreground mb-1 md:mb-1.5">{a.title}</h3>
+                <h3 className="font-display text-sm md:text-base text-primary-foreground mb-1 md:mb-1.5 font-extrabold tracking-[-0.025em]">{a.title}</h3>
                 <p className="font-body text-primary-foreground/50 text-[11px] md:text-xs leading-relaxed">{a.text}</p>
               </motion.div>
             ))}
@@ -220,7 +220,7 @@ const BuyerMandate = () => {
             className="text-center mb-8 md:mb-16"
           >
             <span className="font-body text-accent font-semibold text-[10px] md:text-sm tracking-[0.3em] uppercase">Planning</span>
-            <h2 className="font-display text-2xl md:text-4xl lg:text-5xl text-foreground mt-3 md:mt-4 mb-3 md:mb-5">
+            <h2 className="font-display text-2xl md:text-4xl lg:text-5xl text-foreground mt-3 md:mt-4 mb-3 md:mb-5 font-extrabold tracking-[-0.025em]">
               Durée estimée de <span className="text-accent italic">votre projet</span>
             </h2>
             <p className="font-body text-muted-foreground max-w-xl mx-auto text-xs md:text-base leading-relaxed">
@@ -250,7 +250,7 @@ const BuyerMandate = () => {
 
                     <div className="text-xl md:text-3xl mb-1.5 md:mb-3">{step.icon}</div>
                     <span className="block font-body text-accent text-[9px] md:text-xs font-bold tracking-wider uppercase mb-0.5 md:mb-1">{step.week}</span>
-                    <h4 className="font-display text-xs md:text-base text-foreground leading-tight">{step.label}</h4>
+                    <h4 className="font-display text-xs md:text-base text-foreground leading-tight font-extrabold tracking-[-0.025em]">{step.label}</h4>
                   </motion.div>
                 ))}
               </div>

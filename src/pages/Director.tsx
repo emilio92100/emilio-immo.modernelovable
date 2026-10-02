@@ -43,11 +43,11 @@ const Hero = () => (
       <div className="flex min-w-0 flex-[1_1_540px] flex-col gap-[18px]">
         <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Notre histoire" }]} />
         <Eyebrow>Notre histoire</Eyebrow>
-        <h1 className="m-0 font-display text-[clamp(32px,3.6vw,50px)] font-medium leading-[1.08] tracking-[-0.015em] text-brand-ink text-balance">
+        <h1 className="m-0 font-display text-[clamp(32px,3.6vw,50px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-brand-ink text-balance">
           Une agence née d’une <Em>idée simple</Em>
         </h1>
         <figure className="m-0 flex flex-col gap-3">
-          <blockquote className="m-0 font-display text-[clamp(19px,1.7vw,24px)] font-normal italic leading-[1.4] text-brand-ink text-balance">
+          <blockquote className="m-0 font-display text-[clamp(18px,1.6vw,22px)] font-semibold leading-[1.45] tracking-[-0.01em] text-brand-ink text-balance">
             <span aria-hidden className="mr-1 text-[1.3em] leading-[0] text-brand-orange">“</span>
             Offrir à mes clients le service que j’aurais aimé recevoir moi-même.
             <span aria-hidden className="ml-0.5 text-[1.3em] leading-[0] text-brand-orange">”</span>
@@ -85,7 +85,7 @@ const EnBref = () => {
   return (
     <section className="bg-brand">
       <Container className="flex flex-col gap-7 py-10 md:py-14">
-        <h2 className="m-0 font-display text-[clamp(24px,2.2vw,32px)] font-medium leading-[1.15] text-white">
+        <h2 className="m-0 font-display text-[clamp(24px,2.2vw,32px)] font-extrabold leading-[1.15] text-white tracking-[-0.025em]">
           Une petite équipe,
           <br />
           <Em dark>un vrai suivi</Em>
@@ -93,7 +93,7 @@ const EnBref = () => {
         <div className="grid grid-cols-2 gap-x-0 gap-y-6 lg:grid-cols-4">
           {stats.map(([a, b, c], i) => (
             <div key={a} className={cn("flex flex-col gap-1.5 py-1 pr-4", i % 2 === 1 && "border-l border-white/15 pl-5 lg:pl-8", i === 2 && "lg:border-l lg:border-white/15 lg:pl-8")}>
-              <span className="font-display text-[28px] leading-none text-brand-orange md:text-[34px]">{a}</span>
+              <span className="font-display text-[28px] leading-none text-brand-orange md:text-[34px] font-extrabold tracking-[-0.025em]">{a}</span>
               <span className="text-[15.5px] font-bold text-white">{b}</span>
               <span className="text-[13.5px] text-brand-bt">{c}</span>
             </div>
@@ -121,7 +121,7 @@ const Parcours = () => {
           {tl.map(([y, t, d], i) => (
             <li key={y} className="relative flex flex-col gap-2 pt-[30px]">
               <span aria-hidden className={cn("absolute left-0 top-0 block h-[18px] w-[18px] rounded-full shadow-[0_0_0_2px_#E68B23]", i === tl.length - 1 ? "bg-brand-orange" : "bg-white")} />
-              <span className="font-display text-[23px] leading-tight text-brand-ink md:text-[25px]">{y}</span>
+              <span className="font-display text-[23px] leading-tight text-brand-ink md:text-[25px] font-extrabold tracking-[-0.025em]">{y}</span>
               <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-text">{t}</span>
               <span className="max-w-[340px] text-[15px] leading-relaxed text-brand-txt text-pretty">{d}</span>
             </li>
@@ -146,8 +146,8 @@ const Principes = () => {
         <div className="grid grid-cols-1 gap-y-6 md:grid-cols-3">
           {vals.map(([t, d], i) => (
             <div key={t} className={cn("flex flex-col gap-2.5 py-1 md:pr-8", i > 0 && "border-t border-brand-line pt-6 md:border-l md:border-t-0 md:pl-9 md:pt-2")}>
-              <span className="font-display text-lg italic text-brand-orange-lt">0{i + 1}</span>
-              <span className="font-display text-[23px] leading-tight text-brand-ink md:text-[25px]">{t}</span>
+              <span className="font-display text-lg text-brand-orange-lt font-extrabold tracking-[-0.025em]">0{i + 1}</span>
+              <span className="font-display text-[23px] leading-tight text-brand-ink md:text-[25px] font-extrabold tracking-[-0.025em]">{t}</span>
               <span className="text-[15px] leading-relaxed text-brand-txt text-pretty">{d}</span>
             </div>
           ))}
