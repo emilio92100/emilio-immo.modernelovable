@@ -134,6 +134,8 @@
 @keyframes coche-dessin { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes eclat { 0% { transform: translate(-50%, -50%) scale(.4); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.2); opacity: 0; } }
 @keyframes envoye-monte { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes scintille { 0%, 55% { transform: translateX(-130%) skewX(-18deg); } 85%, 100% { transform: translateX(230%) skewX(-18deg); } }
+@keyframes halo-orange { 0%, 100% { box-shadow: 0 8px 18px -10px rgba(230,139,35,.9), 0 0 0 0 rgba(230,139,35,.45); } 50% { box-shadow: 0 8px 18px -10px rgba(230,139,35,.9), 0 0 0 6px rgba(230,139,35,0); } }
 @keyframes em-drift { 0% { transform: scale(1.015) translateX(0); } 100% { transform: scale(1.045) translateX(-0.8%); } }
 
 @layer utilities {
@@ -155,6 +157,9 @@
   .anim-pin { animation: ec-pin 9s ease-in-out infinite both; }
   .anim-drift { animation: em-drift 22s ease-in-out infinite alternate; }
   .anim-swipe { animation: em-swipe 1.8s ease-in-out infinite; }
+  /* Bouton qui scintille : un reflet passe toutes les 3 s, et un halo respire autour */
+  .btn-scintille { animation: halo-orange 2.6s ease-out infinite; }
+  .btn-scintille::after { content: ""; position: absolute; inset: 0; width: 45%; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.7), rgba(255,255,255,0)); animation: scintille 3.2s ease-in-out infinite; pointer-events: none; }
   .coche-trait { stroke-dasharray: 1; stroke-dashoffset: 1; animation: coche-dessin .45s cubic-bezier(.65,0,.35,1) both; }
   .envoye-monte { animation: envoye-monte .45s cubic-bezier(.22,.8,.24,1) both; }
   .trait-dessine { stroke-dasharray: 1; stroke-dashoffset: 0; animation: trait-dessine .9s cubic-bezier(.65,0,.35,1) .45s both; }
@@ -168,12 +173,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .anim-spin-90, .anim-spin-90-r, .anim-spin-60, .anim-spin-60-r, .anim-spin-16, .anim-float, .anim-blink, .anim-glow,
-  .anim-phone, .anim-bob-a, .anim-bob-b, .anim-bob-c, .anim-highlight, .anim-notif, .anim-tap, .anim-pin, .anim-drift, .anim-swipe, .anim-lit, .anim-lit-tile, .trait-dessine, .envoye-monte { animation: none !important; }
+  .anim-phone, .anim-bob-a, .anim-bob-b, .anim-bob-c, .anim-highlight, .anim-notif, .anim-tap, .anim-pin, .anim-drift, .anim-swipe, .anim-lit, .anim-lit-tile, .trait-dessine, .envoye-monte, .btn-scintille, .btn-scintille::after { animation: none !important; }
   .coche-trait { animation: none !important; stroke-dashoffset: 0; }
 }
-
-/* Formulaire Acheter sur téléphone : la barre du bas s’efface quand il occupe l’écran */
-body.formulaire-plein [data-barre-mobile] { transform: translateY(110%); }
 
 /* Carte des secteurs : survol des zones */
 .secteur-zone { transition: fill .2s ease; }
