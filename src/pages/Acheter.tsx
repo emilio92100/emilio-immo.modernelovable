@@ -162,7 +162,6 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
         <SectionHead
           as="h1"
           center
-          eyebrow="Acheter avec Emilio"
           title={<><span className="sr-only">Chasseur immobilier à Paris et dans les Hauts-de-Seine : </span>Un espace créé <Em>rien que pour vous</Em></>}
           lead="Dès que vous nous confiez votre recherche, vous recevez votre lien personnel. Vous y retrouvez tous les biens qu’on sélectionne pour vous, sur ordinateur comme sur téléphone."
           className="max-w-[800px]"
