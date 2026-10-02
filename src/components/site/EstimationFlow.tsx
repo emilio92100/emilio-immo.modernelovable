@@ -373,7 +373,7 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
 
 const Q = ({ t, s }: { t: string; s?: string }) => (
   <div>
-    <h3 className="m-0 font-display text-[21px] font-medium leading-tight text-brand-ink sm:text-[26px]">{t}</h3>
+    <h3 className="m-0 font-display text-[21px] font-extrabold leading-tight text-brand-ink sm:text-[26px] tracking-[-0.025em]">{t}</h3>
     {s && <p className="mt-1 text-[14px] leading-normal text-brand-txt sm:mt-1.5 sm:text-[15px]">{s}</p>}
   </div>
 );
@@ -387,7 +387,7 @@ function Resultat({ result, prenom, type, surface, pieces, ville, cp, onContact 
         <CocheEnvoyee size={56} />
         <span className="envoye-monte text-[15px] font-extrabold text-[#1F6B4B]" style={{ animationDelay: ".5s" }}>C’est envoyé{prenom ? `, merci ${prenom.trim()}` : ""} !</span>
       </div>
-      <h3 className="m-0 font-display text-[26px] font-medium text-brand-ink">{has ? "Votre première estimation" : "On s’occupe de votre estimation"}</h3>
+      <h3 className="m-0 font-display text-[26px] font-extrabold text-brand-ink tracking-[-0.025em]">{has ? "Votre première estimation" : "On s’occupe de votre estimation"}</h3>
       <div className="flex flex-wrap gap-1.5">
         {[type, surface && `${surface} m²`, pieces && `${pieces} pièces`, ville].filter(Boolean).map((t) => (
           <span key={t as string} className="inline-flex h-8 items-center rounded-full border border-brand-line bg-brand-pale px-3 text-[13.5px] font-bold text-brand-ink">{t}</span>
@@ -396,7 +396,7 @@ function Resultat({ result, prenom, type, surface, pieces, ville, cp, onContact 
       {has && result?.estimate && (
         <div className="flex flex-col gap-2.5 rounded-[20px] bg-brand p-5 sm:px-7 sm:py-6">
           <span className="text-[12.5px] font-extrabold uppercase tracking-[0.16em] text-brand-orange-soft">Première fourchette</span>
-          <span className="font-display text-[30px] leading-tight text-white sm:text-[42px]">{eur(result.estimate.low)} – {eur(result.estimate.high)}</span>
+          <span className="font-display text-[30px] leading-tight text-white sm:text-[42px] font-extrabold tracking-[-0.025em]">{eur(result.estimate.low)} – {eur(result.estimate.high)}</span>
           {result.price_per_sqm && <span className="text-[15px] text-brand-bt">soit environ {eur(result.price_per_sqm.low)} à {eur(result.price_per_sqm.high)} le m²</span>}
           <div className="relative mt-1.5 h-2.5 rounded-full bg-white/15">
             <span className="absolute inset-y-0 left-[22%] right-[26%] rounded-full bg-gradient-to-r from-brand-orange to-brand-orange-soft" />

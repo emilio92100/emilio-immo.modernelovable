@@ -209,7 +209,7 @@ export const RangeDual = ({
   const pct = (i: number) => (i / max) * 100;
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 font-display text-[23px] font-medium leading-tight text-brand-ink sm:text-[26px]">
+      <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 font-display text-[23px] font-extrabold leading-tight text-brand-ink sm:text-[26px] tracking-[-0.025em]">
         <span>{format(steps[lo], false)}</span>
         <span className="text-brand-mut">–</span>
         <span>{format(steps[hi], hi === max)}</span>
@@ -235,7 +235,7 @@ export const RangeOne = ({ min, max, step, value, onChange, format, label }: { m
   const pct = ((value - min) / (max - min)) * 100;
   return (
     <div className="flex flex-col gap-2">
-      <div className="font-display text-[22px] font-medium leading-tight text-brand-ink">{format(value)}</div>
+      <div className="font-display text-[22px] font-extrabold leading-tight text-brand-ink tracking-[-0.025em]">{format(value)}</div>
       <div className="em-range-wrap relative h-10">
         <div className="absolute inset-y-0 left-[14px] right-[14px]">
           <div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-brand-line" />

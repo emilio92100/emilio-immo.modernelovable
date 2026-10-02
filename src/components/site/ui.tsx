@@ -1,6 +1,6 @@
-/* ═══ Briques communes du site (refonte 2026) ═══════════════════════════════
+/* ═══ Briques communes du site (refonte 2026, direction « Tuiles ») ═══════════
    Bleu Emilio #22497D, encre #13243D, orange #E68B23.
-   Titres en Playfair Display, texte en Albert Sans. */
+   Tout en Plus Jakarta Sans : titres très gras, mots mis en valeur en bleu Emilio. */
 import { forwardRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ export const TEL_HREF = "tel:+33184801400";
 export const MAIL = "agence@emilio-immo.com";
 
 /** Ombre « cadre » des cartes encadrées. */
-export const FRAME_SHADOW = "shadow-[0_0_0_1px_rgba(19,36,61,0.07),0_2px_4px_rgba(19,36,61,0.04),0_34px_70px_-34px_rgba(19,36,61,0.55)]";
+export const FRAME_SHADOW = "shadow-[0_0_0_1px_rgba(19,36,61,0.06),0_2px_4px_rgba(19,36,61,0.03),0_28px_56px_-34px_rgba(19,36,61,0.42)]";
 
 export const Container = ({ children, className }: { children: ReactNode; className?: string }) => (
   <div className={cn("mx-auto w-full max-w-[1296px] px-5 sm:px-8", className)}>{children}</div>
@@ -31,23 +31,22 @@ export const Section = ({ children, className, id, tone = "white" }: { children:
   </section>
 );
 
-export const Eyebrow = ({ children, dark, center, line = true, icon }: { children: ReactNode; dark?: boolean; center?: boolean; line?: boolean; icon?: ReactNode }) => (
+/** Surtitre : une petite pastille au-dessus du titre. */
+export const Eyebrow = ({ children, dark, center, icon }: { children: ReactNode; dark?: boolean; center?: boolean; line?: boolean; icon?: ReactNode }) => (
   <span
     className={cn(
-      "inline-flex items-center gap-3 text-[12.5px] font-bold uppercase tracking-[0.18em]",
-      dark ? "text-brand-orange-soft" : "text-brand-orange-text",
+      "inline-flex min-h-8 max-w-full items-center gap-2 self-start rounded-full px-3.5 py-1 text-[12.5px] font-extrabold uppercase leading-tight tracking-[0.12em]",
+      dark ? "bg-white/10 text-[#F9C98A]" : "bg-brand-sky text-brand",
       center && "self-center",
     )}
   >
-    {line && <span aria-hidden className="block h-[1.5px] w-8 bg-brand-orange" />}
-    {icon}
+    {icon ?? <span aria-hidden className={cn("h-1.5 w-1.5 flex-none rounded-full", dark ? "bg-brand-orange" : "bg-brand-orange")} />}
     <span>{children}</span>
-    {line && center && <span aria-hidden className="block h-[1.5px] w-8 bg-brand-orange" />}
   </span>
 );
 
 export const Em = ({ children, dark, wrap }: { children: ReactNode; dark?: boolean; wrap?: boolean }) => (
-  <em className={cn("font-normal italic", dark ? "text-brand-orange-soft" : "text-brand-orange-lt", !wrap && "whitespace-nowrap")}>{children}</em>
+  <em className={cn("not-italic", dark ? "text-[#F9C98A]" : "text-brand", !wrap && "whitespace-nowrap")}>{children}</em>
 );
 
 /** Le trait bleu Emilio sous un mot : le même partout sur le site (accueil, nos biens, fenêtres…). */
@@ -60,9 +59,8 @@ export const Souligne = ({ children, className }: { children: ReactNode; classNa
   </span>
 );
 
-export const Filet = ({ center }: { center?: boolean }) => (
-  <span aria-hidden className={cn("block h-[2px] w-14 bg-brand-orange", center && "mx-auto")} />
-);
+/** Ancien filet orange sous les titres : retiré avec le nouveau style (gardé pour ne rien casser). */
+export const Filet = (_: { center?: boolean }) => null;
 
 /** En-tête de section : surtitre, titre, filet orange, chapô. */
 export const SectionHead = ({
@@ -82,19 +80,19 @@ export const SectionHead = ({
   className?: string;
   as?: "h1" | "h2";
 }) => (
-  <div className={cn("flex max-w-[720px] flex-col gap-3 sm:gap-4", center && "mx-auto items-center text-center", className)}>
+  <div className={cn("flex max-w-[760px] flex-col gap-3 sm:gap-4", center && "mx-auto items-center text-center", className)}>
     {eyebrow && <Eyebrow dark={dark} center={center}>{eyebrow}</Eyebrow>}
     <Tag
       className={cn(
-        "m-0 font-display font-medium leading-[1.14] tracking-[-0.01em] text-balance",
-        Tag === "h1" ? "text-[29px] sm:text-[clamp(34px,4vw,54px)] leading-[1.06]" : "text-[24px] sm:text-[clamp(28px,2.7vw,40px)]",
+        "m-0 font-display font-extrabold leading-[1.08] tracking-[-0.03em] text-balance",
+        Tag === "h1" ? "text-[30px] sm:text-[clamp(36px,4.2vw,58px)] leading-[1.04] sm:tracking-[-0.035em]" : "text-[27px] sm:text-[clamp(30px,3.2vw,46px)] sm:tracking-[-0.035em]",
         dark ? "text-white" : "text-brand-ink",
       )}
     >
       {title}
     </Tag>
     <Filet center={center} />
-    {lead && <p className={cn("m-0 max-w-[640px] text-[15px] leading-relaxed text-pretty sm:text-[16.5px]", dark ? "text-brand-bt" : "text-brand-txt")}>{lead}</p>}
+    {lead && <p className={cn("m-0 max-w-[640px] text-[15px] font-medium leading-relaxed text-pretty sm:text-[17px]", dark ? "text-brand-bt" : "text-brand-mut")}>{lead}</p>}
   </div>
 );
 
@@ -102,9 +100,9 @@ type BtnVariant = "orange" | "blue" | "outline" | "ghost" | "white";
 const BTN: Record<BtnVariant, string> = {
   orange: "bg-brand-orange text-brand-ink hover:brightness-105",
   blue: "bg-brand text-white hover:bg-brand-deep",
-  outline: "bg-white text-brand border-[1.5px] border-brand hover:bg-brand-pale",
+  outline: "bg-brand-surf text-brand-ink hover:bg-brand-sky",
   ghost: "bg-transparent text-white border-[1.5px] border-white/55 hover:bg-white/10",
-  white: "bg-white text-brand hover:bg-brand-pale",
+  white: "bg-white text-brand-ink hover:bg-brand-surf",
 };
 
 type BtnProps = {
@@ -127,7 +125,7 @@ export const Btn = forwardRef<HTMLElement, BtnProps>(function Btn(
   ref,
 ) {
   const cls = cn(
-    "inline-flex max-w-full items-center justify-center gap-2.5 rounded-[10px] py-2 text-center font-bold leading-tight transition-all disabled:cursor-not-allowed disabled:opacity-50 sm:whitespace-nowrap [&>svg]:flex-none",
+    "inline-flex max-w-full items-center justify-center gap-2.5 rounded-2xl py-2 text-center font-bold leading-tight transition-all hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-50 sm:whitespace-nowrap [&>svg]:flex-none",
     size === "lg" ? "min-h-[54px] px-6 text-base" : "min-h-[50px] px-5 text-[15.5px]",
     BTN[variant],
     full && "w-full",
@@ -180,7 +178,7 @@ export const TrustRow = ({ dark, className }: { dark?: boolean; className?: stri
       ["10+ ans", "de métier"],
     ].map(([a, b]) => (
       <div key={a} className="flex flex-col leading-tight">
-        <span className={cn("font-display text-[20px] sm:text-2xl", dark ? "text-white" : "text-brand-ink")}>{a}</span>
+        <span className={cn("font-display text-[20px] sm:text-2xl font-extrabold tracking-[-0.025em]", dark ? "text-white" : "text-brand-ink")}>{a}</span>
         <span className={cn("text-[13px] font-semibold", dark ? "text-brand-bt" : "text-brand-mut")}>{b}</span>
       </div>
     ))}

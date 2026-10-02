@@ -37,7 +37,7 @@ export const PrixCard = ({ city, relief = "orange", stats = true }: { city: City
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-[14.5px] font-semibold text-brand-mut">Prix moyen d’un appartement</span>
-          <span className="font-display text-[32px] sm:text-[40px] leading-none text-brand-ink md:text-[48px]">≈ {eurM2(mid)}</span>
+          <span className="font-display text-[32px] sm:text-[40px] leading-none text-brand-ink md:text-[48px] font-extrabold tracking-[-0.025em]">≈ {eurM2(mid)}</span>
         </div>
         <div className="flex flex-col gap-2">
           <div className="relative h-2.5 rounded-full bg-brand-tint">
@@ -82,7 +82,7 @@ export const AutresSecteurs = ({ current, kind }: { current: CityData; kind: "ac
     <section className="bg-white">
       <Container className="grid grid-cols-1 gap-6 py-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:py-[72px]">
         <Link to={cross.to} className={cn("group flex flex-col gap-2.5 rounded-[22px] bg-brand p-6 text-white transition-transform hover:-translate-y-1 md:p-7", FRAME_SHADOW)}>
-          <span className="font-display text-[18.5px] sm:text-[21px] sm:text-[26px] leading-tight">{cross.t}</span>
+          <span className="font-display text-[18.5px] sm:text-[21px] sm:text-[26px] leading-tight font-extrabold tracking-[-0.025em]">{cross.t}</span>
           <span className="text-[15px] leading-relaxed text-brand-bt">{cross.d}</span>
           <span className="mt-1 inline-flex items-center gap-1.5 text-[15px] font-bold text-white">{cross.cta} <ArrowRight className="h-4 w-4 text-brand-orange transition-transform group-hover:translate-x-1" /></span>
         </Link>
