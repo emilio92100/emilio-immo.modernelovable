@@ -57,9 +57,9 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 font-jakarta backdrop-blur">
-      <Container className="flex min-h-[72px] max-w-[1320px] items-center gap-6 px-4 sm:px-4 md:px-10 lg:min-h-[88px]">
+      <Container className="flex min-h-[72px] max-w-[1320px] items-center gap-3 px-4 sm:gap-6 sm:px-4 md:px-10 lg:min-h-[88px]">
         <Link to="/" className="block flex-none" aria-label="Emilio Immobilier, accueil">
-          <img src={logo} alt="Emilio conseil immobilier" className="block h-10 w-auto lg:h-[46px]" />
+          <img src={logo} alt="Emilio conseil immobilier" className="block h-9 w-auto min-[420px]:h-10 lg:h-[46px]" />
         </Link>
         <nav aria-label="Navigation principale" className="mx-auto hidden gap-1 rounded-full bg-brand-surf p-[5px] lg:flex">
           {NAV.map((n) => (
@@ -78,7 +78,7 @@ const Navbar = () => {
             </NavLink>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-2.5 lg:ml-0">
+        <div className="ml-auto flex items-center gap-2 sm:gap-2.5 lg:ml-0">
           <a href={TEL_HREF} aria-label={`Appeler l’agence au ${TEL}`} className="hidden h-12 items-center gap-2.5 rounded-full pl-1.5 pr-1.5 text-[15px] font-bold text-brand-ink md:inline-flex xl:pr-4">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-orl text-brand-orange-text"><Phone className="h-4 w-4" /></span>
             <span className="hidden whitespace-nowrap xl:inline">{TEL}</span>
@@ -90,7 +90,16 @@ const Navbar = () => {
           >
             Estimer mon bien
           </button>
-          <a href={TEL_HREF} aria-label={`Appeler l’agence au ${TEL}`} className="grid h-11 w-11 place-items-center rounded-full bg-brand-surf text-brand-ink md:hidden">
+          {/* Téléphone : « Estimer mon bien » en haut, à côté du téléphone (plus de barre en bas de l’écran) */}
+          <button
+            type="button"
+            onClick={() => openEstimation()}
+            className="btn-scintille relative inline-flex h-10 items-center gap-1.5 overflow-hidden whitespace-nowrap rounded-full bg-brand-orange px-3 text-[13.5px] font-extrabold min-[420px]:px-3.5 text-brand-ink shadow-[0_8px_18px_-10px_rgba(230,139,35,0.9)] sm:hidden"
+          >
+            <LineChart className="relative h-4 w-4 flex-none max-[419px]:hidden" />
+            <span className="relative">Estimer<span className="max-[379px]:hidden"> mon bien</span></span>
+          </button>
+          <a href={TEL_HREF} aria-label={`Appeler l’agence au ${TEL}`} className="grid h-10 w-10 flex-none place-items-center rounded-full bg-brand-surf text-brand-ink md:hidden">
             <Phone className="h-[18px] w-[18px]" />
           </a>
           <button
@@ -98,7 +107,7 @@ const Navbar = () => {
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={open}
             onClick={() => setOpen(!open)}
-            className={cn("grid h-11 w-11 place-items-center rounded-full transition-colors duration-300 lg:hidden", open ? "bg-brand-sky" : "bg-brand-surf")}
+            className={cn("grid h-10 w-10 flex-none place-items-center rounded-full transition-colors duration-300 sm:h-11 sm:w-11 lg:hidden", open ? "bg-brand-sky" : "bg-brand-surf")}
           >
             <Burger open={open} />
           </button>

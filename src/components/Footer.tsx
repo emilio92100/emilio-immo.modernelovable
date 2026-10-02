@@ -94,16 +94,6 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-      {/* Barre fixe sur téléphone */}
-      <div className="h-[76px] bg-brand-surf md:hidden" aria-hidden />
-      <div data-barre-mobile className="fixed bottom-0 left-0 z-40 flex w-full max-w-[100vw] gap-2.5 border-t border-[#E2E8F0] bg-white/95 px-4 pt-3 font-jakarta backdrop-blur transition-transform duration-300 md:hidden" style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}>
-        <a href={TEL_HREF} className="inline-flex h-[50px] min-w-0 flex-[1_1_0%] items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-brand-surf px-2 text-[15px] font-bold text-brand-ink">
-          <Phone className="h-[17px] w-[17px] flex-none" /> Appeler
-        </a>
-        <button type="button" onClick={() => openEstimation()} className="inline-flex h-[50px] min-w-0 flex-[1.4_1_0%] items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-brand-orange px-2 text-[15px] font-bold text-brand-ink">
-          <LineChart className="h-[17px] w-[17px] flex-none max-[359px]:hidden" /> <span className="truncate">Estimer mon bien</span>
-        </button>
-      </div>
     </>
   );
 };
