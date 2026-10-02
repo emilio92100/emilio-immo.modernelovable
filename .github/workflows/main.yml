@@ -1,11 +1,15 @@
 name: Build Vite
 
+# Vérifie que le site se construit bien à chaque envoi sur main.
+# Vercel construit et met en ligne le site lui-même : on ne renvoie plus de copie « add dist »
+# (elle déclenchait une deuxième mise en ligne à chaque envoi et faisait atteindre la limite de Vercel).
+
 on:
   push:
     branches: ["main"]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -21,10 +25,3 @@ jobs:
       - run: npm install --legacy-peer-deps
 
       - run: npm run build
-
-      - run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add dist -f
-          git commit -m "add dist" || echo "no changes"
-          git push
