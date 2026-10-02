@@ -58,13 +58,13 @@ const Featured = ({ p }: { p: Property }) => {
             {p.exclusive && <span className="inline-flex h-[30px] items-center rounded-full bg-[#FCEBD6] px-3 text-[13px] font-bold text-[#7A3F05]">Exclusivité</span>}
           </div>
           <div className="flex flex-col gap-1.5">
-            <h3 className="m-0 font-display text-[26px] font-medium leading-tight text-brand-ink md:text-[34px]">
-              {displayTitle(p)}, <em className="font-normal italic text-brand-orange-lt">{displayCity(p)}</em>
+            <h3 className="m-0 font-display text-[26px] font-extrabold leading-tight text-brand-ink md:text-[34px] tracking-[-0.025em]">
+              {displayTitle(p)}
             </h3>
             <span className="inline-flex items-center gap-1.5 text-[15px] text-brand-mut"><MapPin className="h-4 w-4 text-brand-orange-text" />{displayCity(p)} · {p.postalCode}</span>
           </div>
           <div className="flex flex-wrap items-baseline gap-2.5">
-            <span className="font-display text-[30px] font-medium tracking-[-0.01em] text-brand-ink md:text-[38px]">{formatPrice(p.price)}</span>
+            <span className="font-display text-[30px] font-extrabold tracking-[-0.03em] text-brand-ink md:text-[38px]">{formatPrice(p.price)}</span>
             <span className="text-sm font-bold text-brand-mut">FAI</span>
           </div>
           <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
@@ -99,7 +99,7 @@ const FeaturedProperties = () => {
     <section id="biens" className="bg-white md:bg-[linear-gradient(180deg,#FFFFFF_0%,#FFFFFF_62%,#F5F8FC_62%,#F5F8FC_100%)]">
       <Container className="flex flex-col gap-7 pb-12 pt-10 md:gap-9 md:pb-[84px] md:pt-[84px]">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHead eyebrow="À vendre en ce moment" title={<>Nos biens <em className="font-normal italic text-brand-orange-lt">du moment</em></>} lead="Maisons, appartements et immeubles en vente à Paris et dans les Hauts-de-Seine, avec leurs vraies photos." />
+          <SectionHead eyebrow="À vendre en ce moment" title={<>Nos biens <em className="not-italic text-brand">du moment</em></>} lead="Maisons, appartements et immeubles en vente à Paris et dans les Hauts-de-Seine, avec leurs vraies photos." />
           <div className="flex w-full min-w-0 flex-col gap-3 md:w-auto md:items-end">
             <div role="group" aria-label="Filtrer les biens" className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:flex-wrap md:px-0">
               {dispo.map((f) => (

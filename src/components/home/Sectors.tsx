@@ -96,7 +96,7 @@ const Sectors = () => {
         <div className="flex min-w-0 flex-col gap-6 md:gap-7">
           <SectionHead
             eyebrow="Nos secteurs"
-            title={<>Paris Ouest et <span className="whitespace-nowrap">Hauts-de-Seine</span>, <em className="font-normal italic text-brand-orange-lt">nos secteurs</em></>}
+            title={<>Paris Ouest et <span className="whitespace-nowrap">Hauts-de-Seine</span>, <em className="not-italic text-brand">nos secteurs</em></>}
             lead="Les quartiers que nous connaissons par cœur : leurs prix, leurs copropriétés, leurs écoles et leurs transports. Votre projet est ailleurs ? Nous vous accompagnons aussi."
           />
           <div className="md:hidden">{carte}</div>
@@ -105,7 +105,7 @@ const Sectors = () => {
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
               {PARIS.map((a) => (
                 <Link key={a.n} to={a.to} className="flex min-w-0 flex-col gap-0.5 rounded-[14px] border border-brand-line bg-white px-3.5 py-3 text-brand-ink transition hover:border-brand-orange hover:bg-[#FFF1DF]">
-                  <span className="font-display text-[28px] leading-none md:text-[32px]">{a.n}<span className="align-[0.7em] text-[15px] md:text-[17px]">e</span></span>
+                  <span className="font-display text-[28px] leading-none md:text-[32px] font-extrabold tracking-[-0.025em]">{a.n}<span className="align-[0.7em] text-[15px] md:text-[17px]">e</span></span>
                   <span className="text-[12.5px] text-brand-mut">{a.cp}</span>
                 </Link>
               ))}

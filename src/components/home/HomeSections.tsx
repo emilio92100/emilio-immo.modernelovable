@@ -87,12 +87,12 @@ export const Services = ({ tone = "white" }: { tone?: "white" | "pale" }) => {
             <article key={c.n} className={cn("flex flex-col rounded-[22px] bg-white p-2.5 transition-transform duration-300 hover:-translate-y-1", FRAME_SHADOW)}>
               <div className="relative flex items-start justify-between overflow-hidden rounded-2xl bg-brand-pale px-[22px] pb-5 pt-[22px]">
                 <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand text-white shadow-[0_12px_24px_-12px_rgba(19,36,61,0.8)]">{c.icon}</span>
-                <span className="font-display text-[64px] italic leading-[0.8] text-brand-orange-lt/90">{c.n}</span>
+                <span className="font-display text-[64px] leading-[0.8] text-brand-orange-lt/90 font-extrabold tracking-[-0.025em]">{c.n}</span>
                 <span className="absolute bottom-0 left-[22px] h-[3px] w-11 rounded-t bg-brand-orange" />
               </div>
               <div className="flex flex-1 flex-col gap-4 px-5 pb-5 pt-[22px]">
                 <div className="flex flex-col gap-2">
-                  <h3 className="m-0 font-display text-[30px] font-medium text-brand-ink">{c.t}</h3>
+                  <h3 className="m-0 font-display text-[30px] font-extrabold text-brand-ink tracking-[-0.025em]">{c.t}</h3>
                   <p className="m-0 text-base leading-relaxed text-brand-txt text-pretty">{c.d}</p>
                 </div>
                 <Checks items={c.items} />
@@ -104,7 +104,7 @@ export const Services = ({ tone = "white" }: { tone?: "white" | "pale" }) => {
         </div>
         <div className={cn("flex flex-col gap-[26px] rounded-[22px] bg-white px-5 py-6 md:px-[34px] md:pb-[34px] md:pt-[30px]", FRAME_SHADOW)}>
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="m-0 font-display text-2xl font-medium text-brand-ink md:text-[28px]">Votre vente, <Em>étape par étape</Em></h3>
+            <h3 className="m-0 font-display text-2xl font-extrabold text-brand-ink md:text-[28px] tracking-[-0.025em]">Votre vente, <Em>étape par étape</Em></h3>
             <TextLink to="/vendre">Voir le détail de la vente</TextLink>
           </div>
           <ol className="relative m-0 grid list-none grid-cols-1 gap-3.5 p-0 md:grid-cols-6 md:gap-4">
@@ -113,7 +113,7 @@ export const Services = ({ tone = "white" }: { tone?: "white" | "pale" }) => {
               <li key={s.t} className="relative z-[1] flex flex-row items-center gap-3.5 md:flex-col md:gap-3 md:text-center">
                 <span className={cn("grid h-[54px] w-[54px] flex-none place-items-center rounded-full", i === 0 ? "bg-brand-orange text-brand-ink shadow-[0_0_0_2px_#E68B23,0_10px_20px_-12px_rgba(19,36,61,0.5)]" : "bg-white text-brand shadow-[0_0_0_1.5px_#C3CEDB,0_10px_20px_-12px_rgba(19,36,61,0.5)]")}>{s.icon}</span>
                 <span className="flex flex-col gap-0.5">
-                  <span className="font-display text-lg italic leading-none text-brand-orange-lt">0{i + 1}</span>
+                  <span className="font-display text-lg leading-none text-brand-orange-lt font-extrabold tracking-[-0.025em]">0{i + 1}</span>
                   <span className="text-[15px] font-bold leading-snug text-brand-ink">{s.t}</span>
                 </span>
               </li>
@@ -146,7 +146,7 @@ export const AboutAlexandre = () => {
         <div className="flex min-w-0 flex-col gap-5">
           <span className="inline-flex items-center gap-3 text-[12.5px] font-bold uppercase tracking-[0.18em] text-brand-orange-text">L’agence</span>
           <Quote className="h-10 w-10 text-brand-orange" aria-hidden />
-          <blockquote className="m-0 font-display text-[clamp(26px,2.8vw,40px)] italic leading-[1.25] text-brand-ink text-balance">Offrir à mes clients le service que j’aurais aimé recevoir moi-même.</blockquote>
+          <blockquote className="m-0 font-display text-[clamp(26px,2.8vw,40px)] leading-[1.25] text-brand-ink text-balance font-extrabold tracking-[-0.025em]">Offrir à mes clients le service que j’aurais aimé recevoir moi-même.</blockquote>
           <div className="flex items-center gap-3.5"><span className="block h-[2px] w-14 bg-brand-orange" /><span className="text-[15px] font-bold text-brand-ink">Alexandre, fondateur et directeur</span></div>
           <p className="m-0 max-w-[580px] text-[16.5px] leading-[1.7] text-brand-txt">
             Alexandre a créé Emilio en septembre 2020 à Boulogne-Billancourt, après plusieurs années passées dans différentes agences. Il en a gardé une idée simple : chaque client doit être suivi personnellement, par quelqu’un qui connaît son dossier.
@@ -180,7 +180,7 @@ export const Reviews = () => (
               </span>
               <span className="inline-flex h-[26px] items-center rounded-full bg-brand-pale px-2.5 text-xs font-bold text-brand-mut">Avis Google</span>
             </div>
-            <p className="m-0 font-display text-[18px] italic leading-[1.55] text-brand-ink">« {a.texte} »</p>
+            <p className="m-0 font-display text-[18px] leading-[1.55] text-brand-ink font-extrabold tracking-[-0.025em]">« {a.texte} »</p>
             <div className="mt-auto flex items-center gap-3 border-t border-brand-line2 pt-4">
               <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-tint text-sm font-extrabold text-brand">{a.nom[0]}</span>
               <span className="flex flex-col"><span className="text-[15px] font-bold text-brand-ink">{a.nom}</span><span className="text-[13.5px] text-brand-mut">{a.projet}</span></span>

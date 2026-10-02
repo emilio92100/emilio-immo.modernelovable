@@ -114,7 +114,7 @@ const Orbit = ({ small }: { small: boolean }) => {
             <span className="md:hidden"><Picto kind={r.kind} color={r.color} badge={badge} size={50} /></span>
             <span className="hidden md:block"><Picto kind={r.kind} color={r.color} badge={badge} size={56} /></span>
             <span className="mt-1 hidden text-[11px] font-extrabold uppercase leading-tight tracking-[0.08em] text-brand-orange-text md:block">{r.qui}</span>
-            <span className="hidden font-display text-[20px] leading-[1.16] text-brand-ink text-balance md:block">{r.quoi}</span>
+            <span className="hidden font-display text-[20px] leading-[1.16] text-brand-ink text-balance md:block font-extrabold tracking-[-0.025em]">{r.quoi}</span>
             <span className="hidden text-[12.5px] font-bold leading-tight text-brand-mut md:block">{r.ou}</span>
           </motion.div>
         </AnimatePresence>
@@ -135,7 +135,7 @@ const Orbit = ({ small }: { small: boolean }) => {
             <Picto kind={r.kind} color={r.color} badge={badge} size={40} />
             <span className="flex min-w-0 flex-col gap-0.5">
               <span className="text-[10.5px] font-extrabold uppercase tracking-[0.1em] text-brand-orange-text">{r.qui}</span>
-              <span className="font-display text-[19px] leading-tight text-brand-ink">{r.quoi}</span>
+              <span className="font-display text-[19px] leading-tight text-brand-ink font-extrabold tracking-[-0.025em]">{r.quoi}</span>
               <span className="text-[12.5px] font-bold text-brand-mut">{r.ou}</span>
             </span>
           </motion.div>
@@ -228,7 +228,7 @@ const OrbitHero = ({ vendre }: { vendre?: boolean }) => {
       <Container className="flex flex-wrap items-center gap-x-12 gap-y-8 pb-12 pt-8 md:pb-[60px] md:pt-14">
         <div className="flex min-w-0 max-w-[560px] flex-[1_1_460px] flex-col gap-[22px]">
           <Eyebrow dark>{vendre ? "Vendre avec Emilio" : "Ils cherchent en ce moment"}</Eyebrow>
-          <h1 className="m-0 font-display text-[33px] font-medium leading-[1.08] tracking-[-0.01em] text-white text-balance sm:text-[clamp(40px,4.6vw,60px)] sm:leading-[1.06]">
+          <h1 className="m-0 font-display text-[33px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white text-balance sm:text-[clamp(40px,4.6vw,60px)] sm:leading-[1.06]">
             Ils tournent autour <Em dark wrap>d’un bien comme le vôtre.</Em>
           </h1>
           <p className="m-0 text-base leading-relaxed text-pretty sm:text-lg">
