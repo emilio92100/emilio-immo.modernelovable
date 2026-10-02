@@ -9,8 +9,9 @@ export const Field = ({
   icon,
   className,
   area,
+  lignes = 3,
   ...rest
-}: { label: string; suffix?: string; icon?: ReactNode; area?: boolean; className?: string } & InputHTMLAttributes<HTMLInputElement>) => (
+}: { label: string; suffix?: string; icon?: ReactNode; area?: boolean; lignes?: number; className?: string } & InputHTMLAttributes<HTMLInputElement>) => (
   <label
     className={cn(
       "flex min-w-0 flex-col gap-1 rounded-xl border border-[#D5DEEA] bg-white px-3.5 py-2.5 transition focus-within:border-brand focus-within:shadow-[0_0_0_4px_rgba(34,73,125,0.12)]",
@@ -22,7 +23,7 @@ export const Field = ({
       {icon && <span className="inline-flex text-brand-mut">{icon}</span>}
       {area ? (
         <textarea
-          rows={3}
+          rows={lignes}
           value={rest.value as string}
           onChange={rest.onChange as never}
           placeholder={rest.placeholder}

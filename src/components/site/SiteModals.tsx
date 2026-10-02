@@ -8,7 +8,7 @@ const ContactModal = lazy(() => import("./ContactModal"));
 
 export type EstimationPrefill = { address?: string; city?: string; postalCode?: string };
 export type ContactObjet = "Vendre" | "Acheter" | "Estimer" | "Visiter un bien" | "Autre";
-export type ContactPrefill = { objet?: ContactObjet; message?: string; propertyRef?: string; propertyTitle?: string };
+export type ContactPrefill = { objet?: ContactObjet; message?: string; propertyRef?: string; propertyTitle?: string; propertyImage?: string; propertyPrice?: string };
 
 type Ctx = {
   openEstimation: (p?: EstimationPrefill) => void;

@@ -3,12 +3,12 @@
    La demande part dans le CRM (contact_submissions, form_type « estimation »).
    La fourchette vient de la fonction dvf-estimate (ventes DVF), quand elle existe. */
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Building2, CalendarDays, Check, FileText, Home, LineChart, Loader2, Lock, MapPin, Phone, Search, Sun } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, CalendarDays, Check, FileText, Home, LineChart, Lock, MapPin, Phone, Search, Sun } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { checkSubmission, honeypotFieldName, honeypotStyle, markSubmitted } from "@/lib/antiBot";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { ModalShell, TeamStack } from "./ModalShell";
+import { BoutonEnvoi, CocheEnvoyee, ModalShell, TeamStack } from "./ModalShell";
 import { Btn, TEL, TEL_HREF } from "./ui";
 import { Consent, Field, Group, Pills, Segmented, Steps, Tile, Toggle, toggleIn } from "./form";
 import type { EstimationPrefill } from "./SiteModals";
@@ -181,13 +181,32 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
 
   const titre = useMemo(() => (type === "Maison" ? "votre maison" : type === "Appartement" ? "votre appartement" : "votre bien"), [type]);
 
+  const footer =
+    step < 5 ? (
+      <div className="flex items-center gap-2.5">
+        <span className="hidden text-sm text-brand-mut sm:inline">Étape {step} sur 4 · environ 2 minutes</span>
+        {step > 1 && (
+          <button type="button" onClick={() => setStep(step - 1)} aria-label="Retour" className="inline-flex h-[54px] w-[54px] flex-none items-center justify-center gap-2 rounded-2xl border-[1.5px] border-brand-line text-[15.5px] font-bold text-brand-ink hover:bg-brand-pale sm:ml-auto sm:w-auto sm:px-[18px]">
+            <ArrowLeft className="h-[18px] w-[18px]" /> <span className="hidden sm:inline">Retour</span>
+          </button>
+        )}
+        <BoutonEnvoi onClick={next} disabled={!canNext} sending={sending} icon={<ArrowRight className="h-[18px] w-[18px] flex-none" />} className={cn("flex-1 sm:flex-none", step === 1 && "sm:ml-auto")}>
+          {step === 4 ? <><span className="sm:hidden">Voir mon estimation</span><span className="hidden sm:inline">Voir ma première estimation</span></> : "Continuer"}
+        </BoutonEnvoi>
+      </div>
+    ) : (
+      <button type="button" onClick={onClose} className="inline-flex h-[54px] w-full items-center justify-center rounded-2xl bg-brand text-[15.5px] font-extrabold text-white sm:ml-auto sm:w-auto sm:px-8">
+        Fermer
+      </button>
+    );
+
   return (
-    <ModalShell open={open} onClose={onClose} title="Estimer mon bien" wide>
-      <div className="flex min-h-full flex-col gap-4 sm:gap-5">
-        <div className="flex items-center gap-3.5 pr-12">
-          <span className="grid h-11 w-11 flex-none place-items-center rounded-[14px] bg-brand-orange text-brand-ink sm:h-[50px] sm:w-[50px]"><LineChart className="h-[22px] w-[22px]" /></span>
+    <ModalShell open={open} onClose={onClose} title="Estimer mon bien" wide haute footer={footer}>
+      <div className="flex min-h-full flex-col gap-3.5 sm:gap-5">
+        <div className="flex items-center gap-3 pr-12">
+          <span className="grid h-10 w-10 flex-none place-items-center rounded-[13px] bg-brand-orange text-brand-ink sm:h-[50px] sm:w-[50px] sm:rounded-[14px]"><LineChart className="h-5 w-5 sm:h-[22px] sm:w-[22px]" /></span>
           <div className="flex min-w-0 flex-col">
-            <h2 className="m-0 font-display text-[24px] font-medium leading-tight text-brand-ink sm:text-[28px]">Estimer mon bien</h2>
+            <h2 className="m-0 text-[20px] font-extrabold leading-tight tracking-[-0.02em] text-brand-ink sm:text-[26px]">Estimer mon bien</h2>
             <span className="inline-flex items-center gap-1.5 text-[13px] text-brand-mut sm:text-sm">
               <Lock className="h-3.5 w-3.5 text-brand-orange-text" /> Gratuit · sans engagement · confidentiel
             </span>
@@ -241,10 +260,38 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
                 )}
               </Group>
               <Group title="Type de bien">
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5">
-                  <Tile compact={false} icon={<Building2 className="h-[22px] w-[22px]" />} label="Appartement" on={type === "Appartement"} onClick={() => setType("Appartement")} />
-                  <Tile icon={<Home className="h-[22px] w-[22px]" />} label="Maison" on={type === "Maison"} onClick={() => setType("Maison")} />
-                  <Tile icon={<Building2 className="h-[22px] w-[22px]" />} label="Autre" sub="immeuble, local…" on={type === "Autre"} onClick={() => setType("Autre")} />
+                {/* Les trois types sur une seule ligne, même sur téléphone */}
+                <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+                  {(
+                    [
+                      ["Appartement", <Building2 key="a" className="h-5 w-5" />, ""],
+                      ["Maison", <Home key="m" className="h-5 w-5" />, ""],
+                      ["Autre", <Building2 key="o" className="h-5 w-5" />, "immeuble, local…"],
+                    ] as const
+                  ).map(([k, ic, sub]) => {
+                    const on = type === k;
+                    return (
+                      <button
+                        key={k}
+                        type="button"
+                        aria-pressed={on}
+                        onClick={() => setType(k)}
+                        className={cn(
+                          "relative flex min-w-0 flex-col items-center gap-1.5 rounded-2xl px-1.5 pb-2.5 pt-3 text-center transition sm:items-start sm:gap-2.5 sm:p-4 sm:text-left",
+                          on ? "border-[1.5px] border-brand-orange bg-[#FFF6EB] shadow-[0_10px_24px_-14px_rgba(184,98,11,0.6)]" : "border border-brand-line bg-white",
+                        )}
+                      >
+                        <span className={cn("grid h-10 w-10 place-items-center rounded-xl sm:h-11 sm:w-11", on ? "bg-brand-orange text-brand-ink" : "bg-brand-tint text-brand")}>{ic}</span>
+                        <span className="text-[13.5px] font-extrabold leading-tight text-brand-ink sm:text-[15px]">{k}</span>
+                        {sub && <span className="-mt-1 text-[11px] leading-tight text-brand-mut sm:text-[12.5px]">{sub}</span>}
+                        {on && (
+                          <span className="absolute right-1.5 top-1.5 grid h-5 w-5 place-items-center rounded-full bg-brand-orange text-brand-ink sm:right-2.5 sm:top-2.5 sm:h-[22px] sm:w-[22px]">
+                            <Check className="h-3 w-3" strokeWidth={3} />
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </Group>
             </>
@@ -286,7 +333,7 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
             <>
               <Q t="Où en est votre projet ?" s="Pour vous conseiller au bon moment, sans vous presser." />
               <Group title="Votre projet">
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5">
+                <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-3 sm:gap-2.5">
                   {PROJETS.map((p) => <Tile key={p.k} compact icon={p.icon} label={p.k} sub={"sub" in p ? p.sub : undefined} on={projet === p.k} onClick={() => setProjet(p.k)} />)}
                 </div>
               </Group>
@@ -302,11 +349,11 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
           {step === 4 && (
             <>
               <Q t="Où vous envoyer votre estimation ?" s="Vous voyez une première fourchette tout de suite, puis un membre de l’équipe vous rappelle pour l’affiner." />
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                 <Field label="Prénom" placeholder="Votre prénom" autoComplete="given-name" value={c.prenom} onChange={(e) => setC({ ...c, prenom: e.target.value })} />
                 <Field label="Nom" placeholder="Votre nom" autoComplete="family-name" value={c.nom} onChange={(e) => setC({ ...c, nom: e.target.value })} />
-                <Field label="E-mail" type="email" inputMode="email" autoComplete="email" placeholder="vous@exemple.fr" value={c.email} onChange={(e) => setC({ ...c, email: e.target.value })} />
-                <Field label="Téléphone" type="tel" inputMode="tel" autoComplete="tel" placeholder="06 12 34 56 78" value={c.tel} onChange={(e) => setC({ ...c, tel: e.target.value })} />
+                <Field className="col-span-2 sm:col-span-1" label="E-mail" type="email" inputMode="email" autoComplete="email" placeholder="vous@exemple.fr" value={c.email} onChange={(e) => setC({ ...c, email: e.target.value })} />
+                <Field className="col-span-2 sm:col-span-1" label="Téléphone" type="tel" inputMode="tel" autoComplete="tel" placeholder="06 12 34 56 78" value={c.tel} onChange={(e) => setC({ ...c, tel: e.target.value })} />
               </div>
               <Group title="Quand préférez-vous être rappelé ?" optional>
                 <Pills options={CRENEAUX} value={[creneau as never]} onToggle={(v) => setCreneau(creneau === v ? "" : v)} size="sm" />
@@ -319,26 +366,6 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
           {step === 5 && <Resultat result={result} prenom={c.prenom} type={type} surface={surface} pieces={pieces} ville={ville} cp={cp} onContact={onContact} />}
         </div>
 
-        {step < 5 && (
-          <div className="sticky bottom-0 -mx-[18px] -mb-[18px] flex items-center justify-between gap-3 border-t border-brand-line2 bg-white px-[18px] pb-[18px] pt-4 sm:static sm:m-0 sm:p-0 sm:pt-[18px]">
-            <span className="hidden text-sm text-brand-mut sm:inline">Étape {step} sur 4 · environ 2 minutes</span>
-            <div className="flex w-full gap-2.5 sm:w-auto">
-              {step > 1 && (
-                <button type="button" onClick={() => setStep(step - 1)} className="inline-flex h-[52px] items-center gap-2 rounded-xl border-[1.5px] border-brand-line px-[18px] text-[15.5px] font-bold text-brand-ink hover:bg-brand-pale">
-                  <ArrowLeft className="h-[18px] w-[18px]" /> Retour
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={next}
-                disabled={!canNext || sending}
-                className="inline-flex h-[52px] flex-1 items-center justify-center gap-2.5 whitespace-nowrap rounded-xl bg-brand-orange px-6 text-[15.5px] font-extrabold text-brand-ink transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45 sm:flex-none"
-              >
-                {sending ? <><Loader2 className="h-[18px] w-[18px] animate-spin" /> Calcul en cours…</> : <>{step === 4 ? "Voir ma première estimation" : "Continuer"} <ArrowRight className="h-[18px] w-[18px]" /></>}
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </ModalShell>
   );
@@ -346,8 +373,8 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
 
 const Q = ({ t, s }: { t: string; s?: string }) => (
   <div>
-    <h3 className="m-0 font-display text-[24px] font-medium leading-tight text-brand-ink sm:text-[26px]">{t}</h3>
-    {s && <p className="mt-1.5 text-[15px] leading-normal text-brand-txt">{s}</p>}
+    <h3 className="m-0 font-display text-[21px] font-medium leading-tight text-brand-ink sm:text-[26px]">{t}</h3>
+    {s && <p className="mt-1 text-[14px] leading-normal text-brand-txt sm:mt-1.5 sm:text-[15px]">{s}</p>}
   </div>
 );
 
@@ -356,9 +383,9 @@ function Resultat({ result, prenom, type, surface, pieces, ville, cp, onContact 
   const lieu = result?.scope === "postal" ? `dans le ${cp}` : result?.scope === "district" ? "dans les arrondissements ou communes voisins" : cp.startsWith("75") ? "à Paris" : "dans le département";
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2.5">
-        <span className="grid h-[30px] w-[30px] place-items-center rounded-full bg-[#2E9A66]"><Check className="h-4 w-4 text-white" strokeWidth={3} /></span>
-        <span className="text-[14.5px] font-extrabold text-[#1F6B4B]">Demande bien reçue{prenom ? `, merci ${prenom.trim()}` : ""}</span>
+      <div className="flex items-center gap-3">
+        <CocheEnvoyee size={56} />
+        <span className="envoye-monte text-[15px] font-extrabold text-[#1F6B4B]" style={{ animationDelay: ".5s" }}>C’est envoyé{prenom ? `, merci ${prenom.trim()}` : ""} !</span>
       </div>
       <h3 className="m-0 font-display text-[26px] font-medium text-brand-ink">{has ? "Votre première estimation" : "On s’occupe de votre estimation"}</h3>
       <div className="flex flex-wrap gap-1.5">
