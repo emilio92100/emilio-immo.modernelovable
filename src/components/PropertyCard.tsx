@@ -130,7 +130,7 @@ export const QuickViewPopup = ({ property, open, onClose }: { property: Property
                 </Link>
                 <button
                   type="button"
-                  onClick={() => { onClose(); openContact({ objet: "Visiter un bien", propertyRef: property.id, propertyTitle: `${displayTitle(property)} · ${displayCity(property)} · ${formatPrice(property.price)}` }); }}
+                  onClick={() => { onClose(); openContact({ objet: "Visiter un bien", propertyRef: property.id, propertyTitle: `${displayTitle(property)}, ${displayCity(property)}`, propertyImage: property.images[0], propertyPrice: formatPrice(property.price) }); }}
                   className="inline-flex h-[50px] items-center justify-center rounded-[10px] border-[1.5px] border-brand px-3 text-[15px] font-bold text-brand md:px-5 md:text-[15.5px]"
                 >
                   <span className="md:hidden">Visiter</span><span className="hidden md:inline">Demander une visite</span>
