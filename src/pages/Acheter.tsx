@@ -149,11 +149,11 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
     [<CalendarDays key="c" className="h-[17px] w-[17px]" />, "Vos visites et documents au même endroit"],
   ];
   const mobileList = [
+    [<Sparkles key="p" className="h-5 w-5" />, "Prévenu en premier", "Une notification dès qu’un bien arrive."],
     [<Star key="s" className="h-5 w-5" />, "Une sélection privée", "Les biens retenus pour vous, au même endroit."],
     [<Heart key="h" className="h-5 w-5" />, "Votre avis en un clic", "« Ça me plaît », « Pas pour moi »."],
     [<CalendarDays key="c" className="h-5 w-5" />, "La visite, en direct", "« Je veux visiter » depuis la fiche du bien."],
-    [<FileText key="f" className="h-5 w-5" />, "Votre mandat signé en ligne", "Un code par e-mail, une signature au doigt."],
-    [<Sparkles key="p" className="h-5 w-5" />, "Prévenu en premier", "Une notification dès qu’un bien arrive."],
+    [<FileText key="f" className="h-5 w-5" />, "Le mandat signé en ligne", "Un code par e-mail, une signature au doigt."],
   ];
   return (
     <section id="espace" className="bg-brand-pale" style={{ backgroundImage: "radial-gradient(circle at 50% 58%, #E4ECF6 0%, rgba(228,236,246,0) 46%)" }}>
@@ -191,20 +191,25 @@ const EspaceClient = ({ photos }: { photos: string[] }) => {
           {phone}
         </div>
         </div>
-        {/* Téléphone et tablette : téléphone au centre, atouts en dessous */}
-        <div className="flex flex-col items-center gap-6 lg:hidden">
-          <div className="relative w-full max-w-[300px]">{notif}</div>
-          <div className="origin-top scale-[.9]">{phone}</div>
-          <ul className="m-0 grid w-full max-w-[640px] list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2">
+        {/* Téléphone et tablette : un petit téléphone à gauche, les atouts juste à côté */}
+        <div className="mx-auto flex w-full max-w-[640px] items-center gap-3.5 max-[359px]:gap-2.5 sm:gap-6 lg:hidden">
+          <div className="relative h-[315px] w-[150px] flex-none max-[359px]:h-[265px] max-[359px]:w-[126px] sm:h-[391px] sm:w-[186px]">
+            <div className="absolute left-0 top-0 origin-top-left scale-50 max-[359px]:scale-[.42] sm:scale-[.62]">{phone}</div>
+          </div>
+          <ul className="m-0 flex min-w-0 flex-1 list-none flex-col gap-2 p-0 sm:gap-2.5">
             {mobileList.map(([ic, t, d]) => (
-              <li key={t as string} className={cn("flex items-start gap-3 rounded-2xl bg-white p-3.5", FRAME_SHADOW)}>
-                <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-brand text-white">{ic}</span>
-                <span className="flex flex-col"><span className="text-[15px] font-extrabold text-brand-ink">{t}</span><span className="text-[13.5px] text-brand-txt">{d}</span></span>
+              <li key={t as string} className="flex items-center gap-2.5 rounded-2xl bg-white px-2.5 py-2 max-[359px]:gap-2 max-[359px]:px-2 shadow-[0_0_0_1px_rgba(19,36,61,0.06),0_10px_22px_-18px_rgba(19,36,61,0.5)] sm:items-start sm:gap-3 sm:p-3.5">
+                <span className="grid h-8 w-8 flex-none place-items-center rounded-[10px] bg-brand text-white sm:h-10 sm:w-10 sm:rounded-xl [&_svg]:h-4 [&_svg]:w-4 sm:[&_svg]:h-5 sm:[&_svg]:w-5">{ic}</span>
+                <span className="flex min-w-0 flex-col">
+                  <span className="text-[13px] font-extrabold leading-tight text-brand-ink max-[359px]:text-[12px] sm:text-[15px]">{t}</span>
+                  <span className="hidden text-[13.5px] text-brand-txt sm:block">{d}</span>
+                </span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="flex flex-wrap justify-center gap-2.5">
+        {/* Les petits plus : sur ordinateur et tablette seulement (sur téléphone, c’était trop de texte) */}
+        <div className="hidden flex-wrap justify-center gap-2.5 sm:flex">
           {perks.map(([ic, t]) => (
             <span key={t as string} className="inline-flex h-[42px] items-center gap-2 rounded-full border border-brand-line bg-white px-4 text-[14.5px] font-bold text-brand-ink"><span className="text-brand-orange-text">{ic}</span>{t}</span>
           ))}
@@ -342,16 +347,6 @@ const Recherche = () => {
     premier.current = pages[page]?.[0] ?? "type";
   }, [page, pages]);
 
-  /* Sur téléphone, quand le formulaire occupe l’écran, la barre « Appeler / Estimer » s’efface. */
-  useEffect(() => {
-    if (!mobile || !carte.current) return;
-    const o = new IntersectionObserver(([e]) => document.body.classList.toggle("formulaire-plein", e.intersectionRatio > 0.35), { threshold: [0, 0.35, 0.6] });
-    o.observe(carte.current);
-    return () => {
-      o.disconnect();
-      document.body.classList.remove("formulaire-plein");
-    };
-  }, [mobile]);
 
   const budget = `${euros(BUDGET_STEPS[bLo])} – ${bHi === B_MAX ? "5 000 000 € et plus" : euros(BUDGET_STEPS[bHi])}`;
   const valide: Partial<Record<Bloc, boolean>> = {
