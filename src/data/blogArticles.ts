@@ -83,7 +83,7 @@ export const ARTICLES: Article[] = [
     metaDescription:
       "Prix au m² à Boulogne-Billancourt en 2026, quartier par quartier. Analyse détaillée du marché par un expert local. Chiffres actualisés et retours de terrain.",
     excerpt:
-      "Boulogne n'est pas une ville homogène. Entre le Nord bourgeois et le Sud en pleine mutation, l'écart de prix peut dépasser 25 %. Voici ce que j'observe en 2026.",
+      "Boulogne n'est pas une ville homogène. Entre le Nord bourgeois et le Sud en pleine mutation, l'écart de prix peut dépasser 25 %. Voici ce que l'on observe en 2026.",
     readMinutes: 5,
     date: "2026-08-06",
     keywords: [
@@ -97,12 +97,12 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "On me pose la question presque chaque semaine : « À combien se vend le m² à Boulogne aujourd'hui ? ». La réponse honnête, c'est qu'il n'y a pas un seul prix. Boulogne-Billancourt, c'est en réalité une mosaïque de sept ou huit micro-marchés, avec des écarts qui peuvent dépasser 2 500 € du m² d'un côté du parc Rothschild à l'autre.",
+          "C'est la question qui revient le plus souvent : « À combien se vend le m² à Boulogne aujourd'hui ? ». La réponse honnête, c'est qu'il n'y a pas un seul prix. Boulogne-Billancourt, c'est en réalité une mosaïque de sept ou huit micro-marchés, avec des écarts qui peuvent dépasser 2 500 € du m² d'un côté du parc Rothschild à l'autre.",
       },
       {
         type: "p",
         text:
-          "Je vends et j'estime des biens dans cette ville depuis plusieurs années, et cette analyse s'appuie sur les mandats que je signe, les compromis que je vois passer, et les données notariales mises à jour trimestriellement. L'idée ici n'est pas de recopier une moyenne trouvée sur un portail, mais de vous donner une lecture opérationnelle : ce qu'un bien vaut vraiment, ville par ville, rue par rue.",
+          "Cette analyse s'appuie sur les ventes réellement signées dans la commune et sur les données des notaires, mises à jour chaque trimestre. L'idée ici n'est pas de recopier une moyenne trouvée sur un portail, mais de vous donner une lecture opérationnelle : ce qu'un bien vaut vraiment, ville par ville, rue par rue.",
       },
       { type: "h2", text: "Le prix moyen à Boulogne-Billancourt en 2026" },
       {
@@ -149,7 +149,7 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "Longtemps considéré comme le parent pauvre, le Point du Jour a pris presque 12 % en trois ans grâce à l'arrivée du T2 et à la rénovation de l'avenue Pierre-Grenier. Pour un investisseur qui vise la revente à 5 ans, c'est aujourd'hui le pari le plus intéressant sur la commune. J'ai personnellement suivi un mandat en 2023 (T3 acheté 545 000 €) revendu en 2026 à 640 000 € sans travaux majeurs — c'est le seul secteur boulonnais où ce type de plus-value reste courant.",
+          "Longtemps considéré comme le parent pauvre, le Point du Jour a pris presque 12 % en trois ans grâce à l'arrivée du T2 et à la rénovation de l'avenue Pierre-Grenier. Pour un investisseur qui vise la revente à 5 ans, c'est aujourd'hui le pari le plus intéressant sur la commune. C'est l'un des rares secteurs de Boulogne où une plus-value nette reste possible sans gros travaux.",
       },
       { type: "h3", text: "Silly-Gallieni : le tempo intermédiaire" },
       {
@@ -208,7 +208,7 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "Une estimation faite sur photo ou sur un simple relevé cadastral se trompe souvent de 10 à 15 %. Je préfère venir sur place, regarder les vraies caractéristiques du bien, la vue, l'agencement, et vous rendre un avis de valeur argumenté. C'est gratuit et sans engagement.",
+          "Une estimation faite sur photo ou sur un simple relevé cadastral se trompe souvent de 10 à 15 %. Mieux vaut une visite sur place : on y voit les vraies caractéristiques du bien, la vue, l'agencement, et l'avis de valeur est argumenté. C'est gratuit et sans engagement.",
       },
     ],
     faq: [
@@ -378,7 +378,7 @@ export const ARTICLES: Article[] = [
     metaDescription:
       "État du marché immobilier dans les Hauts-de-Seine en 2026 : prix, délais, dynamique par ville. Analyse d'un expert local basée sur les mandats du terrain.",
     excerpt:
-      "Après deux années de correction, le marché des Hauts-de-Seine a trouvé son point d'équilibre. Voici ce que révèlent les chiffres et ce que j'observe sur le terrain.",
+      "Après deux années de correction, le marché des Hauts-de-Seine a trouvé son point d'équilibre. Voici ce que révèlent les chiffres et ce que l'on observe sur le terrain.",
     readMinutes: 5,
     date: "2026-07-09",
     keywords: [
@@ -444,7 +444,7 @@ export const ARTICLES: Article[] = [
         text:
           "La ligne 15 Sud (Pont-de-Sèvres → Noisy-Champs) est prévue pour 2028, avec un impact déjà tangible sur les prix des communes traversées. À Issy-les-Moulineaux, le secteur autour de la future station gagne 4 à 6 % de prime par rapport aux zones plus éloignées. Même logique à Châtillon et Bagneux. Un acquéreur qui anticipe une revente à 5-7 ans a intérêt à intégrer ce paramètre.",
       },
-      { type: "h2", text: "Prévisions 2026-2027 : mon analyse" },
+      { type: "h2", text: "Prévisions 2026-2027 : notre analyse" },
       {
         type: "list",
         items: [
@@ -521,7 +521,7 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "Un vendeur me disait la semaine dernière : « J'ai lu partout qu'un appartement se vend en un mois aujourd'hui. Le mien est en ligne depuis 3 mois et je n'ai eu que 4 visites. » Cette phrase résume assez bien le décalage entre les moyennes qu'on lit dans la presse et la réalité du terrain.",
+          "« J'ai lu partout qu'un appartement se vend en un mois. Le mien est en ligne depuis trois mois et je n'ai eu que quatre visites. » C'est une phrase que l'on entend souvent chez les vendeurs, et elle résume bien le décalage entre les moyennes publiées dans la presse et la réalité du terrain.",
       },
       {
         type: "p",
@@ -555,7 +555,7 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "J'ai suivi cette année deux mandats identiques (même immeuble, même surface, même étage), l'un présenté avec des photos amateur au smartphone, l'autre avec un shooting professionnel. Le premier a mis 4 mois et a été bradé de 6 %. Le second est parti en 3 semaines au prix demandé. Ce n'est pas anecdotique — c'est structurel : sur un portail, une annonce se joue en 3 secondes, et les 3 premières photos font 80 % du travail.",
+          "Deux biens identiques (même immeuble, même surface, même étage) peuvent connaître des ventes très différentes selon leur présentation : photos prises au téléphone d'un côté, reportage professionnel de l'autre. Le premier attire peu de visites et finit souvent par baisser son prix, le second se vend plus vite et mieux. Ce n'est pas un hasard : sur un portail, une annonce se joue en 3 secondes, et les 3 premières photos font 80 % du travail.",
       },
       { type: "h3", text: "Le rôle de l'estimation initiale" },
       {
@@ -702,7 +702,7 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "On entend parfois qu'un bien vendu off-market se vend « moins cher » puisqu'il n'y a pas de mise en concurrence publique. Mon expérience dit exactement l'inverse. Sur les mandats que je gère, les biens vendus off-market se signent en moyenne à 98,5 % du prix affiché, contre 96,5 % pour les biens en vente publique. Pourquoi ? Parce qu'un acquéreur pré-qualifié qui a la chance d'accéder à un bien confidentiel négocie moins agressivement que quelqu'un qui a vu le bien traîner trois mois sur les portails.",
+          "On entend parfois qu'un bien vendu off-market se vend « moins cher » puisqu'il n'y a pas de mise en concurrence publique. En pratique, c'est souvent l'inverse. Pourquoi ? Parce qu'un acquéreur pré-qualifié qui a la chance d'accéder à un bien confidentiel négocie moins agressivement que quelqu'un qui a vu le bien traîner trois mois sur les portails.",
       },
       {
         type: "p",
@@ -786,7 +786,7 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "Quand j'explique à un vendeur que son appartement vaut 20 % de plus ou de moins que celui d'à côté, à surface égale, la réaction est souvent la même : « Mais on est dans le même immeuble ! ». C'est justement ce qui rend le métier passionnant : la valeur d'un bien ne se résume jamais à l'adresse. Voici les 7 critères qui, ensemble, expliquent 90 % de l'écart de prix entre deux biens du même immeuble.",
+          "Quand on explique à un vendeur que son appartement vaut 20 % de plus ou de moins que celui d'à côté, à surface égale, la réaction est souvent la même : « Mais on est dans le même immeuble ! ». C'est justement ce qui rend le métier passionnant : la valeur d'un bien ne se résume jamais à l'adresse. Voici les 7 critères qui, ensemble, expliquent 90 % de l'écart de prix entre deux biens du même immeuble.",
       },
       { type: "h2", text: "1. L'étage et l'ascenseur" },
       {
@@ -904,7 +904,7 @@ export const ARTICLES: Article[] = [
     metaDescription:
       "Boulogne-Billancourt ou Neuilly-sur-Seine : comparaison honnête pour choisir la bonne ville en 2026. Prix, cadre de vie, revente, écoles.",
     excerpt:
-      "Deux villes voisines, deux marchés très différents. On m'oppose ces deux communes chaque semaine dans les entretiens d'acquéreurs. Voici comment je les compare vraiment.",
+      "Deux villes voisines, deux marchés très différents. Les acquéreurs hésitent souvent entre ces deux communes. Voici comment les comparer vraiment.",
     readMinutes: 5,
     date: "2026-09-15",
     keywords: [
@@ -954,7 +954,7 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "C'est là que mon avis diverge un peu du consensus. Neuilly est un marché mature, très stable, avec peu de potentiel d'appréciation à court terme. Boulogne, notamment dans les secteurs en transformation (Île Seguin, Trapèze, Point du Jour), offre un potentiel de plus-value plus intéressant sur 5-10 ans. Pour un profil investisseur, Boulogne l'emporte souvent. Pour un profil patrimonial ou résidence principale à long terme, Neuilly reste imbattable en termes de tenue de valeur.",
+          "C'est là que notre avis diffère un peu de l'idée reçue. Neuilly est un marché mature, très stable, avec peu de potentiel d'appréciation à court terme. Boulogne, notamment dans les secteurs en transformation (Île Seguin, Trapèze, Point du Jour), offre un potentiel de plus-value plus intéressant sur 5-10 ans. Pour un profil investisseur, Boulogne l'emporte souvent. Pour un profil patrimonial ou résidence principale à long terme, Neuilly reste imbattable en termes de tenue de valeur.",
       },
       {
         type: "table",
@@ -974,7 +974,7 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text:
-          "Sur ce point, ma préférence va nettement à Boulogne. La rentabilité brute y est meilleure (3,2 à 3,8 % contre 2,6 à 3 % à Neuilly), la demande locative des jeunes actifs est forte, et le marché de la revente à moyen terme est plus dynamique. Neuilly reste un choix de préservation patrimoniale, pas de rendement.",
+          "Sur ce point, Boulogne l'emporte nettement. La rentabilité brute y est meilleure (3,2 à 3,8 % contre 2,6 à 3 % à Neuilly), la demande locative des jeunes actifs est forte, et le marché de la revente à moyen terme est plus dynamique. Neuilly reste un choix de préservation patrimoniale, pas de rendement.",
       },
       {
         type: "callout",
