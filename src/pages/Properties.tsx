@@ -260,7 +260,7 @@ const Properties = () => {
           </div>
 
           {/* ── La recherche ── */}
-          <div className="relative z-[3] mx-2.5 -mt-[122px] rounded-[26px] bg-white p-2.5 shadow-[0_40px_70px_-40px_rgba(19,36,61,0.55),0_0_0_1px_rgba(19,36,61,0.06)] md:mx-auto md:-mt-[78px] md:w-[min(1180px,calc(100%-80px))] md:rounded-[30px] md:p-3">
+          <div className="relative z-[30] mx-2.5 -mt-[122px] rounded-[26px] bg-white p-2.5 shadow-[0_40px_70px_-40px_rgba(19,36,61,0.55),0_0_0_1px_rgba(19,36,61,0.06)] md:mx-auto md:-mt-[78px] md:w-[min(1180px,calc(100%-80px))] md:rounded-[30px] md:p-3">
             <div className="flex flex-col gap-2 md:flex-row md:items-stretch">
               <div className="relative min-w-0 md:flex-[1.4]">
                 <label className="relative flex h-16 min-w-0 items-center gap-3.5 rounded-[20px] bg-brand-surf px-4 transition focus-within:bg-white focus-within:shadow-[0_0_0_2px_#22497D] md:h-[68px] md:px-5">
