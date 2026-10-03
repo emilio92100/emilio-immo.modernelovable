@@ -189,6 +189,15 @@
 /* Ancres : laisser la place à l'en-tête collant */
 [id] { scroll-margin-top: 96px; }
 
+/* Arrivée en douceur sur une section (voir lib/defiler.ts) : le formulaire « Votre recherche » s’éclaire un instant */
+@keyframes arrive-halo {
+  0% { box-shadow: 0 50px 90px -40px rgba(0,0,0,.6), 0 0 0 0 rgba(230,139,35,.65); }
+  45% { box-shadow: 0 50px 90px -40px rgba(0,0,0,.6), 0 0 0 7px rgba(230,139,35,.35); }
+  100% { box-shadow: 0 50px 90px -40px rgba(0,0,0,.6), 0 0 0 16px rgba(230,139,35,0); }
+}
+[data-arrive] .arrive-halo { animation: arrive-halo 1.3s cubic-bezier(.22,.8,.24,1) both; }
+@media (prefers-reduced-motion: reduce) { [data-arrive] .arrive-halo { animation: none; } }
+
 /* Jamais de défilement horizontal de la page (téléphones étroits) */
 body { overflow-x: clip; }
 @supports not (overflow-x: clip) { body { overflow-x: hidden; } }
