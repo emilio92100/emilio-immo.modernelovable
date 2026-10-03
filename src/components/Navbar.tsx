@@ -1,5 +1,5 @@
 /* En-tête du site (refonte 2026, direction « Tuiles ») : logo, menu en pilule, téléphone et « Estimer mon bien ». */
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, BookOpen, Home, KeyRound, LineChart, Mail, Phone, Search, UserRound } from "lucide-react";
@@ -15,6 +15,67 @@ export const NAV = [
   { label: "Acheter", to: "/acheter" },
   { label: "Notre histoire", to: "/notre-histoire" },
 ];
+
+/* Le menu de l’ordinateur : la pastille bleue de la rubrique en cours glisse d’une rubrique à l’autre.
+   Chaque page affiche son propre en-tête : on garde en mémoire où était la pastille sur la page d’avant,
+   et la nouvelle page la fait partir de là. */
+let pastillePrecedente: { x: number; w: number } | null = null;
+const useMesure = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
+const MenuOrdi = () => {
+  const { pathname } = useLocation();
+  const calme = useReducedMotion();
+  const liens = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const actif = NAV.find((n) => (n.to === "/" ? pathname === "/" : pathname === n.to || pathname.startsWith(n.to + "/")));
+  const [pos, setPos] = useState<{ x: number; w: number } | null>(null);
+  const [depart] = useState(() => pastillePrecedente);
+
+  useMesure(() => {
+    const mesurer = () => {
+      const el = actif && liens.current[actif.to];
+      const p = el ? { x: el.offsetLeft, w: el.offsetWidth } : null;
+      setPos(p);
+      pastillePrecedente = p;
+    };
+    mesurer();
+    // les polices peuvent changer la largeur des mots une fois chargées
+    document.fonts?.ready.then(mesurer).catch(() => {});
+    window.addEventListener("resize", mesurer);
+    return () => window.removeEventListener("resize", mesurer);
+  }, [actif]);
+
+  return (
+    <nav aria-label="Navigation principale" className="relative mx-auto hidden gap-1 rounded-full bg-brand-surf p-[5px] lg:flex">
+      {pos && (
+        <motion.span
+          aria-hidden
+          className="absolute bottom-[5px] left-0 top-[5px] rounded-full bg-brand shadow-[0_8px_18px_-8px_rgba(34,73,125,0.7)]"
+          initial={depart && !calme ? { x: depart.x, width: depart.w, opacity: 1 } : { x: pos.x, width: pos.w, opacity: 0 }}
+          animate={{ x: pos.x, width: pos.w, opacity: 1 }}
+          transition={calme ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 34, opacity: { duration: 0.2 } }}
+        />
+      )}
+      {NAV.map((n) => {
+        const on = n === actif;
+        return (
+          <NavLink
+            key={n.to}
+            to={n.to}
+            end={n.to === "/"}
+            ref={(el) => (liens.current[n.to] = el)}
+            className={cn(
+              "relative z-[1] inline-flex h-[42px] items-center whitespace-nowrap rounded-full px-[18px] text-[14.5px] font-semibold transition-colors duration-300",
+              // avant la mesure (page pré-générée), la rubrique en cours porte elle-même le fond bleu
+              on ? cn("text-white", !pos && "bg-brand") : "text-brand-mut hover:bg-white/70 hover:text-brand-ink",
+            )}
+          >
+            {n.label}
+          </NavLink>
+        );
+      })}
+    </nav>
+  );
+};
 
 /* Le menu du téléphone : chaque rubrique avec son icône et une ligne d’explication */
 const NAV_MOBILE = [
@@ -59,25 +120,9 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-white/95 font-jakarta backdrop-blur">
       <Container className="flex min-h-[72px] max-w-[1320px] items-center gap-3 px-4 sm:gap-6 sm:px-4 md:px-10 lg:min-h-[88px]">
         <Link to="/" className="block flex-none" aria-label="Emilio Immobilier, accueil">
-          <img src={logo} alt="Emilio conseil immobilier" className="block h-9 w-auto min-[420px]:h-10 lg:h-[46px]" />
+          <img src={logo} alt="Emilio conseil immobilier" width={640} height={268} className="block aspect-[640/268] h-9 w-auto min-[420px]:h-10 lg:h-[46px]" />
         </Link>
-        <nav aria-label="Navigation principale" className="mx-auto hidden gap-1 rounded-full bg-brand-surf p-[5px] lg:flex">
-          {NAV.map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end={n.to === "/"}
-              className={({ isActive }) =>
-                cn(
-                  "inline-flex h-[42px] items-center whitespace-nowrap rounded-full px-[18px] text-[14.5px] font-semibold transition",
-                  isActive ? "bg-white text-brand-ink shadow-[0_2px_8px_-2px_rgba(19,36,61,0.15)]" : "text-brand-mut hover:text-brand-ink",
-                )
-              }
-            >
-              {n.label}
-            </NavLink>
-          ))}
-        </nav>
+        <MenuOrdi />
         <div className="ml-auto flex items-center gap-2 sm:gap-2.5 lg:ml-0">
           <a href={TEL_HREF} aria-label={`Appeler l’agence au ${TEL}`} className="hidden h-12 items-center gap-2.5 rounded-full pl-1.5 pr-1.5 text-[15px] font-bold text-brand-ink md:inline-flex xl:pr-4">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-orl text-brand-orange-text"><Phone className="h-4 w-4" /></span>
