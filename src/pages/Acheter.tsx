@@ -56,7 +56,7 @@ const Hero = () => (
   </section>
 );
 
-/* ── Pourquoi un chasseur ── */
+/* ── Pourquoi un chasseur ── (sur ordinateur, le titre et la phrase dessous tiennent chacun sur une ligne) */
 const Pourquoi = () => {
   const why = [
     { icon: <Sparkles className="h-6 w-6" />, t: "Les biens avant les autres", d: "Des biens hors marché, notre carnet d’adresses et notre réseau de confrères : on voit des biens qui ne sont pas encore, ou jamais, en ligne." },
@@ -67,7 +67,7 @@ const Pourquoi = () => {
   return (
     <section className="bg-brand-pale">
       <Container className="flex flex-col gap-8 py-12 sm:gap-11 md:py-[100px]">
-        <SectionHead center eyebrow="Pourquoi un chasseur" title={<>Quelqu’un qui travaille <Em>pour l’acheteur</Em></>} lead="Une agence classique travaille pour le vendeur. Avec un mandat de recherche, on travaille pour vous." className="max-w-[760px]" />
+        <SectionHead center eyebrow="Pourquoi un chasseur" title={<>Quelqu’un qui travaille <Em>pour l’acheteur</Em></>} lead="Une agence classique travaille pour le vendeur. Avec un mandat de recherche, on travaille pour vous." className="max-w-[760px] lg:max-w-none lg:[&>h2]:whitespace-nowrap lg:[&>p]:max-w-none lg:[&>p]:whitespace-nowrap" />
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-[22px] lg:grid-cols-4">
           {why.map((w, n) => (
             <article key={w.t} className={cn("flex items-start gap-3.5 rounded-[20px] bg-white p-4 transition-transform duration-300 hover:-translate-y-1 sm:flex-col sm:items-stretch sm:gap-0 sm:rounded-[22px] sm:p-2.5", FRAME_SHADOW)}>
@@ -491,7 +491,7 @@ const Recherche = () => {
         <div ref={ref} className="relative -mx-5 min-w-0 scroll-mt-[72px] sm:mx-0 sm:scroll-mt-28 lg:mt-6">
           <div
             ref={carte}
-            className="relative flex min-h-[calc(100svh-72px)] min-w-0 flex-col gap-[18px] rounded-t-[28px] [@media(max-height:620px)]:gap-3 [@media(max-height:620px)]:pt-4 bg-white px-[18px] pb-[max(16px,env(safe-area-inset-bottom))] pt-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:min-h-[540px] sm:gap-[22px] sm:rounded-[26px] sm:p-[34px]"
+            className="arrive-halo relative flex min-h-[calc(100svh-72px)] min-w-0 flex-col gap-[18px] rounded-t-[28px] [@media(max-height:620px)]:gap-3 [@media(max-height:620px)]:pt-4 bg-white px-[18px] pb-[max(16px,env(safe-area-inset-bottom))] pt-5 shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] sm:min-h-[540px] sm:gap-[22px] sm:rounded-[26px] sm:p-[34px]"
           >
             <h3 className="m-0 font-display text-[20px] sm:text-[24px] font-extrabold text-brand-ink md:text-[28px] [@media(max-height:620px)]:text-[20px] tracking-[-0.025em]">Votre recherche, <Em>en 3 temps</Em></h3>
             {!fini && (

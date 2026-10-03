@@ -27,7 +27,7 @@ const MANDATS: Record<Kind, { label: string; name: string; pct: string; base: st
     pct: "4",
     base: "TTC du prix de vente",
     charge: "À la charge du vendeur ou de l’acquéreur, selon le mandat signé",
-    items: ["Estimation offerte", "Photos et vidéo drone", "Diffusion premium et réseau off-market", "Une stratégie dédiée à votre bien", "Un point détaillé chaque semaine"],
+    items: ["Estimation offerte", "Plus de moyens sur la visibilité", "Nos partenariats et notre réseau off-market", "Une stratégie dédiée à votre bien", "Un point détaillé chaque semaine"],
   },
   recherche: {
     label: "Achat",
@@ -121,10 +121,10 @@ const Honoraires = () => {
           <Container className="flex flex-col gap-[18px] pb-10 pt-5 md:pb-14 md:pt-8">
             <Crumbs items={[{ label: "Accueil", to: "/" }, { label: "Nos honoraires" }]} />
             <Eyebrow>Nos honoraires</Eyebrow>
-            <h1 className="m-0 max-w-[820px] font-display text-[clamp(30px,3.4vw,46px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-brand-ink text-balance">
+            <h1 className="m-0 max-w-[820px] font-display text-[clamp(30px,3.4vw,46px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-brand-ink text-balance lg:max-w-none lg:whitespace-nowrap">
               Des honoraires clairs, <Em wrap>annoncés dès le départ</Em>
             </h1>
-            <p className="m-0 max-w-[620px] text-[15.5px] leading-relaxed text-brand-txt text-pretty md:text-base">
+            <p className="m-0 max-w-[620px] text-[15.5px] leading-relaxed text-brand-txt text-pretty md:text-base lg:max-w-none lg:whitespace-nowrap">
               Pas de frais cachés : vous savez tout de suite ce que vous paierez, et pour quel service. Nos honoraires sont exprimés TTC.
             </p>
             <div className="flex flex-wrap gap-3.5 pt-1.5">

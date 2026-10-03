@@ -155,7 +155,7 @@ const QUESTIONS = [
   { q: "L’estimation est-elle vraiment gratuite ?", a: "Oui. L’estimation est gratuite et sans engagement : visite sur place, analyse des ventes comparables du quartier et rapport d’estimation détaillé." },
   {
     q: "Quelle différence entre mandat simple et mandat exclusif ?",
-    a: "Avec le mandat simple, vous restez libre de confier votre bien à d’autres agences : photos professionnelles, diffusion sur les portails, visites et comptes-rendus, accompagnement jusqu’au notaire. Avec le mandat exclusif, nous sommes seuls à vendre votre bien, et nous ajoutons la vidéo drone, une diffusion premium avec notre réseau off-market, une stratégie dédiée et un point détaillé chaque semaine.",
+    a: "Dans les deux cas, on s’investit pleinement pour vendre votre bien : photos professionnelles, diffusion sur les portails, visites avec compte-rendu et accompagnement jusqu’au notaire. Avec le mandat simple, vous restez libre de travailler aussi avec d’autres agences, et notre motivation reste la même. Avec le mandat exclusif, nous sommes seuls à vendre votre bien : nous mettons plus de moyens sur sa visibilité, nous faisons jouer nos partenariats et notre réseau d’acheteurs, et nous construisons une stratégie dédiée, avec un point détaillé chaque semaine.",
   },
   { q: "Puis-je vendre sans que mon bien apparaisse en ligne ?", a: "Oui, avec la vente confidentielle : votre bien est présenté uniquement à des acquéreurs vérifiés, sans aucune annonce en ligne." },
   { q: "Comment suis-je tenu au courant ?", a: "Vous avez un interlocuteur dédié, joignable 7 j/7. Vous recevez un compte-rendu après chaque visite, et nous faisons un point chaque semaine." },

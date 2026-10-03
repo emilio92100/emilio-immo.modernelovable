@@ -105,6 +105,55 @@ const Galerie = ({ p }: { p: Property }) => {
   );
 };
 
+/* « Détail des pièces » : s’ouvre et se referme en douceur (la hauteur suit, les lignes apparaissent l’une après l’autre).
+   Le tableau reste dans la page même fermé, pour Google. */
+const DetailPieces = ({ pieces }: { pieces: NonNullable<Property["roomDetails"]> }) => {
+  const [ouvert, setOuvert] = useState(false);
+  return (
+    <div className="rounded-[20px] border border-brand-line bg-white">
+      <button
+        type="button"
+        onClick={() => setOuvert((o) => !o)}
+        aria-expanded={ouvert}
+        aria-controls="detail-pieces"
+        className="flex min-h-[64px] w-full cursor-pointer items-center justify-between gap-4 rounded-[20px] px-5 py-3 text-left"
+      >
+        <span className="flex flex-col"><span className="font-display text-[22px] text-brand-ink font-extrabold tracking-[-0.025em]">Détail des pièces</span><span className="text-[13.5px] text-brand-mut">{pieces.length} surface{pieces.length > 1 ? "s" : ""}</span></span>
+        <span className={cn("grid h-8 w-8 flex-none place-items-center rounded-full bg-brand-tint text-brand transition-transform duration-500 [transition-timing-function:cubic-bezier(.22,.8,.24,1)] motion-reduce:transition-none", ouvert && "rotate-180")}><ChevronLeft className="h-[18px] w-[18px] -rotate-90" /></span>
+      </button>
+      <div
+        id="detail-pieces"
+        aria-hidden={!ouvert}
+        className={cn(
+          "grid transition-[grid-template-rows,opacity] motion-reduce:transition-none",
+          ouvert ? "grid-rows-[1fr] opacity-100 duration-500 [transition-timing-function:cubic-bezier(.22,.8,.24,1)]" : "grid-rows-[0fr] opacity-0 [transition-duration:480ms] [transition-timing-function:cubic-bezier(.45,0,.25,1)]",
+        )}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <div className="overflow-x-auto px-5 pb-5">
+            <table className="w-full border-collapse text-[15px]">
+              <thead><tr className="text-left text-[12.5px] uppercase tracking-[0.12em] text-brand-orange-text"><th className="py-2 font-extrabold">Niveau</th><th className="py-2 font-extrabold">Pièce</th><th className="py-2 text-right font-extrabold">Surface</th></tr></thead>
+              <tbody>
+                {pieces.map((r, k) => (
+                  <tr
+                    key={k}
+                    className={cn("border-t border-brand-line2 transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none", ouvert ? "translate-y-0 opacity-100" : "-translate-y-1.5 opacity-0")}
+                    style={{ transitionDelay: ouvert ? `${120 + Math.min(k, 12) * 40}ms` : "0ms" }}
+                  >
+                    <td className="py-2.5 text-brand-mut">{r.level ? `Étage ${r.level}` : "—"}</td>
+                    <td className="py-2.5 font-semibold text-brand-ink">{r.type}</td>
+                    <td className="py-2.5 text-right text-brand-ink">{r.surface > 0 ? formatSurface(r.surface) : "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const PropertyDetail = () => {
   const { id } = useParams();
   const { openContact } = useSiteModals();
@@ -286,26 +335,7 @@ const PropertyDetail = () => {
               )}
 
               {p.roomDetails && p.roomDetails.length > 0 && (
-                <details className="group rounded-[20px] border border-brand-line bg-white">
-                  <summary className="flex min-h-[64px] cursor-pointer list-none items-center justify-between gap-4 px-5 py-3 [&::-webkit-details-marker]:hidden">
-                    <span className="flex flex-col"><span className="font-display text-[22px] text-brand-ink font-extrabold tracking-[-0.025em]">Détail des pièces</span><span className="text-[13.5px] text-brand-mut">{p.roomDetails.length} surface{p.roomDetails.length > 1 ? "s" : ""}</span></span>
-                    <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-brand-tint text-brand transition-transform group-open:rotate-180"><ChevronLeft className="h-[18px] w-[18px] -rotate-90" /></span>
-                  </summary>
-                  <div className="overflow-x-auto px-5 pb-5">
-                    <table className="w-full border-collapse text-[15px]">
-                      <thead><tr className="text-left text-[12.5px] uppercase tracking-[0.12em] text-brand-orange-text"><th className="py-2 font-extrabold">Niveau</th><th className="py-2 font-extrabold">Pièce</th><th className="py-2 text-right font-extrabold">Surface</th></tr></thead>
-                      <tbody>
-                        {p.roomDetails.map((r, k) => (
-                          <tr key={k} className="border-t border-brand-line2">
-                            <td className="py-2.5 text-brand-mut">{r.level ? `Étage ${r.level}` : "—"}</td>
-                            <td className="py-2.5 font-semibold text-brand-ink">{r.type}</td>
-                            <td className="py-2.5 text-right text-brand-ink">{r.surface > 0 ? formatSurface(r.surface) : "—"}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </details>
+                <DetailPieces pieces={p.roomDetails} />
               )}
 
               <div className="flex flex-col gap-5 rounded-[20px] border border-brand-line bg-white p-5 md:p-6">
