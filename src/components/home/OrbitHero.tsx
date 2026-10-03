@@ -233,7 +233,7 @@ const OrbitHero = ({ vendre }: { vendre?: boolean }) => {
           </h1>
           <p className="m-0 text-base leading-relaxed text-pretty sm:text-lg">
             {vendre
-              ? "Des familles, des couples, des investisseurs nous ont déjà confié leur recherche. Estimez votre bien : on vous dit combien d’entre eux il peut intéresser, et on prépare votre vente avec vous."
+              ? "Des familles, des couples, des investisseurs nous ont déjà confié leur recherche. Votre bien intéresse peut-être déjà l’un d’entre eux : faites-le estimer, et on prépare votre vente ensemble."
               : "Des familles, des couples, des investisseurs nous confient leur recherche, à Paris, dans les Hauts-de-Seine et au-delà. Estimez votre bien : on vous dit combien d’entre eux il peut intéresser."}
           </p>
           <div className="hidden md:block">{action}</div>
