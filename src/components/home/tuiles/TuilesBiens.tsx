@@ -1,10 +1,12 @@
 /* ═══ Accueil « Tuiles » : nos biens du moment ═══════════════════════════════
-   Des cartes qui défilent. Sur téléphone : on glisse du doigt, la carte au centre
-   est mise en avant, une barre montre où l’on en est. Sur ordinateur : une barre de
-   défilement sous les cartes, à cliquer ou à faire glisser. */
+   Une grande tuile bleue aux coins arrondis, comme les autres blocs de l’accueil.
+   Ordinateur : les biens défilent doucement tout seuls ; le défilé s’arrête quand on passe la souris dessus.
+   Téléphone : on glisse du doigt, la carte au centre est mise en avant, une barre montre où l’on en est.
+   Si l’appareil demande moins d’animations, pas de défilé : on fait défiler soi-même. */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, BedDouble, Bell, Camera, DoorOpen, Eye, Hand, MapPin, Maximize } from "lucide-react";
+import { useReducedMotion } from "framer-motion";
+import { ArrowRight, Bell, Eye, Hand, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { type Property, formatPrice } from "@/lib/properties";
 import { QuickViewPopup, displayCity, displayTitle, featureBadges } from "@/components/PropertyCard";
@@ -17,210 +19,92 @@ const FILTRES = [
   { k: "immeuble", t: "Immeubles", test: (p: Property) => /immeuble/i.test(p.type) },
 ];
 
+const BLEU = "linear-gradient(165deg, #1B3D6B 0%, #22497D 58%, #2C5C99 100%)";
 const nf = new Intl.NumberFormat("fr-FR");
-const MAX = 8;
+/* Dix biens au plus sur l’accueil : le reste est sur la page Nos biens. */
+const MAX = 10;
+const PAS = 320 + 24; // largeur d’une carte sur ordinateur + l’espace entre deux cartes
 
-const Carte = ({ p, actif, onVue }: { p: Property; actif: boolean; onVue: () => void }) => {
+const Spec = ({ t }: { t: string }) => <span className="inline-flex h-7 items-center rounded-[9px] bg-brand-surf px-2.5 text-[12.5px] font-bold text-[#33445B]">{t}</span>;
+
+/** La carte blanche d’un bien. `cachee` : copie qui sert seulement à faire boucler le défilé (ni lue, ni atteinte au clavier). */
+const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void; cachee?: boolean; className?: string }) => {
   const plus = featureBadges(p)[0];
+  const sansClavier = cachee ? { tabIndex: -1 } : {};
   return (
     <article
-      data-carte
-      className={cn(
-        "group relative flex w-[84vw] max-w-[340px] flex-none snap-center flex-col gap-3.5 transition duration-500 ease-out md:w-[340px] md:snap-start",
-        actif ? "max-md:scale-100 max-md:opacity-100" : "max-md:scale-[0.93] max-md:opacity-70",
-      )}
+      {...(cachee ? { "aria-hidden": true } : {})}
+      className={cn("group relative flex-none overflow-hidden rounded-[24px] bg-white text-brand-ink shadow-[0_30px_60px_-34px_rgba(0,0,0,0.7)] transition duration-300 md:rounded-[26px] md:hover:-translate-y-1.5", className)}
     >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-brand-sky md:aspect-auto md:h-[250px]">
+      <div className="relative h-[200px] overflow-hidden bg-brand-sky md:h-[210px]">
         {p.images[0] && (
-          <img src={p.images[0]} alt={`${displayTitle(p)}, ${displayCity(p)}`} loading="lazy" className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]" />
+          <img src={p.images[0]} alt={cachee ? "" : `${displayTitle(p)}, ${displayCity(p)}`} loading="lazy" className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]" />
         )}
-        <span className="absolute left-3.5 top-3.5 inline-flex h-[30px] items-center rounded-full bg-[rgba(19,36,61,0.78)] px-3 text-[12.5px] font-bold text-white">{p.type}</span>
-        {p.exclusive && <span className="absolute left-3.5 top-[52px] inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-bold text-brand-ink">Exclusivité</span>}
+        <span className="absolute bottom-3 left-3 inline-flex h-9 items-center rounded-xl bg-white px-3 text-[15.5px] font-extrabold shadow-[0_6px_16px_-8px_rgba(19,36,61,0.4)]">{formatPrice(p.price)}</span>
+        {p.exclusive && <span className="absolute left-3 top-3 inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
         <button
           type="button"
           onClick={onVue}
           aria-label={`Vue rapide : ${displayTitle(p)}, ${displayCity(p)}`}
-          className="absolute right-3 top-3 z-[2] grid h-11 w-11 place-items-center rounded-full bg-white/95 text-brand-ink shadow-[0_6px_16px_-8px_rgba(19,36,61,0.5)] transition hover:scale-105"
+          {...sansClavier}
+          className="absolute right-3 top-3 z-[2] grid h-10 w-10 place-items-center rounded-full bg-white/95 text-brand-ink shadow-[0_6px_16px_-8px_rgba(19,36,61,0.5)] transition hover:scale-105"
         >
-          <Eye className="h-[18px] w-[18px]" />
+          <Eye className="h-4 w-4" />
         </button>
-        <span className="absolute bottom-3.5 left-3.5 inline-flex h-[38px] items-center rounded-xl bg-white px-3.5 text-base font-extrabold text-brand-ink shadow-[0_6px_16px_-8px_rgba(19,36,61,0.4)]">{formatPrice(p.price)}</span>
-        {p.images.length > 1 && (
-          <span className="absolute bottom-3.5 right-3.5 inline-flex h-[30px] items-center gap-1.5 rounded-full bg-[rgba(19,36,61,0.7)] px-2.5 text-xs font-semibold text-white">
-            <Camera className="h-3.5 w-3.5" /> {p.images.length}
-          </span>
-        )}
       </div>
-      <div className="flex flex-col gap-1 px-0.5">
-        <h3 className="m-0 text-lg font-extrabold leading-snug tracking-[-0.02em] text-brand-ink">
-          <Link to={`/biens/${p.id}`} className="after:absolute after:inset-0 after:z-[1] after:content-['']">
+      <div className="flex flex-col gap-2 p-4">
+        <h3 className="m-0 truncate text-[16.5px] font-extrabold tracking-[-0.01em] md:text-[17px]">
+          <Link to={`/biens/${p.id}`} {...sansClavier} className="after:absolute after:inset-0 after:z-[1] after:content-['']">
             {displayTitle(p)}
             {plus ? ` avec ${plus.toLowerCase()}` : ""}
           </Link>
         </h3>
-        <span className="flex items-center gap-1.5 text-sm font-semibold text-brand-mut">
-          <MapPin className="h-[15px] w-[15px]" /> {displayCity(p)} ({p.postalCode})
+        <span className="flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-mut">
+          <MapPin className="h-[15px] w-[15px] flex-none" /> {displayCity(p)} ({p.postalCode})
         </span>
-      </div>
-      <div className="flex flex-wrap gap-1.5 px-0.5">
-        {p.surface > 0 && <Spec icon={<Maximize className="h-3.5 w-3.5" />} t={`${nf.format(p.surface)} m²`} />}
-        {p.rooms > 0 && <Spec icon={<DoorOpen className="h-3.5 w-3.5" />} t={`${p.rooms} pièce${p.rooms > 1 ? "s" : ""}`} />}
-        {p.bedrooms > 0 && <Spec icon={<BedDouble className="h-3.5 w-3.5" />} t={`${p.bedrooms} chambre${p.bedrooms > 1 ? "s" : ""}`} />}
+        <div className="flex flex-wrap gap-1.5">
+          {p.surface > 0 && <Spec t={`${nf.format(p.surface)} m²`} />}
+          {p.rooms > 0 && <Spec t={`${p.rooms} pièce${p.rooms > 1 ? "s" : ""}`} />}
+          {p.bedrooms > 0 && <Spec t={`${p.bedrooms} chambre${p.bedrooms > 1 ? "s" : ""}`} />}
+        </div>
       </div>
     </article>
   );
 };
 
-const Spec = ({ icon, t }: { icon: JSX.Element; t: string }) => (
-  <span className="inline-flex h-8 items-center gap-1.5 rounded-[10px] bg-brand-surf px-2.5 text-[13px] font-bold text-[#33445B]">{icon}{t}</span>
-);
-
-const Alerte = () => (
-  <Link
-    to="/acheter#recherche"
-    data-carte
-    className="relative flex w-[78vw] max-w-[300px] flex-none snap-center flex-col justify-between overflow-hidden rounded-3xl bg-brand p-[30px] text-white md:min-h-[372px] md:w-[300px] md:snap-start"
-  >
-    <span aria-hidden className="absolute -right-[70px] -top-[70px] h-[220px] w-[220px] rounded-full border-[34px] border-white/[0.07]" />
-    <span className="relative flex flex-col">
-      <span className="grid h-[52px] w-[52px] place-items-center rounded-2xl bg-white/[0.12]"><Bell className="h-6 w-6" /></span>
-      <span className="mb-2.5 mt-[22px] text-[22px] font-extrabold leading-[1.15] tracking-[-0.03em] md:text-[26px]">Soyez prévenu en premier</span>
-      <span className="text-[15px] leading-[1.55] text-white/80">Les nouveaux biens dès leur arrivée, parfois avant leur mise en ligne.</span>
-    </span>
-    <span className="relative mt-7 inline-flex h-[52px] items-center gap-2.5 self-start rounded-2xl bg-brand-orange px-6 text-[15px] font-bold text-brand-ink">
-      Créer mon alerte <ArrowRight className="h-[18px] w-[18px]" />
-    </span>
-  </Link>
-);
-
-const Encore = ({ n }: { n: number }) => (
-  <Link
-    to="/biens"
-    data-carte
-    className="flex w-[78vw] max-w-[300px] flex-none snap-center flex-col items-start justify-end gap-3 rounded-3xl bg-brand-sky p-[30px] text-brand-ink transition hover:bg-brand-tint md:min-h-[372px] md:w-[300px] md:snap-start"
-  >
-    <span className="text-[56px] font-extrabold leading-none tracking-[-0.04em] text-brand">+{n}</span>
-    <span className="text-[22px] font-extrabold leading-tight tracking-[-0.03em]">biens à découvrir</span>
-    <span className="mt-3 inline-flex h-[52px] items-center gap-2.5 rounded-2xl bg-brand px-6 text-[15px] font-bold text-white">
-      Voir tous nos biens <ArrowRight className="h-[18px] w-[18px]" />
-    </span>
-  </Link>
-);
-
-/* Ordinateur : une petite barre de défilement discrète, centrée sous les cartes, à la place des flèches.
-   Un clic sur la barre y emmène en douceur ; on peut aussi attraper la poignée et la faire glisser, ou utiliser les flèches du clavier. */
-const BarreDefilement = ({ rail, cle, id }: { rail: React.RefObject<HTMLDivElement>; cle: string; id: string }) => {
-  const piste = useRef<HTMLDivElement>(null);
-  const prise = useRef<{ x: number; depart: number } | null>(null);
-  const [pos, setPos] = useState({ debut: 0, taille: 1 });
-  const [tenue, setTenue] = useState(false);
-
-  useEffect(() => {
-    const el = rail.current;
-    if (!el) return;
-    const maj = () => {
-      const max = el.scrollWidth - el.clientWidth;
-      const taille = el.scrollWidth > 0 ? Math.min(1, el.clientWidth / el.scrollWidth) : 1;
-      setPos({ taille, debut: max > 0 ? (el.scrollLeft / max) * (1 - taille) : 0 });
-    };
-    maj();
-    el.addEventListener("scroll", maj, { passive: true });
-    const ro = new ResizeObserver(maj);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", maj);
-      ro.disconnect();
-    };
-  }, [rail, cle]);
-
-  if (pos.taille >= 0.995) return null;
-
-  const allerA = (fraction: number, doux = true) => {
-    const el = rail.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    const debut = Math.max(0, Math.min(1 - pos.taille, fraction - pos.taille / 2));
-    el.scrollTo({ left: (debut / (1 - pos.taille)) * max, behavior: doux ? "smooth" : "auto" });
-  };
-
-  const clicPiste = (e: React.MouseEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).dataset.poignee) return;
-    const r = piste.current!.getBoundingClientRect();
-    allerA((e.clientX - r.left) / r.width);
-  };
-
-  const attraper = (e: React.PointerEvent<HTMLSpanElement>) => {
-    const el = rail.current;
-    if (!el) return;
-    e.preventDefault();
-    e.currentTarget.setPointerCapture(e.pointerId);
-    prise.current = { x: e.clientX, depart: el.scrollLeft };
-    el.style.scrollSnapType = "none"; // pas d’aimant pendant qu’on fait glisser
-    setTenue(true);
-  };
-  const bouger = (e: React.PointerEvent<HTMLSpanElement>) => {
-    const el = rail.current;
-    const p = prise.current;
-    if (!el || !p || !piste.current) return;
-    el.scrollLeft = p.depart + (e.clientX - p.x) * (el.scrollWidth / piste.current.clientWidth);
-  };
-  const lacher = () => {
-    if (!prise.current) return;
-    prise.current = null;
-    setTenue(false);
-    if (rail.current) rail.current.style.scrollSnapType = "";
-  };
-
-  const clavier = (e: React.KeyboardEvent) => {
-    const el = rail.current;
-    if (!el) return;
-    const pasCarte = 360;
-    if (e.key === "ArrowRight") el.scrollBy({ left: pasCarte, behavior: "smooth" });
-    else if (e.key === "ArrowLeft") el.scrollBy({ left: -pasCarte, behavior: "smooth" });
-    else if (e.key === "Home") el.scrollTo({ left: 0, behavior: "smooth" });
-    else if (e.key === "End") el.scrollTo({ left: el.scrollWidth, behavior: "smooth" });
-    else return;
-    e.preventDefault();
-  };
-
-  const avance = pos.taille < 1 ? Math.round((pos.debut / (1 - pos.taille)) * 100) : 0;
+/** Ordinateur : la rangée de biens qui passe toute seule (deux fois la même suite, pour boucler sans à-coup). */
+const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Property) => void; calme: boolean }) => {
+  if (calme) {
+    // moins d’animations demandé : une simple rangée qu’on fait défiler soi-même
+    return (
+      <div className="flex gap-6 overflow-x-auto px-10 pb-4">
+        {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className="w-[320px]" />)}
+      </div>
+    );
+  }
+  // assez de cartes pour remplir l’écran, même avec un seul bien
+  const fois = liste.length ? Math.max(1, Math.ceil(1800 / (liste.length * PAS))) : 0;
+  const base = Array.from({ length: fois }).flatMap(() => liste);
+  const serie = [...base, ...base];
   return (
-    <div
-      ref={piste}
-      role="scrollbar"
-      aria-controls={id}
-      aria-orientation="horizontal"
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuenow={avance}
-      aria-label="Faire défiler les biens"
-      tabIndex={0}
-      onClick={clicPiste}
-      onKeyDown={clavier}
-      className="group/barre relative mx-auto hidden h-6 w-[220px] cursor-pointer items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-brand/40 md:flex"
-    >
-      <span aria-hidden className={cn("absolute inset-x-0 rounded-full bg-[#E6ECF3] transition-all duration-200", tenue ? "h-1.5" : "h-1 group-hover/barre:h-1.5")} />
-      <span
-        data-poignee="1"
-        aria-hidden
-        onPointerDown={attraper}
-        onPointerMove={bouger}
-        onPointerUp={lacher}
-        onPointerCancel={lacher}
-        className={cn(
-          "absolute rounded-full bg-brand/70 transition-[height,background-color] duration-200 hover:bg-brand",
-          tenue ? "h-1.5 cursor-grabbing bg-brand" : "h-1 cursor-grab group-hover/barre:h-1.5 group-hover/barre:bg-brand",
-        )}
-        style={{ left: `${pos.debut * 100}%`, width: `${pos.taille * 100}%` }}
+    <div className="group/defile relative [mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)]">
+      <div
+        className="flex w-max py-2 [animation:defile-biens_var(--duree)_linear_infinite] group-focus-within/defile:[animation-play-state:paused] group-hover/defile:[animation-play-state:paused]"
+        style={{ "--duree": `${Math.max(22, base.length * 6.5)}s` } as React.CSSProperties}
       >
-        <span className="absolute -inset-y-3 inset-x-0" />
-      </span>
+        {serie.map((p, k) => (
+          <div key={`${p.id}-${k}`} className="flex-none pr-6">
+            <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className="w-[320px]" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
 const TuilesBiens = () => {
   const biens = useBiens();
+  const calme = !!useReducedMotion();
   const [filtre, setFiltre] = useState("tous");
   const [vue, setVue] = useState<Property | null>(null);
   const [actif, setActif] = useState(0);
@@ -229,11 +113,10 @@ const TuilesBiens = () => {
 
   const dispo = useMemo(() => FILTRES.map((f) => ({ ...f, n: (biens || []).filter(f.test).length })).filter((f) => f.k === "tous" || f.n > 0), [biens]);
   const tous = useMemo(() => (biens || []).filter((FILTRES.find((f) => f.k === filtre) || FILTRES[0]).test), [biens, filtre]);
-  /* Huit biens au plus sur l’accueil : le reste est sur la page Nos biens. */
   const liste = tous.slice(0, MAX);
-  const total = liste.length + (tous.length > MAX ? 2 : 1);
+  const total = liste.length;
 
-  /* Carte la plus proche du centre = carte active. */
+  /* Téléphone : la carte la plus proche du centre est la carte active. */
   const mesure = useCallback(() => {
     const el = rail.current;
     if (!el) return;
@@ -266,7 +149,7 @@ const TuilesBiens = () => {
     };
   }, [mesure, biens, filtre]);
 
-  /* Sur téléphone, une petite invitation à glisser quand la liste arrive à l’écran. */
+  /* Téléphone : une petite invitation à glisser quand la liste arrive à l’écran. */
   useEffect(() => {
     const el = rail.current;
     if (!el || !biens?.length || touche) return;
@@ -291,88 +174,106 @@ const TuilesBiens = () => {
     const el = rail.current;
     const c = el?.querySelectorAll<HTMLElement>("[data-carte]")[i];
     if (!el || !c) return;
-    const desktop = window.matchMedia("(min-width: 768px)").matches;
-    el.scrollTo({ left: desktop ? c.offsetLeft - 40 : c.offsetLeft - (el.clientWidth - c.offsetWidth) / 2, behavior: "smooth" });
+    el.scrollTo({ left: c.offsetLeft - (el.clientWidth - c.offsetWidth) / 2, behavior: "smooth" });
   };
 
+  const nbTous = biens?.length || 0;
+
   return (
-    <section id="biens" className="mx-auto w-full max-w-[1320px] px-4 pt-14 md:px-10 md:pt-[110px]">
-      <div className="flex flex-wrap items-end justify-between gap-6">
-        <div>
-          <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-brand-ink md:text-[52px] md:leading-[1.04] md:tracking-[-0.035em]">Nos biens du moment</h2>
-          <p className="m-0 mt-2.5 text-[14.5px] font-medium leading-relaxed text-brand-mut md:mt-3 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, avec les vraies photos.</p>
-        </div>
-        <div className="flex w-full min-w-0 items-center gap-2.5 md:w-auto">
-          <div role="group" aria-label="Filtrer les biens" className="no-scrollbar -mx-4 flex flex-1 gap-2 overflow-x-auto px-4 md:mx-0 md:flex-none md:px-0">
-            {dispo.map((f) => (
-              <button
-                key={f.k}
-                type="button"
-                aria-pressed={filtre === f.k}
-                onClick={() => {
-                  setFiltre(f.k);
-                  rail.current?.scrollTo({ left: 0 });
-                }}
-                className={cn(
-                  "inline-flex h-11 flex-none items-center gap-2 whitespace-nowrap rounded-full border-[1.5px] px-4 text-sm font-bold transition",
-                  filtre === f.k ? "border-brand-ink bg-brand-ink text-white" : "border-[#E2E8F0] text-brand-mut hover:border-brand-ink/40",
-                )}
-              >
-                {f.t}
-                <span className={cn("grid h-[22px] min-w-[22px] place-items-center rounded-full px-1 text-xs", filtre === f.k ? "bg-white/20 text-white" : "bg-brand-surf text-brand-mut")}>{f.n}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+    <section id="biens" className="mx-auto w-full max-w-[1560px] px-3 pt-14 md:px-6 md:pt-[110px]">
+      <div className="relative overflow-hidden rounded-[30px] pb-8 pt-9 text-white shadow-[0_50px_90px_-60px_rgba(19,36,61,0.9)] md:rounded-[40px] md:pb-12 md:pt-14" style={{ background: BLEU }}>
+        <span aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-[320px] w-[320px] rounded-full border-[48px] border-white/[0.06]" />
+        <span aria-hidden className="pointer-events-none absolute -bottom-32 -left-20 h-[300px] w-[300px] rounded-full border-[44px] border-white/[0.05]" />
 
-      {!biens ? (
-        <div className="mt-8 flex gap-5 overflow-hidden md:mt-9">
-          {[0, 1, 2, 3].map((k) => <div key={k} className="h-[372px] w-[84vw] max-w-[340px] flex-none animate-pulse rounded-3xl bg-brand-surf md:w-[340px]" />)}
-        </div>
-      ) : (
-        <>
-          <div
-            ref={rail}
-            id="rail-biens"
-            key={filtre}
-            onTouchStart={() => setTouche(true)}
-            className="fx-fade no-scrollbar -mx-4 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[8vw] pb-4 pt-1 md:-mx-10 md:mt-9 md:gap-5 md:px-10 md:pb-6 md:[scroll-padding-inline:40px]"
-          >
-            {liste.map((p, i) => <Carte key={p.id} p={p} actif={actif === i} onVue={() => setVue(p)} />)}
-            {tous.length > MAX && <Encore n={tous.length - MAX} />}
-            <Alerte />
-          </div>
-
-          {/* Ordinateur : la barre de défilement */}
-          <BarreDefilement rail={rail} cle={`${filtre}-${liste.length}`} id="rail-biens" />
-
-          {/* Téléphone : où en est-on, et une invitation à glisser */}
-          <div className="mt-1 flex items-center gap-3.5 md:hidden">
-            <span className="min-w-[44px] text-sm font-extrabold tabular-nums text-brand-ink" aria-live="polite">
-              {Math.min(actif + 1, total)} <span className="font-semibold text-brand-mut">/ {total}</span>
-            </span>
-            <div className="flex flex-1 gap-1.5">
-              {Array.from({ length: total }).map((_, i) => (
-                <button key={i} type="button" onClick={() => aller(i)} aria-label={i < liste.length ? `Bien ${i + 1}` : i === total - 1 ? "Créer une alerte" : "Voir tous nos biens"} className="flex h-11 flex-1 items-center">
-                  <span className={cn("block h-1.5 w-full rounded-full transition-colors duration-300", i === actif ? "bg-brand" : i < actif ? "bg-brand/35" : "bg-[#D8E1EC]")} />
+        <div className="relative">
+          {/* Le titre et les filtres */}
+          <div className="mx-auto flex w-full max-w-[1320px] flex-wrap items-end justify-between gap-5 px-5 md:gap-6 md:px-10">
+            <div>
+              <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white md:text-[52px] md:leading-[1.04] md:tracking-[-0.035em]">Nos biens du moment</h2>
+              <p className="m-0 mt-2.5 text-[14.5px] font-medium leading-relaxed text-brand-bt md:mt-3 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, avec les vraies photos.</p>
+            </div>
+            <div role="group" aria-label="Filtrer les biens" className="no-scrollbar -mx-5 flex w-[calc(100%+40px)] gap-2 overflow-x-auto px-5 md:mx-0 md:w-auto md:px-0">
+              {dispo.map((f) => (
+                <button
+                  key={f.k}
+                  type="button"
+                  aria-pressed={filtre === f.k}
+                  onClick={() => {
+                    setFiltre(f.k);
+                    rail.current?.scrollTo({ left: 0 });
+                  }}
+                  className={cn(
+                    "inline-flex h-11 flex-none items-center gap-2 whitespace-nowrap rounded-full border-[1.5px] px-4 text-sm font-bold transition",
+                    filtre === f.k ? "border-white bg-white text-brand-ink" : "border-white/25 text-white/80 hover:border-white/60",
+                  )}
+                >
+                  {f.t}
+                  <span className={cn("grid h-[22px] min-w-[22px] place-items-center rounded-full px-1 text-xs", filtre === f.k ? "bg-brand-ink/10 text-brand-ink" : "bg-white/10 text-white/80")}>{f.n}</span>
                 </button>
               ))}
             </div>
-            {!touche && actif === 0 && (
-              <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[13px] font-bold text-brand-orange-text">
-                <Hand className="h-4 w-4 anim-swipe" /> Glissez
-              </span>
-            )}
           </div>
 
-          <div className="mt-6 flex justify-center md:mt-4 md:justify-start">
-            <Link to="/biens" className="inline-flex h-[52px] items-center gap-2.5 rounded-2xl bg-brand-surf px-6 text-[15px] font-bold text-brand-ink transition hover:bg-brand-sky">
-              {(biens?.length || 0) > MAX ? `Voir nos ${biens?.length} biens` : "Voir tous nos biens"} <ArrowRight className="h-[18px] w-[18px]" />
-            </Link>
-          </div>
-        </>
-      )}
+          {!biens ? (
+            <div className="mt-8 flex gap-5 overflow-hidden px-5 md:mt-10 md:px-10">
+              {[0, 1, 2, 3, 4].map((k) => <div key={k} className="h-[340px] w-[78vw] max-w-[320px] flex-none animate-pulse rounded-[26px] bg-white/10 md:w-[320px]" />)}
+            </div>
+          ) : (
+            <>
+              {/* Ordinateur : le défilé */}
+              <div key={filtre} className="fx-fade mt-10 hidden md:block">
+                <Defile liste={liste} onVue={setVue} calme={calme} />
+              </div>
+
+              {/* Téléphone : on glisse du doigt */}
+              <div
+                ref={rail}
+                key={`tel-${filtre}`}
+                onTouchStart={() => setTouche(true)}
+                className="fx-fade no-scrollbar mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[11vw] pb-3 pt-1 md:hidden"
+              >
+                {liste.map((p, i) => (
+                  <div key={p.id} data-carte className={cn("flex-none snap-center transition duration-500 ease-out", actif === i ? "scale-100 opacity-100" : "scale-[0.93] opacity-70")}>
+                    <Carte p={p} onVue={() => setVue(p)} className="w-[78vw] max-w-[320px]" />
+                  </div>
+                ))}
+              </div>
+              <div className="mt-2 flex items-center gap-3.5 px-5 md:hidden">
+                <span className="min-w-[44px] text-sm font-extrabold tabular-nums text-white" aria-live="polite">
+                  {Math.min(actif + 1, total)} <span className="font-semibold text-white/60">/ {total}</span>
+                </span>
+                <div className="flex flex-1 gap-1.5">
+                  {liste.map((p, i) => (
+                    <button key={p.id} type="button" onClick={() => aller(i)} aria-label={`Bien ${i + 1}`} className="flex h-11 flex-1 items-center">
+                      <span className={cn("block h-1.5 w-full rounded-full transition-colors duration-300", i === actif ? "bg-white" : i < actif ? "bg-white/45" : "bg-white/20")} />
+                    </button>
+                  ))}
+                </div>
+                {!touche && actif === 0 && (
+                  <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[13px] font-bold text-[#F9C98A]">
+                    <Hand className="anim-swipe h-4 w-4" /> Glissez
+                  </span>
+                )}
+              </div>
+
+              {/* Le bas de la tuile : tous les biens, et l’alerte */}
+              <div className="mx-auto mt-5 flex w-full max-w-[1320px] flex-col gap-3 px-5 md:mt-9 md:flex-row md:items-center md:justify-between md:px-10">
+                <span className="hidden text-[15px] font-semibold text-brand-bt md:inline">
+                  {calme ? "Faites défiler les biens pour tous les voir." : "Passez la souris sur un bien pour arrêter le défilé."}
+                </span>
+                <div className="flex flex-col gap-2.5 md:flex-row md:items-center md:gap-3">
+                  <Link to="/acheter#recherche" className="inline-flex h-[52px] items-center justify-center gap-2.5 rounded-2xl border-[1.5px] border-white/55 px-5 text-[15px] font-bold text-white transition hover:bg-white/10">
+                    <Bell className="h-[18px] w-[18px]" /> Être prévenu en premier
+                  </Link>
+                  <Link to="/biens" className="inline-flex h-[52px] items-center justify-center gap-2.5 rounded-2xl bg-brand-orange px-6 text-[15px] font-bold text-brand-ink transition hover:brightness-105">
+                    {nbTous > 1 ? `Voir nos ${nbTous} biens` : "Voir tous nos biens"} <ArrowRight className="h-[18px] w-[18px]" />
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
       {vue && <QuickViewPopup property={vue} open={!!vue} onClose={() => setVue(null)} />}
     </section>
   );
