@@ -1,9 +1,10 @@
 /* ═══ Accueil « Tuiles » : nos biens du moment ═══════════════════════════════
    Des cartes qui défilent. Sur téléphone : on glisse du doigt, la carte au centre
-   est mise en avant, une barre montre où l’on en est. */
+   est mise en avant, une barre montre où l’on en est. Sur ordinateur : une barre de
+   défilement sous les cartes, à cliquer ou à faire glisser. */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, BedDouble, Bell, Camera, ChevronLeft, ChevronRight, DoorOpen, Eye, Hand, MapPin, Maximize } from "lucide-react";
+import { ArrowRight, BedDouble, Bell, Camera, DoorOpen, Eye, Hand, MapPin, Maximize } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { type Property, formatPrice } from "@/lib/properties";
 import { QuickViewPopup, displayCity, displayTitle, featureBadges } from "@/components/PropertyCard";
@@ -106,6 +107,118 @@ const Encore = ({ n }: { n: number }) => (
   </Link>
 );
 
+/* Ordinateur : la barre de défilement sous les cartes, à la place des flèches.
+   Un clic sur la barre y emmène en douceur ; on peut aussi attraper la poignée et la faire glisser, ou utiliser les flèches du clavier. */
+const BarreDefilement = ({ rail, cle, id }: { rail: React.RefObject<HTMLDivElement>; cle: string; id: string }) => {
+  const piste = useRef<HTMLDivElement>(null);
+  const prise = useRef<{ x: number; depart: number } | null>(null);
+  const [pos, setPos] = useState({ debut: 0, taille: 1 });
+  const [tenue, setTenue] = useState(false);
+
+  useEffect(() => {
+    const el = rail.current;
+    if (!el) return;
+    const maj = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      const taille = el.scrollWidth > 0 ? Math.min(1, el.clientWidth / el.scrollWidth) : 1;
+      setPos({ taille, debut: max > 0 ? (el.scrollLeft / max) * (1 - taille) : 0 });
+    };
+    maj();
+    el.addEventListener("scroll", maj, { passive: true });
+    const ro = new ResizeObserver(maj);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", maj);
+      ro.disconnect();
+    };
+  }, [rail, cle]);
+
+  if (pos.taille >= 0.995) return null;
+
+  const allerA = (fraction: number, doux = true) => {
+    const el = rail.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    const debut = Math.max(0, Math.min(1 - pos.taille, fraction - pos.taille / 2));
+    el.scrollTo({ left: (debut / (1 - pos.taille)) * max, behavior: doux ? "smooth" : "auto" });
+  };
+
+  const clicPiste = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).dataset.poignee) return;
+    const r = piste.current!.getBoundingClientRect();
+    allerA((e.clientX - r.left) / r.width);
+  };
+
+  const attraper = (e: React.PointerEvent<HTMLSpanElement>) => {
+    const el = rail.current;
+    if (!el) return;
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    prise.current = { x: e.clientX, depart: el.scrollLeft };
+    el.style.scrollSnapType = "none"; // pas d’aimant pendant qu’on fait glisser
+    setTenue(true);
+  };
+  const bouger = (e: React.PointerEvent<HTMLSpanElement>) => {
+    const el = rail.current;
+    const p = prise.current;
+    if (!el || !p || !piste.current) return;
+    el.scrollLeft = p.depart + (e.clientX - p.x) * (el.scrollWidth / piste.current.clientWidth);
+  };
+  const lacher = () => {
+    if (!prise.current) return;
+    prise.current = null;
+    setTenue(false);
+    if (rail.current) rail.current.style.scrollSnapType = "";
+  };
+
+  const clavier = (e: React.KeyboardEvent) => {
+    const el = rail.current;
+    if (!el) return;
+    const pasCarte = 360;
+    if (e.key === "ArrowRight") el.scrollBy({ left: pasCarte, behavior: "smooth" });
+    else if (e.key === "ArrowLeft") el.scrollBy({ left: -pasCarte, behavior: "smooth" });
+    else if (e.key === "Home") el.scrollTo({ left: 0, behavior: "smooth" });
+    else if (e.key === "End") el.scrollTo({ left: el.scrollWidth, behavior: "smooth" });
+    else return;
+    e.preventDefault();
+  };
+
+  const avance = pos.taille < 1 ? Math.round((pos.debut / (1 - pos.taille)) * 100) : 0;
+  return (
+    <div
+      ref={piste}
+      role="scrollbar"
+      aria-controls={id}
+      aria-orientation="horizontal"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={avance}
+      aria-label="Faire défiler les biens"
+      tabIndex={0}
+      onClick={clicPiste}
+      onKeyDown={clavier}
+      className="group/barre relative hidden h-7 cursor-pointer items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-brand/40 md:flex"
+    >
+      <span aria-hidden className={cn("absolute inset-x-0 rounded-full bg-[#E2E8F0] transition-all duration-200", tenue ? "h-2.5" : "h-1.5 group-hover/barre:h-2.5")} />
+      <span
+        data-poignee="1"
+        aria-hidden
+        onPointerDown={attraper}
+        onPointerMove={bouger}
+        onPointerUp={lacher}
+        onPointerCancel={lacher}
+        className={cn(
+          "absolute rounded-full bg-brand transition-[height,background-color] duration-200 hover:bg-brand-ink",
+          tenue ? "h-2.5 cursor-grabbing bg-brand-ink" : "h-1.5 cursor-grab group-hover/barre:h-2.5",
+        )}
+        style={{ left: `${pos.debut * 100}%`, width: `${pos.taille * 100}%` }}
+      >
+        <span className="absolute -inset-y-3 inset-x-0" />
+      </span>
+    </div>
+  );
+};
+
 const TuilesBiens = () => {
   const biens = useBiens();
   const [filtre, setFiltre] = useState("tous");
@@ -181,7 +294,6 @@ const TuilesBiens = () => {
     const desktop = window.matchMedia("(min-width: 768px)").matches;
     el.scrollTo({ left: desktop ? c.offsetLeft - 40 : c.offsetLeft - (el.clientWidth - c.offsetWidth) / 2, behavior: "smooth" });
   };
-  const pas = (d: number) => rail.current?.scrollBy({ left: d * 360, behavior: "smooth" });
 
   return (
     <section id="biens" className="mx-auto w-full max-w-[1320px] px-4 pt-14 md:px-10 md:pt-[110px]">
@@ -211,12 +323,6 @@ const TuilesBiens = () => {
               </button>
             ))}
           </div>
-          <button type="button" onClick={() => pas(-1)} aria-label="Biens précédents" className="hidden h-12 w-12 flex-none place-items-center rounded-full border-[1.5px] border-[#E2E8F0] text-brand-ink transition hover:border-brand-ink md:grid">
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button type="button" onClick={() => pas(1)} aria-label="Biens suivants" className="hidden h-12 w-12 flex-none place-items-center rounded-full border-[1.5px] border-[#E2E8F0] text-brand-ink transition hover:border-brand-ink md:grid">
-            <ChevronRight className="h-5 w-5" />
-          </button>
         </div>
       </div>
 
@@ -228,6 +334,7 @@ const TuilesBiens = () => {
         <>
           <div
             ref={rail}
+            id="rail-biens"
             key={filtre}
             onTouchStart={() => setTouche(true)}
             className="fx-fade no-scrollbar -mx-4 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[8vw] pb-4 pt-1 md:-mx-10 md:mt-9 md:gap-5 md:px-10 md:pb-6 md:[scroll-padding-inline:40px]"
@@ -236,6 +343,9 @@ const TuilesBiens = () => {
             {tous.length > MAX && <Encore n={tous.length - MAX} />}
             <Alerte />
           </div>
+
+          {/* Ordinateur : la barre de défilement */}
+          <BarreDefilement rail={rail} cle={`${filtre}-${liste.length}`} id="rail-biens" />
 
           {/* Téléphone : où en est-on, et une invitation à glisser */}
           <div className="mt-1 flex items-center gap-3.5 md:hidden">
