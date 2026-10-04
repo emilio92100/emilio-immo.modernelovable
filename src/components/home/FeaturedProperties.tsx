@@ -99,7 +99,7 @@ const FeaturedProperties = () => {
     <section id="biens" className="bg-white md:bg-[linear-gradient(180deg,#FFFFFF_0%,#FFFFFF_62%,#F5F8FC_62%,#F5F8FC_100%)]">
       <Container className="flex flex-col gap-7 pb-12 pt-10 md:gap-9 md:pb-[84px] md:pt-[84px]">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHead eyebrow="À vendre en ce moment" title={<>Nos biens <em className="not-italic text-brand">du moment</em></>} lead="Maisons, appartements et immeubles en vente à Paris et dans les Hauts-de-Seine, avec leurs vraies photos." />
+          <SectionHead eyebrow="À vendre en ce moment" title={<>Nos biens <em className="not-italic text-brand">du moment</em></>} lead="Maisons, appartements et immeubles en vente à Paris et dans les Hauts-de-Seine." />
           <div className="flex w-full min-w-0 flex-col gap-3 md:w-auto md:items-end">
             <div role="group" aria-label="Filtrer les biens" className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:flex-wrap md:px-0">
               {dispo.map((f) => (
