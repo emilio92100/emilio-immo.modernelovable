@@ -190,7 +190,7 @@ const TuilesBiens = () => {
           <div className="mx-auto flex w-full max-w-[1320px] flex-wrap items-end justify-between gap-5 px-5 md:gap-6 md:px-10">
             <div>
               <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white md:text-[52px] md:leading-[1.04] md:tracking-[-0.035em]">Nos biens du moment</h2>
-              <p className="m-0 mt-2.5 text-[14.5px] font-medium leading-relaxed text-brand-bt md:mt-3 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, avec les vraies photos.</p>
+              <p className="m-0 mt-2.5 text-[14.5px] font-medium leading-relaxed text-brand-bt md:mt-3 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, à Paris et dans les Hauts-de-Seine.</p>
             </div>
             <div role="group" aria-label="Filtrer les biens" className="no-scrollbar -mx-5 flex w-[calc(100%+40px)] gap-2 overflow-x-auto px-5 md:mx-0 md:w-auto md:px-0">
               {dispo.map((f) => (
