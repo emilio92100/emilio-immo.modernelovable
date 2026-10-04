@@ -1,7 +1,7 @@
 /* ═══ Accueil « Tuiles » : nos biens du moment ═══════════════════════════════
    Une grande tuile bleue aux coins arrondis, comme les autres blocs de l’accueil.
    Ordinateur : les biens défilent doucement tout seuls ; le défilé s’arrête quand on passe la souris dessus.
-   Téléphone : on glisse du doigt, la carte au centre est mise en avant, une barre montre où l’on en est.
+   Téléphone : on glisse du doigt, une carte à la fois ; la carte au centre est mise en avant, une barre montre où l’on en est.
    Si l’appareil demande moins d’animations, pas de défilé : on fait défiler soi-même. */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -72,8 +72,48 @@ const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void
   );
 };
 
-/** Ordinateur : la rangée de biens qui passe toute seule (deux fois la même suite, pour boucler sans à-coup). */
+/** Ordinateur : la rangée de biens qui passe toute seule (deux fois la même suite, pour boucler sans à-coup).
+    Le mouvement est piloté image par image : au survol (ou au clavier), il ralentit en douceur jusqu’à l’arrêt,
+    puis repart tout aussi doucement quand la souris s’en va. */
+const VITESSE = PAS / 6.5; // pixels par seconde
+const DOUCEUR = 0.4; // en secondes : plus c’est grand, plus le freinage et le redémarrage sont doux
+
 const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Property) => void; calme: boolean }) => {
+  const zone = useRef<HTMLDivElement>(null);
+  const piste = useRef<HTMLDivElement>(null);
+  const arret = useRef({ souris: false, clavier: false });
+
+  useEffect(() => {
+    const el = piste.current;
+    const z = zone.current;
+    if (calme || !el || !z) return;
+    let x = 0;
+    let v = VITESSE;
+    let avant = performance.now();
+    let visible = true;
+    let raf = 0;
+    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
+    io.observe(z);
+    const image = (t: number) => {
+      const dt = Math.min(0.05, (t - avant) / 1000);
+      avant = t;
+      if (visible && !document.hidden) {
+        const cible = arret.current.souris || arret.current.clavier ? 0 : VITESSE;
+        v += (cible - v) * (1 - Math.exp(-dt / DOUCEUR));
+        const moitie = el.scrollWidth / 2;
+        x -= v * dt;
+        if (moitie > 0 && -x >= moitie) x += moitie;
+        el.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
+      }
+      raf = requestAnimationFrame(image);
+    };
+    raf = requestAnimationFrame(image);
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+    };
+  }, [calme, liste]);
+
   if (calme) {
     // moins d’animations demandé : une simple rangée qu’on fait défiler soi-même
     return (
@@ -87,17 +127,91 @@ const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Propert
   const base = Array.from({ length: fois }).flatMap(() => liste);
   const serie = [...base, ...base];
   return (
-    <div className="group/defile relative [mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)]">
-      <div
-        className="flex w-max py-2 [animation:defile-biens_var(--duree)_linear_infinite] group-focus-within/defile:[animation-play-state:paused] group-hover/defile:[animation-play-state:paused]"
-        style={{ "--duree": `${Math.max(22, base.length * 6.5)}s` } as React.CSSProperties}
-      >
+    <div
+      ref={zone}
+      onPointerEnter={() => (arret.current.souris = true)}
+      onPointerLeave={() => (arret.current.souris = false)}
+      onFocus={() => (arret.current.clavier = true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) arret.current.clavier = false;
+      }}
+      className="relative [mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)]"
+    >
+      <div ref={piste} className="flex w-max py-2 will-change-transform">
         {serie.map((p, k) => (
           <div key={`${p.id}-${k}`} className="flex-none pr-6">
             <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className="w-[320px]" />
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+/** Les filtres. Sur téléphone, ils défilent de côté : un fondu sur le bord montre qu’il y en a d’autres,
+    et à l’arrivée ils glissent un peu tout seuls, pour montrer qu’on peut les faire défiler. */
+const Filtres = ({ dispo, filtre, choisir }: { dispo: { k: string; t: string; n: number }[]; filtre: string; choisir: (k: string) => void }) => {
+  const el = useRef<HTMLDivElement>(null);
+  const [bords, setBords] = useState({ g: false, d: false });
+
+  useEffect(() => {
+    const e = el.current;
+    if (!e) return;
+    const maj = () => setBords({ g: e.scrollLeft > 4, d: e.scrollLeft + e.clientWidth < e.scrollWidth - 4 });
+    maj();
+    e.addEventListener("scroll", maj, { passive: true });
+    const ro = new ResizeObserver(maj);
+    ro.observe(e);
+    return () => {
+      e.removeEventListener("scroll", maj);
+      ro.disconnect();
+    };
+  }, [dispo.length]);
+
+  useEffect(() => {
+    const e = el.current;
+    if (!e || window.matchMedia("(min-width: 768px)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      ([x]) => {
+        if (!x.isIntersecting) return;
+        io.disconnect();
+        if (e.scrollWidth <= e.clientWidth + 4) return;
+        window.setTimeout(() => {
+          if (e.scrollLeft > 4) return;
+          e.scrollTo({ left: 60, behavior: "smooth" });
+          window.setTimeout(() => e.scrollTo({ left: 0, behavior: "smooth" }), 650);
+        }, 1400);
+      },
+      { threshold: 0.9 },
+    );
+    io.observe(e);
+    return () => io.disconnect();
+  }, [dispo.length]);
+
+  const masque = `linear-gradient(90deg, ${bords.g ? "transparent 0, #000 28px" : "#000 0"}, ${bords.d ? "#000 calc(100% - 48px), transparent 100%" : "#000 100%"})`;
+  return (
+    <div
+      ref={el}
+      role="group"
+      aria-label="Filtrer les biens"
+      className="no-scrollbar -mx-5 flex w-[calc(100%+40px)] gap-2 overflow-x-auto px-5 md:mx-0 md:w-auto md:px-0"
+      style={{ WebkitMaskImage: masque, maskImage: masque }}
+    >
+      {dispo.map((f) => (
+        <button
+          key={f.k}
+          type="button"
+          aria-pressed={filtre === f.k}
+          onClick={() => choisir(f.k)}
+          className={cn(
+            "inline-flex h-10 flex-none items-center gap-2 whitespace-nowrap rounded-full border-[1.5px] px-3.5 text-[13.5px] font-bold transition md:h-11 md:px-4 md:text-sm",
+            filtre === f.k ? "border-white bg-white text-brand-ink" : "border-white/25 text-white/80 hover:border-white/60",
+          )}
+        >
+          {f.t}
+          <span className={cn("grid h-[22px] min-w-[22px] place-items-center rounded-full px-1 text-xs", filtre === f.k ? "bg-brand-ink/10 text-brand-ink" : "bg-white/10 text-white/80")}>{f.n}</span>
+        </button>
+      ))}
     </div>
   );
 };
@@ -192,26 +306,14 @@ const TuilesBiens = () => {
               <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white md:text-[52px] md:leading-[1.04] md:tracking-[-0.035em]">Nos biens du moment</h2>
               <p className="m-0 mt-2.5 text-[14.5px] font-medium leading-relaxed text-brand-bt md:mt-3 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, à Paris et dans les Hauts-de-Seine.</p>
             </div>
-            <div role="group" aria-label="Filtrer les biens" className="no-scrollbar -mx-5 flex w-[calc(100%+40px)] gap-2 overflow-x-auto px-5 md:mx-0 md:w-auto md:px-0">
-              {dispo.map((f) => (
-                <button
-                  key={f.k}
-                  type="button"
-                  aria-pressed={filtre === f.k}
-                  onClick={() => {
-                    setFiltre(f.k);
-                    rail.current?.scrollTo({ left: 0 });
-                  }}
-                  className={cn(
-                    "inline-flex h-11 flex-none items-center gap-2 whitespace-nowrap rounded-full border-[1.5px] px-4 text-sm font-bold transition",
-                    filtre === f.k ? "border-white bg-white text-brand-ink" : "border-white/25 text-white/80 hover:border-white/60",
-                  )}
-                >
-                  {f.t}
-                  <span className={cn("grid h-[22px] min-w-[22px] place-items-center rounded-full px-1 text-xs", filtre === f.k ? "bg-brand-ink/10 text-brand-ink" : "bg-white/10 text-white/80")}>{f.n}</span>
-                </button>
-              ))}
-            </div>
+            <Filtres
+              dispo={dispo}
+              filtre={filtre}
+              choisir={(k) => {
+                setFiltre(k);
+                rail.current?.scrollTo({ left: 0 });
+              }}
+            />
           </div>
 
           {!biens ? (
@@ -233,7 +335,7 @@ const TuilesBiens = () => {
                 className="fx-fade no-scrollbar mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[11vw] pb-3 pt-1 md:hidden"
               >
                 {liste.map((p, i) => (
-                  <div key={p.id} data-carte className={cn("flex-none snap-center transition duration-500 ease-out", actif === i ? "scale-100 opacity-100" : "scale-[0.93] opacity-70")}>
+                  <div key={p.id} data-carte className={cn("flex-none snap-center snap-always transition duration-500 ease-out", actif === i ? "scale-100 opacity-100" : "scale-[0.93] opacity-70")}>
                     <Carte p={p} onVue={() => setVue(p)} className="w-[78vw] max-w-[320px]" />
                   </div>
                 ))}
