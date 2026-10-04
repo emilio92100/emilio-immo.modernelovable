@@ -250,7 +250,7 @@ const Properties = () => {
                   <span className="mt-2 block text-[22px] font-bold leading-[1.2] tracking-[-0.02em] text-[#F9C98A] md:mt-3 md:text-[30px]">à Paris et dans les Hauts-de-Seine</span>
                 </h1>
                 <p className="m-0 mt-4 max-w-[560px] text-base font-medium leading-[1.55] text-white/80 md:mt-6 md:text-[18.5px]">
-                  Appartements, maisons et immeubles, avec leurs vraies photos. Ouvrez une fiche pour tout voir, ou demandez une visite en un clic.
+                  Appartements, maisons et immeubles à vendre. Ouvrez une fiche pour tout voir, ou demandez une visite en un clic.
                 </p>
               </div>
               <div className="hidden lg:block">
