@@ -107,7 +107,7 @@ const Encore = ({ n }: { n: number }) => (
   </Link>
 );
 
-/* Ordinateur : la barre de défilement sous les cartes, à la place des flèches.
+/* Ordinateur : une petite barre de défilement discrète, centrée sous les cartes, à la place des flèches.
    Un clic sur la barre y emmène en douceur ; on peut aussi attraper la poignée et la faire glisser, ou utiliser les flèches du clavier. */
 const BarreDefilement = ({ rail, cle, id }: { rail: React.RefObject<HTMLDivElement>; cle: string; id: string }) => {
   const piste = useRef<HTMLDivElement>(null);
@@ -197,9 +197,9 @@ const BarreDefilement = ({ rail, cle, id }: { rail: React.RefObject<HTMLDivEleme
       tabIndex={0}
       onClick={clicPiste}
       onKeyDown={clavier}
-      className="group/barre relative hidden h-7 cursor-pointer items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-brand/40 md:flex"
+      className="group/barre relative mx-auto hidden h-6 w-[220px] cursor-pointer items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-brand/40 md:flex"
     >
-      <span aria-hidden className={cn("absolute inset-x-0 rounded-full bg-[#E2E8F0] transition-all duration-200", tenue ? "h-2.5" : "h-1.5 group-hover/barre:h-2.5")} />
+      <span aria-hidden className={cn("absolute inset-x-0 rounded-full bg-[#E6ECF3] transition-all duration-200", tenue ? "h-1.5" : "h-1 group-hover/barre:h-1.5")} />
       <span
         data-poignee="1"
         aria-hidden
@@ -208,8 +208,8 @@ const BarreDefilement = ({ rail, cle, id }: { rail: React.RefObject<HTMLDivEleme
         onPointerUp={lacher}
         onPointerCancel={lacher}
         className={cn(
-          "absolute rounded-full bg-brand transition-[height,background-color] duration-200 hover:bg-brand-ink",
-          tenue ? "h-2.5 cursor-grabbing bg-brand-ink" : "h-1.5 cursor-grab group-hover/barre:h-2.5",
+          "absolute rounded-full bg-brand/70 transition-[height,background-color] duration-200 hover:bg-brand",
+          tenue ? "h-1.5 cursor-grabbing bg-brand" : "h-1 cursor-grab group-hover/barre:h-1.5 group-hover/barre:bg-brand",
         )}
         style={{ left: `${pos.debut * 100}%`, width: `${pos.taille * 100}%` }}
       >
