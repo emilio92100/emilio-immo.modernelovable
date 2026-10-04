@@ -136,6 +136,8 @@
 @keyframes envoye-monte { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes scintille { 0%, 55% { transform: translateX(-130%) skewX(-18deg); } 85%, 100% { transform: translateX(230%) skewX(-18deg); } }
 @keyframes halo-orange { 0%, 100% { box-shadow: 0 8px 18px -10px rgba(230,139,35,.9), 0 0 0 0 rgba(230,139,35,.45); } 50% { box-shadow: 0 8px 18px -10px rgba(230,139,35,.9), 0 0 0 6px rgba(230,139,35,0); } }
+/* Accueil, nos biens du moment : le défilé (la suite est en double, on la fait glisser de la moitié) */
+@keyframes defile-biens { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes em-drift { 0% { transform: scale(1.015) translateX(0); } 100% { transform: scale(1.045) translateX(-0.8%); } }
 
 @layer utilities {
