@@ -11,7 +11,7 @@
   "rewrites": [
     {
       "source": "/sitemap-biens.xml",
-      "destination": "https://eutxmrdcykztjdyydmuo.supabase.co/functions/v1/sitemap"
+      "destination": "https://emilio-immo-chasseimmo.vercel.app/api/flux-site/sitemap"
     },
     {
       "source": "/(.*)",
