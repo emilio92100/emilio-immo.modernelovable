@@ -275,17 +275,16 @@ export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(price);
 };
 
+/* Les biens à vendre viennent du CRM d'Emilio Immobilier (même format JSON
+   que l'ancienne fonction `fetch-properties`, qui lisait le flux
+   d'ImmoFacile). Le CRM ne publie que les biens réglés « Mon site », et
+   garde le numéro ImmoFacile des biens repris : les adresses /biens/<id>
+   ne changent pas. */
+const FLUX_BIENS = "https://emilio-immo-chasseimmo.vercel.app/api/flux-site";
+
 export async function fetchPropertiesFromFeed(): Promise<Property[]> {
   try {
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-    if (!projectId) {
-      console.warn("No project ID found, using mock data");
-      return mockProperties;
-    }
-    
-    const res = await fetch(`https://${projectId}.supabase.co/functions/v1/fetch-properties`, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const res = await fetch(FLUX_BIENS);
     
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     
