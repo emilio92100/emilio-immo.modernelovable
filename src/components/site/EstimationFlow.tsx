@@ -77,7 +77,8 @@ export default function EstimationFlow({ open, onClose, prefill, onContact }: { 
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState<Estimate | null>(null);
   const startedAt = useRef(Date.now());
-  const picked = useRef(false);
+  /* Une adresse déjà choisie dans les suggestions de l’accueil (avec son code postal) : pas de liste à l’ouverture. */
+  const picked = useRef(!!prefill.postalCode);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   /* Suggestions d'adresses (Base Adresse Nationale) */

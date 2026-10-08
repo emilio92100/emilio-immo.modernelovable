@@ -6,7 +6,7 @@ import { Check, Loader2, MapPin, Plus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /* ── Villes ── */
-type Ville = { label: string; sub: string };
+export type Ville = { label: string; sub: string };
 
 const nomVille = (name: string) =>
   name.replace(/^Paris (\d+)(?:er|e) Arrondissement$/i, (_, n) => `Paris ${n}${n === "1" ? "er" : "e"}`)
@@ -19,7 +19,8 @@ const SOURCES = [
 
 type Feature = { properties: { name?: string; label?: string; postcode?: string; context?: string } };
 
-async function chercherVilles(q: string, signal: AbortSignal): Promise<Ville[]> {
+/** Aussi utilisé par la case « Acheter » de l’accueil (TuilesHero). */
+export async function chercherVilles(q: string, signal: AbortSignal): Promise<Ville[]> {
   for (const url of SOURCES) {
     try {
       const r = await fetch(url(q), { signal });
