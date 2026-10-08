@@ -228,7 +228,7 @@ const PropertyDetail = () => {
   const p = property;
   /* Titre, description et données Google : les mêmes que ceux que la fonction api/page-bien.ts met dans
      la page avant de l'envoyer (bien-seo.ts), pour que rien ne change une fois la page ouverte. */
-  const { titre, ville, url, surf, title: seoTitle, description: seoDesc, jsonLd } = seoBien(p);
+  const { titre, ville, url, surf, title: seoTitle, description: seoDesc, image: seoImage, jsonLd } = seoBien(p);
   const avantages = plus(p);
   const demande = (objet: "Visiter un bien" | "Autre", message: string) => openContact({ objet, message, propertyRef: p.id, propertyTitle: `${titre}, ${ville}`, propertyImage: p.images[0], propertyPrice: formatPrice(p.price) });
 
@@ -244,7 +244,7 @@ const PropertyDetail = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <SEOHead title={seoTitle} description={seoDesc} canonical={url} jsonLd={jsonLd} image={p.images[0]} />
+      <SEOHead title={seoTitle} description={seoDesc} canonical={url} jsonLd={jsonLd} image={seoImage} />
       <Navbar />
       <main>
         <section className="bg-brand-pale">
