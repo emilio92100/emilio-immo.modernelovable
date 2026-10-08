@@ -1,0 +1,6 @@
+{
+  "name": "emilio-site-fonctions",
+  "private": true,
+  "type": "module",
+  "description": "Fonctions Vercel du site (api/). Sans dependance : ce fichier evite que Vercel reinstalle tout le site avec npm pour les preparer."
+}
