@@ -45,6 +45,14 @@ export const displayCity = (p: Pick<BienSeo, "city" | "postalCode">) => {
   return p.city;
 };
 
+/** La photo des aperçus de liens : une version allégée (1080 px de large, moins de 250 Ko) quand la photo
+    est rangée chez Supabase, qui sait la redimensionner. WhatsApp laisse de côté les images trop lourdes, et
+    les photos des biens font souvent 300 à 600 Ko. Les autres adresses restent telles quelles. */
+export const apercuPhoto = (u?: string) =>
+  u && u.includes("/storage/v1/object/public/")
+    ? `${u.replace("/storage/v1/object/public/", "/storage/v1/render/image/public/")}?width=1080&quality=60`
+    : u;
+
 /** Tout ce que la page d'un bien dit à Google et aux aperçus de liens. */
 export function seoBien(p: BienSeo) {
   const titre = displayTitle(p);
@@ -83,5 +91,5 @@ export function seoBien(p: BienSeo) {
       ],
     },
   ];
-  return { titre, ville, url, surf, title, description, image: p.images?.[0], jsonLd };
+  return { titre, ville, url, surf, title, description, image: apercuPhoto(p.images?.[0]), jsonLd };
 }
