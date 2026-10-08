@@ -10,13 +10,13 @@
    moins d'animations ou d'économiser les données, on montre l'image fixe.
    Les cases de la carte proposent au fil de la frappe : une adresse (Estimer, Vendre), une ville
    (Acheter), comme sur « Estimer mon bien » (Alexandre, 8 oct.). */
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Bell, CalendarDays, Check, Home, KeyRound, LineChart, MapPin, MessageCircle, Phone, Search, UserRound, Wallet } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
-import { chercherVilles } from "@/components/site/SearchControls";
+import { ListeSuggestions, chercherAdresses, chercherVillesSugg, useSuggestions, type Chercheur, type Sugg } from "@/components/site/Suggestions";
 import { Souligne } from "@/components/site/ui";
 import { Choix, type Option } from "@/components/home/tuiles/Choix";
 import affiche from "@/assets/refonte/accueil-paris-affiche.webp";
@@ -57,41 +57,8 @@ const Champ = ({ icon, label, children, className }: { icon: JSX.Element; label:
 
 const inputCls = "w-full min-w-0 border-0 bg-transparent p-0 text-base font-semibold text-brand-ink outline-none placeholder:font-medium placeholder:text-[#8794A6] max-md:text-[16px]";
 
-/* ── Les suggestions sous les cases ── */
-type Sugg = { label: string; titre: string; sous: string; nom?: string; cp?: string; ville?: string };
-type Chercheur = (q: string, signal: AbortSignal) => Promise<Sugg[]>;
-type FeatureAdresse = { properties?: { label?: string; name?: string; postcode?: string; city?: string } };
-
-/* Base Adresse Nationale, puis le Géoplateforme de l’IGN si elle ne répond pas ; les adresses
-   proches de Paris d’abord. */
-const chercherAdresses: Chercheur = async (q, signal) => {
-  const e = encodeURIComponent(q);
-  for (const url of [
-    `https://api-adresse.data.gouv.fr/search/?q=${e}&limit=6&autocomplete=1&lat=48.85&lon=2.3`,
-    `https://data.geopf.fr/geocodage/search?q=${e}&index=address&limit=6&autocomplete=1&lat=48.85&lon=2.3`,
-  ]) {
-    try {
-      const r = await fetch(url, { signal });
-      if (!r.ok) continue;
-      const d = (await r.json()) as { features?: FeatureAdresse[] };
-      const vus = new Set<string>();
-      const out: Sugg[] = [];
-      for (const f of d.features || []) {
-        const p = f.properties || {};
-        if (!p.label || vus.has(p.label)) continue;
-        vus.add(p.label);
-        out.push({ label: p.label, titre: p.name || p.label, sous: [p.postcode, p.city].filter(Boolean).join(" "), nom: p.name, cp: p.postcode, ville: p.city });
-      }
-      return out;
-    } catch (err) {
-      if ((err as Error).name === "AbortError") throw err;
-    }
-  }
-  return [];
-};
-const chercherVillesSugg: Chercheur = async (q, signal) => (await chercherVilles(q, signal)).map((v) => ({ label: v.label, titre: v.label, sous: v.sub }));
-
-/** Une case qui propose au fil de la frappe : flèches et Entrée au clavier, un clic, ou on continue à taper. */
+/** Une case qui propose au fil de la frappe (adresse ou ville), avec la même liste que partout sur le site
+    (src/components/site/Suggestions.tsx). */
 const ChampSuggere = ({ icon, label, value, onChange, onChoisir, placeholder, chercheur, min = 3 }: {
   icon: JSX.Element;
   label: string;
@@ -102,119 +69,13 @@ const ChampSuggere = ({ icon, label, value, onChange, onChoisir, placeholder, ch
   chercheur: Chercheur;
   min?: number;
 }) => {
-  const [liste, setListe] = useState<Sugg[]>([]);
-  const [ouvert, setOuvert] = useState(false);
-  const [fige, setFige] = useState(false); // juste après un choix : on ne relance pas la recherche
-  const [hi, setHi] = useState(0);
-  const boite = useRef<HTMLDivElement>(null);
-  const id = useId();
-
-  useEffect(() => {
-    const t = value.trim();
-    if (fige || t.length < min) {
-      setListe([]);
-      return;
-    }
-    const ctrl = new AbortController();
-    const minuterie = window.setTimeout(() => {
-      chercheur(t, ctrl.signal)
-        .then((l) => {
-          setListe(l);
-          setHi(0);
-        })
-        .catch(() => undefined);
-    }, 220);
-    return () => {
-      ctrl.abort();
-      window.clearTimeout(minuterie);
-    };
-  }, [value, fige, chercheur, min]);
-
-  useEffect(() => {
-    const dehors = (e: PointerEvent) => {
-      if (!boite.current?.contains(e.target as Node)) setOuvert(false);
-    };
-    document.addEventListener("pointerdown", dehors);
-    return () => document.removeEventListener("pointerdown", dehors);
-  }, []);
-
-  const choisir = (s: Sugg) => {
-    setFige(true);
-    setOuvert(false);
-    setListe([]);
-    onChoisir(s);
-  };
-  const visible = ouvert && liste.length > 0;
-  const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!visible) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setHi((h) => Math.min(h + 1, liste.length - 1));
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setHi((h) => Math.max(h - 1, 0));
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      choisir(liste[hi] || liste[0]);
-    } else if (e.key === "Escape") {
-      setOuvert(false);
-    }
-  };
-
+  const s = useSuggestions({ value, chercheur, min, onChoisir });
   return (
-    <div ref={boite} className="relative flex-none">
+    <div ref={s.boite} className="relative flex-none">
       <Champ icon={icon} label={label}>
-        <input
-          value={value}
-          onChange={(e) => {
-            setFige(false);
-            setOuvert(true);
-            onChange(e.target.value);
-          }}
-          onFocus={() => setOuvert(true)}
-          onBlur={() => setOuvert(false)}
-          onKeyDown={onKey}
-          placeholder={placeholder}
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-          role="combobox"
-          aria-expanded={visible}
-          aria-controls={id}
-          aria-autocomplete="list"
-          aria-activedescendant={visible ? `${id}-${hi}` : undefined}
-          className={inputCls}
-        />
+        <input {...s.brancher(onChange)} placeholder={placeholder} className={inputCls} />
       </Champ>
-      {visible && (
-        /* mousedown sans effet : la case garde la main, le clic choisit (Safari compris) */
-        <ul
-          id={id}
-          role="listbox"
-          onMouseDown={(e) => e.preventDefault()}
-          className="fx-fade absolute inset-x-0 top-[calc(100%+6px)] z-30 m-0 max-h-[300px] list-none overflow-y-auto rounded-[18px] border border-brand-line bg-white p-1.5 shadow-[0_24px_50px_-20px_rgba(19,36,61,0.45)]"
-        >
-          {liste.map((s, k) => (
-            <li key={s.label} id={`${id}-${k}`} role="option" aria-selected={k === hi}>
-              <button
-                type="button"
-                tabIndex={-1}
-                onMouseEnter={() => setHi(k)}
-                onClick={() => choisir(s)}
-                className={cn("flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left transition", k === hi ? "bg-brand-pale" : "bg-white")}
-              >
-                <span className="grid h-8 w-8 flex-none place-items-center rounded-lg bg-brand-surf text-brand">
-                  <MapPin className="h-4 w-4" />
-                </span>
-                <span className="flex min-w-0 flex-col leading-tight">
-                  <span className="truncate text-[14.5px] font-bold text-brand-ink">{s.titre}</span>
-                  {s.sous && <span className="truncate text-[12.5px] font-medium text-brand-mut">{s.sous}</span>}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ListeSuggestions s={s} />
     </div>
   );
 };
