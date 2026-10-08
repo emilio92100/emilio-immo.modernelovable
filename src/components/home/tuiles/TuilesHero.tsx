@@ -1,13 +1,21 @@
 /* ═══ Accueil « Tuiles » : haut de page ═══════════════════════════════════════
-   Paris sous un voile clair, le titre, puis la recherche à onglets (Estimer / Vendre / Acheter). */
-import { useState } from "react";
+   Maquette B (8 oct. 2026, choisie par Alexandre) : Paris en vidéo sous un voile clair ;
+   à gauche, le titre et les trois engagements ; à droite, la carte Estimer / Vendre / Acheter.
+   Sur un PC portable, tout se voit en arrivant, sans faire défiler. Au téléphone : la vidéo et
+   le titre, puis la carte de recherche juste en dessous.
+   La vidéo : 14 secondes, aller puis retour (la boucle ne saute pas), 1,8 Mo. Si l'appareil
+   demande moins d'animations ou d'économiser les données, on montre l'image fixe. */
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, CalendarDays, Home, KeyRound, LineChart, MapPin, Search, UserRound, Wallet } from "lucide-react";
+import { ArrowRight, Bell, CalendarDays, Check, Home, KeyRound, LineChart, MapPin, MessageCircle, Phone, Search, UserRound, Wallet } from "lucide-react";
+import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { Souligne } from "@/components/site/ui";
 import { Choix, type Option } from "@/components/home/tuiles/Choix";
-import panorama from "@/assets/refonte/paris-vue-ciel.webp";
+import affiche from "@/assets/refonte/accueil-paris-affiche.webp";
+
+const VIDEO = "/videos/accueil-paris.mp4";
 
 type Onglet = "estimer" | "vendre" | "acheter";
 
@@ -31,7 +39,7 @@ const BUDGETS: Option[] = [
 
 /** Un champ du module de recherche : pastille d’icône, petit libellé, saisie. */
 const Champ = ({ icon, label, children, className }: { icon: JSX.Element; label: string; children: React.ReactNode; className?: string }) => (
-  <label className={cn("relative flex h-[58px] min-w-0 flex-1 items-center gap-3 rounded-[18px] bg-brand-surf px-3.5 transition focus-within:bg-white focus-within:shadow-[0_0_0_2px_#22497D] md:h-[68px] md:gap-3.5 md:rounded-[20px] md:px-5", className)}>
+  <label className={cn("relative flex h-[58px] min-w-0 flex-none items-center gap-3 rounded-[18px] bg-brand-surf px-3.5 transition focus-within:bg-white focus-within:shadow-[0_0_0_2px_#22497D] md:h-[64px] md:gap-3.5 md:px-4", className)}>
     <span className="grid h-[34px] w-[34px] flex-none place-items-center rounded-[11px] bg-white text-brand md:h-[38px] md:w-[38px] md:rounded-xl">{icon}</span>
     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
       <span className="text-[11.5px] font-bold text-brand-mut md:text-xs">{label}</span>
@@ -69,9 +77,10 @@ const Recherche = () => {
   return (
     <form
       onSubmit={envoyer}
-      className="relative z-[3] mx-2 rounded-[24px] bg-white p-2 shadow-[0_30px_60px_-30px_rgba(19,36,61,0.55),0_0_0_1px_rgba(19,36,61,0.06)] md:absolute md:bottom-[-64px] md:left-1/2 md:mx-0 md:w-[min(1140px,calc(100%-80px))] md:-translate-x-1/2 md:rounded-[30px] md:p-3"
+      className="relative z-[3] mx-3 -mt-10 flex flex-col rounded-[24px] bg-white p-3 shadow-[0_30px_60px_-30px_rgba(19,36,61,0.6),0_0_0_1px_rgba(19,36,61,0.05)] sm:mx-auto sm:max-w-[520px] lg:absolute lg:right-8 lg:top-[64px] lg:mx-0 lg:mt-0 lg:w-[380px] lg:max-w-none lg:rounded-[28px] lg:p-[18px] xl:right-11 xl:top-[76px] xl:w-[410px]"
     >
-      <div role="tablist" aria-label="Votre projet" className="mb-2 flex gap-1 rounded-[16px] bg-brand-surf p-1 md:mb-2.5 md:inline-flex md:rounded-[18px]">
+      {/* Un espace entre les onglets et la case (Alexandre : « avoir un petit espace supplémentaire ») */}
+      <div role="tablist" aria-label="Votre projet" className="mb-3.5 flex gap-1 rounded-[16px] bg-brand-surf p-1 md:mb-4">
         {ONGLETS.map((o) => (
           <button
             key={o.k}
@@ -80,7 +89,7 @@ const Recherche = () => {
             aria-selected={tab === o.k}
             onClick={() => setTab(o.k)}
             className={cn(
-              "inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-[12px] px-2 text-[14px] font-bold transition md:h-11 md:flex-none md:gap-2 md:rounded-[14px] md:px-5 md:text-[14.5px]",
+              "inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-[12px] px-2 text-[14px] font-bold transition md:h-11 md:gap-2 md:rounded-[14px] md:text-[14.5px]",
               tab === o.k ? "bg-brand text-white" : "text-brand-mut hover:text-brand-ink",
             )}
           >
@@ -89,7 +98,7 @@ const Recherche = () => {
           </button>
         ))}
       </div>
-      <div key={tab} className="fx-fade flex flex-col gap-2 md:flex-row md:items-stretch">
+      <div key={tab} className="fx-fade flex flex-col gap-2.5">
         {tab !== "acheter" ? (
           <Champ icon={<MapPin className="h-[18px] w-[18px]" />} label={tab === "estimer" ? "Adresse de votre bien" : "Adresse du bien à vendre"}>
             <input value={adresse} onChange={(e) => setAdresse(e.target.value)} placeholder="Ex. 12 rue de Silly, Boulogne" autoComplete="street-address" className={inputCls} />
@@ -100,15 +109,20 @@ const Recherche = () => {
           </Champ>
         )}
         {tab === "vendre" && (
-          <Choix icon={<CalendarDays className="h-[18px] w-[18px]" />} label="Votre délai" value={delai} options={DELAIS} onChange={setDelai} className="md:max-w-[300px]" />
+          <Choix icon={<CalendarDays className="h-[18px] w-[18px]" />} label="Votre délai" value={delai} options={DELAIS} onChange={setDelai} className="flex-none" />
         )}
         {tab === "acheter" && (
-          <Choix icon={<Wallet className="h-[18px] w-[18px]" />} label="Budget maximum" value={budget} options={BUDGETS} onChange={setBudget} className="md:max-w-[300px]" />
+          <Choix icon={<Wallet className="h-[18px] w-[18px]" />} label="Budget maximum" value={budget} options={BUDGETS} onChange={setBudget} className="flex-none" />
         )}
-        <button type="submit" className="inline-flex h-[52px] flex-none items-center justify-center gap-2.5 whitespace-nowrap rounded-[18px] bg-brand-orange px-7 text-[15.5px] font-bold text-brand-ink transition hover:brightness-105 md:h-[68px] md:rounded-[20px] md:text-base">
+        <button type="submit" className="inline-flex h-[54px] flex-none items-center justify-center gap-2.5 whitespace-nowrap rounded-[18px] bg-brand-orange px-7 text-[15.5px] font-bold text-brand-ink shadow-[0_14px_26px_-16px_rgba(230,139,35,0.95)] transition hover:brightness-105 md:h-[60px] md:text-base">
           {bouton} <ArrowRight className="h-[18px] w-[18px]" />
         </button>
       </div>
+      {tab !== "acheter" && (
+        <span className="mt-3 inline-flex items-center justify-center gap-1.5 text-[12.5px] font-bold text-[#0F7A4F]">
+          <Check className="h-3.5 w-3.5" strokeWidth={2.6} /> Gratuit et sans engagement
+        </span>
+      )}
     </form>
   );
 };
@@ -116,55 +130,78 @@ const Recherche = () => {
 const CONFIANCE = [
   { icon: <UserRound className="h-4 w-4" />, t: "200+ clients accompagnés", chiffre: "200+", court: "clients accompagnés" },
   { icon: <KeyRound className="h-4 w-4" />, t: "10+ ans de métier", chiffre: "10+ ans", court: "de métier" },
-  { icon: <LineChart className="h-4 w-4" />, t: "Estimation gratuite et sans engagement", chiffre: "Gratuite", court: "estimation sans engagement" },
+  { icon: <LineChart className="h-4 w-4" />, t: "Estimation gratuite", chiffre: "Gratuite", court: "estimation sans engagement" },
 ];
+
+/* Les trois engagements, en liste avec leurs pictos (Alexandre : « le texte… mieux l'afficher »). */
+const ENGAGEMENTS = [
+  { icon: <Phone className="h-[15px] w-[15px]" />, t: "Une équipe qui vous répond" },
+  { icon: <MessageCircle className="h-[15px] w-[15px]" />, t: "Qui vous conseille" },
+  { icon: <Bell className="h-[15px] w-[15px]" />, t: "Et vous tient au courant à chaque étape" },
+];
+
+/** Paris en vidéo, ou l'image fixe quand l'appareil demande moins d'animations ou d'économiser les données. */
+const Fond = () => {
+  const calme = !!useReducedMotion();
+  const [eco, setEco] = useState(false);
+  useEffect(() => {
+    const c = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (c?.saveData) setEco(true);
+  }, []);
+  const classe = "h-full w-full object-cover object-[56%_50%]";
+  return calme || eco ? (
+    <img src={affiche} alt="" {...({ fetchpriority: "high" } as object)} className={classe} />
+  ) : (
+    <video src={VIDEO} poster={affiche} autoPlay muted loop playsInline preload="auto" aria-hidden className={classe} />
+  );
+};
 
 const TuilesHero = () => (
   <section className="mx-auto w-full max-w-[1560px] px-3 md:px-6">
-    <div className="relative rounded-[30px] md:h-[660px] md:rounded-[40px]">
-      {/* La photo et son voile */}
-      <div className="absolute inset-x-0 top-0 h-[600px] overflow-hidden rounded-[30px] bg-[#DFE8F2] md:inset-0 md:h-auto md:rounded-[40px]">
-        <img
-          src={panorama}
-          alt="Paris vu du ciel, avec la tour Eiffel et le Champ-de-Mars"
-          {...({ fetchpriority: "high" } as object)}
-          className="h-full w-full object-cover object-[72%_30%] md:object-[50%_38%]"
-        />
-        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.72)_40%,rgba(255,255,255,0.1)_64%,rgba(255,255,255,0)_72%)] md:bg-[linear-gradient(90deg,rgba(255,255,255,0.94)_0%,rgba(255,255,255,0.86)_34%,rgba(255,255,255,0.35)_50%,rgba(255,255,255,0)_60%)]" />
-      </div>
-      {/* Le texte */}
-      <div className="relative z-[1] max-w-[700px] px-[22px] pb-[210px] pt-[26px] md:px-16 md:pb-0 md:pt-16">
-        <span className="fx-fade inline-flex min-h-[34px] max-w-full items-center gap-2 rounded-[17px] bg-white px-3.5 py-1 text-[12.5px] font-bold leading-tight text-brand-ink shadow-[0_4px_14px_-6px_rgba(19,36,61,0.25)] sm:text-[13px]">
-          <MapPin className="h-[15px] w-[15px] flex-none text-brand-orange-lt" /> Paris · Hauts-de-Seine · et au-delà
-        </span>
-        <h1 className="fx-fade m-0 mb-3.5 mt-4 text-[42px] font-extrabold leading-[1.02] tracking-[-0.035em] text-brand-ink md:mb-5 md:mt-[22px] md:text-[76px]">
-          <span className="sr-only">Agence immobilière à Paris et dans les Hauts-de-Seine : </span>
-          Votre projet immobilier,{" "}
-          <Souligne>simplement.</Souligne>
-        </h1>
-        <p className="fx-fade m-0 max-w-[600px] text-base font-medium leading-[1.55] text-[#33445B] md:text-[19px]">
-          Vendre, acheter, faire estimer : une équipe qui vous répond, vous conseille et vous tient au courant à chaque étape.
-        </p>
+    <div className="relative">
+      <div className="relative h-[440px] overflow-hidden rounded-[30px] bg-[#DFE8F2] sm:h-[460px] lg:h-[560px] lg:rounded-[36px]">
+        {/* Paris et son voile : clair à gauche (ordinateur) ou en haut (téléphone), là où est le texte */}
+        <div className="absolute inset-0">
+          <Fond />
+        </div>
+        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.9)_52%,rgba(255,255,255,0.5)_76%,rgba(255,255,255,0)_94%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.87)_32%,rgba(255,255,255,0.3)_46%,rgba(255,255,255,0)_56%)]" />
+        {/* Le texte */}
+        <div className="relative z-[1] px-[22px] pt-6 lg:max-w-[560px] lg:px-14 lg:pt-[54px] xl:max-w-[640px]">
+          <span className="fx-fade text-[11.5px] font-extrabold uppercase tracking-[0.14em] text-brand-orange-text lg:text-[13px]">Vendre · Acheter · Faire estimer</span>
+          <h1 className="fx-fade m-0 mt-2.5 text-[36px] font-extrabold leading-[1.05] tracking-[-0.035em] text-brand-ink sm:text-[44px] lg:mt-3.5 lg:text-[54px] lg:leading-[1.03] xl:text-[62px]">
+            <span className="sr-only">Agence immobilière à Paris et dans les Hauts-de-Seine : </span>
+            Votre projet immobilier,{" "}
+            <Souligne>simplement.</Souligne>
+          </h1>
+          <ul className="fx-fade m-0 mt-5 flex list-none flex-col gap-2 p-0 lg:mt-6 lg:gap-2.5">
+            {ENGAGEMENTS.map((e) => (
+              <li key={e.t} className="flex items-center gap-2.5 text-[14.5px] font-bold text-[#33445B] lg:gap-3 lg:text-[17px]">
+                <span className="grid h-[30px] w-[30px] flex-none place-items-center rounded-[10px] bg-white text-brand shadow-[0_4px_12px_-6px_rgba(19,36,61,0.35)] lg:h-[34px] lg:w-[34px] lg:rounded-[11px]">{e.icon}</span>
+                {e.t}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Ordinateur : les trois repères, en bas à gauche, sur la vidéo */}
+        <div className="absolute bottom-[30px] left-14 z-[1] hidden flex-nowrap gap-2 lg:flex">
+          {CONFIANCE.map((c) => (
+            <span key={c.t} className="inline-flex h-[38px] items-center gap-2 whitespace-nowrap rounded-full bg-white/[0.82] py-1 pl-1.5 pr-4 text-[13.5px] font-semibold text-[#33445B] backdrop-blur-md">
+              <span className="grid h-7 w-7 flex-none place-items-center rounded-full bg-white text-brand">{c.icon}</span>
+              {c.t}
+            </span>
+          ))}
+        </div>
       </div>
       <Recherche />
     </div>
-    {/* Téléphone : les trois repères côte à côte dans une seule carte, sans défilement */}
-    <div className="mx-1 mt-4 grid grid-cols-3 divide-x divide-[#DCE4EE] rounded-[22px] bg-brand-surf px-1 py-3 md:hidden">
+    {/* Téléphone et tablette : les trois repères côte à côte dans une seule carte, sans défilement */}
+    <div className="mx-1 mt-4 grid grid-cols-3 divide-x divide-[#DCE4EE] rounded-[22px] bg-brand-surf px-1 py-3 sm:mx-auto sm:max-w-[520px] lg:hidden">
       {CONFIANCE.map((c) => (
         <div key={c.t} className="flex min-w-0 flex-col items-center gap-1 px-1.5 text-center">
           <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-brand">{c.icon}</span>
           <span className="text-[15px] font-extrabold leading-tight tracking-[-0.02em] text-brand-ink">{c.chiffre}</span>
           <span className="text-[11.5px] font-semibold leading-tight text-brand-mut">{c.court}</span>
         </div>
-      ))}
-    </div>
-    {/* Ordinateur : les pastilles habituelles */}
-    <div className="mt-[100px] hidden flex-wrap justify-center gap-3 md:flex">
-      {CONFIANCE.map((c) => (
-        <span key={c.t} className="inline-flex min-h-11 items-center gap-2.5 whitespace-nowrap rounded-full bg-brand-surf py-1 pl-2 pr-[18px] text-[14.5px] font-semibold leading-tight text-[#33445B]">
-          <span className="grid h-[30px] w-[30px] flex-none place-items-center rounded-full bg-white text-brand">{c.icon}</span>
-          {c.t}
-        </span>
       ))}
     </div>
   </section>

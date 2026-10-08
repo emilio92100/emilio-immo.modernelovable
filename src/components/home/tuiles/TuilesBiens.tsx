@@ -1,5 +1,6 @@
 /* ═══ Accueil « Tuiles » : nos biens du moment ═══════════════════════════════
-   Une grande tuile bleue aux coins arrondis, comme les autres blocs de l’accueil.
+   Maquette B (8 oct. 2026, Alexandre : « moins mettre cette partie bleue, assez imposante ») :
+   une tuile gris très clair, et des cartes-photos (le prix et le titre sur la photo).
    Ordinateur : les biens défilent doucement tout seuls ; le défilé s’arrête quand on passe la souris dessus.
    Téléphone : on glisse du doigt, une carte à la fois ; la carte au centre est mise en avant, une barre montre où l’on en est.
    Si l’appareil demande moins d’animations, pas de défilé : on fait défiler soi-même. */
@@ -19,29 +20,27 @@ const FILTRES = [
   { k: "immeuble", t: "Immeubles", test: (p: Property) => /immeuble/i.test(p.type) },
 ];
 
-const BLEU = "linear-gradient(165deg, #1B3D6B 0%, #22497D 58%, #2C5C99 100%)";
 const nf = new Intl.NumberFormat("fr-FR");
 /* Dix biens au plus sur l’accueil : le reste est sur la page Nos biens. */
 const MAX = 10;
-const PAS = 320 + 24; // largeur d’une carte sur ordinateur + l’espace entre deux cartes
+const PAS = 290 + 20; // largeur d’une carte sur ordinateur + l’espace entre deux cartes
 
-const Spec = ({ t }: { t: string }) => <span className="inline-flex h-7 items-center rounded-[9px] bg-brand-surf px-2.5 text-[12.5px] font-bold text-[#33445B]">{t}</span>;
-
-/** La carte blanche d’un bien. `cachee` : copie qui sert seulement à faire boucler le défilé (ni lue, ni atteinte au clavier). */
+/** La carte-photo d’un bien : la photo en entier, le prix, le titre et la ville posés dessus.
+    `cachee` : copie qui sert seulement à faire boucler le défilé (ni lue, ni atteinte au clavier). */
 const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void; cachee?: boolean; className?: string }) => {
   const plus = featureBadges(p)[0];
   const sansClavier = cachee ? { tabIndex: -1 } : {};
+  const specs = [p.surface > 0 ? `${nf.format(p.surface)} m²` : "", p.rooms > 0 ? `${p.rooms} pièce${p.rooms > 1 ? "s" : ""}` : "", p.bedrooms > 0 ? `${p.bedrooms} ch.` : ""].filter(Boolean).join(" · ");
   return (
     <article
       {...(cachee ? { "aria-hidden": true } : {})}
-      className={cn("group relative flex-none overflow-hidden rounded-[24px] bg-white text-brand-ink shadow-[0_30px_60px_-34px_rgba(0,0,0,0.7)] transition duration-300 md:rounded-[26px] md:hover:-translate-y-1.5", className)}
+      className={cn("group relative h-[360px] flex-none overflow-hidden rounded-[24px] bg-brand-sky text-white shadow-[0_26px_44px_-30px_rgba(19,36,61,0.75)] transition duration-300 md:h-[370px] md:rounded-[26px] md:hover:-translate-y-1.5", className)}
     >
-      <div className="relative h-[200px] overflow-hidden bg-brand-sky md:h-[210px]">
-        {p.images[0] && (
-          <img src={p.images[0]} alt={cachee ? "" : `${displayTitle(p)}, ${displayCity(p)}`} loading="lazy" className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]" />
-        )}
-        <span className="absolute bottom-3 left-3 inline-flex h-9 items-center rounded-xl bg-white px-3 text-[15.5px] font-extrabold shadow-[0_6px_16px_-8px_rgba(19,36,61,0.4)]">{formatPrice(p.price)}</span>
-        {p.exclusive && <span className="absolute left-3 top-3 inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
+      {p.images[0] && (
+        <img src={p.images[0]} alt={cachee ? "" : `${displayTitle(p)}, ${displayCity(p)}`} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]" />
+      )}
+      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(19,36,61,0)_42%,rgba(19,36,61,0.55)_66%,rgba(19,36,61,0.88)_100%)]" />
+      {p.exclusive && <span className="absolute left-3 top-3 z-[2] inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
         <button
           type="button"
           onClick={onVue}
@@ -51,22 +50,18 @@ const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void
         >
           <Eye className="h-4 w-4" />
         </button>
-      </div>
-      <div className="flex flex-col gap-2 p-4">
-        <h3 className="m-0 truncate text-[16.5px] font-extrabold tracking-[-0.01em] md:text-[17px]">
+      <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-[18px]">
+        <span className="text-[23px] font-extrabold leading-tight tracking-[-0.02em]">{formatPrice(p.price)}</span>
+        <h3 className="m-0 line-clamp-2 text-[15.5px] font-bold leading-snug">
           <Link to={`/biens/${p.id}`} {...sansClavier} className="after:absolute after:inset-0 after:z-[1] after:content-['']">
             {displayTitle(p)}
             {plus ? ` avec ${plus.toLowerCase()}` : ""}
           </Link>
         </h3>
-        <span className="flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-mut">
-          <MapPin className="h-[15px] w-[15px] flex-none" /> {displayCity(p)} ({p.postalCode})
+        <span className="flex min-w-0 items-center gap-1.5 text-[13px] font-semibold text-white/85">
+          <MapPin className="h-[14px] w-[14px] flex-none" /> <span className="truncate">{displayCity(p)} ({p.postalCode})</span>
         </span>
-        <div className="flex flex-wrap gap-1.5">
-          {p.surface > 0 && <Spec t={`${nf.format(p.surface)} m²`} />}
-          {p.rooms > 0 && <Spec t={`${p.rooms} pièce${p.rooms > 1 ? "s" : ""}`} />}
-          {p.bedrooms > 0 && <Spec t={`${p.bedrooms} chambre${p.bedrooms > 1 ? "s" : ""}`} />}
-        </div>
+        {specs && <span className="text-[12.5px] font-semibold text-white/70">{specs}</span>}
       </div>
     </article>
   );
@@ -117,8 +112,8 @@ const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Propert
   if (calme) {
     // moins d’animations demandé : une simple rangée qu’on fait défiler soi-même
     return (
-      <div className="flex gap-6 overflow-x-auto px-10 pb-4">
-        {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className="w-[320px]" />)}
+      <div className="flex gap-5 overflow-x-auto px-10 pb-4">
+        {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className="w-[290px]" />)}
       </div>
     );
   }
@@ -139,8 +134,8 @@ const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Propert
     >
       <div ref={piste} className="flex w-max py-2 will-change-transform">
         {serie.map((p, k) => (
-          <div key={`${p.id}-${k}`} className="flex-none pr-6">
-            <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className="w-[320px]" />
+          <div key={`${p.id}-${k}`} className="flex-none pr-5">
+            <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className="w-[290px]" />
           </div>
         ))}
       </div>
@@ -205,11 +200,11 @@ const Filtres = ({ dispo, filtre, choisir }: { dispo: { k: string; t: string; n:
           onClick={() => choisir(f.k)}
           className={cn(
             "inline-flex h-10 flex-none items-center gap-2 whitespace-nowrap rounded-full border-[1.5px] px-3.5 text-[13.5px] font-bold transition md:h-11 md:px-4 md:text-sm",
-            filtre === f.k ? "border-white bg-white text-brand-ink" : "border-white/25 text-white/80 hover:border-white/60",
+            filtre === f.k ? "border-brand bg-brand text-white" : "border-brand-line2 bg-white text-[#33445B] hover:border-brand-bt",
           )}
         >
           {f.t}
-          <span className={cn("grid h-[22px] min-w-[22px] place-items-center rounded-full px-1 text-xs", filtre === f.k ? "bg-brand-ink/10 text-brand-ink" : "bg-white/10 text-white/80")}>{f.n}</span>
+          <span className={cn("grid h-[22px] min-w-[22px] place-items-center rounded-full px-1 text-xs", filtre === f.k ? "bg-white/20 text-white" : "bg-brand-surf text-brand-mut")}>{f.n}</span>
         </button>
       ))}
     </div>
@@ -294,17 +289,15 @@ const TuilesBiens = () => {
   const nbTous = biens?.length || 0;
 
   return (
-    <section id="biens" className="mx-auto w-full max-w-[1560px] px-3 pt-14 md:px-6 md:pt-[110px]">
-      <div className="relative overflow-hidden rounded-[30px] pb-8 pt-9 text-white shadow-[0_50px_90px_-60px_rgba(19,36,61,0.9)] md:rounded-[40px] md:pb-12 md:pt-14" style={{ background: BLEU }}>
-        <span aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-[320px] w-[320px] rounded-full border-[48px] border-white/[0.06]" />
-        <span aria-hidden className="pointer-events-none absolute -bottom-32 -left-20 h-[300px] w-[300px] rounded-full border-[44px] border-white/[0.05]" />
+    <section id="biens" className="mx-auto w-full max-w-[1560px] px-3 pt-12 md:px-6 md:pt-16">
+      <div className="relative overflow-hidden rounded-[30px] bg-brand-pale pb-7 pt-8 text-brand-ink md:rounded-[36px] md:pb-10 md:pt-12">
 
         <div className="relative">
           {/* Le titre et les filtres */}
           <div className="mx-auto flex w-full max-w-[1320px] flex-wrap items-end justify-between gap-5 px-5 md:gap-6 md:px-10">
             <div>
-              <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white md:text-[52px] md:leading-[1.04] md:tracking-[-0.035em]">Nos biens du moment</h2>
-              <p className="m-0 mt-2.5 text-[14.5px] font-medium leading-relaxed text-brand-bt md:mt-3 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, à Paris et dans les Hauts-de-Seine.</p>
+              <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-brand-ink md:text-[44px] md:leading-[1.04] md:tracking-[-0.035em]">Nos biens du moment</h2>
+              <p className="m-0 mt-2 text-[14.5px] font-medium leading-relaxed text-brand-mut md:mt-2.5 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, à Paris et dans les Hauts-de-Seine.</p>
             </div>
             <Filtres
               dispo={dispo}
@@ -318,12 +311,12 @@ const TuilesBiens = () => {
 
           {!biens ? (
             <div className="mt-8 flex gap-5 overflow-hidden px-5 md:mt-10 md:px-10">
-              {[0, 1, 2, 3, 4].map((k) => <div key={k} className="h-[340px] w-[78vw] max-w-[320px] flex-none animate-pulse rounded-[26px] bg-white/10 md:w-[320px]" />)}
+              {[0, 1, 2, 3, 4].map((k) => <div key={k} className="h-[360px] w-[74vw] max-w-[300px] flex-none animate-pulse rounded-[26px] bg-white md:w-[290px]" />)}
             </div>
           ) : (
             <>
               {/* Ordinateur : le défilé */}
-              <div key={filtre} className="fx-fade mt-10 hidden md:block">
+              <div key={filtre} className="fx-fade mt-8 hidden md:block">
                 <Defile liste={liste} onVue={setVue} calme={calme} />
               </div>
 
@@ -336,35 +329,35 @@ const TuilesBiens = () => {
               >
                 {liste.map((p, i) => (
                   <div key={p.id} data-carte className={cn("flex-none snap-center snap-always transition duration-500 ease-out", actif === i ? "scale-100 opacity-100" : "scale-[0.93] opacity-70")}>
-                    <Carte p={p} onVue={() => setVue(p)} className="w-[78vw] max-w-[320px]" />
+                    <Carte p={p} onVue={() => setVue(p)} className="w-[74vw] max-w-[300px]" />
                   </div>
                 ))}
               </div>
               <div className="mt-2 flex items-center gap-3.5 px-5 md:hidden">
-                <span className="min-w-[44px] text-sm font-extrabold tabular-nums text-white" aria-live="polite">
-                  {Math.min(actif + 1, total)} <span className="font-semibold text-white/60">/ {total}</span>
+                <span className="min-w-[44px] text-sm font-extrabold tabular-nums text-brand-ink" aria-live="polite">
+                  {Math.min(actif + 1, total)} <span className="font-semibold text-brand-mut">/ {total}</span>
                 </span>
                 <div className="flex flex-1 gap-1.5">
                   {liste.map((p, i) => (
                     <button key={p.id} type="button" onClick={() => aller(i)} aria-label={`Bien ${i + 1}`} className="flex h-11 flex-1 items-center">
-                      <span className={cn("block h-1.5 w-full rounded-full transition-colors duration-300", i === actif ? "bg-white" : i < actif ? "bg-white/45" : "bg-white/20")} />
+                      <span className={cn("block h-1.5 w-full rounded-full transition-colors duration-300", i === actif ? "bg-brand" : i < actif ? "bg-brand/40" : "bg-brand-line")} />
                     </button>
                   ))}
                 </div>
                 {!touche && actif === 0 && (
-                  <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[13px] font-bold text-[#F9C98A]">
+                  <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[13px] font-bold text-brand-orange-text">
                     <Hand className="anim-swipe h-4 w-4" /> Glissez
                   </span>
                 )}
               </div>
 
               {/* Le bas de la tuile : tous les biens, et l’alerte */}
-              <div className="mx-auto mt-5 flex w-full max-w-[1320px] flex-col gap-3 px-5 md:mt-9 md:flex-row md:items-center md:justify-between md:px-10">
-                <span className="hidden text-[15px] font-semibold text-brand-bt md:inline">
+              <div className="mx-auto mt-5 flex w-full max-w-[1320px] flex-col gap-3 px-5 md:mt-8 md:flex-row md:items-center md:justify-between md:px-10">
+                <span className="hidden text-[15px] font-semibold text-brand-mut md:inline">
                   {calme ? "Faites défiler les biens pour tous les voir." : "Passez la souris sur un bien pour arrêter le défilé."}
                 </span>
                 <div className="flex flex-col gap-2.5 md:flex-row md:items-center md:gap-3">
-                  <Link to="/acheter#recherche" className="inline-flex h-[52px] items-center justify-center gap-2.5 rounded-2xl border-[1.5px] border-white/55 px-5 text-[15px] font-bold text-white transition hover:bg-white/10">
+                  <Link to="/acheter#recherche" className="inline-flex h-[52px] items-center justify-center gap-2.5 rounded-2xl border-[1.5px] border-brand-line bg-white px-5 text-[15px] font-bold text-brand transition hover:border-brand-bt">
                     <Bell className="h-[18px] w-[18px]" /> Être prévenu en premier
                   </Link>
                   <Link to="/biens" className="inline-flex h-[52px] items-center justify-center gap-2.5 rounded-2xl bg-brand-orange px-6 text-[15px] font-bold text-brand-ink transition hover:brightness-105">
