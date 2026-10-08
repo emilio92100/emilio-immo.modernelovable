@@ -223,24 +223,26 @@ const TuilesHero = () => (
   <section className="mx-auto w-full max-w-[1560px] px-3 md:px-6">
     <div className="relative">
       <div className="relative h-[440px] overflow-hidden rounded-[30px] bg-[#DFE8F2] sm:h-[460px] lg:h-[clamp(560px,calc(100vh_-_112px),720px)] lg:rounded-[36px]">
-        {/* Paris et son voile : clair à gauche (ordinateur) ou en haut (téléphone), là où est le texte */}
+        {/* Paris et son voile : clair à gauche (ordinateur) ou en haut (téléphone), là où est le texte.
+            Téléphone : voile plus léger pour voir la vidéo (Alexandre, 8 oct.) ; le titre garde un halo blanc,
+            les trois engagements passent en petites pastilles blanches. */}
         <div className="absolute inset-0">
           <Fond />
         </div>
-        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.9)_52%,rgba(255,255,255,0.5)_76%,rgba(255,255,255,0)_94%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.87)_32%,rgba(255,255,255,0.3)_46%,rgba(255,255,255,0)_56%)]" />
+        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.84)_0%,rgba(255,255,255,0.7)_36%,rgba(255,255,255,0.3)_60%,rgba(255,255,255,0)_78%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.87)_32%,rgba(255,255,255,0.3)_46%,rgba(255,255,255,0)_56%)]" />
         {/* Le texte. Ordinateur : « Vendre · Acheter · Faire estimer » reste en haut ; le titre et les engagements
             se placent au milieu de la place qui reste au-dessus des trois repères du bas. */}
         <div className="relative z-[1] px-[22px] pt-6 lg:flex lg:h-full lg:max-w-[580px] lg:flex-col lg:pb-[98px] lg:pl-[76px] lg:pr-14 lg:pt-[54px] xl:max-w-[660px]">
-          <span className="fx-fade text-[11.5px] font-extrabold uppercase tracking-[0.14em] text-brand-orange-text lg:text-[13px]">Vendre · Acheter · Faire estimer</span>
+          <span className="fx-fade text-[11.5px] font-extrabold uppercase tracking-[0.14em] text-brand-orange-text max-lg:[text-shadow:0_0_10px_rgba(255,255,255,0.95)] lg:text-[13px]">Vendre · Acheter · Faire estimer</span>
           <div className="lg:my-auto">
-            <h1 className="fx-fade m-0 mt-2.5 text-[36px] font-extrabold leading-[1.05] tracking-[-0.035em] text-brand-ink sm:text-[44px] lg:mt-0 lg:text-[54px] lg:leading-[1.03] xl:text-[62px]">
+            <h1 className="fx-fade m-0 mt-2.5 text-[36px] font-extrabold leading-[1.05] tracking-[-0.035em] text-brand-ink max-lg:[text-shadow:0_0_18px_rgba(255,255,255,0.9)] sm:text-[44px] lg:mt-0 lg:text-[54px] lg:leading-[1.03] xl:text-[62px]">
               <span className="sr-only">Agence immobilière à Paris et dans les Hauts-de-Seine : </span>
               Votre projet immobilier,{" "}
               <Souligne>simplement.</Souligne>
             </h1>
             <ul className="fx-fade m-0 mt-5 flex list-none flex-col gap-2 p-0 lg:mt-6 lg:gap-2.5">
               {ENGAGEMENTS.map((e) => (
-                <li key={e.t} className="flex items-center gap-2.5 text-[14.5px] font-bold text-[#33445B] lg:gap-3 lg:text-[17px]">
+                <li key={e.t} className="flex items-center gap-2.5 text-[14.5px] font-bold text-[#33445B] max-lg:gap-2 max-lg:self-start max-lg:rounded-[17px] max-lg:bg-white/75 max-lg:py-[3px] max-lg:pl-[3px] max-lg:pr-3 max-lg:text-[13.5px] max-lg:backdrop-blur-sm lg:gap-3 lg:text-[17px]">
                   <span className="grid h-[30px] w-[30px] flex-none place-items-center rounded-[10px] bg-white text-brand shadow-[0_4px_12px_-6px_rgba(19,36,61,0.35)] lg:h-[34px] lg:w-[34px] lg:rounded-[11px]">{e.icon}</span>
                   {e.t}
                 </li>
