@@ -80,7 +80,11 @@ const ChampSuggere = ({ icon, label, value, onChange, onChoisir, placeholder, ch
   );
 };
 
-const Recherche = () => {
+/* Deux formes (Alexandre, 9 oct. : « le bloc à droite… un peu perdu », maquette A choisie) :
+   · « carte » : téléphone et tablette, sous la vidéo (inchangé) ;
+   · « barre » : ordinateur, sous le titre et les trois engagements, à gauche — les onglets en haut avec
+     « Gratuit et sans engagement » (ou le délai, le budget) à droite, puis la case et le bouton côte à côte. */
+const Recherche = ({ forme = "carte", className }: { forme?: "carte" | "barre"; className?: string }) => {
   const { openEstimation, openContact } = useSiteModals();
   const navigate = useNavigate();
   const [tab, setTab] = useState<Onglet>("estimer");
@@ -107,17 +111,80 @@ const Recherche = () => {
   };
 
   const bouton = { estimer: "Estimer gratuitement", vendre: "Être rappelé", acheter: "Voir les biens" }[tab];
+  const champ =
+    tab !== "acheter" ? (
+      <ChampSuggere
+        icon={<MapPin className="h-[18px] w-[18px]" />}
+        label={tab === "estimer" ? "Adresse de votre bien" : "Adresse du bien à vendre"}
+        value={adresse}
+        onChange={(v) => {
+          setAdresse(v);
+          setLieu({});
+        }}
+        onChoisir={(s) => {
+          setAdresse(s.label);
+          setLieu({ nom: s.nom, cp: s.cp, ville: s.ville });
+        }}
+        placeholder="Ex. 12 rue de Silly, Boulogne"
+        chercheur={chercherAdresses}
+      />
+    ) : (
+      <ChampSuggere
+        icon={<Search className="h-[18px] w-[18px]" />}
+        label="Où cherchez-vous ?"
+        value={ville}
+        onChange={setVille}
+        onChoisir={(s) => setVille(s.label)}
+        placeholder="Paris 15e, Boulogne, Neuilly…"
+        chercheur={chercherVillesSugg}
+        min={2}
+      />
+    );
+
+  if (forme === "barre")
+    return (
+      <form onSubmit={envoyer} className={cn("relative z-[3] flex flex-col rounded-[26px] bg-white p-3.5 shadow-[0_30px_60px_-30px_rgba(19,36,61,0.6),0_0_0_1px_rgba(19,36,61,0.05)]", className)}>
+        <div className="mb-3 flex items-center justify-between gap-4">
+          <div role="tablist" aria-label="Votre projet" className="flex flex-none gap-1 rounded-[14px] bg-brand-surf p-1">
+            {ONGLETS.map((o) => (
+              <button
+                key={o.k}
+                type="button"
+                role="tab"
+                aria-selected={tab === o.k}
+                onClick={() => setTab(o.k)}
+                className={cn("inline-flex h-10 items-center justify-center gap-2 rounded-[11px] px-4 text-[14px] font-bold transition", tab === o.k ? "bg-brand text-white" : "text-brand-mut hover:text-brand-ink")}
+              >
+                {o.icon}
+                {o.label}
+              </button>
+            ))}
+          </div>
+          {tab === "vendre" ? (
+            <Choix pilule droite icon={<CalendarDays className="h-4 w-4" />} label="Votre délai" value={delai} options={DELAIS} onChange={setDelai} />
+          ) : tab === "acheter" ? (
+            <Choix pilule droite icon={<Wallet className="h-4 w-4" />} label="Budget maximum" value={budget} options={BUDGETS} onChange={setBudget} />
+          ) : (
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[12.5px] font-bold text-[#0F7A4F]">
+              <Check className="h-3.5 w-3.5" strokeWidth={2.6} /> Gratuit et sans engagement
+            </span>
+          )}
+        </div>
+        <div key={tab} className="fx-fade flex items-stretch gap-2.5">
+          <div className="min-w-0 flex-1">{champ}</div>
+          <button type="submit" className="inline-flex h-[64px] flex-none items-center justify-center gap-2.5 whitespace-nowrap rounded-[18px] bg-brand-orange px-7 text-base font-bold text-brand-ink shadow-[0_14px_26px_-16px_rgba(230,139,35,0.95)] transition hover:brightness-105">
+            {bouton} <ArrowRight className="h-[18px] w-[18px]" />
+          </button>
+        </div>
+      </form>
+    );
 
   return (
-    /* Ordinateur : une boîte invisible, de la hauteur du titre et des engagements, centrée comme eux ;
-       la carte se cale en haut de cette boîte, donc en face du titre (Alexandre : « aligner ce qui est
-       à droite »). Elle ne bouge pas quand on change d'onglet : elle grandit vers le bas. Les hauteurs
-       sont celles du bloc de gauche (titre sur 3 lignes + 3 engagements) ; à revoir si ce texte change.
-       Téléphone : la boîte s'efface (display: contents), la carte reste sous la vidéo. */
-    <div className="contents lg:absolute lg:bottom-[98px] lg:right-8 lg:top-[74px] lg:z-[3] lg:my-auto lg:block lg:h-[313px] xl:right-11 xl:h-[338px]">
+    /* Téléphone et tablette : la carte, sous la vidéo. Ordinateur : la forme « barre », dans le texte. */
+    <div className="contents lg:hidden">
       <form
         onSubmit={envoyer}
-        className="relative z-[3] mx-3 -mt-10 flex flex-col rounded-[24px] bg-white p-3 shadow-[0_30px_60px_-30px_rgba(19,36,61,0.6),0_0_0_1px_rgba(19,36,61,0.05)] sm:mx-auto sm:max-w-[520px] lg:mx-0 lg:mt-0 lg:w-[380px] lg:max-w-none lg:rounded-[28px] lg:p-[18px] xl:w-[410px]"
+        className="relative z-[3] mx-3 -mt-10 flex flex-col rounded-[24px] bg-white p-3 shadow-[0_30px_60px_-30px_rgba(19,36,61,0.6),0_0_0_1px_rgba(19,36,61,0.05)] sm:mx-auto sm:max-w-[520px]"
       >
         {/* Un espace entre les onglets et la case (Alexandre : « avoir un petit espace supplémentaire ») */}
         <div role="tablist" aria-label="Votre projet" className="mb-3.5 flex gap-1 rounded-[16px] bg-brand-surf p-1 md:mb-4">
@@ -139,34 +206,7 @@ const Recherche = () => {
           ))}
         </div>
         <div key={tab} className="fx-fade flex flex-col gap-2.5">
-          {tab !== "acheter" ? (
-            <ChampSuggere
-              icon={<MapPin className="h-[18px] w-[18px]" />}
-              label={tab === "estimer" ? "Adresse de votre bien" : "Adresse du bien à vendre"}
-              value={adresse}
-              onChange={(v) => {
-                setAdresse(v);
-                setLieu({});
-              }}
-              onChoisir={(s) => {
-                setAdresse(s.label);
-                setLieu({ nom: s.nom, cp: s.cp, ville: s.ville });
-              }}
-              placeholder="Ex. 12 rue de Silly, Boulogne"
-              chercheur={chercherAdresses}
-            />
-          ) : (
-            <ChampSuggere
-              icon={<Search className="h-[18px] w-[18px]" />}
-              label="Où cherchez-vous ?"
-              value={ville}
-              onChange={setVille}
-              onChoisir={(s) => setVille(s.label)}
-              placeholder="Paris 15e, Boulogne, Neuilly…"
-              chercheur={chercherVillesSugg}
-              min={2}
-            />
-          )}
+          {champ}
           {tab === "vendre" && (
             <Choix icon={<CalendarDays className="h-[18px] w-[18px]" />} label="Votre délai" value={delai} options={DELAIS} onChange={setDelai} className="flex-none" />
           )}
@@ -222,32 +262,37 @@ const Fond = () => {
 const TuilesHero = () => (
   <section className="mx-auto w-full max-w-[1560px] px-3 md:px-6">
     <div className="relative">
-      <div className="relative h-[440px] overflow-hidden rounded-[30px] bg-[#DFE8F2] sm:h-[460px] lg:h-[clamp(560px,calc(100vh_-_112px),720px)] lg:rounded-[36px]">
+      <div className="relative h-[440px] overflow-hidden rounded-[30px] bg-[#DFE8F2] sm:h-[460px] lg:h-[clamp(560px,calc(100vh_-_112px),720px)] lg:overflow-visible lg:rounded-[36px]">
         {/* Paris et son voile : clair à gauche (ordinateur) ou en haut (téléphone), là où est le texte.
             Téléphone : voile plus léger pour voir la vidéo (Alexandre, 8 oct.) ; le titre garde un halo blanc,
-            les trois engagements passent en petites pastilles blanches. */}
-        <div className="absolute inset-0">
+            les trois engagements passent en petites pastilles blanches.
+            Ordinateur : la vidéo et le voile sont rognés à part (overflow), pour que la liste des adresses
+            proposées sous la barre de recherche puisse dépasser du bas sans être coupée. */}
+        <div className="absolute inset-0 lg:overflow-hidden lg:rounded-[36px]">
           <Fond />
+          <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.84)_0%,rgba(255,255,255,0.7)_36%,rgba(255,255,255,0.3)_60%,rgba(255,255,255,0)_78%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.87)_38%,rgba(255,255,255,0.3)_54%,rgba(255,255,255,0)_64%)]" />
         </div>
-        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.84)_0%,rgba(255,255,255,0.7)_36%,rgba(255,255,255,0.3)_60%,rgba(255,255,255,0)_78%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.87)_32%,rgba(255,255,255,0.3)_46%,rgba(255,255,255,0)_56%)]" />
-        {/* Le texte. Ordinateur : « Vendre · Acheter · Faire estimer » reste en haut ; le titre et les engagements
-            se placent au milieu de la place qui reste au-dessus des trois repères du bas. */}
-        <div className="relative z-[1] px-[22px] pt-6 lg:flex lg:h-full lg:max-w-[580px] lg:flex-col lg:pb-[98px] lg:pl-[76px] lg:pr-14 lg:pt-[54px] xl:max-w-[660px]">
+        {/* Le texte. Ordinateur : « Vendre · Acheter · Faire estimer » reste en haut ; le titre, les engagements et
+            la barre de recherche se placent au milieu de la place qui reste au-dessus des trois repères du bas.
+            Écran d’ordinateur peu haut (portable 1366 × 768, le haut de page à sa hauteur minimale) : les marges
+            se resserrent pour que la barre ne touche pas les repères. */}
+        <div className="relative z-[1] px-[22px] pt-6 lg:flex lg:h-full lg:max-w-[760px] lg:flex-col lg:pb-[88px] lg:pl-[76px] lg:pr-14 lg:pt-[50px] [@media(min-width:1024px)_and_(max-height:690px)]:pb-[78px] [@media(min-width:1024px)_and_(max-height:690px)]:pt-9">
           <span className="fx-fade text-[11.5px] font-extrabold uppercase tracking-[0.14em] text-brand-orange-text max-lg:[text-shadow:0_0_10px_rgba(255,255,255,0.95)] lg:text-[13px]">Vendre · Acheter · Faire estimer</span>
-          <div className="lg:my-auto">
-            <h1 className="fx-fade m-0 mt-2.5 text-[36px] font-extrabold leading-[1.05] tracking-[-0.035em] text-brand-ink max-lg:[text-shadow:0_0_18px_rgba(255,255,255,0.9)] sm:text-[44px] lg:mt-0 lg:text-[54px] lg:leading-[1.03] xl:text-[62px]">
+          <div className="lg:my-auto lg:py-3 [@media(min-width:1024px)_and_(max-height:690px)]:py-1.5">
+            <h1 className="fx-fade m-0 mt-2.5 text-[36px] font-extrabold leading-[1.05] tracking-[-0.035em] text-brand-ink max-lg:[text-shadow:0_0_18px_rgba(255,255,255,0.9)] sm:text-[44px] lg:mt-0 lg:text-[50px] lg:leading-[1.03] xl:text-[58px]">
               <span className="sr-only">Agence immobilière à Paris et dans les Hauts-de-Seine : </span>
               Votre projet immobilier,{" "}
               <Souligne>simplement.</Souligne>
             </h1>
-            <ul className="fx-fade m-0 mt-5 flex list-none flex-col gap-2 p-0 lg:mt-6 lg:gap-2.5">
+            <ul className="fx-fade m-0 mt-5 flex list-none flex-col gap-2 p-0 lg:mt-4 lg:gap-1.5 [@media(min-width:1024px)_and_(max-height:690px)]:mt-3">
               {ENGAGEMENTS.map((e) => (
-                <li key={e.t} className="flex items-center gap-2.5 text-[14.5px] font-bold text-[#33445B] max-lg:gap-2 max-lg:self-start max-lg:rounded-[17px] max-lg:bg-white/75 max-lg:py-[3px] max-lg:pl-[3px] max-lg:pr-3 max-lg:text-[13.5px] max-lg:backdrop-blur-sm lg:gap-3 lg:text-[17px]">
-                  <span className="grid h-[30px] w-[30px] flex-none place-items-center rounded-[10px] bg-white text-brand shadow-[0_4px_12px_-6px_rgba(19,36,61,0.35)] lg:h-[34px] lg:w-[34px] lg:rounded-[11px]">{e.icon}</span>
+                <li key={e.t} className="flex items-center gap-2.5 text-[14.5px] font-bold text-[#33445B] max-lg:gap-2 max-lg:self-start max-lg:rounded-[17px] max-lg:bg-white/75 max-lg:py-[3px] max-lg:pl-[3px] max-lg:pr-3 max-lg:text-[13.5px] max-lg:backdrop-blur-sm lg:gap-3 lg:text-[16px]">
+                  <span className="grid h-[30px] w-[30px] flex-none place-items-center rounded-[10px] bg-white text-brand shadow-[0_4px_12px_-6px_rgba(19,36,61,0.35)] lg:h-[31px] lg:w-[31px] lg:rounded-[11px]">{e.icon}</span>
                   {e.t}
                 </li>
               ))}
             </ul>
+            <Recherche forme="barre" className="mt-6 hidden w-[600px] lg:flex xl:w-[640px] [@media(min-width:1024px)_and_(max-height:690px)]:mt-4" />
           </div>
         </div>
         {/* Ordinateur : les trois repères, en bas à gauche, sur la vidéo */}
