@@ -3,8 +3,10 @@
    à gauche, le titre et les trois engagements ; à droite, la carte Estimer / Vendre / Acheter.
    Sur un PC portable, tout se voit en arrivant, sans faire défiler. Au téléphone : la vidéo et
    le titre, puis la carte de recherche juste en dessous.
-   La vidéo : 14 secondes, aller puis retour (la boucle ne saute pas), 1,8 Mo. Si l'appareil
-   demande moins d'animations ou d'économiser les données, on montre l'image fixe. */
+   La vidéo : 14 secondes, aller puis retour (la boucle ne saute pas), en 30 images par seconde.
+   Deux fichiers : la version HD (1920 px) pour l'ordinateur et la tablette, et une version carrée,
+   plus légère, pour le téléphone (le navigateur prend la bonne tout seul). Si l'appareil demande
+   moins d'animations ou d'économiser les données, on montre l'image fixe. */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Bell, CalendarDays, Check, Home, KeyRound, LineChart, MapPin, MessageCircle, Phone, Search, UserRound, Wallet } from "lucide-react";
@@ -15,7 +17,8 @@ import { Souligne } from "@/components/site/ui";
 import { Choix, type Option } from "@/components/home/tuiles/Choix";
 import affiche from "@/assets/refonte/accueil-paris-affiche.webp";
 
-const VIDEO = "/videos/accueil-paris.mp4";
+const VIDEO_HD = "/videos/accueil-hd.mp4"; // 1920 × 1080, ordinateur et tablette
+const VIDEO_TEL = "/videos/accueil-tel.mp4"; // 720 × 720, téléphone
 
 type Onglet = "estimer" | "vendre" | "acheter";
 
@@ -152,14 +155,17 @@ const Fond = () => {
   return calme || eco ? (
     <img src={affiche} alt="" {...({ fetchpriority: "high" } as object)} className={classe} />
   ) : (
-    <video src={VIDEO} poster={affiche} autoPlay muted loop playsInline preload="auto" aria-hidden className={classe} />
+    <video poster={affiche} autoPlay muted loop playsInline preload="auto" aria-hidden className={classe}>
+      <source src={VIDEO_HD} media="(min-width: 640px)" type="video/mp4" />
+      <source src={VIDEO_TEL} type="video/mp4" />
+    </video>
   );
 };
 
 const TuilesHero = () => (
   <section className="mx-auto w-full max-w-[1560px] px-3 md:px-6">
     <div className="relative">
-      <div className="relative h-[440px] overflow-hidden rounded-[30px] bg-[#DFE8F2] sm:h-[460px] lg:h-[560px] lg:rounded-[36px]">
+      <div className="relative h-[440px] overflow-hidden rounded-[30px] bg-[#DFE8F2] sm:h-[460px] lg:h-[clamp(560px,calc(100vh_-_112px),720px)] lg:rounded-[36px]">
         {/* Paris et son voile : clair à gauche (ordinateur) ou en haut (téléphone), là où est le texte */}
         <div className="absolute inset-0">
           <Fond />

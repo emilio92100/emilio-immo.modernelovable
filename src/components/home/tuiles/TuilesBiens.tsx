@@ -1,6 +1,6 @@
 /* ═══ Accueil « Tuiles » : nos biens du moment ═══════════════════════════════
    Maquette B (8 oct. 2026, Alexandre : « moins mettre cette partie bleue, assez imposante ») :
-   une tuile gris très clair, et des cartes-photos (le prix et le titre sur la photo).
+   une tuile gris très clair, et des cartes-photos carrées (le prix et le titre sur la photo).
    Ordinateur : les biens défilent doucement tout seuls ; le défilé s’arrête quand on passe la souris dessus.
    Téléphone : on glisse du doigt, une carte à la fois ; la carte au centre est mise en avant, une barre montre où l’on en est.
    Si l’appareil demande moins d’animations, pas de défilé : on fait défiler soi-même. */
@@ -23,7 +23,7 @@ const FILTRES = [
 const nf = new Intl.NumberFormat("fr-FR");
 /* Dix biens au plus sur l’accueil : le reste est sur la page Nos biens. */
 const MAX = 10;
-const PAS = 290 + 20; // largeur d’une carte sur ordinateur + l’espace entre deux cartes
+const PAS = 300 + 20; // largeur d’une carte sur ordinateur + l’espace entre deux cartes
 
 /** La carte-photo d’un bien : la photo en entier, le prix, le titre et la ville posés dessus.
     `cachee` : copie qui sert seulement à faire boucler le défilé (ni lue, ni atteinte au clavier). */
@@ -34,12 +34,12 @@ const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void
   return (
     <article
       {...(cachee ? { "aria-hidden": true } : {})}
-      className={cn("group relative h-[360px] flex-none overflow-hidden rounded-[24px] bg-brand-sky text-white shadow-[0_26px_44px_-30px_rgba(19,36,61,0.75)] transition duration-300 md:h-[370px] md:rounded-[26px] md:hover:-translate-y-1.5", className)}
+      className={cn("group relative aspect-square flex-none overflow-hidden rounded-[24px] bg-brand-sky text-white shadow-[0_26px_44px_-30px_rgba(19,36,61,0.75)] transition duration-300 md:rounded-[26px] md:hover:-translate-y-1.5", className)}
     >
       {p.images[0] && (
         <img src={p.images[0]} alt={cachee ? "" : `${displayTitle(p)}, ${displayCity(p)}`} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]" />
       )}
-      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(19,36,61,0)_42%,rgba(19,36,61,0.55)_66%,rgba(19,36,61,0.88)_100%)]" />
+      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(19,36,61,0)_34%,rgba(19,36,61,0.6)_62%,rgba(19,36,61,0.9)_100%)]" />
       {p.exclusive && <span className="absolute left-3 top-3 z-[2] inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
         <button
           type="button"
@@ -113,7 +113,7 @@ const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Propert
     // moins d’animations demandé : une simple rangée qu’on fait défiler soi-même
     return (
       <div className="flex gap-5 overflow-x-auto px-10 pb-4">
-        {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className="w-[290px]" />)}
+        {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className="w-[300px]" />)}
       </div>
     );
   }
@@ -135,7 +135,7 @@ const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Propert
       <div ref={piste} className="flex w-max py-2 will-change-transform">
         {serie.map((p, k) => (
           <div key={`${p.id}-${k}`} className="flex-none pr-5">
-            <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className="w-[290px]" />
+            <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className="w-[300px]" />
           </div>
         ))}
       </div>
@@ -289,7 +289,7 @@ const TuilesBiens = () => {
   const nbTous = biens?.length || 0;
 
   return (
-    <section id="biens" className="mx-auto w-full max-w-[1560px] px-3 pt-12 md:px-6 md:pt-16">
+    <section id="biens" className="mx-auto w-full max-w-[1560px] px-3 pt-12 md:px-6 md:pt-6">
       <div className="relative overflow-hidden rounded-[30px] bg-brand-pale pb-7 pt-8 text-brand-ink md:rounded-[36px] md:pb-10 md:pt-12">
 
         <div className="relative">
@@ -311,7 +311,7 @@ const TuilesBiens = () => {
 
           {!biens ? (
             <div className="mt-8 flex gap-5 overflow-hidden px-5 md:mt-10 md:px-10">
-              {[0, 1, 2, 3, 4].map((k) => <div key={k} className="h-[360px] w-[74vw] max-w-[300px] flex-none animate-pulse rounded-[26px] bg-white md:w-[290px]" />)}
+              {[0, 1, 2, 3, 4].map((k) => <div key={k} className="aspect-square w-[74vw] max-w-[300px] flex-none animate-pulse rounded-[26px] bg-white md:w-[300px]" />)}
             </div>
           ) : (
             <>
