@@ -14,7 +14,7 @@
       "destination": "https://emilio-immo-chasseimmo.vercel.app/api/flux-site/sitemap"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!assets/).*)",
       "destination": "/spa"
     }
   ],
