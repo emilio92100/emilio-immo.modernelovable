@@ -1,6 +1,8 @@
 /* ═══ Accueil « Tuiles » : nos biens du moment ═══════════════════════════════
    Maquette B (8 oct. 2026, Alexandre : « moins mettre cette partie bleue, assez imposante ») :
-   une tuile gris très clair, et des cartes-photos carrées (le prix et le titre sur la photo).
+   une tuile gris très clair, et des cartes-photos un peu plus larges que hautes (5/4), le prix, le titre
+   et la ville sur la photo ; pas la ligne des surfaces (Alexandre : « ça fait remonter les infos, on ne voit
+   pas assez bien les photos »).
    Ordinateur : les biens défilent doucement tout seuls ; le défilé s’arrête quand on passe la souris dessus.
    Téléphone : on glisse du doigt, une carte à la fois ; la carte au centre est mise en avant, une barre montre où l’on en est.
    Si l’appareil demande moins d’animations, pas de défilé : on fait défiler soi-même. */
@@ -20,26 +22,24 @@ const FILTRES = [
   { k: "immeuble", t: "Immeubles", test: (p: Property) => /immeuble/i.test(p.type) },
 ];
 
-const nf = new Intl.NumberFormat("fr-FR");
 /* Dix biens au plus sur l’accueil : le reste est sur la page Nos biens. */
 const MAX = 10;
-const PAS = 300 + 20; // largeur d’une carte sur ordinateur + l’espace entre deux cartes
+const PAS = 360 + 20; // largeur d’une carte sur ordinateur + l’espace entre deux cartes
 
 /** La carte-photo d’un bien : la photo en entier, le prix, le titre et la ville posés dessus.
     `cachee` : copie qui sert seulement à faire boucler le défilé (ni lue, ni atteinte au clavier). */
 const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void; cachee?: boolean; className?: string }) => {
   const plus = featureBadges(p)[0];
   const sansClavier = cachee ? { tabIndex: -1 } : {};
-  const specs = [p.surface > 0 ? `${nf.format(p.surface)} m²` : "", p.rooms > 0 ? `${p.rooms} pièce${p.rooms > 1 ? "s" : ""}` : "", p.bedrooms > 0 ? `${p.bedrooms} ch.` : ""].filter(Boolean).join(" · ");
   return (
     <article
       {...(cachee ? { "aria-hidden": true } : {})}
-      className={cn("group relative aspect-square flex-none overflow-hidden rounded-[24px] bg-brand-sky text-white shadow-[0_26px_44px_-30px_rgba(19,36,61,0.75)] transition duration-300 md:rounded-[26px] md:hover:-translate-y-1.5", className)}
+      className={cn("group relative aspect-[5/4] flex-none overflow-hidden rounded-[24px] bg-brand-sky text-white shadow-[0_26px_44px_-30px_rgba(19,36,61,0.75)] transition duration-300 md:rounded-[26px] md:hover:-translate-y-1.5", className)}
     >
       {p.images[0] && (
         <img src={p.images[0]} alt={cachee ? "" : `${displayTitle(p)}, ${displayCity(p)}`} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]" />
       )}
-      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(19,36,61,0)_34%,rgba(19,36,61,0.6)_62%,rgba(19,36,61,0.9)_100%)]" />
+      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(19,36,61,0)_44%,rgba(19,36,61,0.5)_68%,rgba(19,36,61,0.86)_100%)]" />
       {p.exclusive && <span className="absolute left-3 top-3 z-[2] inline-flex h-[26px] items-center rounded-full bg-brand-orange px-2.5 text-xs font-extrabold text-brand-ink">Exclusivité</span>}
         <button
           type="button"
@@ -52,7 +52,7 @@ const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void
         </button>
       <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-[18px]">
         <span className="text-[23px] font-extrabold leading-tight tracking-[-0.02em]">{formatPrice(p.price)}</span>
-        <h3 className="m-0 line-clamp-2 text-[15.5px] font-bold leading-snug">
+        <h3 className="m-0 line-clamp-1 text-[15.5px] font-bold leading-snug">
           <Link to={`/biens/${p.id}`} {...sansClavier} className="after:absolute after:inset-0 after:z-[1] after:content-['']">
             {displayTitle(p)}
             {plus ? ` avec ${plus.toLowerCase()}` : ""}
@@ -61,7 +61,6 @@ const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void
         <span className="flex min-w-0 items-center gap-1.5 text-[13px] font-semibold text-white/85">
           <MapPin className="h-[14px] w-[14px] flex-none" /> <span className="truncate">{displayCity(p)} ({p.postalCode})</span>
         </span>
-        {specs && <span className="text-[12.5px] font-semibold text-white/70">{specs}</span>}
       </div>
     </article>
   );
@@ -113,7 +112,7 @@ const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Propert
     // moins d’animations demandé : une simple rangée qu’on fait défiler soi-même
     return (
       <div className="flex gap-5 overflow-x-auto px-10 pb-4">
-        {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className="w-[300px]" />)}
+        {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className="w-[360px]" />)}
       </div>
     );
   }
@@ -135,7 +134,7 @@ const Defile = ({ liste, onVue, calme }: { liste: Property[]; onVue: (p: Propert
       <div ref={piste} className="flex w-max py-2 will-change-transform">
         {serie.map((p, k) => (
           <div key={`${p.id}-${k}`} className="flex-none pr-5">
-            <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className="w-[300px]" />
+            <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className="w-[360px]" />
           </div>
         ))}
       </div>
@@ -311,7 +310,7 @@ const TuilesBiens = () => {
 
           {!biens ? (
             <div className="mt-8 flex gap-5 overflow-hidden px-5 md:mt-10 md:px-10">
-              {[0, 1, 2, 3, 4].map((k) => <div key={k} className="aspect-square w-[74vw] max-w-[300px] flex-none animate-pulse rounded-[26px] bg-white md:w-[300px]" />)}
+              {[0, 1, 2, 3, 4].map((k) => <div key={k} className="aspect-[5/4] w-[84vw] max-w-[340px] flex-none animate-pulse rounded-[26px] bg-white md:w-[360px]" />)}
             </div>
           ) : (
             <>
@@ -325,11 +324,11 @@ const TuilesBiens = () => {
                 ref={rail}
                 key={`tel-${filtre}`}
                 onTouchStart={() => setTouche(true)}
-                className="fx-fade no-scrollbar mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[11vw] pb-3 pt-1 md:hidden"
+                className="fx-fade no-scrollbar mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[8vw] pb-3 pt-1 md:hidden"
               >
                 {liste.map((p, i) => (
                   <div key={p.id} data-carte className={cn("flex-none snap-center snap-always transition duration-500 ease-out", actif === i ? "scale-100 opacity-100" : "scale-[0.93] opacity-70")}>
-                    <Carte p={p} onVue={() => setVue(p)} className="w-[74vw] max-w-[300px]" />
+                    <Carte p={p} onVue={() => setVue(p)} className="w-[84vw] max-w-[340px]" />
                   </div>
                 ))}
               </div>
