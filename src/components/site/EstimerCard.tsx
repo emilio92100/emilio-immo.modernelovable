@@ -25,7 +25,8 @@ export const EstimerCard = ({ city, postalCode, placeholder = "Ex. 12 rue de Sil
         className="flex flex-wrap gap-2"
         onSubmit={(e) => {
           e.preventDefault();
-          openEstimation(lieu.cp ? { address: lieu.nom || adresse, postalCode: lieu.cp, city: lieu.ville } : { address: adresse, city, postalCode });
+          /* L’adresse entière (rue, code postal, ville), comme quand on la choisit dans l’estimation elle-même. */
+          openEstimation(lieu.cp ? { address: adresse, postalCode: lieu.cp, city: lieu.ville } : { address: adresse, city, postalCode });
         }}
       >
         <div ref={sugg.boite} className="relative min-w-0 flex-[1_1_220px]">
