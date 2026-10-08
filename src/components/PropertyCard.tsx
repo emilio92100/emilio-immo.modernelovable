@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, BedDouble, Eye, LayoutGrid, MapPin, Maximize, X } from "lucide-react";
 import { Property, formatPrice, formatSurface } from "@/lib/properties";
+import { displayCity, displayTitle } from "@/lib/bien-seo";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
 import { FRAME_SHADOW } from "@/components/site/ui";
@@ -17,18 +18,9 @@ interface PropertyCardProps {
   imgClassName?: string;
 }
 
-export const displayTitle = (p: Property) => {
-  const type = p.type || "Bien";
-  return p.rooms > 0 ? `${type} ${p.rooms} pièce${p.rooms > 1 ? "s" : ""}` : type;
-};
-
-export const displayCity = (p: Property) => {
-  if (p.city.toLowerCase().startsWith("paris") && p.postalCode.startsWith("75")) {
-    const n = parseInt(p.postalCode.slice(3), 10);
-    if (n > 0) return `Paris ${n}${n === 1 ? "er" : "e"}`;
-  }
-  return p.city;
-};
+/* « Appartement 3 pièces » et « Paris 16e » : définis dans bien-seo.ts (partagé avec la fonction Vercel
+   des pages de biens), gardés ici pour les composants qui les importent depuis ce fichier. */
+export { displayTitle, displayCity };
 
 export const featureBadges = (p: Property) => {
   const b: string[] = [];
