@@ -93,7 +93,9 @@ const Recherche = () => {
 
   const envoyer = (e: React.FormEvent) => {
     e.preventDefault();
-    if (tab === "estimer") openEstimation(lieu.cp ? { address: lieu.nom || adresse, postalCode: lieu.cp, city: lieu.ville } : { address: adresse });
+/* L’adresse entière (rue, code postal, ville), comme quand on la choisit dans l’estimation elle-même :
+       c’est aussi ce qui part dans la demande (« Adresse : … »). */
+    if (tab === "estimer") openEstimation(lieu.cp ? { address: adresse, postalCode: lieu.cp, city: lieu.ville } : { address: adresse });
     else if (tab === "vendre")
       openContact({ objet: "Vendre", message: `Bonjour, je souhaite vendre mon bien${adresse.trim() ? ` situé ${adresse.trim()}` : ""}. Délai : ${delai.toLowerCase()}.` });
     else {
