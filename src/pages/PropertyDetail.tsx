@@ -7,7 +7,8 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SEOHead, { SITE_URL } from "@/components/SEOHead";
+import SEOHead from "@/components/SEOHead";
+import { seoBien } from "@/lib/bien-seo";
 import DPEBadge from "@/components/DPEBadge";
 import PropertyCard, { displayCity, displayTitle } from "@/components/PropertyCard";
 import { cn } from "@/lib/utils";
@@ -225,12 +226,9 @@ const PropertyDetail = () => {
   }
 
   const p = property;
-  const titre = displayTitle(p);
-  const ville = displayCity(p);
-  const url = `${SITE_URL}/biens/${p.id}`;
-  const surf = p.surface ? formatSurface(p.surface) : "";
-  const seoTitle = `${titre}${surf ? ` ${surf}` : ""} à vendre, ${ville} | Emilio Immobilier`;
-  const seoDesc = `${titre} à vendre à ${ville}${surf ? `, ${surf}` : ""}${p.bedrooms ? `, ${p.bedrooms} chambre${p.bedrooms > 1 ? "s" : ""}` : ""} : ${formatPrice(p.price)}. Photos, plan, DPE et visite avec Emilio Immobilier.`.slice(0, 160);
+  /* Titre, description et données Google : les mêmes que ceux que la fonction api/page-bien.ts met dans
+     la page avant de l'envoyer (bien-seo.ts), pour que rien ne change une fois la page ouverte. */
+  const { titre, ville, url, surf, title: seoTitle, description: seoDesc, jsonLd } = seoBien(p);
   const avantages = plus(p);
   const demande = (objet: "Visiter un bien" | "Autre", message: string) => openContact({ objet, message, propertyRef: p.id, propertyTitle: `${titre}, ${ville}`, propertyImage: p.images[0], propertyPrice: formatPrice(p.price) });
 
@@ -243,36 +241,6 @@ const PropertyDetail = () => {
     p.heating && { icon: Thermometer, l: "Chauffage", v: p.heating },
   ].filter(Boolean) as { icon: typeof Home; l: string; v: string }[];
 
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "RealEstateListing",
-      name: `${titre}, ${ville}`,
-      url,
-      description: p.description?.slice(0, 500),
-      image: p.images?.slice(0, 6),
-      datePosted: p.dateAdded,
-      offers: { "@type": "Offer", price: p.price, priceCurrency: "EUR", availability: "https://schema.org/InStock" },
-      about: {
-        "@type": /maison/i.test(p.type) ? "House" : "Apartment",
-        numberOfRooms: p.rooms || undefined,
-        numberOfBedrooms: p.bedrooms || undefined,
-        floorSize: p.surface ? { "@type": "QuantitativeValue", value: p.surface, unitCode: "MTK" } : undefined,
-        yearBuilt: p.yearBuilt || undefined,
-        address: { "@type": "PostalAddress", addressLocality: ville, postalCode: p.postalCode, addressCountry: "FR" },
-      },
-      provider: { "@type": "RealEstateAgent", name: "Emilio Immobilier", url: SITE_URL, telephone: "+33184801400" },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
-        { "@type": "ListItem", position: 2, name: "Nos biens", item: `${SITE_URL}/biens` },
-        { "@type": "ListItem", position: 3, name: `${titre}, ${ville}`, item: url },
-      ],
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-white">
