@@ -4,10 +4,13 @@
    « Adresse du bien · Estimer gratuitement » (EstimerCard : page Vendre, page Estimation, pages des villes).
    Le parcours d’estimation (EstimationFlow) et « Confier ma recherche » (CityPicker) ont déjà les leurs,
    sur les mêmes sources. */
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { chercherVilles } from "@/components/site/SearchControls";
+
+/* useLayoutEffect côté navigateur (la liste ne saute pas), rien pendant la pré-génération des pages. */
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export type Sugg = { label: string; titre: string; sous: string; nom?: string; cp?: string; ville?: string };
 export type Chercheur = (q: string, signal: AbortSignal) => Promise<Sugg[]>;
@@ -83,6 +86,17 @@ export function useSuggestions({ value, chercheur, min = 3, onChoisir }: { value
     return () => document.removeEventListener("pointerdown", dehors);
   }, []);
 
+  /* Ordinateur : pas assez de place sous la case (la barre de recherche du haut de l’accueil, près du bas de
+     l’écran), la liste s’ouvre au-dessus. Le téléphone garde la liste en dessous. */
+  const [haut, setHaut] = useState(false);
+  const visibleAvant = ouvert && liste.length > 0;
+  useIsoLayoutEffect(() => {
+    if (!visibleAvant) return;
+    const r = boite.current?.getBoundingClientRect();
+    const besoin = Math.min(300, liste.length * 58 + 16);
+    setHaut(!!r && window.matchMedia("(min-width: 1024px)").matches && window.innerHeight - r.bottom < besoin + 12 && r.top > besoin + 96);
+  }, [visibleAvant, liste.length]);
+
   const choisir = (s: Sugg) => {
     setFige(true);
     setOuvert(false);
@@ -125,7 +139,7 @@ export function useSuggestions({ value, chercheur, min = 3, onChoisir }: { value
     "aria-activedescendant": visible ? `${id}-${hi}` : undefined,
   });
 
-  return { boite, id, liste, hi, setHi, visible, choisir, brancher };
+  return { boite, id, liste, hi, setHi, visible, haut, choisir, brancher };
 }
 
 /** La liste sous la case : une ligne par suggestion, avec un picto, le nom en gras et le détail dessous. */
@@ -137,7 +151,8 @@ export const ListeSuggestions = ({ s, className }: { s: ReturnType<typeof useSug
       role="listbox"
       onMouseDown={(e) => e.preventDefault()}
       className={cn(
-        "fx-fade absolute inset-x-0 top-[calc(100%+6px)] z-30 m-0 max-h-[300px] list-none overflow-y-auto rounded-[18px] border border-brand-line bg-white p-1.5 text-left shadow-[0_24px_50px_-20px_rgba(19,36,61,0.45)]",
+        "fx-fade absolute inset-x-0 z-30 m-0 max-h-[300px] list-none overflow-y-auto rounded-[18px] border border-brand-line bg-white p-1.5 text-left shadow-[0_24px_50px_-20px_rgba(19,36,61,0.45)]",
+        s.haut ? "bottom-[calc(100%+6px)]" : "top-[calc(100%+6px)]",
         className,
       )}
     >
