@@ -271,9 +271,9 @@ export const mockProperties: Property[] = [
   },
 ];
 
-export const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(price);
-};
+/* Prix et surface au format français : définis dans bien-seo.ts, que la fonction Vercel des pages de
+   biens partage avec le site. */
+export { formatPrice, formatSurface } from "./bien-seo";
 
 /* Les biens à vendre viennent du CRM d'Emilio Immobilier (même format JSON
    que l'ancienne fonction `fetch-properties`, qui lisait le flux
@@ -299,6 +299,3 @@ export async function fetchPropertiesFromFeed(): Promise<Property[]> {
     return mockProperties;
   }
 }
-
-/** Surface au format français : 87,85 m². */
-export const formatSurface = (n: number): string => `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(n)} m²`;
