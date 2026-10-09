@@ -1,6 +1,8 @@
 /* ═══ Accueil « Tuiles » : haut de page ═══════════════════════════════════════
    Maquette B (8 oct. 2026, choisie par Alexandre) : Paris en vidéo sous un voile clair ;
    à gauche, le titre et les trois engagements ; à droite, la carte Estimer / Vendre / Acheter.
+   9 oct. (maquette A) : sur ordinateur, la recherche passe sous le titre et les engagements ; au téléphone,
+   la vidéo va d'un bord à l'autre de l'écran.
    Sur un PC portable, tout se voit en arrivant, sans faire défiler. Au téléphone : la vidéo et
    le titre, puis la carte de recherche juste en dessous.
    La vidéo : celle d'Alexandre, en entier (53 s, 30 images par seconde) ; la dernière seconde se fond
@@ -12,7 +14,7 @@
    (Acheter), comme sur « Estimer mon bien » (Alexandre, 8 oct.). */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Bell, CalendarDays, Check, Home, KeyRound, LineChart, MapPin, MessageCircle, Phone, Search, UserRound, Wallet } from "lucide-react";
+import { ArrowRight, Bell, CalendarDays, Home, KeyRound, LineChart, MapPin, MessageCircle, Phone, Search, UserRound, Wallet } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useSiteModals } from "@/components/site/SiteModals";
@@ -83,7 +85,9 @@ const ChampSuggere = ({ icon, label, value, onChange, onChoisir, placeholder, ch
 /* Deux formes (Alexandre, 9 oct. : « le bloc à droite… un peu perdu », maquette A choisie) :
    · « carte » : téléphone et tablette, sous la vidéo (inchangé) ;
    · « barre » : ordinateur, sous le titre et les trois engagements, à gauche — les onglets en haut avec
-     « Gratuit et sans engagement » (ou le délai, le budget) à droite, puis la case et le bouton côte à côte. */
+     le délai (Vendre) ou le budget (Acheter) à droite, puis la case et le bouton côte à côte.
+   « Gratuit et sans engagement » retiré des deux formes (Alexandre, 9 oct.) : les repères du dessous disent
+   déjà « Estimation gratuite ». */
 const Recherche = ({ forme = "carte", className }: { forme?: "carte" | "barre"; className?: string }) => {
   const { openEstimation, openContact } = useSiteModals();
   const navigate = useNavigate();
@@ -164,11 +168,7 @@ const Recherche = ({ forme = "carte", className }: { forme?: "carte" | "barre"; 
             <Choix pilule droite icon={<CalendarDays className="h-4 w-4" />} label="Votre délai" value={delai} options={DELAIS} onChange={setDelai} />
           ) : tab === "acheter" ? (
             <Choix pilule droite icon={<Wallet className="h-4 w-4" />} label="Budget maximum" value={budget} options={BUDGETS} onChange={setBudget} />
-          ) : (
-            <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[12.5px] font-bold text-[#0F7A4F]">
-              <Check className="h-3.5 w-3.5" strokeWidth={2.6} /> Gratuit et sans engagement
-            </span>
-          )}
+          ) : null}
         </div>
         <div key={tab} className="fx-fade flex items-stretch gap-2.5">
           <div className="min-w-0 flex-1">{champ}</div>
@@ -217,11 +217,6 @@ const Recherche = ({ forme = "carte", className }: { forme?: "carte" | "barre"; 
             {bouton} <ArrowRight className="h-[18px] w-[18px]" />
           </button>
         </div>
-        {tab !== "acheter" && (
-          <span className="mt-3 inline-flex items-center justify-center gap-1.5 text-[12.5px] font-bold text-[#0F7A4F]">
-            <Check className="h-3.5 w-3.5" strokeWidth={2.6} /> Gratuit et sans engagement
-          </span>
-        )}
       </form>
     </div>
   );
