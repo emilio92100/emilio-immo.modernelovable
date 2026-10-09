@@ -454,7 +454,7 @@ const Properties = () => {
                 <Souligne>de nos biens</Souligne>
               </h2>
               <p className="m-0 max-w-[560px] text-base font-medium leading-[1.55] text-[#33445B] md:text-[17px]">
-                Certains propriétaires préfèrent vendre sans annonce. Ces biens sont présentés uniquement aux acheteurs qui nous ont confié leur recherche.
+                Certains propriétaires préfèrent vendre sans publier d’annonce. Leurs biens ne sont donc pas sur le site : nous les proposons directement aux acheteurs qui nous ont confié leur recherche.
               </p>
               <div className="flex flex-wrap gap-2.5 pt-1">
                 <Link to="/acheter#recherche" className="inline-flex h-14 items-center gap-2.5 rounded-[18px] bg-brand-orange px-6 text-[15.5px] font-bold text-brand-ink transition hover:brightness-105">
