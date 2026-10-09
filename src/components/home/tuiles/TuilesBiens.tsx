@@ -35,7 +35,7 @@ const Carte = ({ p, onVue, cachee, className }: { p: Property; onVue: () => void
   return (
     <article
       {...(cachee ? { "aria-hidden": true } : {})}
-      className={cn("group relative isolate flex aspect-[5/4] flex-none flex-col justify-end overflow-hidden rounded-[24px] bg-brand-sky text-white shadow-[0_26px_44px_-30px_rgba(19,36,61,0.75)] transition duration-300 md:rounded-[26px] md:hover:-translate-y-1.5", className)}
+      className={cn("group relative isolate flex aspect-[5/4] flex-none flex-col justify-end overflow-hidden rounded-[24px] bg-brand-sky text-white shadow-[0_18px_30px_-20px_rgba(19,36,61,0.6)] transition duration-300 md:rounded-[26px] md:hover:-translate-y-1.5", className)}
     >
       {p.images[0] && (
         <img src={p.images[0]} alt={cachee ? "" : `${displayTitle(p)}, ${displayCity(p)}`} loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]" />
@@ -130,7 +130,7 @@ const Defile = ({ liste, onVue, calme, tactile = false }: { liste: Property[]; o
   if (calme) {
     // moins d’animations demandé : une simple rangée qu’on fait défiler soi-même
     return (
-      <div className={cn("flex overflow-x-auto pb-4", tactile ? "gap-3 px-6" : "gap-5 px-10")}>
+      <div className={cn("-mb-8 flex overflow-x-auto pb-10", tactile ? "gap-3 px-6" : "gap-5 px-10")}>
         {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className={largeur} />)}
       </div>
     );
@@ -181,9 +181,12 @@ const Defile = ({ liste, onVue, calme, tactile = false }: { liste: Property[]; o
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) arret.current.clavier = false;
       }}
-      className={cn("relative", tactile ? "touch-pan-y select-none [mask-image:linear-gradient(90deg,transparent_0,#000_4%,#000_96%,transparent_100%)]" : "[mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)]")}
+      className={cn("relative -mb-8", tactile ? "touch-pan-y select-none [mask-image:linear-gradient(90deg,transparent_0,#000_4%,#000_96%,transparent_100%)]" : "[mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)]")}
     >
-      <div ref={piste} className="flex w-max py-2 will-change-transform">
+      {/* De la place sous les cartes pour leur ombre (le masque des bords coupe tout ce qui dépasse) : sans elle,
+          l'ombre était tranchée net et faisait une barre grise sous chaque bien (Alexandre, 9 oct.). La marge
+          négative de la zone rend cette place, l'espace sous le défilé ne change pas. */}
+      <div ref={piste} className="flex w-max pb-10 pt-2 will-change-transform">
         {serie.map((p, k) => (
           <div key={`${p.id}-${k}`} className={cn("flex-none", tactile ? "pr-3" : "pr-5")}>
             <Carte p={p} onVue={() => onVue(p)} cachee={k >= liste.length} className={largeur} />
