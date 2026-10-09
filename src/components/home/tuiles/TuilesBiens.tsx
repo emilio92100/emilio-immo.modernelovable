@@ -130,7 +130,7 @@ const Defile = ({ liste, onVue, calme, tactile = false }: { liste: Property[]; o
   if (calme) {
     // moins d’animations demandé : une simple rangée qu’on fait défiler soi-même
     return (
-      <div className={cn("flex overflow-x-auto pb-4", tactile ? "gap-3 px-5" : "gap-5 px-10")}>
+      <div className={cn("flex overflow-x-auto pb-4", tactile ? "gap-3 px-6" : "gap-5 px-10")}>
         {liste.map((p) => <Carte key={p.id} p={p} onVue={() => onVue(p)} className={largeur} />)}
       </div>
     );
@@ -240,7 +240,7 @@ const Filtres = ({ dispo, filtre, choisir }: { dispo: { k: string; t: string; n:
       ref={el}
       role="group"
       aria-label="Filtrer les biens"
-      className="no-scrollbar -mx-5 flex w-[calc(100%+40px)] gap-2 overflow-x-auto px-5 md:mx-0 md:w-auto md:px-0"
+      className="no-scrollbar -mx-6 flex w-[calc(100%+48px)] gap-2 overflow-x-auto px-6 md:mx-0 md:w-auto md:px-0"
       style={{ WebkitMaskImage: masque, maskImage: masque }}
     >
       {dispo.map((f) => (
@@ -274,12 +274,13 @@ const TuilesBiens = () => {
   const nbTous = biens?.length || 0;
 
   return (
-    <section id="biens" className="mx-auto w-full max-w-[1560px] px-3 pt-12 md:px-6 md:pt-6">
-      <div className="relative overflow-hidden rounded-[30px] bg-brand-pale pb-7 pt-8 text-brand-ink md:rounded-[36px] md:pb-10 md:pt-12">
+    <section id="biens" className="mx-auto w-full max-w-[1560px] pt-12 md:px-6 md:pt-6">
+      {/* Téléphone : la bande va d’un bord à l’autre de l’écran (Alexandre, 9 oct.) ; tablette et ordinateur : la tuile arrondie. */}
+      <div className="relative overflow-hidden bg-brand-pale pb-7 pt-8 text-brand-ink md:rounded-[36px] md:pb-10 md:pt-12">
 
         <div className="relative">
           {/* Le titre et les filtres */}
-          <div className="mx-auto flex w-full max-w-[1320px] flex-wrap items-end justify-between gap-5 px-5 md:gap-6 md:px-10">
+          <div className="mx-auto flex w-full max-w-[1320px] flex-wrap items-end justify-between gap-5 px-6 md:gap-6 md:px-10">
             <div>
               <h2 className="m-0 text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-brand-ink md:text-[44px] md:leading-[1.04] md:tracking-[-0.035em]">Nos biens du moment</h2>
               <p className="m-0 mt-2 text-[14.5px] font-medium leading-relaxed text-brand-mut md:mt-2.5 md:text-[17px]">Ce qui est à vendre en ce moment chez Emilio, à Paris et dans les Hauts-de-Seine.</p>
@@ -292,7 +293,7 @@ const TuilesBiens = () => {
           </div>
 
           {!biens ? (
-            <div className="mt-8 flex gap-5 overflow-hidden px-5 md:mt-10 md:px-10">
+            <div className="mt-8 flex gap-5 overflow-hidden px-6 md:mt-10 md:px-10">
               {[0, 1, 2, 3, 4].map((k) => <div key={k} className="aspect-[5/4] w-[84vw] max-w-[340px] flex-none animate-pulse rounded-[26px] bg-white md:w-[360px]" />)}
             </div>
           ) : (
@@ -306,13 +307,13 @@ const TuilesBiens = () => {
               <div key={`tel-${filtre}`} className="fx-fade mt-6 md:hidden">
                 <Defile liste={liste} onVue={setVue} calme={calme} tactile />
               </div>
-              <p className="m-0 mt-2 flex items-center gap-1.5 px-5 text-[13px] font-semibold text-brand-mut md:hidden">
+              <p className="m-0 mt-2 flex items-center gap-1.5 px-6 text-[13px] font-semibold text-brand-mut md:hidden">
                 <Hand className="h-4 w-4 flex-none text-brand-orange-text" />
                 {calme ? "Faites glisser pour voir tous les biens." : "Glissez du doigt pour les parcourir, touchez un bien pour le voir."}
               </p>
 
               {/* Le bas de la tuile : tous les biens, et l’alerte */}
-              <div className="mx-auto mt-5 flex w-full max-w-[1320px] flex-col gap-3 px-5 md:mt-8 md:flex-row md:items-center md:justify-between md:px-10">
+              <div className="mx-auto mt-5 flex w-full max-w-[1320px] flex-col gap-3 px-6 md:mt-8 md:flex-row md:items-center md:justify-between md:px-10">
                 <span className="hidden text-[15px] font-semibold text-brand-mut md:inline">
                   {calme ? "Faites défiler les biens pour tous les voir." : "Passez la souris sur un bien pour arrêter le défilé."}
                 </span>

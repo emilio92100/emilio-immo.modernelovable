@@ -184,7 +184,7 @@ const Recherche = ({ forme = "carte", className }: { forme?: "carte" | "barre"; 
     <div className="contents lg:hidden">
       <form
         onSubmit={envoyer}
-        className="relative z-[3] mx-3 -mt-10 flex flex-col rounded-[24px] bg-white p-3 shadow-[0_30px_60px_-30px_rgba(19,36,61,0.6),0_0_0_1px_rgba(19,36,61,0.05)] sm:mx-auto sm:max-w-[520px]"
+        className="relative z-[3] mx-6 -mt-10 flex flex-col rounded-[24px] bg-white p-3 shadow-[0_30px_60px_-30px_rgba(19,36,61,0.6),0_0_0_1px_rgba(19,36,61,0.05)] sm:mx-auto sm:max-w-[520px]"
       >
         {/* Un espace entre les onglets et la case (Alexandre : « avoir un petit espace supplémentaire ») */}
         <div role="tablist" aria-label="Votre projet" className="mb-3.5 flex gap-1 rounded-[16px] bg-brand-surf p-1 md:mb-4">
@@ -259,10 +259,11 @@ const Fond = () => {
   );
 };
 
+/* Téléphone : la vidéo va d’un bord à l’autre de l’écran (Alexandre, 9 oct.) ; tablette et ordinateur : la tuile arrondie. */
 const TuilesHero = () => (
-  <section className="mx-auto w-full max-w-[1560px] px-3 md:px-6">
+  <section className="mx-auto w-full max-w-[1560px] md:px-6">
     <div className="relative">
-      <div className="relative h-[440px] overflow-hidden rounded-[30px] bg-[#DFE8F2] sm:h-[460px] lg:h-[clamp(560px,calc(100vh_-_112px),720px)] lg:overflow-visible lg:rounded-[36px]">
+      <div className="relative h-[440px] overflow-hidden bg-[#DFE8F2] md:rounded-[30px] sm:h-[460px] lg:h-[clamp(560px,calc(100vh_-_112px),720px)] lg:overflow-visible lg:rounded-[36px]">
         {/* Paris et son voile : clair à gauche (ordinateur) ou en haut (téléphone), là où est le texte.
             Téléphone : voile plus léger pour voir la vidéo (Alexandre, 8 oct.) ; le titre garde un halo blanc,
             les trois engagements passent en petites pastilles blanches.
@@ -276,7 +277,7 @@ const TuilesHero = () => (
             la barre de recherche se placent au milieu de la place qui reste au-dessus des trois repères du bas.
             Écran d’ordinateur peu haut (portable 1366 × 768, le haut de page à sa hauteur minimale) : les marges
             se resserrent pour que la barre ne touche pas les repères. */}
-        <div className="relative z-[1] px-[22px] pt-6 lg:flex lg:h-full lg:max-w-[760px] lg:flex-col lg:pb-[88px] lg:pl-[76px] lg:pr-14 lg:pt-[50px] [@media(min-width:1024px)_and_(max-height:690px)]:pb-[78px] [@media(min-width:1024px)_and_(max-height:690px)]:pt-9">
+        <div className="relative z-[1] px-6 pt-6 md:px-[22px] lg:flex lg:h-full lg:max-w-[760px] lg:flex-col lg:pb-[88px] lg:pl-[76px] lg:pr-14 lg:pt-[50px] [@media(min-width:1024px)_and_(max-height:690px)]:pb-[78px] [@media(min-width:1024px)_and_(max-height:690px)]:pt-9">
           <span className="fx-fade text-[11.5px] font-extrabold uppercase tracking-[0.14em] text-brand-orange-text max-lg:[text-shadow:0_0_10px_rgba(255,255,255,0.95)] lg:text-[13px]">Vendre · Acheter · Faire estimer</span>
           <div className="lg:my-auto lg:py-3 [@media(min-width:1024px)_and_(max-height:690px)]:py-1.5">
             <h1 className="fx-fade m-0 mt-2.5 text-[36px] font-extrabold leading-[1.05] tracking-[-0.035em] text-brand-ink max-lg:[text-shadow:0_0_18px_rgba(255,255,255,0.9)] sm:text-[44px] lg:mt-0 lg:text-[50px] lg:leading-[1.03] xl:text-[58px]">
@@ -308,7 +309,7 @@ const TuilesHero = () => (
       <Recherche />
     </div>
     {/* Téléphone et tablette : les trois repères côte à côte dans une seule carte, sans défilement */}
-    <div className="mx-1 mt-4 grid grid-cols-3 divide-x divide-[#DCE4EE] rounded-[22px] bg-brand-surf px-1 py-3 sm:mx-auto sm:max-w-[520px] lg:hidden">
+    <div className="mx-4 mt-4 grid grid-cols-3 divide-x divide-[#DCE4EE] rounded-[22px] bg-brand-surf px-1 py-3 sm:mx-auto sm:max-w-[520px] lg:hidden">
       {CONFIANCE.map((c) => (
         <div key={c.t} className="flex min-w-0 flex-col items-center gap-1 px-1.5 text-center">
           <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-brand">{c.icon}</span>
